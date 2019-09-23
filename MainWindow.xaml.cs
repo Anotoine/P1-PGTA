@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Win32;
 
 namespace P1_PGTA
 {
@@ -23,6 +25,27 @@ namespace P1_PGTA
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                byte[] fileBytes = File.ReadAllBytes(openFileDialog.FileName);
+                StringBuilder sb = new StringBuilder();
+
+                foreach (byte b in fileBytes)
+                {
+                    //sb.Append(Convert.ToString(b, 16).PadLeft(2, '0'));
+                    //TextBoxList.Text = 
+                        MessageBox.Show(Convert.ToString(b,16).PadLeft(2, '0'));
+                }
+                MessageBox.Show("HOLA");
+            }
+
+
         }
     }
 }
