@@ -38,9 +38,8 @@ namespace P1_PGTA
 
                 foreach (byte b in fileBytes)
                 {
-                    //sb.Append(Convert.ToString(b, 16).PadLeft(2, '0'));
                     //TextBoxList.Text = 
-                        MessageBox.Show(Convert.ToString(b,16).PadLeft(2, '0'));
+                    MessageBox.Show(Convert.ToString(b,16).PadLeft(2, '0'));
                 }
                 MessageBox.Show("HOLA");
             }
