@@ -34,14 +34,34 @@ namespace P1_PGTA
             if (openFileDialog.ShowDialog() == true)
             {
                 byte[] fileBytes = File.ReadAllBytes(openFileDialog.FileName);
-                String a = "789";
+                List<string> list = new List<string>();
+                StringBuilder sb = new StringBuilder();
 
                 foreach (byte b in fileBytes)
                 {
-                    TextBoxList.Text += Convert.ToString(b, 16).PadLeft(2, '0');
+                    list.Add(Convert.ToString(b, 16).PadLeft(2, '0'));
                 }
-                
-                MessageBox.Show("DONE");
+                TextList.Text = list.ToString();
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i] == "15" && list[i + 1] == "00" && list[i + 2] == "28")
+                    {
+                        for (int j = i+1; j < list.Count; j++)
+                        {
+                            if (list[j] == "15" && list[j + 1] == "00" && list[j + 2] == "28")
+                            {
+                                foreach (string line in list.GetRange(i,j-i))
+                                {
+                                    sb.Append(line);
+                                }
+                                sb.AppendLine();
+                            }
+                        }
+                    }
+                }
+
+                TextList.Text = sb.ToString();
             }
 
 
