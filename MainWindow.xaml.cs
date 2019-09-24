@@ -34,14 +34,14 @@ namespace P1_PGTA
             if (openFileDialog.ShowDialog() == true)
             {
                 byte[] fileBytes = File.ReadAllBytes(openFileDialog.FileName);
-                StringBuilder sb = new StringBuilder();
+                String a = "789";
 
                 foreach (byte b in fileBytes)
                 {
-                    //TextBoxList.Text = 
-                    MessageBox.Show(Convert.ToString(b,16).PadLeft(2, '0'));
+                    TextBoxList.Text += Convert.ToString(b, 16).PadLeft(2, '0');
                 }
-                MessageBox.Show("HOLA");
+                
+                MessageBox.Show("DONE");
             }
 
 
