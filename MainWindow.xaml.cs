@@ -20,8 +20,10 @@ namespace P1_PGTA
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
     public partial class MainWindow : Window
     {
+        List<Message> listMessage;
         public MainWindow()
         {
             InitializeComponent();
@@ -35,36 +37,29 @@ namespace P1_PGTA
             {
                 byte[] fileBytes = File.ReadAllBytes(openFileDialog.FileName);
                 List<string> list = new List<string>();
-                StringBuilder sb = new StringBuilder();
+                listMessage = new List<Message>();
 
                 foreach (byte b in fileBytes)
                 {
                     list.Add(Convert.ToString(b, 16).PadLeft(2, '0'));
                 }
-                TextList.Text = list.ToString();
 
-                for (int i = 0; i < list.Count; i++)
+                int i = 0;
+                while (i < list.Count)
                 {
-                    if (list[i] == "15" && list[i + 1] == "00" && list[i + 2] == "28")
-                    {
-                        for (int j = i+1; j < list.Count; j++)
-                        {
-                            if (list[j] == "15" && list[j + 1] == "00" && list[j + 2] == "28")
-                            {
-                                foreach (string line in list.GetRange(i,j-i))
-                                {
-                                    sb.Append(line);
-                                }
-                                sb.AppendLine();
-                            }
-                        }
-                    }
+                    int length = Int32.Parse(list[i+1], System.Globalization.NumberStyles.HexNumber) + Int32.Parse(list[i+2], System.Globalization.NumberStyles.HexNumber);
+                    listMessage.Add(new Message(list.GetRange(i, length)));
+
+                    i = i + length;
                 }
-
-                TextList.Text = sb.ToString();
+                
+                foreach (Message m in listMessage)
+                {
+                    TextList.Text = Convert.ToString(m.getCAT());
+                    DataGrid.Items.Add(m);
+                   
+                }
             }
-
-
         }
     }
 }
