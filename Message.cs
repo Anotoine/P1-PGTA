@@ -15,7 +15,7 @@ namespace P1_PGTA
         private int Length;
         private List<bool> listFSPEC = new List<bool>();
         private string listFSPECraw = "";
-        private int LengthFSPEC;
+        private int Offset; //Donde empieza el siguiente campo
         private List<DataItem> listDataItem = new List<DataItem>();
 
         //Constructors needed
@@ -39,10 +39,10 @@ namespace P1_PGTA
             bool exit = false;
             int i = 0;
             this.listFSPEC.Add(false);
-            LengthFSPEC = 3 - 1;
+            Offset = 3;
             while (!exit)
             {
-                string s = Convert.ToString(Convert.ToInt32(this.rawList[3 + i], 16),2).PadLeft(8,'0');
+                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16),2).PadLeft(8,'0');
                 for (int j = 0; j < 8; j++)
                 {
                     this.listFSPECraw = string.Concat(this.listFSPECraw, s[j]);
@@ -53,13 +53,12 @@ namespace P1_PGTA
 
                     if (j == 7)
                     {
-                        LengthFSPEC++;
+                        Offset++;
                         if (char.Equals(s[j], '0'))
                             exit = true;
                         if (char.Equals(s[j], '1'))
                             i += 1;
-                    }
-                        
+                    }     
                 }
             }
 
@@ -136,9 +135,10 @@ namespace P1_PGTA
             Atom a;
             if (this.listFSPEC[1])
             {
-                 d = new DataItem("I020/010", "Data Source Identifier", new Atom("SAC", 1, Convert.ToString(Convert.ToInt32(this.rawList[LengthFSPEC + 1], 16)).PadLeft(3, '0')));
-                 d.addAtom(new Atom("SIC", 1, Convert.ToString(Convert.ToInt32(this.rawList[LengthFSPEC + 2], 16)).PadLeft(3, '0')));
-                 listDataItem.Add(d);
+                d = new DataItem("I020/010", "Data Source Identifier", new Atom("SAC", 1, Convert.ToString(Convert.ToInt32(this.rawList[Offset + 1], 16)).PadLeft(3, '0')));
+                d.addAtom(new Atom("SIC", 1, Convert.ToString(Convert.ToInt32(this.rawList[Offset + 2], 16)).PadLeft(3, '0')));
+                listDataItem.Add(d);
+                Offset += 2;
             }
             if (this.listFSPEC[2])
             {
@@ -158,7 +158,7 @@ namespace P1_PGTA
                 bool exit = false;
                 while (!exit)
                 {
-                    string s = Convert.ToString(Convert.ToInt32(this.rawList[LengthFSPEC + 3 + i], 16), 2).PadLeft(8, '0');
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                     for (int j = 0; j < 8; j++)
                     {
                         if (char.Equals(s[j], '1'))
@@ -170,6 +170,7 @@ namespace P1_PGTA
 
                         if (j == 7)
                         {
+                            Offset++;
                             if (char.Equals(s[j], '0'))
                                 exit = true;
                             if (char.Equals(s[j], '1'))
@@ -181,40 +182,47 @@ namespace P1_PGTA
             }
             if (this.listFSPEC[3])
             {
-
+                int LSB = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
+                d = new DataItem("I020/140", "Time of Day", new Atom("TOD", 1, new DateTime().AddSeconds((float)LSB / 128).ToString("HH:mm:ss.fff")));
+                Offset += 3;
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             if (this.listFSPEC[4])
-            {
-
+            {   //TODO: not finished
+                int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
+                int lon = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
+                d = new DataItem("I020/041", "Position in WGS-84 Coordinates",new Atom("",0,""));
+                Offset += 8;
             }
             if (this.listFSPEC[5])
             {
-
+                int x = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
+                int y = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5]), System.Globalization.NumberStyles.HexNumber);
+                d = new DataItem("I020/042", "Position in Cartesian Coordinates", new Atom("X", 3, (float)x / 2));
+                d.addAtom(new Atom("Y", 3, (float)y / 2));
+                Offset += 6;
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             if (this.listFSPEC[6])
             {
 

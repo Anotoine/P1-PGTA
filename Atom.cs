@@ -15,23 +15,23 @@ namespace P1_PGTA
         private double value3;
 
 
-        public Atom(string name, int sta, string val1)
+        public Atom(string name, int sta, string val)
         {
             this.name = name;
             this.status = sta;
-            this.value1 = val1;
+            this.value1 = val;
         }
-        public Atom(string name, int sta, int val2)
+        public Atom(string name, int sta, int val)
         {
             this.name = name;
             this.status = sta;
-            this.value2 = val2;
+            this.value2 = val;
         }
-        public Atom(string name, int sta, double val3)
+        public Atom(string name, int sta, double val)
         {
             this.name = name;
             this.status = sta;
-            this.value3 = val3;
+            this.value3 = val;
         }
     }
 }

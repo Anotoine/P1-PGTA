@@ -10,6 +10,7 @@ namespace P1_PGTA
     {
         private string tag; //Name of the dataItem
         private string description; //Information
+        private int length;
         private List<Atom> listValue = new List<Atom>();
 
         public DataItem(string tag, string desc, Atom atom)
