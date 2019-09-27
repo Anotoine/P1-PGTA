@@ -9,13 +9,6 @@
     <Grid x:Name="Base" Background="Black">
         <Button Name="Button" Content="Open file" HorizontalAlignment="Left" Margin="7,200,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Background="#FF00F3FF" Height="20" Grid.ColumnSpan="2"/>
         <TextBox Name="TextList" AcceptsReturn="True" Margin="778,16,32,19" Background="#FF20C7C7" FontSize="20" FontWeight="Bold" IsReadOnly="True" TextWrapping="Wrap"/>
-        <DataGrid Name="DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="455" Margin="113,16,0,0" VerticalAlignment="Top" Width="400" SelectionMode="Single" SelectionUnit="FullRow">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Item" Binding="{Binding Id}" Width="100"/>
-                <DataGridTextColumn Header="CAT" Binding="{Binding CAT}" Width="100" />
-                <DataGridTextColumn Header="Length" Binding="{Binding lengthMessage}" Width="100"/>
-                <DataGridTextColumn Header="FSPEC" Binding="{Binding CAT}" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <DataGrid Name="DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="455" Margin="113,16,0,0" VerticalAlignment="Top" Width="400" SelectionMode="Single" SelectionUnit="FullRow" MouseDoubleClick="prova"/>
     </Grid>
 </Window>

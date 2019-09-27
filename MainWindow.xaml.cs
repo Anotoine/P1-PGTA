@@ -1,19 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data; //for datatable
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
-using Microsoft.Win32;
 
 namespace P1_PGTA
 {
@@ -23,10 +15,21 @@ namespace P1_PGTA
     /// 
     public partial class MainWindow : Window
     {
+
         List<Message> listMessage;
+        DataTable dt = new DataTable(); //taula qe omple el grid
         public MainWindow()
         {
             InitializeComponent();
+            DataColumn id = new DataColumn("id", typeof(int));
+            DataColumn CAT = new DataColumn("CAT", typeof(int));
+            DataColumn Length = new DataColumn("Length", typeof(int));
+            DataColumn FSPEC = new DataColumn("FSPEC", typeof(List<string>));
+            dt.Columns.Add(id);
+            dt.Columns.Add(CAT);
+            dt.Columns.Add(Length);
+            dt.Columns.Add(FSPEC);
+            DataGrid.ItemsSource = dt.DefaultView;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -45,21 +48,42 @@ namespace P1_PGTA
                 }
 
                 int i = 0;
+                int j = 0;
                 while (i < list.Count)
                 {
-                    int length = Int32.Parse(list[i+1], System.Globalization.NumberStyles.HexNumber) + Int32.Parse(list[i+2], System.Globalization.NumberStyles.HexNumber);
-                    listMessage.Add(new Message(list.GetRange(i, length)));
-
+                    int cat = Int32.Parse(list[i], System.Globalization.NumberStyles.HexNumber);
+                    int length = Int32.Parse(list[i + 1] + list[i + 2], System.Globalization.NumberStyles.HexNumber);
+                    Message m = new Message(j, list.GetRange(i + 3, length - 3), cat, length);
+                    listMessage.Add(m);
                     i = i + length;
+                    j = j + 1;
                 }
-                
+
                 foreach (Message m in listMessage)
                 {
-                    TextList.Text = Convert.ToString(m.getCAT());
-                    DataGrid.Items.Add(m);
-                   
+                    //TextList.Text = Convert.ToString(m.getCAT());
+                    DataRow Row = dt.NewRow();
+                    Row[0] = m.getID();
+                    Row[1] = m.getCAT();
+                    Row[2] = m.getLength();
+                    Row[3] = m.getList();
+                    dt.Rows.Add(Row);
+                    DataGrid.ItemsSource = dt.DefaultView;
                 }
             }
+        }
+
+        private void prova(object sender, MouseButtonEventArgs e)
+        {
+            int index = DataGrid.SelectedIndex;
+            List<string> ls = listMessage[index].getList();
+            string bytesStr = "";
+            foreach (String s in ls)
+            {
+                bytesStr = bytesStr + "-" + s;
+            }
+
+            TextList.Text = Convert.ToString(bytesStr);
         }
     }
 }
