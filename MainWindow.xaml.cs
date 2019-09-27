@@ -21,11 +21,11 @@ namespace P1_PGTA
         public MainWindow()
         {
             InitializeComponent();
-            DataColumn id = new DataColumn("id", typeof(int));
+
+
             DataColumn CAT = new DataColumn("CAT", typeof(int));
             DataColumn Length = new DataColumn("Length", typeof(int));
-            DataColumn FSPEC = new DataColumn("FSPEC", typeof(List<string>));
-            dt.Columns.Add(id);
+            DataColumn FSPEC = new DataColumn("listFSPEC", typeof(string));
             dt.Columns.Add(CAT);
             dt.Columns.Add(Length);
             dt.Columns.Add(FSPEC);
@@ -48,25 +48,21 @@ namespace P1_PGTA
                 }
 
                 int i = 0;
-                int j = 0;
                 while (i < list.Count)
                 {
-                    int cat = Int32.Parse(list[i], System.Globalization.NumberStyles.HexNumber);
                     int length = Int32.Parse(list[i + 1] + list[i + 2], System.Globalization.NumberStyles.HexNumber);
-                    Message m = new Message(j, list.GetRange(i + 3, length - 3), cat, length);
+                    Message m = new Message(list.GetRange(i, length));
                     listMessage.Add(m);
-                    i = i + length;
-                    j = j + 1;
+                    i += length;
                 }
 
                 foreach (Message m in listMessage)
                 {
                     //TextList.Text = Convert.ToString(m.getCAT());
                     DataRow Row = dt.NewRow();
-                    Row[0] = m.getID();
-                    Row[1] = m.getCAT();
-                    Row[2] = m.getLength();
-                    Row[3] = m.getList();
+                    Row[0] = m.getCAT();
+                    Row[1] = m.getLength();
+                    Row[2] = m.getlistFSPEC();
                     dt.Rows.Add(Row);
                     DataGrid.ItemsSource = dt.DefaultView;
                 }
@@ -75,15 +71,7 @@ namespace P1_PGTA
 
         private void prova(object sender, MouseButtonEventArgs e)
         {
-            int index = DataGrid.SelectedIndex;
-            List<string> ls = listMessage[index].getList();
-            string bytesStr = "";
-            foreach (String s in ls)
-            {
-                bytesStr = bytesStr + "-" + s;
-            }
-
-            TextList.Text = Convert.ToString(bytesStr);
+            TextList.Text = string.Join("", listMessage[DataGrid.SelectedIndex].getList().ToArray());
         }
     }
 }
