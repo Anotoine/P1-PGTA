@@ -9,29 +9,16 @@ namespace P1_PGTA
     class Atom
     {
         private string name;
-        private int status;
-        private string value1;
-        private int value2;
-        private double value3;
+
+        private string str;
+        private float value;
 
 
-        public Atom(string name, int sta, string val)
+        public Atom(string name, float val, string str)
         {
             this.name = name;
-            this.status = sta;
-            this.value1 = val;
-        }
-        public Atom(string name, int sta, int val)
-        {
-            this.name = name;
-            this.status = sta;
-            this.value2 = val;
-        }
-        public Atom(string name, int sta, double val)
-        {
-            this.name = name;
-            this.status = sta;
-            this.value3 = val;
+            this.str = str;
+            this.value = val;
         }
     }
 }
