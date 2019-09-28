@@ -135,10 +135,14 @@ namespace P1_PGTA
             Atom a;
             if (this.listFSPEC[1])
             {
-                d = new DataItem("I020/010", "Data Source Identifier", new Atom("SAC", 1, Convert.ToString(Convert.ToInt32(this.rawList[Offset + 1], 16)).PadLeft(3, '0')));
-                d.addAtom(new Atom("SIC", 1, Convert.ToString(Convert.ToInt32(this.rawList[Offset + 2], 16)).PadLeft(3, '0')));
+                d = new DataItem("I020/010", "Data Source Identifier", new Atom("SAC", 1, Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16)).PadLeft(3, '0')));
+                Offset++;
+
+                d.addAtom(new Atom("SIC", 1, Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16)).PadLeft(3, '0')));
+                Offset++;
+
                 listDataItem.Add(d);
-                Offset += 2;
+               
             }
             if (this.listFSPEC[2])
             {
@@ -186,6 +190,7 @@ namespace P1_PGTA
                 d = new DataItem("I020/140", "Time of Day", new Atom("TOD", 1, new DateTime().AddSeconds((float)LSB / 128).ToString("HH:mm:ss.fff")));
                 Offset += 3;
             }
+
             if (this.listFSPEC[4])
             {   //TODO: not finished    DEBE HABER UNA FUNCION, YO NO LA HE ENCONTRADO, HE VISTO Q COGIENDO DATOS EN HEX ASI DEBERIA IR
                 int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
@@ -199,7 +204,6 @@ namespace P1_PGTA
                 Offset += 8;
             }
 
-
             if (this.listFSPEC[5])
             {
                 int x = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
@@ -209,8 +213,6 @@ namespace P1_PGTA
                 Offset += 6;
             }
 
-
-
             if (this.listFSPEC[6])
             {
                 int matricula = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
@@ -218,23 +220,22 @@ namespace P1_PGTA
                 Offset += 2;
             }
 
-
-
-
             if (this.listFSPEC[7])
             {
                 d = new DataItem("I020/170", "Track Status");
                 var ls = new List<string> { "CNF", "TRE", "CST", "CDM", "MAH", "STH", "FX","GHO","FX" };
-                var ls0 = new List<string> { "Confirmed track", "Default", "Not extrapolated", "Maintaining", "Climbing", "Default", "Measured position", "End of Data Item", "Default","","","","","","", "End of Data Item" };
-                var ls1 = new List<string> { "Track in initiation phase", "Last report for a track", "Extrapolated", "Descending", "Invalid", "Horizontal manoeuvre", "Smoothed position", "Extension into first extent", "Ghost track", "", "", "","","","", "Extension into second extent" };
+                var ls0 = new List<string> { "Confirmed track", "Default", "Not extrapolated", "Maintaining", "Climbing", "Default", "Measured position", "End of Data Item",
+                    "Default","","","","","","", "End of Data Item" };
+                var ls1 = new List<string> { "Track in initiation phase", "Last report for a track", "Extrapolated", "Descending", "Invalid",
+                    "Horizontal manoeuvre", "Smoothed position", "Extension into first extent", "Ghost track", "", "", "","","","", "Extension into second extent" };
 
                 int cont1 = 0;
                 int cont2 = 0;
                 int i = 0;
                 bool exit = false;
                 while (!exit)
-                {
-                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                { 
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset + i], 16), 2).PadLeft(8, '0');
                     for (int j = 0; j < 8; j++)
                     {
                         if (j == 3 && i == 0)
@@ -277,7 +278,6 @@ namespace P1_PGTA
                     }
                 }
                 listDataItem.Add(d);
-
             }
 
 
@@ -285,10 +285,7 @@ namespace P1_PGTA
             {
                 d = new DataItem("I020/070", "Mode-3/A Code in Octal Representation");
             }
-            
-            
-            
-            
+                    
             if (this.listFSPEC[9])
             {
 
