@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using P1_PGTA;
 
@@ -183,16 +184,18 @@ namespace P1_PGTA
             }
 
             if (this.listFSPEC[4])
-            {   //TODO: not finished    DEBE HABER UNA FUNCION, YO NO LA HE ENCONTRADO, HE VISTO Q COGIENDO DATOS EN HEX ASI DEBERIA IR
+            {   //TODO: check is never in use in CAT20
                 int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
-
+                float latreal = Convert.ToSingle(lat * 180 / 2 ^ 25);
 
                 int lon = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
+                float lonreal = Convert.ToSingle(lat * 180 / 2 ^ 25);
 
-
-
-                d = new DataItem("I020/041", "Position in WGS-84 Coordinates", new Atom("", 0, ""));
                 Offset += 8;
+
+                d = new DataItem("I020/041", "Position in WGS-84 Coordinates", new Atom("Latitude", lonreal, Convert.ToString(lonreal)));
+                d.addAtom(new Atom("Longitude", latreal, Convert.ToString(latreal)));
+                listDataItem.Add(d);
             }
 
             if (this.listFSPEC[5])
@@ -327,64 +330,247 @@ namespace P1_PGTA
                     d.addAtom(new Atom("Mode-3/A reply", Convert.ToInt32(code), code));
                     Offset += 2;
                     listDataItem.Add(d);
-
                 }
                 if (this.listFSPEC[10]) //9 I020/202
                 {
                     d = new DataItem("I020/202", "Calculated Track Velocity in Cartesian Coordinates");
-
-                    //string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
-                    byte[ ] bb = { 0xff, 0xff };
-                    int AA = BitConverter.ToInt16(bb,0);
-                    d.addAtom(new Atom("V_x",(float) AA/4, AA.ToString()));
-
-                    //string s2 = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
-                    byte[] cc = { 0xff, 0xff };
-                    int BB = BitConverter.ToInt16(cc, 0);
-                    d.addAtom(new Atom("V_y", (float)BB / 4, BB.ToString()));
-
+                    List<string> ls = new List<string>() { "V_x", "V_y" };
+                    for (int i = 0; i < 2; i++)
+                    {
+                        int BB = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset+1]),16);
+                        d.addAtom(new Atom(ls[i], (float)BB/4, Convert.ToString((float)BB / 4)));
+                        Offset += 2;
+                    }
                     listDataItem.Add(d);
-
-
-
                 }
                 if (this.listFSPEC[11]) //10 I020/090
                 {
+                    d = new DataItem("I020 / 090", "Flight Level in Binary Representation");
+
+                    string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
+                    int j = 0;
+                    while (j < 3)
+                    {
+                        if (j == 0)
+                        {
+                            if (char.Equals(s[j], '0'))
+                                a = new Atom("V", 0, "Code Validated");
+                            else
+                                a = new Atom("V", 1, "Code Validated");
+                            j++;
+                            d.addAtom(a);
+                        }
+                        else if (j == 1)
+                        {
+                            if (char.Equals(s[j], '0'))
+                                a = new Atom("G", 0, "Default");
+                            else
+                                a = new Atom("G", 1, "Garbled code");
+                            j++; d.addAtom(a);
+                        }
+                        else if (j == 2)
+                        {
+                            int BB = Convert.ToInt16(s.Substring(2).PadLeft(16, '0'), 2);
+                            d.addAtom(new Atom("Fligth Level", (float)BB / 4, Convert.ToString((float)BB / 4)));
+                            j++;
+                        }
+
+                    }
+                    Offset += 2;
+                    listDataItem.Add(d);
 
                 }
                 if (this.listFSPEC[12]) //11 I020/100
                 {
-
+                    //TODO
                 }
                 if (this.listFSPEC[13]) //12 I020/220
                 {
-
+                    d = new DataItem("I020/220", "Target Address");
+                    string BB = string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]);
+                    d.addAtom(new Atom("ICAO Address", Convert.ToInt32(BB, 16) , BB));
+                    Offset += 3;
+                    listDataItem.Add(d);
                 }
                 if (this.listFSPEC[14]) //13 I020/245
                 {
+                    d = new DataItem("I020/245", "Target Identification");
 
+                    //First decoding STI on first Byte
+                    string STI = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16),2).PadLeft(8,'0');
+                    Offset++;
+
+                    if (char.Equals(STI[0], '0'))
+                    {
+                        if (char.Equals(STI[1], '0'))
+                            a = new Atom("STI", 00, "Callsign or registration not downlinked from transponder");
+                        else
+                            a = new Atom("STI", 01, "Registration downlinked from transponder");
+                    }
+                    else
+                    {
+                        if (char.Equals(STI[1], '0'))
+                            a = new Atom("STI", 10, "Callsign donwlinked from transponder");
+                        else
+                            a = new Atom("STI", 11, "Not defined");
+                    }
+                    d.addAtom(a);
+
+                    //Then decoding Callsign on the following 7 Bytes
+                    string stringCode = "";
+                    for (int i = Offset; i < Offset+6; i++)
+                    {
+                        stringCode = string.Concat(stringCode, Convert.ToString(Convert.ToInt32(this.rawList[i], 16), 2).PadLeft(8,'0'));
+                    }
+                    Offset += 6;
+                    
+                    List<char> code = new List<char>();
+                    for (int i = 0; i < 8; i++)
+                    {
+                        if (stringCode.Substring(6 * i, 6).StartsWith("0"))
+                            code.Add((char)Convert.ToInt32(string.Concat("01",stringCode.Substring(6 * i, 6)), 2));
+                        else
+                            code.Add((char)Convert.ToInt32(string.Concat("00", stringCode.Substring(6 * i, 6)), 2));
+                    }
+
+                    d.addAtom(new Atom("Callsign", 0, Regex.Replace(string.Join("",code.ToArray()), @"\s", "")));
+                    Offset += 2;
+                    listDataItem.Add(d);
                 }
                 if (this.listFSPEC[15]) //14 I020/110
-                {
+                { //could NOT be checked because is never used.
+                    d = new DataItem("I020/110", "Measured Height (Local Cartesian Coordinates");
+                    float BB = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 6.25);
 
+                    Offset += 2;
+                    d.addAtom(new Atom("Measured Height", BB, Convert.ToString(BB)));
+                    listDataItem.Add(d);
                 }
                 if (this.listFSPEC[16])
                 {
                     if (this.listFSPEC[17]) //15 I020/105
                     {
+                        d = new DataItem("I020/105", "Geometric Height (WGS-84)");
+                        float BB = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 6.25);
 
+                        Offset += 2;
+                        d.addAtom(new Atom("Geometric Height", BB, Convert.ToString(BB)));
+                        listDataItem.Add(d);
                     }
                     if (this.listFSPEC[18]) //16 I020/210
                     {
-
+                        d = new DataItem("I020/210", "Calculated Acceleration");
+                        List<string> ls = new List<string>() { "A_x", "A_y" };
+                        for (int i = 0; i < 2; i++)
+                        {
+                            float BB = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 2) * 0.25);
+                            d.addAtom(new Atom(ls[i], BB , Convert.ToString(BB)));
+                            Offset++;
+                        }
+                        listDataItem.Add(d);
                     }
                     if (this.listFSPEC[19]) //17 I020/300
                     {
-
+                        d = new DataItem("I020/300", "Vehicle Fleet Identification");
+                        int BB = Convert.ToInt16(this.rawList[Offset], 2);
+                        switch (BB)
+                        {
+                            case 0:
+                                d.addAtom(new Atom("VFI", BB, "Unknown"));
+                                break;
+                            case 1:
+                                d.addAtom(new Atom("VFI", BB, "ATC equipment maintenance"));
+                                break;
+                            case 2:
+                                d.addAtom(new Atom("VFI", BB, "Airport maintenance"));
+                                break;
+                            case 3:
+                                d.addAtom(new Atom("VFI", BB, "Fire"));
+                                break;
+                            case 4:
+                                d.addAtom(new Atom("VFI", BB, "Bird scarer"));
+                                break;
+                            case 5:
+                                d.addAtom(new Atom("VFI", BB, "Snow plough"));
+                                break;
+                            case 6:
+                                d.addAtom(new Atom("VFI", BB, "Runway sweeper"));
+                                break;
+                            case 7:
+                                d.addAtom(new Atom("VFI", BB, "Emergency"));
+                                break;
+                            case 8:
+                                d.addAtom(new Atom("VFI", BB, "Police"));
+                                break;
+                            case 9:
+                                d.addAtom(new Atom("VFI", BB, "Bus"));
+                                break;
+                            case 10:
+                                d.addAtom(new Atom("VFI", BB, "Tug (push/tow)"));
+                                break;
+                            case 11:
+                                d.addAtom(new Atom("VFI", BB, "Grass cutter"));
+                                break;
+                            case 12:
+                                d.addAtom(new Atom("VFI", BB, "Fuel"));
+                                break;
+                            case 13:
+                                d.addAtom(new Atom("VFI", BB, "Baggage"));
+                                break;
+                            case 14:
+                                d.addAtom(new Atom("VFI", BB, "Catering"));
+                                break;
+                            case 15:
+                                d.addAtom(new Atom("VFI", BB, "Aircraft maintenance"));
+                                break;
+                            case 16:
+                                d.addAtom(new Atom("VFI", BB, "Flyco (follow me)"));
+                                break;
+                            default:
+                                break;
+                        }
+                        Offset++;
+                        listDataItem.Add(d);
                     }
                     if (this.listFSPEC[20]) //18 I020/310
                     {
+                        d = new DataItem("I020/310", "Pre-programmed Message");
+                        string BB = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2);
 
+                        if (char.Equals(BB[1], '0'))
+                            a = new Atom("TRB", 0, "Default");
+                        else
+                            a = new Atom("TRB", 1, "In Trouble");
+                        d.addAtom(a);
+
+                        int val = Convert.ToInt32(BB.Remove(1,7).PadLeft(8,'0'));
+
+                        switch (val)
+                        {
+                            case 1:
+                                d.addAtom(new Atom("VFI", val, "Towing Aircraft"));
+                                break;
+                            case 2:
+                                d.addAtom(new Atom("VFI", val, "'Follow me' operation"));
+                                break;
+                            case 3:
+                                d.addAtom(new Atom("VFI", val, "Runway check"));
+                                break;
+                            case 4:
+                                d.addAtom(new Atom("VFI", val, "Emergency operation"));
+                                break;
+                            case 5:
+                                d.addAtom(new Atom("VFI", val, "Work in Progress"));
+                                break;
+                            case 0:
+                                d.addAtom(new Atom("VFI", val, "No info"));
+                                break;
+                            default:
+                                break;
+                        }
+
+                        Offset++;
+                        listDataItem.Add(d);
                     }
                     if (this.listFSPEC[21]) //19 I020/500
                     {
@@ -448,7 +634,7 @@ namespace P1_PGTA
             List<string> ls = new List<string>() {"SAC", "SIC" };
             for (int i = 0; i < 2; i++)
             {
-                d.addAtom(new Atom("SAC", Convert.ToInt32(this.rawList[Offset], 16), Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16)).PadLeft(3, '0')));
+                d.addAtom(new Atom(ls[i], Convert.ToInt32(this.rawList[Offset], 16), Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16)).PadLeft(3, '0')));
                 Offset++;
             }
             listDataItem.Add(d);
