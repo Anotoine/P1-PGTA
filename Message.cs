@@ -438,12 +438,13 @@ namespace P1_PGTA
 
         private void decodeSACSIC()
         {
-            DataItem d = new DataItem("I020/010", "Data Source Identifier", new Atom("SAC", Convert.ToInt32(this.rawList[Offset], 16), Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16)).PadLeft(3, '0')));
-            Offset++;
-
-            d.addAtom(new Atom("SIC", 1, Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16)).PadLeft(3, '0')));
-            Offset++;
-
+            DataItem d = new DataItem("I020/010", "Data Source Identifier");
+            List<string> ls = new List<string>() {"SAC", "SIC" };
+            for (int i = 0; i < 2; i++)
+            {
+                d.addAtom(new Atom("SAC", Convert.ToInt32(this.rawList[Offset], 16), Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16)).PadLeft(3, '0')));
+                Offset++;
+            }
             listDataItem.Add(d);
         }
         private void decodeTOD()
