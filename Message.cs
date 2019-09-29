@@ -434,7 +434,7 @@ namespace P1_PGTA
                     }
 
                     d.addAtom(new Atom("Callsign", 0, Regex.Replace(string.Join("",code.ToArray()), @"\s", "")));
-                    Offset += 2;
+                    //Offset += 2;
                     listDataItem.Add(d);
                 }
                 if (this.listFSPEC[15]) //14 I020/110
@@ -537,13 +537,14 @@ namespace P1_PGTA
                         d = new DataItem("I020/310", "Pre-programmed Message");
                         string BB = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2);
 
-                        if (char.Equals(BB[1], '0'))
+                        if (char.Equals(BB[0], '0'))
                             a = new Atom("TRB", 0, "Default");
                         else
                             a = new Atom("TRB", 1, "In Trouble");
                         d.addAtom(a);
 
                         int val = Convert.ToInt32(BB.Remove(1,7).PadLeft(8,'0'));
+
 
                         switch (val)
                         {
@@ -574,45 +575,102 @@ namespace P1_PGTA
                     }
                     if (this.listFSPEC[21]) //19 I020/500
                     {
+                        d = new DataItem("I020/500", "Position Accuracy");
+                        string BB = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8,'0');
+                        Offset++;
 
+                        if (char.Equals(BB[0], '0'))
+                            d.addAtom(new Atom("DOP", 0, "Absence of Subfield 1"));
+                        else
+                        {
+                            d.addAtom(new Atom("DOP", 1, "Pressence of Subfield 1"));
+
+                            List<string> ls = new List<string>() { "DOP_x", "DOP_y", "DOP_xy" };
+                            for (int i = 0; i < 3; i++)
+                            {
+                                float DOP = Convert.ToSingle(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset+1]), 16) * 0.25);
+                                d.addAtom(new Atom(ls[i], DOP, Convert.ToString(DOP)));
+                                Offset += 2;
+                            }
+                        }
+
+                        if (char.Equals(BB[1], '0'))
+                            d.addAtom(new Atom("SDP", 0, "Absence of Subfield 2"));
+                        else
+                        {
+                            d.addAtom(new Atom("SDP", 1, "Presence of Subfield 2"));
+                            List<string> ls = new List<string>() { "sigma_x", "sigma_y", "sigma_xy" };
+                            for (int i = 0; i < 3; i++)
+                            {
+                                float DOP = Convert.ToSingle(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.25);
+                                d.addAtom(new Atom(ls[i], DOP, Convert.ToString(DOP)));
+                                Offset += 2;
+                            }
+                        }
+
+                        if (char.Equals(BB[2], '0'))
+                            d.addAtom(new Atom("SDH", 0, "Absence of Subfield 3"));
+                        else
+                        {
+                            d.addAtom(new Atom("SDH", 1, "Presence of Subfield 3"));
+                            float DOP = Convert.ToSingle(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.5);
+                            d.addAtom(new Atom("sigma_GH", DOP, Convert.ToString(DOP)));
+                            Offset += 2;
+                        }
+
+                        listDataItem.Add(d);
                     }
                     if (this.listFSPEC[22]) //20 I020/400
                     {
+                        d = new DataItem("I020/400", "Contributing Devices");
+                        //Amount of Octets that will extent this camp (REP)
+                        int REP = Convert.ToInt32(this.rawList[Offset], 16);
+                        Offset++;
 
+                        List<string> dev = new List<string>();
+                        for (int i = 0; i < (REP - 1); i++)
+                        {
+                            string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                            for(int j = 0; j < 8; j++)
+                            {
+                                if (char.Equals(s[j], '1'))
+                                    dev.Add(Convert.ToString(8*(REP-i)-j));
+                            }
+                            Offset++;
+                        }
+                        listDataItem.Add(d);
                     }
                     if (this.listFSPEC[23]) //21 I020/250
                     {
+                        d = new DataItem("I020/250", "Mode S MB Data");
+                        //Amount of Octets that will extent this camp (REP)
+                        int REP = Convert.ToInt32(this.rawList[Offset], 16);
+                        Offset++;
 
+                        listDataItem.Add(d);
                     }
                     if (this.listFSPEC[24])
                     {
                         if (this.listFSPEC[25]) //22 I020/230
                         {
-
                         }
                         if (this.listFSPEC[26]) //23 I020/260
                         {
-
                         }
                         if (this.listFSPEC[27]) //24 I020/030
                         {
-
                         }
                         if (this.listFSPEC[28]) //25 I020/055
                         {
-
                         }
                         if (this.listFSPEC[29]) //26 I020/050
                         {
-
                         }
                         if (this.listFSPEC[30]) //27 RE
                         {
-
                         }
                         if (this.listFSPEC[31]) //28 SP
                         {
-
                         }
                     }
                 }
