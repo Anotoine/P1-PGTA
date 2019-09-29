@@ -32,7 +32,7 @@ namespace P1_PGTA
             DataGrid.ItemsSource = dt.DefaultView;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_File(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -72,6 +72,13 @@ namespace P1_PGTA
         private void prova(object sender, MouseButtonEventArgs e)
         {
             TextList.Text = string.Join("", listMessage[DataGrid.SelectedIndex].getList().ToArray());
+        }
+
+        private void Button_Click_Map(object sender, RoutedEventArgs e)
+        {
+            Map map = new Map();
+            map.Show();
+            this.Close();
         }
     }
 }

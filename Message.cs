@@ -189,7 +189,7 @@ namespace P1_PGTA
                 float latreal = Convert.ToSingle(lat * 180 / 2 ^ 25);
 
                 int lon = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
-                float lonreal = Convert.ToSingle(lat * 180 / 2 ^ 25);
+                float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 25);
 
                 Offset += 8;
 

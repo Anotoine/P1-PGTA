@@ -1,0 +1,14 @@
+﻿<Window x:Class="P1_PGTA.Map"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:P1_PGTA"
+        mc:Ignorable="d"
+        Title="Map" Height="624" Width="1138">
+    <Grid>
+        <Canvas Name="Lienzo" Background="Black"  HorizontalAlignment="Left" Margin="68,54,0,0" Width="1000" Height="500" VerticalAlignment="Top"/>
+        <Button Name="Button_map" Content="Map it!" HorizontalAlignment="Left" Margin="89,17,0,0" VerticalAlignment="Top" Width="75" Click="Button_map_Click"/>
+
+    </Grid>
+</Window>
