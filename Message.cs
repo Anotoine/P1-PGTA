@@ -333,10 +333,16 @@ namespace P1_PGTA
                 {
                     d = new DataItem("I020/202", "Calculated Track Velocity in Cartesian Coordinates");
 
-                    string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
+                    //string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                     byte[ ] bb = { 0xff, 0xff };
                     int AA = BitConverter.ToInt16(bb,0);
                     d.addAtom(new Atom("V_x",(float) AA/4, AA.ToString()));
+
+                    //string s2 = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
+                    byte[] cc = { 0xff, 0xff };
+                    int BB = BitConverter.ToInt16(cc, 0);
+                    d.addAtom(new Atom("V_y", (float)BB / 4, BB.ToString()));
+
                     listDataItem.Add(d);
 
 
