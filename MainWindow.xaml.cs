@@ -21,7 +21,7 @@ namespace P1_PGTA
         public MainWindow()
         {
             InitializeComponent();
-            Point PARP = new Point(41.296531, 2.075594);
+            Point PARP = new Point(41.29, 2.09);
             Point P1 = new Point(41.287335, 2.082796);
             TextList.Text = "("+(100000*PARP.X).ToString() +";"+(100000*PARP.Y).ToString()+ ") - ("+(100000*P1.X).ToString() + ";" + (100000*P1.Y).ToString()+")";
 

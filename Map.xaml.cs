@@ -55,19 +55,19 @@ namespace P1_PGTA
 
                         float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                        points.Add(new Point(x1, x2, false));
+                        points.Add(new Point(x1, x2));
                     }
 
                     l = new Line();
                     l.Stroke = System.Windows.Media.Brushes.White;
                     l.StrokeThickness = 100;
-                    Point a  = points[-2];
-                    l.X1 = a.X;
-                    l.Y1 = a.Y;
+                    Point a = points[points.Count - 1];
+                    l.X1 = a.X*1000;
+                    l.Y1 = a.Y*1000;
 
-                    Point b = points[-2];
-                    l.X2 = b.X;
-                    l.Y2 = b.Y;
+                    Point b = points[points.Count - 2];
+                    l.X2 = b.X*1000;
+                    l.Y2 = b.Y*1000;
                     Lienzo.Children.Add(l);
                 }
             }
