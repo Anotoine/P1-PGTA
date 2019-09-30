@@ -24,42 +24,34 @@ namespace P1_PGTA
         private double phi;
 
         //ref lat lon for Lamber projection -> AIP airport
-        private double lat0 = 41.296531 * Math.PI / 180;
+        private double lat0 = 41.296531*Math.PI/180;
         private double lon0 = 2.075594 * Math.PI / 180;
         //standard latitudes 
         private double lat1 = 40 * Math.PI / 180;
-        private double lat2 = 48 * Math.PI / 180;
+        private double lat2 = 42 * Math.PI / 180;
 
-        public Point(double x1, double y1, bool IsXY)
+        public Point(double lat, double lon) //
         {
-            if (IsXY)
-            {
-                this.x = x1;
-                this.y = y1;
-                updateLatLon();
-            } else {
-                this.lat = x1;
-                this.lon = y1;
-                updateXY();
-            }
-        }
-
-        private void updateXY()
-        {
+            this.lat = lat * Math.PI / 180;
+            this.lon = lon * Math.PI / 180;
             //Lambert conformal conic projection
             double num = Math.Log(Math.Cos(lat1) / Math.Cos(lat2)) / Math.Log(Math.Exp(1));
-            double denum = Math.Log((Math.Tan(Math.PI / 4 + lat2 / 2)) / (Math.Tan(Math.PI / 4 + lat1 / 2))) / Math.Log(Math.Exp(1));
+            double denum = Math.Log((Math.Tan(Math.PI / 4 + lat2/2))/(Math.Tan(Math.PI / 4 + lat1/2))) / Math.Log(Math.Exp(1));
             double n = num / denum;
-            double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2), n)) / n;
-            double rho = F * Math.Pow(Math.Tan(Math.PI / 4 + lat / 2), -n);
+            double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2),n))/n;
+            double rho = F * Math.Pow(Math.Tan(Math.PI/4+ this.lat / 2), -n);
             double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + lat0 / 2), -n);
-            this.x = rho * Math.Sin(n * (lon - lon0));
-            this.y = rho0 - rho * Math.Cos(n * (lon - lon0));
+            this.x = rho * Math.Sin(n * (this.lon - lon0));
+            this.y = rho0 - rho * Math.Cos(n * (this.lon - lon0));
         }
 
-        private void updateLatLon()
+        public double GetX() 
         {
-
+            return x;
+        }
+        public double GetY()
+        {
+            return y;
         }
 
         public double X { get => x; set => x = value; }
