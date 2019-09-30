@@ -67,8 +67,8 @@ namespace P1_PGTA
                     double y0 = zero0.Y;
                     double A = -x0;
                     double B = -y0;
-                    double alpha = A / 500;
-                    double betha = B / 250;
+                    double alpha = A / (Lienzo.Width / 2);
+                    double betha = B / (Lienzo.Height / 2);
                     Point a = points[points.Count - 1];
                     l.X1 = (a.X + A) / alpha;
                     l.Y1 = (a.Y + B) / betha;
