@@ -22,7 +22,6 @@ namespace P1_PGTA
         {
             InitializeComponent();
 
-
             DataColumn CAT = new DataColumn("CAT", typeof(int));
             DataColumn Length = new DataColumn("Length", typeof(int));
             DataColumn FSPEC = new DataColumn("listFSPEC", typeof(string));
