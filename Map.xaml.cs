@@ -48,10 +48,10 @@ namespace P1_PGTA
 
                         float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
 
-                        float a2 = Convert.ToSingle(el[i+1].Substring(0, 2)); // 41 grados
-                        float b2 = Convert.ToSingle(el[i+1].Substring(2, 2)); // 17 minutos
-                        float c2 = Convert.ToSingle(el[i+1].Substring(4, 2)); // 25 segundos
-                        float d2 = Convert.ToSingle(el[i+1].Substring(6, 3)); // 761 milisegundos
+                        float a2 = Convert.ToSingle(el[i+1].Substring(0, 3)); // 41 grados
+                        float b2 = Convert.ToSingle(el[i+1].Substring(3, 2)); // 17 minutos
+                        float c2 = Convert.ToSingle(el[i+1].Substring(5, 2)); // 25 segundos
+                        float d2 = Convert.ToSingle(el[i+1].Substring(7, 3)); // 761 milisegundos
 
                         float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
@@ -62,12 +62,12 @@ namespace P1_PGTA
                     l.Stroke = System.Windows.Media.Brushes.White;
                     l.StrokeThickness = 100;
                     Point a = points[points.Count - 1];
-                    l.X1 = a.X*1000;
-                    l.Y1 = a.Y*1000;
+                    l.X1 = a.X*10000 + 500;
+                    l.Y1 = a.Y*10000 + 250;
 
                     Point b = points[points.Count - 2];
-                    l.X2 = b.X*1000;
-                    l.Y2 = b.Y*1000;
+                    l.X2 = b.X*10000 + 500;
+                    l.Y2 = b.Y*10000 + 250;
                     Lienzo.Children.Add(l);
                 }
             }
