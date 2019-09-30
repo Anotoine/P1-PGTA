@@ -33,65 +33,42 @@ namespace P1_PGTA
             float y = 2.098495F;
             Line l;
             string[] lines = File.ReadAllLines(@"BCN_Pistas.map");
+            List<Point> points = new List<Point>();
             foreach (string line in lines)
             {
                 string[] el = line.Split();
                 if (el[0] == "Linea")
                 {
-                    float a = Convert.ToSingle(el[1].Substring(0, 2)); // 41 grados
-                    float b = Convert.ToSingle(el[1].Substring(2, 2)); // 17 minutos
-                    float c = Convert.ToSingle(el[1].Substring(4, 2)); // 25 segundos
-                    float d = Convert.ToSingle(el[1].Substring(6, 3)); // 761 milisegundos
-                    string ef = el[1].Substring(7); // N
+                    for (int i = 1; i < 4; i += 2)
+                    {
+                        float a1 = Convert.ToSingle(el[i].Substring(0, 2)); // 41 grados
+                        float b1 = Convert.ToSingle(el[i].Substring(2, 2)); // 17 minutos
+                        float c1 = Convert.ToSingle(el[i].Substring(4, 2)); // 25 segundos
+                        float d1 = Convert.ToSingle(el[i].Substring(6, 3)); // 761 milisegundos
 
-                    float gg = Convert.ToSingle(c+d/1000);
+                        float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
 
-                    float x1 = a + (b / 60) + (gg / 3600);
+                        float a2 = Convert.ToSingle(el[i+1].Substring(0, 2)); // 41 grados
+                        float b2 = Convert.ToSingle(el[i+1].Substring(2, 2)); // 17 minutos
+                        float c2 = Convert.ToSingle(el[i+1].Substring(4, 2)); // 25 segundos
+                        float d2 = Convert.ToSingle(el[i+1].Substring(6, 3)); // 761 milisegundos
 
-                    float a2 = Convert.ToSingle(el[2].Substring(0, 2)); // 41 grados
-                    float b2 = Convert.ToSingle(el[2].Substring(2, 2)); // 17 minutos
-                    float c2 = Convert.ToSingle(el[2].Substring(4, 2)); // 25 segundos
-                    float d2 = Convert.ToSingle(el[2].Substring(6, 3)); // 761 milisegundos
-                    //int ef2 = Convert.ToInt32(el[2].Substring(7)); // N
+                        float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                    float gg2 = Convert.ToSingle(c2 + d2 / 1000);
-
-                    float y1 = a2 + b2 / 60 + gg2 / 3600;
-
-
-                    float a3 = Convert.ToSingle(el[3].Substring(0, 2)); // 41 grados
-                    float b3 = Convert.ToSingle(el[3].Substring(2, 2)); // 17 minutos
-                    float c3 = Convert.ToSingle(el[3].Substring(4, 2)); // 25 segundos
-                    float d3 = Convert.ToSingle(el[3].Substring(6, 3)); // 761 milisegundos
-                    //int ef3 = Convert.ToInt32(el[3].Substring(7)); // N
-
-                    float gg3 = Convert.ToSingle(c3 + d3 / 1000);
-
-                    float x2 = a3 + b3 / 60 + gg3 / 3600;
-
-
-                    float a4 = Convert.ToSingle(el[4].Substring(0, 2)); // 41 grados
-                    float b4 = Convert.ToSingle(el[4].Substring(2, 2)); // 17 minutos
-                    float c4 = Convert.ToSingle(el[4].Substring(4, 2)); // 25 segundos
-                    float d4 = Convert.ToSingle(el[4].Substring(6, 3)); // 761 milisegundos
-                    //int ef4 = Convert.ToInt32(el[4].Substring(7)); // N
-
-                    float gg4 = Convert.ToSingle(c4 + d4 / 1000);
-
-                    float y2 = a4 + b4 / 60 + gg4 / 3600;
-
+                        points.Add(new Point(x1, x2, false));
+                    }
 
                     l = new Line();
                     l.Stroke = System.Windows.Media.Brushes.White;
                     l.StrokeThickness = 100;
-                    l.X1 = 200*(x1 / x) + 500;
-                    l.Y1 = 200*(y1 / y) + 250;
+                    Point a  = points[-2];
+                    l.X1 = a.X;
+                    l.Y1 = a.Y;
 
-                    l.X2 = 200*(x2 / x) + 500;
-                    l.Y2 = 200*(y2 / y) + 250;
+                    Point b = points[-2];
+                    l.X2 = b.X;
+                    l.Y2 = b.Y;
                     Lienzo.Children.Add(l);
-
-
                 }
             }
         }
