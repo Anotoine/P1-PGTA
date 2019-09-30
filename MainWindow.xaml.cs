@@ -22,7 +22,7 @@ namespace P1_PGTA
         {
             InitializeComponent();
             Point PARP = new Point(41.29, 2.09);
-            Point P1 = new Point(41.287335, 2.082796);
+            Point P1 = new Point(41.309179, 2.045674);
             TextList.Text = "("+(100000*PARP.X).ToString() +";"+(100000*PARP.Y).ToString()+ ") - ("+(100000*P1.X).ToString() + ";" + (100000*P1.Y).ToString()+")";
 
             DataColumn CAT = new DataColumn("CAT", typeof(int));

@@ -60,14 +60,22 @@ namespace P1_PGTA
 
                     l = new Line();
                     l.Stroke = System.Windows.Media.Brushes.White;
-                    l.StrokeThickness = 100;
+                    l.StrokeThickness = 1;
+
+                    Point zero0 = new Point(41.318936, 2.028951); //x y superior esquerra ?
+                    double x0 = zero0.X;
+                    double y0 = zero0.Y;
+                    double A = -x0;
+                    double B = -y0;
+                    double alpha = A / 500;
+                    double betha = B / 250;
                     Point a = points[points.Count - 1];
-                    l.X1 = a.X*10000 + 500;
-                    l.Y1 = a.Y*10000 + 250;
+                    l.X1 = (a.X + A) / alpha;
+                    l.Y1 = (a.Y + B) / betha;
 
                     Point b = points[points.Count - 2];
-                    l.X2 = b.X*10000 + 500;
-                    l.Y2 = b.Y*10000 + 250;
+                    l.X2 = (b.X+A)/alpha;
+                    l.Y2 = (b.Y+B)/betha;
                     Lienzo.Children.Add(l);
                 }
             }
