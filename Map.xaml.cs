@@ -29,29 +29,30 @@ namespace P1_PGTA
 
         private void Button_map_Click(object sender, RoutedEventArgs e)
         {
-            float x = 41.29049F;
-            float y = 2.098495F;
             Line l;
+            Polyline p;
             string[] lines = File.ReadAllLines(@"BCN_Pistas.map");
             List<Point> points = new List<Point>();
-            foreach (string line in lines)
+
+            int j = 0;
+            while (j < lines.Length)
             {
-                string[] el = line.Split();
-                if (el[0] == "Linea")
+                string[] l1 = lines[j].Split();
+                if (l1[0] == "Linea")
                 {
                     for (int i = 1; i < 4; i += 2)
                     {
-                        float a1 = Convert.ToSingle(el[i].Substring(0, 2)); // 41 grados
-                        float b1 = Convert.ToSingle(el[i].Substring(2, 2)); // 17 minutos
-                        float c1 = Convert.ToSingle(el[i].Substring(4, 2)); // 25 segundos
-                        float d1 = Convert.ToSingle(el[i].Substring(6, 3)); // 761 milisegundos
+                        float a1 = Convert.ToSingle(l1[i].Substring(0, 2)); // grados
+                        float b1 = Convert.ToSingle(l1[i].Substring(2, 2)); // minutos
+                        float c1 = Convert.ToSingle(l1[i].Substring(4, 2)); // segundos
+                        float d1 = Convert.ToSingle(l1[i].Substring(6, 3)); // milisegundos
 
                         float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
 
-                        float a2 = Convert.ToSingle(el[i+1].Substring(0, 3)); // 41 grados
-                        float b2 = Convert.ToSingle(el[i+1].Substring(3, 2)); // 17 minutos
-                        float c2 = Convert.ToSingle(el[i+1].Substring(5, 2)); // 25 segundos
-                        float d2 = Convert.ToSingle(el[i+1].Substring(7, 3)); // 761 milisegundos
+                        float a2 = Convert.ToSingle(l1[i + 1].Substring(0, 3)); // grados
+                        float b2 = Convert.ToSingle(l1[i + 1].Substring(3, 2)); // minutos
+                        float c2 = Convert.ToSingle(l1[i + 1].Substring(5, 2)); // segundos
+                        float d2 = Convert.ToSingle(l1[i + 1].Substring(7, 3)); // milisegundos
 
                         float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
@@ -59,17 +60,54 @@ namespace P1_PGTA
                     }
 
                     l = new Line();
-                    l.Stroke = System.Windows.Media.Brushes.White;
-                    l.StrokeThickness = 100;
+                    l.Stroke = Brushes.White;
+                    l.StrokeThickness = 1;
                     Point a = points[points.Count - 1];
-                    l.X1 = a.X*10000 + 500;
-                    l.Y1 = a.Y*10000 + 250;
+                    l.X1 = a.X * 1000000 + 500;
+                    l.Y1 = a.Y * 1000000 + 250;
 
                     Point b = points[points.Count - 2];
-                    l.X2 = b.X*10000 + 500;
-                    l.Y2 = b.Y*10000 + 250;
+                    l.X2 = b.X * 1000000 + 500;
+                    l.Y2 = b.Y * 1000000 + 250;
                     Lienzo.Children.Add(l);
+                    j++;
                 }
+                else if (l1[0].StartsWith("Polilinea"))
+                {
+                    int num = Convert.ToInt32(l1[1]);
+                    PointCollection pp = new PointCollection();
+
+                    for (int i = j; i < j + num; i++)
+                    {
+                        string[] l2 = lines[i + 1].Split();
+
+                        float a1 = Convert.ToSingle(l2[0].Substring(0, 2)); // grados
+                        float b1 = Convert.ToSingle(l2[0].Substring(2, 2)); // minutos
+                        float c1 = Convert.ToSingle(l2[0].Substring(4, 2)); // segundos
+                        float d1 = Convert.ToSingle(l2[0].Substring(6, 3)); // milisegundos
+
+                        float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
+
+                        float a2 = Convert.ToSingle(l2[1].Substring(0, 3)); // grados
+                        float b2 = Convert.ToSingle(l2[1].Substring(3, 2)); // minutos
+                        float c2 = Convert.ToSingle(l2[1].Substring(5, 2)); // segundos
+                        float d2 = Convert.ToSingle(l2[1].Substring(7, 3)); // milisegundos
+                                                       
+                        float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
+
+                        points.Add(new Point(x1, x2));
+                        pp.Add(new System.Windows.Point(points[points.Count-1].X * 1000000 + 500, points[points.Count-1].Y * 1000000 + 250));
+
+                    }
+                    p = new Polyline();
+                    p.Stroke = Brushes.LightGreen;
+                    p.StrokeThickness = 1;
+                    p.Points = pp;
+                    Lienzo.Children.Add(p);
+                    j += num;
+                }
+                else
+                    j++;
             }
         }
     }
