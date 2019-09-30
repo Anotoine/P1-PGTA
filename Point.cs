@@ -45,15 +45,6 @@ namespace P1_PGTA
             this.y = rho0 - rho * Math.Cos(n * (this.lon - lon0));
         }
 
-        public double GetX() 
-        {
-            return x;
-        }
-        public double GetY()
-        {
-            return y;
-        }
-
         public double X { get => x; set => x = value; }
         public double Y { get => y; set => y = value; }
         public double Z { get => z; set => z = value; }
