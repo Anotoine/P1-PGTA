@@ -32,7 +32,7 @@ namespace P1_PGTA
             Line l;
             Polyline p;
 
-            Point zero0 = new Point(41.318936, 2.028951); //x y superior esquerra ?
+            Point zero0 = new Point(41.315300, 2.043297); //x y superior esquerra ?
 
             double A = -zero0.X;
             double B = -zero0.Y;
