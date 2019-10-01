@@ -1,15 +1,25 @@
-﻿<Window x:Class="P1_PGTA.Map"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:P1_PGTA"
+        xmlns:gmaps="clr-namespace:GMap.NET.WindowsPresentation;assembly=GMap.NET.WindowsPresentation"
         mc:Ignorable="d"
-        Title="ASTERIX Decoder" Icon="Test.ico" Height="624" Width="1138">
+        Title="ASTERIX Decoder" Icon="Test.ico" Height="802.5" Width="1432">
     <Grid Background="Black">
-        <Canvas Name="Lienzo" Background="#FF130606"  HorizontalAlignment="Left" Margin="68,54,0,0" Width="1000" Height="500" VerticalAlignment="Top"/>
-        <Button Name="Button_map" Content="Map it!" Background="#FF00F3FF" HorizontalAlignment="Left" Margin="89,17,0,0" VerticalAlignment="Top" Width="75" Click="Button_map_Click"/>
-        <Button Name="Button_clear" Content="Clear"  Background="#FF00F3FF" HorizontalAlignment="Left" Margin="191,17,0,0" VerticalAlignment="Top" Width="75" Click="Button_clear_Click"/>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="87*"/>
+            <ColumnDefinition Width="432*"/>
+            <ColumnDefinition Width="194*"/>
+        </Grid.ColumnDefinitions>
+        <CheckBox x:Name="CheckPistas" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,74,59,501" Width="61"/>
+        <CheckBox x:Name="CheckParterre" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,98,59,477" Width="61"/>
+        <CheckBox x:Name="CheckMovimiento" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,122,59,453" Width="61"/>
+        <CheckBox x:Name="CheckPEdificios" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,208,59,367" Width="61"/>
+        <CheckBox x:Name="CheckCarretera" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,165,59,410" Width="61"/>
+        <CheckBox x:Name="CheckParking" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,184,59,391" Width="61"/>
+        <CheckBox x:Name="CheckBCN" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,146,59,429" Width="61"/>
+        <Canvas x:Name="Lienzo" Background="#FF130606" Margin="40,48,41,0" Height="484" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Width="Auto"/>
     </Grid>
 </Window>

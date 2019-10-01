@@ -27,7 +27,24 @@ namespace P1_PGTA
         }
 
 
-        private void Button_map_Click(object sender, RoutedEventArgs e)
+        private void mapView_Loaded(object sender, RoutedEventArgs e)
+        {
+            GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerAndCache;
+            // choose your provider here
+            mapView.MapProvider = GMap.NET.MapProviders.OpenStreetMapProvider.Instance;
+            mapView.MinZoom = 2;
+            mapView.MaxZoom = 17;
+            // whole world zoom
+            mapView.Zoom = 2;
+            // lets the map use the mousewheel to zoom
+            mapView.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionAndCenter;
+            // lets the user drag the map
+            mapView.CanDragMap = true;
+            // lets the user drag the map with the left mouse button
+            mapView.DragButton = MouseButton.Left;
+        }
+
+        public void Load()
         {
             Line l;
             Polyline p;
@@ -39,15 +56,11 @@ namespace P1_PGTA
             double alpha = A / (Lienzo.Width / 2);
             double beta = B / (Lienzo.Height / 2);
 
+            List<string> listfiles = new List<string>() { "BCN_ZonasMovimiento.map", "BCN_Pistas" };
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Map Extension files (*.map)|*.map| Text Files (*.txt)|*.txt";
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.InitialDirectory = @"";
-
-            if (openFileDialog.ShowDialog() == true)
+            foreach (string file in listfiles)
             {
-                string[] lines = File.ReadAllLines(openFileDialog.FileName);
+                string[] lines = File.ReadAllLines(file);
                 List<Point> points = new List<Point>();
 
                 points.Add(new Point(41.296531, 2.075594)); //ARP BCN airport --> Item 0
@@ -112,11 +125,11 @@ namespace P1_PGTA
                             float b2 = Convert.ToSingle(l2[1].Substring(3, 2)); // minutos
                             float c2 = Convert.ToSingle(l2[1].Substring(5, 2)); // segundos
                             float d2 = Convert.ToSingle(l2[1].Substring(7, 3)); // milisegundos
-                                                       
+
                             float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
                             points.Add(new Point(x1, x2));
-                            pp.Add(new System.Windows.Point((points[points.Count-1].X + A) / alpha, (points[points.Count-1].Y + B) / beta));
+                            pp.Add(new System.Windows.Point((points[points.Count - 1].X + A) / alpha, (points[points.Count - 1].Y + B) / beta));
                         }
 
                         p = new Polyline();
@@ -135,14 +148,10 @@ namespace P1_PGTA
                 ARP.Width = 5;
                 ARP.Height = 5;
                 Lienzo.Children.Add(ARP);
-                Canvas.SetLeft(ARP, ((points[0].X + A) / alpha) - ARP.Width/2);
-                Canvas.SetTop(ARP, ((points[0].Y + B) / beta) - ARP.Height/2);
-            }
-        }
+                Canvas.SetLeft(ARP, ((points[0].X + A) / alpha) - ARP.Width / 2);
+                Canvas.SetTop(ARP, ((points[0].Y + B) / beta) - ARP.Height / 2);
 
-        private void Button_clear_Click(object sender, RoutedEventArgs e)
-        {
-            Lienzo.Children.Clear();
+            }
         }
     }
 }
