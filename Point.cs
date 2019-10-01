@@ -25,8 +25,11 @@ namespace P1_PGTA
         private double phi;
 
         //ref lat lon for Lamber projection -> AIP airport
-        private double latRef = 41.296531 * Math.PI / 180;
-        private double lonRef = 2.075594 * Math.PI / 180;
+        //private double latRef = 41.296531 * Math.PI / 180;
+        //private double lonRef = 2.075594 * Math.PI / 180;
+        private double latRef = 41.295885* Math.PI / 180;
+        private double lonRef = 2.086214 * Math.PI / 180;
+
 
         //standard latitudes 
         private double lat1 = 40 * Math.PI / 180;
