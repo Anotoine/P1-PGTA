@@ -16,9 +16,10 @@
         <CheckBox x:Name="CheckParterre" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,86,58.6,662.8" Width="61"/>
         <CheckBox x:Name="CheckMovimiento" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,127,58.6,626.8" Width="61" RenderTransformOrigin="0.6,1.137"/>
         <CheckBox x:Name="CheckPEdificios" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,254,58.6,499.8" Width="61"/>
-        <CheckBox x:Name="CheckCarretera" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,306,58.6,443.8" Width="61"/>
+        <CheckBox x:Name="CheckCarretera" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,295,58.6,454.8" Width="61"/>
         <CheckBox x:Name="CheckParking" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,210,58.6,537.8" Width="61"/>
         <CheckBox x:Name="CheckBCN" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,169,58.6,584.8" Width="61"/>
+        <CheckBox x:Name="CheckARP" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,336,58.6,417.8" Width="61"/>
         <Canvas x:Name="Lienzo" Background="#FF130606" Margin="40,48,41,0" Height="484" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Width="Auto"/>
     </Grid>
 </Window>

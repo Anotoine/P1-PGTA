@@ -39,13 +39,14 @@ namespace Asterix
             double beta = B / (Lienzo.ActualHeight / 2);
 
             string[] listfiles = Directory.GetFiles(@"maps/");
+            List<List<Point>> maps = new List<List<Point>>();
 
             foreach (string file in listfiles)
             {
                 string[] lines = File.ReadAllLines(file);
-                List<Point> points = new List<Point>();
+                List<Point> map = new List<Point>();
 
-                points.Add(new Point(41.296531, 2.075594)); //ARP BCN airport --> Item 0
+                map.Add(new Point(41.296531, 2.075594)); //ARP BCN airport --> Item 0
 
                 int j = 0;
                 while (j < lines.Length)
@@ -69,22 +70,10 @@ namespace Asterix
 
                             float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                            points.Add(new Point(x1, x2));
+                            map.Add(new Point(x1, x2));
                         }
+                        maps.Add(map);
 
-                        l = new Line();
-                        l.Stroke = Brushes.White;
-                        l.StrokeThickness = 1;
-
-                        Point a = points[points.Count - 1];
-                        l.X1 = (a.X + A) / alpha;
-                        l.Y1 = (a.Y + B) / beta;
-
-                        Point b = points[points.Count - 2];
-                        l.X2 = (b.X + A) / alpha;
-                        l.Y2 = (b.Y + B) / beta;
-
-                        Lienzo.Children.Add(l);
                         j++;
                     }
                     else if (l1[0].StartsWith("Polilinea"))
@@ -110,8 +99,8 @@ namespace Asterix
 
                             float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                            points.Add(new Point(x1, x2));
-                            pp.Add(new System.Windows.Point((points[points.Count - 1].X + A) / alpha, (points[points.Count - 1].Y + B) / beta));
+                            map.Add(new Point(x1, x2));
+                            pp.Add(new System.Windows.Point((map[map.Count - 1].X + A) / alpha, (map[map.Count - 1].Y + B) / beta));
                         }
 
                         p = new Polyline();
@@ -124,16 +113,36 @@ namespace Asterix
                     else
                         j++;
                 }
-                Ellipse ARP = new Ellipse();
-                ARP.Stroke = Brushes.Red;
-                ARP.Fill = Brushes.Red;
-                ARP.Width = 5;
-                ARP.Height = 5;
-                Lienzo.Children.Add(ARP);
-                Canvas.SetLeft(ARP, ((points[0].X + A) / alpha) - ARP.Width / 2);
-                Canvas.SetTop(ARP, ((points[0].Y + B) / beta) - ARP.Height / 2);
+
 
             }
         }
     }
 }
+
+
+
+
+////                        l = new Line();
+//l.Stroke = Brushes.White;
+//                        l.StrokeThickness = 1;
+
+//                        Point a = map[map.Count - 1];
+//l.X1 = (a.X + A) / alpha;
+//                        l.Y1 = (a.Y + B) / beta;
+
+//                        Point b = map[map.Count - 2];
+//l.X2 = (b.X + A) / alpha;
+//                        l.Y2 = (b.Y + B) / beta;
+
+//                        Lienzo.Children.Add(l);
+
+
+//Ellipse ARP = new Ellipse();
+//ARP.Stroke = Brushes.Red;
+//                ARP.Fill = Brushes.Red;
+//                ARP.Width = 5;
+//                ARP.Height = 5;
+//                Lienzo.Children.Add(ARP);
+//                Canvas.SetLeft(ARP, ((map[0].X + A) / alpha) - ARP.Width / 2);
+//                Canvas.SetTop(ARP, ((map[0].Y + B) / beta) - ARP.Height / 2);
