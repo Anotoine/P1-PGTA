@@ -23,7 +23,6 @@ namespace Asterix
             InitializeComponent();
             Point PARP = new Point(41.29, 2.09);
             Point P1 = new Point(41.309179, 2.045674);
-            TextList.Text = "("+(100000*PARP.X).ToString() +";"+(100000*PARP.Y).ToString()+ ") - ("+(100000*P1.X).ToString() + ";" + (100000*P1.Y).ToString()+")";
 
             DataColumn CAT = new DataColumn("CAT", typeof(int));
             DataColumn Length = new DataColumn("Length", typeof(int));
@@ -58,6 +57,8 @@ namespace Asterix
                     i += length;
                 }
 
+                MessageBox.Show(listMessage.Count + " are loaded to the program.", "Loaded!",MessageBoxButton.OK, MessageBoxImage.Information);
+
                 foreach (Message m in listMessage)
                 {
                     //TextList.Text = Convert.ToString(m.getCAT());
@@ -71,9 +72,9 @@ namespace Asterix
             }
         }
 
-        private void prova(object sender, MouseButtonEventArgs e)
+        private void MouseClickTable(object sender, MouseButtonEventArgs e)
         {
-            TextList.Text = string.Join("", listMessage[DataGrid.SelectedIndex].getList().ToArray());
+            //TextList.Text = string.Join("", listMessage[DataGrid.SelectedIndex].getList().ToArray());
         }
 
         private void Button_Click_Map(object sender, RoutedEventArgs e)

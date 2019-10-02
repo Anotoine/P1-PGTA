@@ -12,8 +12,7 @@
             <ColumnDefinition Width="554*"/>
         </Grid.ColumnDefinitions>
         <Button Name="ButtonOpenFile" Content="Open file" Margin="19,0,0,428" VerticalAlignment="Bottom" Click="Button_Click_File" Background="#FF00F3FF" Height="20" HorizontalAlignment="Left" Width="75"/>
-        <TextBox Name="TextList" AcceptsReturn="True" Margin="0,16,56,19" Background="#FF20C7C7" FontSize="20" FontWeight="Bold" IsReadOnly="True" TextWrapping="Wrap" Grid.Column="1" HorizontalAlignment="Right" Width="385"/>
-        <DataGrid Name="DataGrid" ItemsSource="{Binding}" HorizontalAlignment="Right" Margin="0,16,580,19" Width="400" SelectionMode="Single" SelectionUnit="FullRow" MouseDoubleClick="prova" Grid.Column="1"/>
+        <DataGrid Name="DataGrid" ItemsSource="{Binding}" Margin="40,30,40,30" SelectionMode="Single" SelectionUnit="FullRow" MouseDoubleClick="MouseClickTable" Grid.Column="1" Background="Black" BorderBrush="#FF04284C"/>
         <Button x:Name="ButtonOpenMap" Content="Open Map" Margin="19,0,0,380" VerticalAlignment="Bottom" Click="Button_Click_Map" Background="#FF00F3FF" Height="20" HorizontalAlignment="Left" Width="75"/>
     </Grid>
 </Window>

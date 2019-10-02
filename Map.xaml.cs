@@ -26,7 +26,7 @@ namespace Asterix
         }
 
 
-        public void Load()
+        public void Load(object sender, RoutedEventArgs e)
         {
             Line l;
             Polyline p;
@@ -35,10 +35,10 @@ namespace Asterix
 
             double A = -zero0.X;
             double B = -zero0.Y;
-            double alpha = A / (Lienzo.Width / 2);
-            double beta = B / (Lienzo.Height / 2);
+            double alpha = A / (Lienzo.ActualWidth / 2);
+            double beta = B / (Lienzo.ActualHeight / 2);
 
-            List<string> listfiles = new List<string>() { "BCN_ZonasMovimiento.map", "BCN_Pistas" };
+            string[] listfiles = Directory.GetFiles(@"maps/");
 
             foreach (string file in listfiles)
             {
