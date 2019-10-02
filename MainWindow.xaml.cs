@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace P1_PGTA
+namespace Asterix
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

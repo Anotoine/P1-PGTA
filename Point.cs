@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace P1_PGTA
+namespace Asterix
 {
     class Point
     {

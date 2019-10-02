@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P1_PGTA
+namespace Asterix
 {
     class DataItem
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using P1_PGTA;
+using Asterix;
 
-namespace P1_PGTA
+namespace Asterix
 {
     class Message
     {
