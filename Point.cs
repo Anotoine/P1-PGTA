@@ -52,6 +52,11 @@ namespace Asterix
             this.y = rho0 - rho * Math.Cos(n * (this.lonR - lonRef));
         }
 
+        //public double x, y Convert ()
+        //{
+
+        //}
+
         public double X { get => x; set => x = value; }
         public double Y { get => y; set => y = value; }
         public double Z { get => z; set => z = value; }

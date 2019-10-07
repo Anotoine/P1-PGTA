@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterix"
         mc:Ignorable="d"
-        Title="ASTERIX Decoder" Icon="Test.ico" Height="802.5" Width="1432" Background="Black">
+        Title="ASTERIX Decoder" Icon="Test.ico" Height="802.5" Width="1432" Background="Black" Loaded="Window_Loaded">
     <Grid Background="Black" Loaded="Load">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="87*"/>
             <ColumnDefinition Width="432*"/>
             <ColumnDefinition Width="194*"/>
         </Grid.ColumnDefinitions>
-        <CheckBox x:Name="CheckPistas" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,48,58.6,705.8" Width="61"/>
+        <CheckBox x:Name="CheckPistas" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,48,58.6,705.8" Width="61" Checked="CheckPistas_Checked"/>
         <CheckBox x:Name="CheckParterre" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,86,58.6,662.8" Width="61"/>
         <CheckBox x:Name="CheckMovimiento" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,127,58.6,626.8" Width="61" RenderTransformOrigin="0.6,1.137"/>
         <CheckBox x:Name="CheckPEdificios" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,254,58.6,499.8" Width="61"/>

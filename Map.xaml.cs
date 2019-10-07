@@ -25,21 +25,29 @@ namespace Asterix
             InitializeComponent();
         }
 
+        Line l;
+        Point zero0;
+        double A, B, alpha, beta;
+        List<List<Point>> maps;
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            maps = new List<List<Point>>();
+            zero0 = new Point(41.315300, 2.043297); //x y superior esquerra ?
+
+            A = -zero0.X;
+            B = -zero0.Y;
+            alpha = A / (Lienzo.ActualWidth / 2);
+            beta = B / (Lienzo.ActualHeight / 2);
+        }
+
 
         public void Load(object sender, RoutedEventArgs e)
         {
-            Line l;
             Polyline p;
 
-            Point zero0 = new Point(41.315300, 2.043297); //x y superior esquerra ?
-
-            double A = -zero0.X;
-            double B = -zero0.Y;
-            double alpha = A / (Lienzo.ActualWidth / 2);
-            double beta = B / (Lienzo.ActualHeight / 2);
-
             string[] listfiles = Directory.GetFiles(@"maps/");
-            List<List<Point>> maps = new List<List<Point>>();
+            
 
             foreach (string file in listfiles)
             {
@@ -72,8 +80,6 @@ namespace Asterix
 
                             map.Add(new Point(x1, x2));
                         }
-                        maps.Add(map);
-
                         j++;
                     }
                     else if (l1[0].StartsWith("Polilinea"))
@@ -99,22 +105,41 @@ namespace Asterix
 
                             float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                            map.Add(new Point(x1, x2));
-                            pp.Add(new System.Windows.Point((map[map.Count - 1].X + A) / alpha, (map[map.Count - 1].Y + B) / beta));
+                            //map.Add(new Point(x1, x2));
+                            //pp.Add(new System.Windows.Point((map[map.Count - 1].X + A) / alpha, (map[map.Count - 1].Y + B) / beta));
                         }
 
                         p = new Polyline();
                         p.Stroke = Brushes.LightGreen;
                         p.StrokeThickness = 1;
-                        p.Points = pp;
+                        //p.Points = pp;
                         Lienzo.Children.Add(p);
                         j += num;
                     }
                     else
                         j++;
                 }
+                maps.Add(map);
+            }
+        }
 
+        private void CheckPistas_Checked(object sender, RoutedEventArgs e)
+        {
+            for (int i = 1; i < maps[0].Count; i+=2)
+            {
+                l = new Line();
+                l.Stroke = Brushes.White;
+                l.StrokeThickness = 1;
 
+                Point a = maps[0][i];
+                l.X1 = (a.X + A) / alpha;
+                l.Y1 = (a.Y + B) / beta;
+
+                Point b = maps[0][i + 1];
+                l.X2 = (b.X + A) / alpha;
+                l.Y2 = (b.Y + B) / beta;
+
+                Lienzo.Children.Add(l);
             }
         }
     }

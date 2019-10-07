@@ -86,7 +86,6 @@
     <Compile Include="Map.xaml.cs">
       <DependentUpon>Map.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MapPoints.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Vehicle.cs" />
     <Page Include="MainWindow.xaml">
