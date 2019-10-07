@@ -5,21 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterix"
         mc:Ignorable="d"
-        Title="ASTERIX Decoder" Icon="Test.ico" Height="802.5" Width="1432" Background="Black" Loaded="Window_Loaded">
+        Title="ASTERIX Decoder" Icon="Test.ico" Height="594" Width="1432" Background="Black" Loaded="Window_Loaded">
     <Grid Background="Black" Loaded="Load">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="87*"/>
-            <ColumnDefinition Width="432*"/>
-            <ColumnDefinition Width="194*"/>
+            <ColumnDefinition Width="96*"/>
+            <ColumnDefinition Width="617*"/>
         </Grid.ColumnDefinitions>
-        <CheckBox x:Name="CheckPistas" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,48,58.6,705.8" Width="61" Checked="CheckPistas_Checked"/>
-        <CheckBox x:Name="CheckParterre" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,86,58.6,662.8" Width="61"/>
-        <CheckBox x:Name="CheckMovimiento" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,127,58.6,626.8" Width="61" RenderTransformOrigin="0.6,1.137"/>
-        <CheckBox x:Name="CheckPEdificios" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,254,58.6,499.8" Width="61"/>
-        <CheckBox x:Name="CheckCarretera" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,295,58.6,454.8" Width="61"/>
-        <CheckBox x:Name="CheckParking" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,210,58.6,537.8" Width="61"/>
-        <CheckBox x:Name="CheckBCN" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,169,58.6,584.8" Width="61"/>
-        <CheckBox x:Name="CheckARP" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="54,336,58.6,417.8" Width="61"/>
-        <Canvas x:Name="Lienzo" Background="#FF130606" Margin="40,48,41,0" Height="484" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Width="Auto"/>
+        <CheckBox x:Name="CheckPistas" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="89,41,42,0" Width="61" Height="26" VerticalAlignment="Top" Click="CheckBoxClick"/>
+        <CheckBox x:Name="CheckParterre" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="89,81,42,0" Width="61" Height="28" VerticalAlignment="Top" Click="CheckBoxClick"/>
+        <CheckBox x:Name="CheckMovimiento" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="89,127,42,0" Width="61"  Height="18" VerticalAlignment="Top" Click="CheckBoxClick"/>
+        <CheckBox x:Name="CheckPEdificios" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="89,254,42,0" Width="61" Height="18" VerticalAlignment="Top" Click="CheckBoxClick"/>
+        <CheckBox x:Name="CheckCarretera" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="89,295,42,0" Width="61" Click="CheckBoxClick" Height="22" VerticalAlignment="Top"/>
+        <CheckBox x:Name="CheckParking" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="89,210,42,0" Width="61" Height="24" VerticalAlignment="Top" Click="CheckBoxClick"/>
+        <CheckBox x:Name="CheckBCN" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="89,169,42,0" Width="61" Height="18" VerticalAlignment="Top" Click="CheckBoxClick"/>
+        <CheckBox x:Name="CheckARP" Content="Hola" Foreground="AliceBlue" HorizontalAlignment="Center" Margin="89,336,42,0" Width="61" Click="CheckBoxClick" Height="18" VerticalAlignment="Top"/>
+        <Canvas x:Name="Lienzo" Background="#FF130606" Margin="38,48,40.6,0" Height="484" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Width="Auto"/>
     </Grid>
 </Window>

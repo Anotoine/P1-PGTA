@@ -25,15 +25,19 @@ namespace Asterix
             InitializeComponent();
         }
 
-        Line l;
-        Point zero0;
+        Point zero0, ARP;
         double A, B, alpha, beta;
-        List<List<Point>> maps;
+        List<List<Line>> mapsLines;
+        List<List<Polyline>> mapsPolylines;
+        List<CheckBox> checkBoxes;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            maps = new List<List<Point>>();
+            checkBoxes = new List<CheckBox>();
+            mapsLines = new List<List<Line>>();
+            mapsPolylines = new List<List<Polyline>>();
             zero0 = new Point(41.315300, 2.043297); //x y superior esquerra ?
+            ARP = new Point(41.296944, 2.078333); //ARP BCN airport --> Item 0
 
             A = -zero0.X;
             B = -zero0.Y;
@@ -41,27 +45,23 @@ namespace Asterix
             beta = B / (Lienzo.ActualHeight / 2);
         }
 
-
         public void Load(object sender, RoutedEventArgs e)
         {
-            Polyline p;
-
             string[] listfiles = Directory.GetFiles(@"maps/");
-            
 
             foreach (string file in listfiles)
             {
                 string[] lines = File.ReadAllLines(file);
-                List<Point> map = new List<Point>();
-
-                map.Add(new Point(41.296531, 2.075594)); //ARP BCN airport --> Item 0
+                List<Line> mapL = new List<Line>();
+                List<Polyline> mapP = new List<Polyline>();
 
                 int j = 0;
                 while (j < lines.Length)
                 {
                     string[] l1 = lines[j].Split();
-                    if (l1[0] == "Linea")
+                    if (l1[0].StartsWith("Linea"))
                     {
+                        List<Point> tPoint = new List<Point>();
                         for (int i = 1; i < 4; i += 2)
                         {
                             float a1 = Convert.ToSingle(l1[i].Substring(0, 2)); // grados
@@ -78,17 +78,28 @@ namespace Asterix
 
                             float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                            map.Add(new Point(x1, x2));
+                            tPoint.Add(new Point(x1, x2));
                         }
+                        Line l = new Line();
+                        l.StrokeThickness = 1;
+                        l.X1 = (tPoint[0].X + A) / alpha;
+                        l.Y1 = (tPoint[0].Y + B) / beta;
+
+                        l.X2 = (tPoint[1].X + A) / alpha;
+                        l.Y2 = (tPoint[1].Y + B) / beta;
+
+                        mapL.Add(l);
                         j++;
                     }
                     else if (l1[0].StartsWith("Polilinea"))
                     {
                         int num = Convert.ToInt32(l1[1]);
                         PointCollection pp = new PointCollection();
+                        List<Point> tPoint = new List<Point>();
 
                         for (int i = j; i < j + num; i++)
                         {
+
                             string[] l2 = lines[i + 1].Split();
 
                             float a1 = Convert.ToSingle(l2[0].Substring(0, 2)); // grados
@@ -105,69 +116,129 @@ namespace Asterix
 
                             float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                            //map.Add(new Point(x1, x2));
-                            //pp.Add(new System.Windows.Point((map[map.Count - 1].X + A) / alpha, (map[map.Count - 1].Y + B) / beta));
+                            tPoint.Add(new Point(x1, x2));
+                            pp.Add(new System.Windows.Point((tPoint[tPoint.Count - 1].X + A) / alpha, (tPoint[tPoint.Count - 1].Y + B) / beta));
                         }
-
-                        p = new Polyline();
-                        p.Stroke = Brushes.LightGreen;
-                        p.StrokeThickness = 1;
-                        //p.Points = pp;
-                        Lienzo.Children.Add(p);
+                        Polyline poly = new Polyline();
+                        poly.Points = pp;
+                        poly.StrokeThickness = 1;
+                        mapP.Add(poly);
                         j += num;
                     }
                     else
                         j++;
                 }
-                maps.Add(map);
+                mapsLines.Add(mapL);
+                mapsPolylines.Add(mapP);
             }
         }
 
-        private void CheckPistas_Checked(object sender, RoutedEventArgs e)
+        private void CheckBoxClick(object sender, RoutedEventArgs e)
         {
-            for (int i = 1; i < maps[0].Count; i+=2)
+            Lienzo.Children.Clear();
+            if (CheckBCN.IsChecked == true)
             {
-                l = new Line();
-                l.Stroke = Brushes.White;
-                l.StrokeThickness = 1;
-
-                Point a = maps[0][i];
-                l.X1 = (a.X + A) / alpha;
-                l.Y1 = (a.Y + B) / beta;
-
-                Point b = maps[0][i + 1];
-                l.X2 = (b.X + A) / alpha;
-                l.Y2 = (b.Y + B) / beta;
-
-                Lienzo.Children.Add(l);
+                foreach (Line l in mapsLines[0])
+                {
+                    l.Stroke = Brushes.Red;
+                    Lienzo.Children.Add(l);
+                }
+                foreach (Polyline pl in mapsPolylines[0])
+                {
+                    pl.Stroke = Brushes.Red;
+                    Lienzo.Children.Add(pl);
+                }
             }
+            if (CheckCarretera.IsChecked == true)
+            {
+                foreach (Line l in mapsLines[1])
+                {
+                    l.Stroke = Brushes.White;
+                    Lienzo.Children.Add(l);
+                }
+                foreach (Polyline pl in mapsPolylines[1])
+                {
+                    pl.Stroke = Brushes.White;
+                    Lienzo.Children.Add(pl);
+                }
+            }
+            if (CheckMovimiento.IsChecked == true)
+            {
+                foreach (Line l in mapsLines[2])
+                {
+                    l.Stroke = Brushes.AliceBlue;
+                    Lienzo.Children.Add(l);
+                }
+                foreach (Polyline pl in mapsPolylines[2])
+                {
+                    pl.Stroke = Brushes.AliceBlue;
+                    Lienzo.Children.Add(pl);
+                }
+            }
+            if (CheckParking.IsChecked == true)
+            {
+                foreach (Line l in mapsLines[3])
+                {
+                    l.Stroke = Brushes.GreenYellow;
+                    Lienzo.Children.Add(l);
+                }
+                foreach (Polyline pl in mapsPolylines[3])
+                {
+                    pl.Stroke = Brushes.GreenYellow;
+                    Lienzo.Children.Add(pl);
+                }
+            }
+            if (CheckParterre.IsChecked == true)
+            {
+                foreach (Line l in mapsLines[4])
+                {
+                    l.Stroke = Brushes.Pink;
+                    Lienzo.Children.Add(l);
+                }
+                foreach (Polyline pl in mapsPolylines[4])
+                {
+                    pl.Stroke = Brushes.Pink;
+                    Lienzo.Children.Add(pl);
+                }
+            }
+            if (CheckPEdificios.IsChecked == true)
+            {
+                foreach (Line l in mapsLines[5])
+                {
+                    l.Stroke = Brushes.Orange;
+                    Lienzo.Children.Add(l);
+                }
+                foreach (Polyline pl in mapsPolylines[5])
+                {
+                    pl.Stroke = Brushes.Orange;
+                    Lienzo.Children.Add(pl);
+                }
+            }
+            if (CheckPistas.IsChecked == true)
+            {
+                foreach (Line l in mapsLines[6])
+                {
+                    l.Stroke = Brushes.LightGray;
+                    Lienzo.Children.Add(l);
+                }
+                foreach (Polyline pl in mapsPolylines[6])
+                {
+                    pl.Stroke = Brushes.LightGray;
+                    Lienzo.Children.Add(pl);
+                }
+            }
+            if (CheckARP.IsChecked == true)
+            {
+                Ellipse ARPpoint = new Ellipse();
+                ARPpoint.Stroke = Brushes.Yellow;
+                ARPpoint.Fill = Brushes.Yellow;
+                ARPpoint.Width = 5;
+                ARPpoint.Height = 5;
+                Lienzo.Children.Add(ARPpoint);
+                Canvas.SetLeft(ARPpoint, ((ARP.X + A) / alpha) - ARPpoint.Width / 2);
+                Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
+            }
+
         }
     }
 }
-
-
-
-
-////                        l = new Line();
-//l.Stroke = Brushes.White;
-//                        l.StrokeThickness = 1;
-
-//                        Point a = map[map.Count - 1];
-//l.X1 = (a.X + A) / alpha;
-//                        l.Y1 = (a.Y + B) / beta;
-
-//                        Point b = map[map.Count - 2];
-//l.X2 = (b.X + A) / alpha;
-//                        l.Y2 = (b.Y + B) / beta;
-
-//                        Lienzo.Children.Add(l);
-
-
-//Ellipse ARP = new Ellipse();
-//ARP.Stroke = Brushes.Red;
-//                ARP.Fill = Brushes.Red;
-//                ARP.Width = 5;
-//                ARP.Height = 5;
-//                Lienzo.Children.Add(ARP);
-//                Canvas.SetLeft(ARP, ((map[0].X + A) / alpha) - ARP.Width / 2);
-//                Canvas.SetTop(ARP, ((map[0].Y + B) / beta) - ARP.Height / 2);
