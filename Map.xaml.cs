@@ -29,6 +29,7 @@ namespace Asterix
         double A, B, alpha, beta;
         List<List<Line>> mapsLines;
         List<List<Polyline>> mapsPolylines;
+
         List<CheckBox> checkBoxes;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -43,6 +44,12 @@ namespace Asterix
             B = -zero0.Y;
             alpha = A / (Lienzo.ActualWidth / 2);
             beta = B / (Lienzo.ActualHeight / 2);
+        }
+
+        private void Lienzo_MouseMove(object sender, MouseEventArgs e)
+        {
+            PosXLabel.Text = e.GetPosition(Lienzo).X.ToString();
+            PosYLabel.Text = e.GetPosition(Lienzo).Y.ToString();
         }
 
         public void Load(object sender, RoutedEventArgs e)
@@ -130,101 +137,35 @@ namespace Asterix
                 }
                 mapsLines.Add(mapL);
                 mapsPolylines.Add(mapP);
+
+                CheckBox checkBox = new CheckBox();
+                checkBox.Content = file.Substring(5);
+                checkBox.FontSize = 12;
+                checkBox.Foreground = Brushes.White;
+                checkBox.Margin = new Thickness(10,10,10,10);
+                checkBox.Click += new RoutedEventHandler(CheckBoxClick);
+                checkBoxes.Add(checkBox);
+                st1.Children.Add(checkBox);
             }
         }
 
         private void CheckBoxClick(object sender, RoutedEventArgs e)
         {
             Lienzo.Children.Clear();
-            if (CheckBCN.IsChecked == true)
+            for (int i = 0; i < checkBoxes.Count; i++)
             {
-                foreach (Line l in mapsLines[0])
+                if (checkBoxes[i].IsChecked == true)
                 {
-                    l.Stroke = Brushes.Red;
-                    Lienzo.Children.Add(l);
-                }
-                foreach (Polyline pl in mapsPolylines[0])
-                {
-                    pl.Stroke = Brushes.Red;
-                    Lienzo.Children.Add(pl);
-                }
-            }
-            if (CheckCarretera.IsChecked == true)
-            {
-                foreach (Line l in mapsLines[1])
-                {
-                    l.Stroke = Brushes.White;
-                    Lienzo.Children.Add(l);
-                }
-                foreach (Polyline pl in mapsPolylines[1])
-                {
-                    pl.Stroke = Brushes.White;
-                    Lienzo.Children.Add(pl);
-                }
-            }
-            if (CheckMovimiento.IsChecked == true)
-            {
-                foreach (Line l in mapsLines[2])
-                {
-                    l.Stroke = Brushes.AliceBlue;
-                    Lienzo.Children.Add(l);
-                }
-                foreach (Polyline pl in mapsPolylines[2])
-                {
-                    pl.Stroke = Brushes.AliceBlue;
-                    Lienzo.Children.Add(pl);
-                }
-            }
-            if (CheckParking.IsChecked == true)
-            {
-                foreach (Line l in mapsLines[3])
-                {
-                    l.Stroke = Brushes.GreenYellow;
-                    Lienzo.Children.Add(l);
-                }
-                foreach (Polyline pl in mapsPolylines[3])
-                {
-                    pl.Stroke = Brushes.GreenYellow;
-                    Lienzo.Children.Add(pl);
-                }
-            }
-            if (CheckParterre.IsChecked == true)
-            {
-                foreach (Line l in mapsLines[4])
-                {
-                    l.Stroke = Brushes.Pink;
-                    Lienzo.Children.Add(l);
-                }
-                foreach (Polyline pl in mapsPolylines[4])
-                {
-                    pl.Stroke = Brushes.Pink;
-                    Lienzo.Children.Add(pl);
-                }
-            }
-            if (CheckPEdificios.IsChecked == true)
-            {
-                foreach (Line l in mapsLines[5])
-                {
-                    l.Stroke = Brushes.Orange;
-                    Lienzo.Children.Add(l);
-                }
-                foreach (Polyline pl in mapsPolylines[5])
-                {
-                    pl.Stroke = Brushes.Orange;
-                    Lienzo.Children.Add(pl);
-                }
-            }
-            if (CheckPistas.IsChecked == true)
-            {
-                foreach (Line l in mapsLines[6])
-                {
-                    l.Stroke = Brushes.LightGray;
-                    Lienzo.Children.Add(l);
-                }
-                foreach (Polyline pl in mapsPolylines[6])
-                {
-                    pl.Stroke = Brushes.LightGray;
-                    Lienzo.Children.Add(pl);
+                    foreach (Line l in mapsLines[i])
+                    {
+                        l.Stroke = Brushes.Red;
+                        Lienzo.Children.Add(l);
+                    }
+                    foreach (Polyline pl in mapsPolylines[i])
+                    {
+                        pl.Stroke = Brushes.Red;
+                        Lienzo.Children.Add(pl);
+                    }
                 }
             }
             if (CheckARP.IsChecked == true)
