@@ -8,7 +8,7 @@ using Asterix;
 
 namespace Asterix
 {
-    class Message
+    public class Message
     {
         private int ID;
         private List<string> rawList;
@@ -105,6 +105,15 @@ namespace Asterix
         public string getTOD()
         {
             return "HOLA";
+        }
+        public string getTrackN()
+        {
+            for (int i = 0; i < listDataItem.Count; i++)
+            {
+                if (listDataItem[i].getName() == "I020/HOla")
+                    return listDataItem[i].getAtom().getName();
+            }
+            return "EMPTY";
         }
 
         //SETs needed

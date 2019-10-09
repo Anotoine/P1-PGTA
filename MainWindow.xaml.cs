@@ -18,6 +18,7 @@ namespace Asterix
 
         List<Message> listMessage;
         DataTable dt; //taula qe omple el grid
+
         public MainWindow()
         {
             InitializeComponent();
@@ -80,7 +81,7 @@ namespace Asterix
 
         private void Button_Click_Map(object sender, RoutedEventArgs e)
         {
-            Map map = new Map();
+            Map map = new Map(listMessage);
             map.Show();
             this.Close();
         }

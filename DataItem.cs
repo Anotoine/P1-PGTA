@@ -39,12 +39,9 @@ namespace Asterix
         {
             return this.listValue[this.listValue.Count];            
         }
-        public bool isEqual(Atom atom)
+        public string getName()
         {
-            if (this.getAtom() == atom)
-                return true;
-            else
-                return false;
+            return this.tag;
         }
     }
 }

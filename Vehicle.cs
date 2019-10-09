@@ -11,6 +11,7 @@ namespace Asterix
         private List<Point> Position;
         private List<DateTime> DateTimes;
         private string Type;
+        private int TrackN;
         private string Callsign;
         private string ICAOAdress;
 

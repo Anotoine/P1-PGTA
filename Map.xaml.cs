@@ -20,18 +20,22 @@ namespace Asterix
     /// </summary>
     public partial class Map : Window
     {
-        public Map()
-        {
-            InitializeComponent();
-        }
 
         Point zero0, ARP;
         double A, B, alpha, beta;
         List<List<Line>> mapsLines;
         List<List<Polyline>> mapsPolylines;
-        List<Vehicle> vehicles;
+        List<Vehicle> VehiclesList;
+        List<Message> ListMessages;
 
         List<CheckBox> checkBoxes;
+
+        public Map(List<Message> messages)
+        {
+            InitializeComponent();
+            this.ListMessages = messages;
+            CreateAircrafts();
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -49,7 +53,7 @@ namespace Asterix
 
         private void Lienzo_MouseMove(object sender, MouseEventArgs e)
         {
-            PosXLabel.Text = Convert.ToString((e.GetPosition(Lienzo).X * alpha) - A);
+            PosXLabel.Text = Convert.ToString((e.GetPosition(MapWindow).X * alpha) - A);
             PosYLabel.Text = Convert.ToString((e.GetPosition(Lienzo).Y * beta ) - B);
         }
 
@@ -182,9 +186,16 @@ namespace Asterix
             }
 
         }
-        private void CreateAircraft ()
+        private void CreateAircrafts()
         {
+            VehiclesList = new List<Vehicle>();
+            foreach(Message m in ListMessages)
+            {
+                if (m.getTrackN() == "I020/HOla")
+                {
 
+                }
+            }
         }
     }
 }
