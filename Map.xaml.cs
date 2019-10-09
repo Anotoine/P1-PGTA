@@ -70,75 +70,84 @@ namespace Asterix
                 int j = 0;
                 while (j < lines.Length)
                 {
-                    string[] l1 = lines[j].Split();
-                    if (l1[0].StartsWith("Linea"))
+                    try
                     {
-                        List<Point> tPoint = new List<Point>();
-                        for (int i = 1; i < 4; i += 2)
+                        string[] l1 = lines[j].Split();
+                        if (l1[0].StartsWith("Linea"))
                         {
-                            float a1 = Convert.ToSingle(l1[i].Substring(0, 2)); // grados
-                            float b1 = Convert.ToSingle(l1[i].Substring(2, 2)); // minutos
-                            float c1 = Convert.ToSingle(l1[i].Substring(4, 2)); // segundos
-                            float d1 = Convert.ToSingle(l1[i].Substring(6, 3)); // milisegundos
+                            List<Point> tPoint = new List<Point>();
+                            for (int i = 1; i < 4; i += 2)
+                            {
+                                float a1 = Convert.ToSingle(l1[i].Substring(0, 2)); // grados
+                                float b1 = Convert.ToSingle(l1[i].Substring(2, 2)); // minutos
+                                float c1 = Convert.ToSingle(l1[i].Substring(4, 2)); // segundos
+                                float d1 = Convert.ToSingle(l1[i].Substring(6, 3)); // milisegundos
 
-                            float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
+                                float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
 
-                            float a2 = Convert.ToSingle(l1[i + 1].Substring(0, 3)); // grados
-                            float b2 = Convert.ToSingle(l1[i + 1].Substring(3, 2)); // minutos
-                            float c2 = Convert.ToSingle(l1[i + 1].Substring(5, 2)); // segundos
-                            float d2 = Convert.ToSingle(l1[i + 1].Substring(7, 3)); // milisegundos
+                                float a2 = Convert.ToSingle(l1[i + 1].Substring(0, 3)); // grados
+                                float b2 = Convert.ToSingle(l1[i + 1].Substring(3, 2)); // minutos
+                                float c2 = Convert.ToSingle(l1[i + 1].Substring(5, 2)); // segundos
+                                float d2 = Convert.ToSingle(l1[i + 1].Substring(7, 3)); // milisegundos
 
-                            float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
+                                float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                            tPoint.Add(new Point().LatLong2XY(x1, x2));
+                                tPoint.Add(new Point().LatLong2XY(x1, x2));
+                            }
+                            Line l = new Line();
+                            l.StrokeThickness = 1;
+                            l.X1 = (tPoint[0].X + A) / alpha;
+                            l.Y1 = (tPoint[0].Y + B) / beta;
+
+                            l.X2 = (tPoint[1].X + A) / alpha;
+                            l.Y2 = (tPoint[1].Y + B) / beta;
+
+                            mapL.Add(l);
+                            j++;
                         }
-                        Line l = new Line();
-                        l.StrokeThickness = 1;
-                        l.X1 = (tPoint[0].X + A) / alpha;
-                        l.Y1 = (tPoint[0].Y + B) / beta;
+                        else if (l1[0].StartsWith("Polilinea"))
+                        {
+                            int num = Convert.ToInt32(l1[1]);
+                            PointCollection pp = new PointCollection();
+                            List<Point> tPoint = new List<Point>();
 
-                        l.X2 = (tPoint[1].X + A) / alpha;
-                        l.Y2 = (tPoint[1].Y + B) / beta;
+                            for (int i = j; i < j + num; i++)
+                            {
 
-                        mapL.Add(l);
-                        j++;
+                                string[] l2 = lines[i + 1].Split();
+
+                                float a1 = Convert.ToSingle(l2[0].Substring(0, 2)); // grados
+                                float b1 = Convert.ToSingle(l2[0].Substring(2, 2)); // minutos
+                                float c1 = Convert.ToSingle(l2[0].Substring(4, 2)); // segundos
+                                float d1 = Convert.ToSingle(l2[0].Substring(6, 3)); // milisegundos
+
+                                float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
+
+                                float a2 = Convert.ToSingle(l2[1].Substring(0, 3)); // grados
+                                float b2 = Convert.ToSingle(l2[1].Substring(3, 2)); // minutos
+                                float c2 = Convert.ToSingle(l2[1].Substring(5, 2)); // segundos
+                                float d2 = Convert.ToSingle(l2[1].Substring(7, 3)); // milisegundos
+
+                                float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
+
+                                tPoint.Add(new Point().LatLong2XY(x1, x2));
+                                pp.Add(new System.Windows.Point((tPoint[tPoint.Count - 1].X + A) / alpha, (tPoint[tPoint.Count - 1].Y + B) / beta));
+                            }
+                            Polyline poly = new Polyline();
+                            poly.Points = pp;
+                            poly.StrokeThickness = 1;
+                            mapP.Add(poly);
+                            j += num;
+                        }
+                        else
+                            j++;
                     }
-                    else if (l1[0].StartsWith("Polilinea"))
+                    catch
                     {
-                        int num = Convert.ToInt32(l1[1]);
-                        PointCollection pp = new PointCollection();
-                        List<Point> tPoint = new List<Point>();
-
-                        for (int i = j; i < j + num; i++)
-                        {
-
-                            string[] l2 = lines[i + 1].Split();
-
-                            float a1 = Convert.ToSingle(l2[0].Substring(0, 2)); // grados
-                            float b1 = Convert.ToSingle(l2[0].Substring(2, 2)); // minutos
-                            float c1 = Convert.ToSingle(l2[0].Substring(4, 2)); // segundos
-                            float d1 = Convert.ToSingle(l2[0].Substring(6, 3)); // milisegundos
-
-                            float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
-
-                            float a2 = Convert.ToSingle(l2[1].Substring(0, 3)); // grados
-                            float b2 = Convert.ToSingle(l2[1].Substring(3, 2)); // minutos
-                            float c2 = Convert.ToSingle(l2[1].Substring(5, 2)); // segundos
-                            float d2 = Convert.ToSingle(l2[1].Substring(7, 3)); // milisegundos
-
-                            float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
-
-                            tPoint.Add(new Point().LatLong2XY(x1, x2));
-                            pp.Add(new System.Windows.Point((tPoint[tPoint.Count - 1].X + A) / alpha, (tPoint[tPoint.Count - 1].Y + B) / beta));
-                        }
-                        Polyline poly = new Polyline();
-                        poly.Points = pp;
-                        poly.StrokeThickness = 1;
-                        mapP.Add(poly);
-                        j += num;
+                        //TODO: MessageBox saying the ones that could not be solved
+                        MessageBox.Show(file, "Could not be read", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-                    else
-                        j++;
+                    
                 }
                 mapsLines.Add(mapL);
                 mapsPolylines.Add(mapP);
@@ -188,14 +197,18 @@ namespace Asterix
         }
         private void CreateAircrafts()
         {
-            VehiclesList = new List<Vehicle>();
-            foreach(Message m in ListMessages)
+            if (!(VehiclesList == null))
             {
-                if (m.getTrackN() == "I020/HOla")
+                VehiclesList = new List<Vehicle>();
+                foreach (Message m in ListMessages)
                 {
-
+                    if (m.getTrackN() == 2)
+                    {
+                        VehiclesList.Add(new Vehicle());
+                    }
                 }
             }
+
         }
     }
 }

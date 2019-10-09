@@ -106,14 +106,14 @@ namespace Asterix
         {
             return "HOLA";
         }
-        public string getTrackN()
+        public int getTrackN()
         {
             for (int i = 0; i < listDataItem.Count; i++)
             {
-                if (listDataItem[i].getName() == "I020/HOla")
-                    return listDataItem[i].getAtom().getName();
+                if (listDataItem[i].getName() == "I020/161")
+                    return Convert.ToInt32(listDataItem[i].getAtom(0).getVal());
             }
-            return "EMPTY";
+            return -1;
         }
 
         //SETs needed
