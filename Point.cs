@@ -27,7 +27,7 @@ namespace Asterix
         //ref lat lon for Lamber projection -> AIP airport
         //private double latRef = 41.296531 * Math.PI / 180;
         //private double lonRef = 2.075594 * Math.PI / 180;
-        private double latRef = 41.295885* Math.PI / 180;
+        private double latRef = 41.295885 * Math.PI / 180;
         private double lonRef = 2.086214 * Math.PI / 180;
 
 
@@ -37,7 +37,7 @@ namespace Asterix
 
         public Point()
         {
-           
+
         }
         public Point LatLong2XY(double lat, double lon)
         {
@@ -52,8 +52,8 @@ namespace Asterix
             double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2), n)) / n;
             double rho = F * Math.Pow(Math.Tan(Math.PI / 4 + this.latR / 2), -n);
             double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latRef / 2), -n);
-            this.x = 1E6*(rho * Math.Sin(n * (this.lonR - lonRef)));
-            this.y = 1E6*(rho0 - rho * Math.Cos(n * (this.lonR - lonRef)));
+            this.x = 1E6 * (rho * Math.Sin(n * (this.lonR - lonRef)));
+            this.y = 1E6 * (rho0 - rho * Math.Cos(n * (this.lonR - lonRef)));
 
             return this;
         }
@@ -77,5 +77,7 @@ namespace Asterix
         public double Rad { get => rad; set => rad = value; }
         public double Theta { get => theta; set => theta = value; }
         public double Phi { get => phi; set => phi = value; }
+        public double LatRef { get => latRef; set => latRef = value; }
+        public double LonRef { get => lonRef; set => lonRef = value; }
     }
 }

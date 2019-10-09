@@ -21,14 +21,16 @@ namespace Asterix
     public partial class Map : Window
     {
 
-        Point zero0, ARP;
-        double A, B, alpha, beta;
+        Point ARP, zero0;
+        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP,propW,propH;
         List<List<Line>> mapsLines;
         List<List<Polyline>> mapsPolylines;
         List<Vehicle> VehiclesList;
         List<Message> ListMessages;
 
         List<CheckBox> checkBoxes = new List<CheckBox>();
+        double incX;
+        double incY;
 
         public Map(List<Message> messages)
         {
@@ -44,23 +46,35 @@ namespace Asterix
             zero0 = new Point().LatLong2XY(41.315300, 2.043297); //x y superior esquerra 
             ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport --> Item 0
 
+            //xyz de Lambert --> xyz lienzo (amb origen de coordenades a d'alt a l'esquerra)
             A = -zero0.X;
             B = -zero0.Y;
             alpha = A / (Lienzo.ActualWidth / 2);
             beta = B / (Lienzo.ActualHeight / 2);
+
+            //x y del ARP dins el lienzo en el size inicial
+            double xarp_li = (ARP.X + A) / alpha;
+            double yarp_li = (ARP.Y + B) / beta;
+            propW = xarp_li / Lienzo.ActualWidth; //la proporció s'ha de mantenir!!!
+            propH = yarp_li / Lienzo.ActualHeight;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
+        {   //entre just despres de fer el load
+            //MessageBox.Show("deu");
             alpha = A / (Lienzo.ActualWidth / 2);
             beta = B / (Lienzo.ActualHeight / 2);
+            AARP = -Lienzo.ActualWidth * propW;
+            BARP = -Lienzo.ActualHeight * propH;
+            alphaARP = AARP / -2887;
+            betaARP = BARP / 2078;
             CheckBoxClick(sender, e);
         }
 
         private void Lienzo_MouseMove(object sender, MouseEventArgs e)
         {
-            PosXLabel.Text = ((e.GetPosition(Lienzo).X * alpha) - A).ToString("0.###m");
-            PosYLabel.Text = ((e.GetPosition(Lienzo).Y * beta ) - B).ToString("0.###m");
+            PosXLabel.Text = ((e.GetPosition(Lienzo).X +AARP)/ alphaARP).ToString("0.###m");
+            PosYLabel.Text = ((e.GetPosition(Lienzo).Y +BARP)/ betaARP).ToString("0.###m");
         }
 
         public void Load(object sender, RoutedEventArgs e)
