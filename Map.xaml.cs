@@ -28,7 +28,7 @@ namespace Asterix
         List<Vehicle> VehiclesList;
         List<Message> ListMessages;
 
-        List<CheckBox> checkBoxes;
+        List<CheckBox> checkBoxes = new List<CheckBox>();
 
         public Map(List<Message> messages)
         {
@@ -39,7 +39,6 @@ namespace Asterix
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            checkBoxes = new List<CheckBox>();
             mapsLines = new List<List<Line>>();
             mapsPolylines = new List<List<Polyline>>();
             zero0 = new Point().LatLong2XY(41.315300, 2.043297); //x y superior esquerra 
@@ -51,10 +50,17 @@ namespace Asterix
             beta = B / (Lienzo.ActualHeight / 2);
         }
 
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            alpha = A / (Lienzo.ActualWidth / 2);
+            beta = B / (Lienzo.ActualHeight / 2);
+            CheckBoxClick(sender, e);
+        }
+
         private void Lienzo_MouseMove(object sender, MouseEventArgs e)
         {
-            PosXLabel.Text = Convert.ToString((e.GetPosition(MapWindow).X * alpha) - A);
-            PosYLabel.Text = Convert.ToString((e.GetPosition(Lienzo).Y * beta ) - B);
+            PosXLabel.Text = ((e.GetPosition(Lienzo).X * alpha) - A).ToString("0.###m");
+            PosYLabel.Text = ((e.GetPosition(Lienzo).Y * beta ) - B).ToString("0.###m");
         }
 
         public void Load(object sender, RoutedEventArgs e)
@@ -97,12 +103,12 @@ namespace Asterix
                                 tPoint.Add(new Point().LatLong2XY(x1, x2));
                             }
                             Line l = new Line();
-                            l.StrokeThickness = 1;
-                            l.X1 = (tPoint[0].X + A) / alpha;
-                            l.Y1 = (tPoint[0].Y + B) / beta;
 
-                            l.X2 = (tPoint[1].X + A) / alpha;
-                            l.Y2 = (tPoint[1].Y + B) / beta;
+                            l.X1 = tPoint[0].X;
+                            l.Y1 = tPoint[0].Y;
+
+                            l.X2 = tPoint[1].X;
+                            l.Y2 = tPoint[1].Y;
 
                             mapL.Add(l);
                             j++;
@@ -133,11 +139,11 @@ namespace Asterix
                                 float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
                                 tPoint.Add(new Point().LatLong2XY(x1, x2));
-                                pp.Add(new System.Windows.Point((tPoint[tPoint.Count - 1].X + A) / alpha, (tPoint[tPoint.Count - 1].Y + B) / beta));
+                                pp.Add(new System.Windows.Point(tPoint[tPoint.Count - 1].X, tPoint[tPoint.Count - 1].Y));
                             }
                             Polyline poly = new Polyline();
                             poly.Points = pp;
-                            poly.StrokeThickness = 1;
+
                             mapP.Add(poly);
                             j += num;
                         }
@@ -165,27 +171,47 @@ namespace Asterix
                     //TODO: MessageBox saying the ones that could not be solved
                     MessageBox.Show(file, "Could not be read.", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
             }
-
         }
 
         private void CheckBoxClick(object sender, RoutedEventArgs e)
         {
+            
             Lienzo.Children.Clear();
+            Ellipse p0 = new Ellipse();
+            p0.Stroke = Brushes.Yellow;
+            p0.Fill = Brushes.Green;
+            p0.Width = 5;
+            p0.Height = 5;
+            Lienzo.Children.Add(p0);
+            Canvas.SetLeft(p0, (0 + A) / alpha - p0.Width / 2);
+            Canvas.SetTop(p0, (0 + B) / beta - p0.Height / 2);
             for (int i = 0; i < checkBoxes.Count; i++)
             {
                 if (checkBoxes[i].IsChecked == true)
                 {
                     foreach (Line l in mapsLines[i])
                     {
-                        l.Stroke = Brushes.Red;
-                        Lienzo.Children.Add(l);
+                        Line l1 = new Line();
+                        l1.StrokeThickness = 1;
+                        l1.Stroke = Brushes.Red;
+                        l1.X1 = (l.X1 + A) / alpha;
+                        l1.Y1 = (l.Y1 + B) / beta;
+
+                        l1.X2 = (l.X2 + A) / alpha;
+                        l1.Y2 = (l.Y2 + B) / beta;
+                        Lienzo.Children.Add(l1);
                     }
                     foreach (Polyline pl in mapsPolylines[i])
                     {
-                        pl.Stroke = Brushes.Red;
-                        Lienzo.Children.Add(pl);
+                        Polyline poly = new Polyline();
+                        poly.StrokeThickness = 1;
+                        poly.Stroke = Brushes.Red;
+                        PointCollection points = new PointCollection();
+                        foreach (System.Windows.Point pp in pl.Points)
+                            points.Add(new System.Windows.Point((pp.X + A ) / alpha, (pp.Y + B) / beta));
+                        poly.Points = points;
+                        Lienzo.Children.Add(poly);
                     }
                 }
             }

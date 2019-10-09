@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterix"
         mc:Ignorable="d"
-        Title="ASTERIX Decoder" Icon="Test.ico" Height="519" Width="1228" Background="Black">
-    <Grid x:Name="Base" Background="Black">
+        Title="ASTERIX Decoder" Icon="Test.ico" Height="519" Width="1228"  Background="#FF373F47">
+    <Grid x:Name="Base">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="57*"/>
             <ColumnDefinition Width="554*"/>

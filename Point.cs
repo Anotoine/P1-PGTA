@@ -52,8 +52,8 @@ namespace Asterix
             double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2), n)) / n;
             double rho = F * Math.Pow(Math.Tan(Math.PI / 4 + this.latR / 2), -n);
             double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latRef / 2), -n);
-            this.x = rho * Math.Sin(n * (this.lonR - lonRef));
-            this.y = rho0 - rho * Math.Cos(n * (this.lonR - lonRef));
+            this.x = 1E6*(rho * Math.Sin(n * (this.lonR - lonRef)));
+            this.y = 1E6*(rho0 - rho * Math.Cos(n * (this.lonR - lonRef)));
 
             return this;
         }
