@@ -57,11 +57,14 @@ namespace Asterix
             double yarp_li = (ARP.Y + B) / beta;
             propW = xarp_li / Lienzo.ActualWidth; //la proporció s'ha de mantenir!!!
             propH = yarp_li / Lienzo.ActualHeight;
+            AARP = -Lienzo.ActualWidth * propW;
+            BARP = -Lienzo.ActualHeight * propH;
+            alphaARP = AARP / -2887;
+            betaARP = BARP / 2078;
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {   //entre just despres de fer el load
-            //MessageBox.Show("deu");
+        {   //entra just despres de fer el load
             alpha = A / (Lienzo.ActualWidth / 2);
             beta = B / (Lienzo.ActualHeight / 2);
             AARP = -Lienzo.ActualWidth * propW;
@@ -73,8 +76,8 @@ namespace Asterix
 
         private void Lienzo_MouseMove(object sender, MouseEventArgs e)
         {
-            PosXLabel.Text = ((e.GetPosition(Lienzo).X +AARP)/ alphaARP).ToString("0.###m");
-            PosYLabel.Text = ((e.GetPosition(Lienzo).Y +BARP)/ betaARP).ToString("0.###m");
+            PosXLabel.Text = ((e.GetPosition(Lienzo).X + AARP)/ alphaARP).ToString("0.###m");
+            PosYLabel.Text = ((e.GetPosition(Lienzo).Y + BARP)/ betaARP).ToString("0.###m");
         }
 
         public void Load(object sender, RoutedEventArgs e)
