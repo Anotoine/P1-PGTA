@@ -21,8 +21,6 @@ namespace Asterix
         public MainWindow()
         {
             InitializeComponent();
-            Point PARP = new Point(41.29, 2.09);
-            Point P1 = new Point(41.309179, 2.045674);
         }
 
         private void Button_Click_File(object sender, RoutedEventArgs e)

@@ -35,7 +35,11 @@ namespace Asterix
         private double lat1 = 40 * Math.PI / 180;
         private double lat2 = 42 * Math.PI / 180;
 
-        public Point(double lat, double lon) //
+        public Point()
+        {
+           
+        }
+        public Point LatLong2XY(double lat, double lon)
         {
             this.latD = lat;
             this.lonD = lon;
@@ -50,12 +54,16 @@ namespace Asterix
             double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latRef / 2), -n);
             this.x = rho * Math.Sin(n * (this.lonR - lonRef));
             this.y = rho0 - rho * Math.Cos(n * (this.lonR - lonRef));
+
+            return this;
         }
-
-        //public double x, y Convert ()
-        //{
-
-        //}
+        public void XY2LatLong(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+            //Lambert conformal conic reprojection
+            //this.latR;
+        }
 
         public double X { get => x; set => x = value; }
         public double Y { get => y; set => y = value; }

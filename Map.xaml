@@ -12,7 +12,7 @@
             <ColumnDefinition Width="617*"/>
         </Grid.ColumnDefinitions>
         <CheckBox x:Name="CheckARP" Content="ARP LEBL" Foreground="AliceBlue" HorizontalAlignment="Stretch" Margin="52,14,66,0" Height="18" VerticalAlignment="Top" Click="CheckBoxClick"/>
-        <Canvas x:Name="Lienzo" Background="#FF130606" Margin="38,48,40.6,0" Height="484" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Width="Auto" MouseMove="Lienzo_MouseMove"/>
+        <Canvas x:Name="Lienzo" Background="White" Margin="38,48,40.6,0" Height="484" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Width="Auto" MouseMove="Lienzo_MouseMove"/>
         <StatusBar x:Name="PointLabel" HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Bottom" Grid.ColumnSpan="1">
             <StatusBarItem>
                 <TextBlock x:Name="PosXLabel" Text="XXX.Xm"/>

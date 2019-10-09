@@ -29,6 +29,7 @@ namespace Asterix
         double A, B, alpha, beta;
         List<List<Line>> mapsLines;
         List<List<Polyline>> mapsPolylines;
+        List<Vehicle> vehicles;
 
         List<CheckBox> checkBoxes;
 
@@ -37,8 +38,8 @@ namespace Asterix
             checkBoxes = new List<CheckBox>();
             mapsLines = new List<List<Line>>();
             mapsPolylines = new List<List<Polyline>>();
-            zero0 = new Point(41.315300, 2.043297); //x y superior esquerra ?
-            ARP = new Point(41.296944, 2.078333); //ARP BCN airport --> Item 0
+            zero0 = new Point().LatLong2XY(41.315300, 2.043297); //x y superior esquerra 
+            ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport --> Item 0
 
             A = -zero0.X;
             B = -zero0.Y;
@@ -48,8 +49,8 @@ namespace Asterix
 
         private void Lienzo_MouseMove(object sender, MouseEventArgs e)
         {
-            PosXLabel.Text = e.GetPosition(Lienzo).X.ToString();
-            PosYLabel.Text = e.GetPosition(Lienzo).Y.ToString();
+            PosXLabel.Text = Convert.ToString((e.GetPosition(Lienzo).X * alpha) - A);
+            PosYLabel.Text = Convert.ToString((e.GetPosition(Lienzo).Y * beta ) - B);
         }
 
         public void Load(object sender, RoutedEventArgs e)
@@ -85,7 +86,7 @@ namespace Asterix
 
                             float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                            tPoint.Add(new Point(x1, x2));
+                            tPoint.Add(new Point().LatLong2XY(x1, x2));
                         }
                         Line l = new Line();
                         l.StrokeThickness = 1;
@@ -123,7 +124,7 @@ namespace Asterix
 
                             float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
 
-                            tPoint.Add(new Point(x1, x2));
+                            tPoint.Add(new Point().LatLong2XY(x1, x2));
                             pp.Add(new System.Windows.Point((tPoint[tPoint.Count - 1].X + A) / alpha, (tPoint[tPoint.Count - 1].Y + B) / beta));
                         }
                         Polyline poly = new Polyline();
@@ -179,6 +180,10 @@ namespace Asterix
                 Canvas.SetLeft(ARPpoint, ((ARP.X + A) / alpha) - ARPpoint.Width / 2);
                 Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
             }
+
+        }
+        private void CreateAircraft ()
+        {
 
         }
     }
