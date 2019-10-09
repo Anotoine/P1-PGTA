@@ -63,14 +63,14 @@ namespace Asterix
 
             foreach (string file in listfiles)
             {
+
                 string[] lines = File.ReadAllLines(file);
                 List<Line> mapL = new List<Line>();
                 List<Polyline> mapP = new List<Polyline>();
-
-                int j = 0;
-                while (j < lines.Length)
+                try
                 {
-                    try
+                    int j = 0;
+                    while (j < lines.Length)
                     {
                         string[] l1 = lines[j].Split();
                         if (l1[0].StartsWith("Linea"))
@@ -141,13 +141,14 @@ namespace Asterix
                         }
                         else
                             j++;
-                    }
-                    catch
-                    {
-                        //TODO: MessageBox saying the ones that could not be solved
-                        MessageBox.Show(file, "Could not be read", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+
                     
+                    }
+                }
+                catch
+                {
+                    //TODO: MessageBox saying the ones that could not be solved
+                    MessageBox.Show(file, "Could not be read.", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 mapsLines.Add(mapL);
                 mapsPolylines.Add(mapP);
@@ -161,6 +162,7 @@ namespace Asterix
                 checkBoxes.Add(checkBox);
                 st1.Children.Add(checkBox);
             }
+
         }
 
         private void CheckBoxClick(object sender, RoutedEventArgs e)
