@@ -141,8 +141,6 @@ namespace Asterix
                         }
                         else
                             j++;
-
-                    
                     }
                 }
                 catch
