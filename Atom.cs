@@ -20,5 +20,18 @@ namespace Asterix
             this.str = str;
             this.value = val;
         }
+
+        public string getName()
+        {
+            return this.name;
+        }
+        public float getVal()
+        {
+            return this.value;
+        }
+        public string getStr()
+        {
+            return this.str;
+        }
     }
 }

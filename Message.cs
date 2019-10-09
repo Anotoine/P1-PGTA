@@ -102,6 +102,10 @@ namespace Asterix
         {
             return this.listFSPECraw;
         }
+        public string getTOD()
+        {
+            return "HOLA";
+        }
 
         //SETs needed
         public void setID(int ID)

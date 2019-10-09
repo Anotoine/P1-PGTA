@@ -30,5 +30,21 @@ namespace Asterix
         {
             this.listValue.Add(atom);
         }
+
+        public Atom getAtom(int index)
+        {
+            return this.listValue[index];
+        }
+        public Atom getAtom()
+        {
+            return this.listValue[this.listValue.Count];            
+        }
+        public bool isEqual(Atom atom)
+        {
+            if (this.getAtom() == atom)
+                return true;
+            else
+                return false;
+        }
     }
 }
