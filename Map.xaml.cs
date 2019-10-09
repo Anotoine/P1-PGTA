@@ -63,12 +63,14 @@ namespace Asterix
 
             foreach (string file in listfiles)
             {
-
-                string[] lines = File.ReadAllLines(file);
-                List<Line> mapL = new List<Line>();
-                List<Polyline> mapP = new List<Polyline>();
                 try
                 {
+                    //Reading lines and creating Lists for Line and Polyline
+                    string[] lines = File.ReadAllLines(file);
+                    List<Line> mapL = new List<Line>();
+                    List<Polyline> mapP = new List<Polyline>();
+
+                    //Start to read the lines
                     int j = 0;
                     while (j < lines.Length)
                     {
@@ -142,23 +144,28 @@ namespace Asterix
                         else
                             j++;
                     }
+                    mapsLines.Add(mapL);
+                    mapsPolylines.Add(mapP);
+
+                    if (mapL.Count != 0)
+                    {
+                        //Creating the Checkbox to be checked
+                        CheckBox checkBox = new CheckBox();
+                        checkBox.Content = file.Substring(5);
+                        checkBox.FontSize = 12;
+                        checkBox.Foreground = Brushes.White;
+                        checkBox.Margin = new Thickness(10, 10, 10, 10);
+                        checkBox.Click += new RoutedEventHandler(CheckBoxClick);
+                        checkBoxes.Add(checkBox);
+                        st1.Children.Add(checkBox);
+                    }
                 }
                 catch
                 {
                     //TODO: MessageBox saying the ones that could not be solved
                     MessageBox.Show(file, "Could not be read.", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                mapsLines.Add(mapL);
-                mapsPolylines.Add(mapP);
 
-                CheckBox checkBox = new CheckBox();
-                checkBox.Content = file.Substring(5);
-                checkBox.FontSize = 12;
-                checkBox.Foreground = Brushes.White;
-                checkBox.Margin = new Thickness(10,10,10,10);
-                checkBox.Click += new RoutedEventHandler(CheckBoxClick);
-                checkBoxes.Add(checkBox);
-                st1.Children.Add(checkBox);
             }
 
         }
