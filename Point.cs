@@ -2,27 +2,27 @@
 
 namespace Asterix
 {
-    class Point
+    public class Point
     {
         //Cartesians
-        private double x;
-        private double y;
-        private double z;
+        internal double X { get; set; }
+        internal double Y { get; set; }
+        internal double Z { get; set; }
 
         //WGS-84 - Degrees
-        private double latD;
-        private double lonD;
-        private double altD;
+        internal double latD { get; set; }
+        internal double lonD { get; set; }
+        internal double altD { get; set; }
 
         //WGS-84 - Radians
-        private double latR;
-        private double lonR;
-        private double altR;
+        internal double latR { get; set; }
+        internal double lonR { get; set; }
+        internal double altR { get; set; }
 
         //Polars
-        private double rad;
-        private double theta;
-        private double phi;
+        internal double rad { get; set; }
+        internal double theta { get; set; }
+        internal double phi { get; set; }
 
         //ref lat lon for Lamber projection -> AIP airport
         //private double latRef = 41.296531 * Math.PI / 180;
@@ -52,32 +52,19 @@ namespace Asterix
             double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2), n)) / n;
             double rho = F * Math.Pow(Math.Tan(Math.PI / 4 + this.latR / 2), -n);
             double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latRef / 2), -n);
-            this.x = 1E6 * (rho * Math.Sin(n * (this.lonR - lonRef)));
-            this.y = 1E6 * (rho0 - rho * Math.Cos(n * (this.lonR - lonRef)));
+            this.X = 1E6 * (rho * Math.Sin(n * (this.lonR - lonRef)));
+            this.Y = 1E6 * (rho0 - rho * Math.Cos(n * (this.lonR - lonRef)));
 
             return this;
         }
-        public void XY2LatLong(double x, double y)
+        public Point XY2LatLong(double x, double y)
         {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
             //Lambert conformal conic reprojection
             //this.latR;
-        }
 
-        public double X { get => x; set => x = value; }
-        public double Y { get => y; set => y = value; }
-        public double Z { get => z; set => z = value; }
-        public double LatR { get => latR; set => latR = value; }
-        public double LonR { get => lonR; set => lonR = value; }
-        public double AltR { get => altR; set => altR = value; }
-        public double LatD { get => latD; set => latD = value; }
-        public double LonD { get => lonD; set => lonD = value; }
-        public double AltD { get => altD; set => altD = value; }
-        public double Rad { get => rad; set => rad = value; }
-        public double Theta { get => theta; set => theta = value; }
-        public double Phi { get => phi; set => phi = value; }
-        public double LatRef { get => latRef; set => latRef = value; }
-        public double LonRef { get => lonRef; set => lonRef = value; }
+            return this;
+        }
     }
 }

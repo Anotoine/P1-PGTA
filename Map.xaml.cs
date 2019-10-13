@@ -22,20 +22,19 @@ namespace Asterix
     {
 
         Point ARP, zero0;
-        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP,propW,propH;
+        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, propW, propH;
         List<List<Line>> mapsLines;
         List<List<Polyline>> mapsPolylines;
         List<Vehicle> VehiclesList;
-        List<Message> ListMessages;
+        List<Message> listMessages;
+        List<int> Vistos = new List<int>();
 
         List<CheckBox> checkBoxes = new List<CheckBox>();
-        double incX;
-        double incY;
 
         public Map(List<Message> messages)
         {
             InitializeComponent();
-            this.ListMessages = messages;
+            this.listMessages = messages;
             CreateAircrafts();
         }
 
@@ -62,7 +61,6 @@ namespace Asterix
             alphaARP = AARP / -2887;
             betaARP = BARP / 2078;
         }
-
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {   //entra just despres de fer el load
             alpha = A / (Lienzo.ActualWidth / 2);
@@ -73,13 +71,11 @@ namespace Asterix
             betaARP = BARP / 2078;
             CheckBoxClick(sender, e);
         }
-
         private void Lienzo_MouseMove(object sender, MouseEventArgs e)
         {
             PosXLabel.Text = ((e.GetPosition(Lienzo).X + AARP)/ alphaARP).ToString("0.###m");
             PosYLabel.Text = ((e.GetPosition(Lienzo).Y + BARP)/ betaARP).ToString("0.###m");
         }
-
         public void Load(object sender, RoutedEventArgs e)
         {
             string[] listfiles = Directory.GetFiles(@"maps/");
@@ -186,23 +182,13 @@ namespace Asterix
                 catch
                 {
                     //TODO: MessageBox saying the ones that could not be solved
-                    MessageBox.Show(file, "Could not be read.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("The file at: " + file + "could not be read. The file will be skipped.", "Error while reading.", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
-
         private void CheckBoxClick(object sender, RoutedEventArgs e)
         {
-            
             Lienzo.Children.Clear();
-            Ellipse p0 = new Ellipse();
-            p0.Stroke = Brushes.Yellow;
-            p0.Fill = Brushes.Green;
-            p0.Width = 5;
-            p0.Height = 5;
-            Lienzo.Children.Add(p0);
-            Canvas.SetLeft(p0, (0 + A) / alpha - p0.Width / 2);
-            Canvas.SetTop(p0, (0 + B) / beta - p0.Height / 2);
             for (int i = 0; i < checkBoxes.Count; i++)
             {
                 if (checkBoxes[i].IsChecked == true)
@@ -232,6 +218,7 @@ namespace Asterix
                     }
                 }
             }
+
             if (CheckARP.IsChecked == true)
             {
                 Ellipse ARPpoint = new Ellipse();
@@ -244,21 +231,51 @@ namespace Asterix
                 Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
             }
 
-        }
-        private void CreateAircrafts()
-        {
-            if (!(VehiclesList == null))
+            if (CheckVehicles.IsChecked == true)
             {
-                VehiclesList = new List<Vehicle>();
-                foreach (Message m in ListMessages)
+                foreach (Vehicle v in VehiclesList)
                 {
-                    if (m.getTrackN() == 2)
+                    if (v.Type == "Aircraft")
                     {
-                        VehiclesList.Add(new Vehicle());
+                        Ellipse p0 = new Ellipse();
+                        p0.Stroke = Brushes.Red;
+                        p0.StrokeThickness = 3;
+                        p0.Width = 10;
+                        p0.Height = 10;
+                        Lienzo.Children.Add(p0);
+                        Canvas.SetLeft(p0, ((v.Positions[0].X + A) / alpha) - p0.Width / 2);
+                        Canvas.SetTop(p0, ((v.Positions[0].Y + B) / beta) - p0.Height / 2);
+                    } else {
+                        Ellipse p0 = new Ellipse();
+                        p0.Stroke = Brushes.Green;
+                        p0.StrokeThickness = 3;
+                        p0.Width = 10;
+                        p0.Height = 10;
+                        Lienzo.Children.Add(p0);
+                        Canvas.SetLeft(p0, (v.Positions[0].X + A) / alpha - p0.Width / 2);
+                        Canvas.SetTop(p0, (v.Positions[0].Y + B) / beta - p0.Height / 2);
                     }
                 }
             }
-
+        }
+        private void CreateAircrafts()
+        {
+            if (!(listMessages == null))
+            {
+                VehiclesList = new List<Vehicle>();
+                foreach (Message m in listMessages)
+                {
+                    if (Vistos.Contains(m.getTrackN()))
+                    {
+                        VehiclesList[Vistos.IndexOf(m.getTrackN())].AddPoint(m);
+                    }
+                    else
+                    {
+                        Vistos.Add(m.getTrackN());
+                        VehiclesList.Add(new Vehicle(m));
+                    }
+                }
+            }
         }
     }
 }

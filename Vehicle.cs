@@ -1,29 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Asterix
 {
     class Vehicle
     {
-        private List<Point> Position;
-        private List<DateTime> DateTimes;
-        private string Type;
-        private int TrackN;
-        private string Callsign;
-        private string ICAOAdress;
+        internal List<Point> Positions{ get; set; }
+        internal List<DateTime> DateTimes { get; set; }
+        internal string Type { get; set; }
+        internal int TrackN { get; set; }
+        internal string Callsign { get; set; }
+        internal string ICAOaddress { get; set; }
 
-        public Vehicle()
+        public Vehicle(Message m)
         {
+            Positions = new List<Point>();
+            DateTimes = new List<DateTime>();
 
+            this.ICAOaddress = m.getAddressICAO();
+            this.TrackN = m.getTrackN();
+            this.Callsign = m.getCallsign();
+            this.Positions.Add(m.getPosition());
+            this.DateTimes.Add(m.getTOD());
+
+            if (m.getType() == null)
+                this.Type = "Aircraft";
+            else
+                this.Type = m.getType();
         }
 
-        public List<DateTime> DateTimes1 { get => DateTimes; set => DateTimes = value; }
-        public string Type1 { get => Type; set => Type = value; }
-        public string Callsign1 { get => Callsign; set => Callsign = value; }
-        public string ICAOAdress1 { get => ICAOAdress; set => ICAOAdress = value; }
-        internal List<Point> Position1 { get => Position; set => Position = value; }
+        
+        public void AddPoint(Message m)
+        {
+            this.Positions.Add(m.getPosition());
+            this.DateTimes.Add(m.getTOD());
+        }
     }
 }

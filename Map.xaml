@@ -18,17 +18,22 @@
         <StatusBar x:Name="PointLabel" HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Bottom" Grid.ColumnSpan="1" Background="#FF373F47">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
-                <StatusBarItem Grid.Column="0">
-                    <TextBlock x:Name="PosXLabel" Text="XXX.Xm" Foreground="#FF4AE6FF"/>
+                <StatusBarItem Grid.Column="0" HorizontalContentAlignment="Stretch">
+                    <TextBlock x:Name="RespLabel" Text="ARP at: " Foreground="#FF4AE6FF"/>
                 </StatusBarItem>
                 <StatusBarItem Grid.Column="1">
-                    <TextBlock x:Name="PosYLabel" Text="YYY.Ym" Foreground="#FF4AE6FF"/>
+                    <TextBlock x:Name="PosXLabel"  Foreground="#FF4AE6FF"/>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="2">
+                    <TextBlock x:Name="PosYLabel"  Foreground="#FF4AE6FF"/>
                 </StatusBarItem>
             </Grid>
         </StatusBar>
         <StackPanel Name="st1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Margin="0,32,0,31"/>
+        <CheckBox x:Name="CheckVehicles" HorizontalAlignment="Left" Margin="154,14,0,0" VerticalAlignment="Top" Click="CheckBoxClick"/>
     </Grid>
 </Window>

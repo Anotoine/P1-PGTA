@@ -20,6 +20,10 @@ namespace Asterix
             this.str = str;
             this.value = val;
         }
+        public Atom()
+        {
+
+        }
 
         public string getName()
         {
