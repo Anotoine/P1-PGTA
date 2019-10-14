@@ -1,9 +1,9 @@
-﻿<Window Name="MapWindow" x:Class="Asterix.Map"
+﻿<Window Name="MapWindow" x:Class="ASTERIX.Map"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Asterix"
+        xmlns:local="clr-namespace:ASTERIX"
         mc:Ignorable="d"
         Title="ASTERIX Decoder" Icon="Test.ico" Height="600" Width="1000" Background="#FF373F47" Loaded="Window_Loaded"
         ResizeMode="CanResize" MinHeight="400" MinWidth="600" WindowStartupLocation="CenterScreen">

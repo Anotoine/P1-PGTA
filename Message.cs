@@ -4,21 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Asterix;
 
-namespace Asterix
+namespace ASTERIX
 {
     public class Message
     {
-        private int ID;
         private List<string> rawList;
-        private int CAT;
-        private int Length;
-        private List<bool> listFSPEC = new List<bool>();
-        private string listFSPECraw = "";
-        private int Offset; //Donde empieza el siguiente campo
-        private CAT20 CAT20;
-        //private CAT19 CAT19;
+        public int CAT;
+        public int Length;
+        private List<bool> listFSPEC;
+        public string listFSPECraw;
+        private int Offset;//Donde empieza el siguiente campo
+        public CAT20 CAT20;
+        private CAT19 CAT19;
         //private CAT10 CAT10;
         //private CAT21 CAT21;
 
@@ -28,7 +26,6 @@ namespace Asterix
         //Constructors needed
         public Message(int ID, List<string> raw, int CAT, int Length)
         {
-            this.ID = ID;
             this.rawList = raw;
             this.CAT = CAT;
             this.Length = Length;
@@ -43,6 +40,7 @@ namespace Asterix
             this.Length = Int32.Parse(this.rawList[1], System.Globalization.NumberStyles.HexNumber) + Int32.Parse(this.rawList[2], System.Globalization.NumberStyles.HexNumber);
 
 
+            this.listFSPEC = new List<bool>();
             bool exit = false;
             int i = 0;
             this.listFSPEC.Add(false);
@@ -69,45 +67,23 @@ namespace Asterix
                 }
             }
 
-            if (this.CAT == 10)
+            switch(this.CAT)
             {
-                decodeCAT10();
-            }
-            else if (this.CAT == 19)
-            {
-                decodeCAT19();
-            }
-            else if (this.CAT == 20)
-            {
-                decodeCAT20();
-            }
-            else if (this.CAT == 21)
-            {
-                decodeCAT21();
+                case 10:
+                    decodeCAT10();
+                    break;
+                case 19:
+                    decodeCAT19();
+                    break;
+                case 20:
+                    decodeCAT20();
+                    break;
+                case 21:
+                    decodeCAT21();
+                    break;
             }
         }
 
-        //GETs needed
-        public int getID()
-        {
-            return ID;
-        }
-        public int getCAT()
-        {
-            return CAT;
-        }
-        public int getLength()
-        {
-            return Length;
-        }
-        public List<String> getList()
-        {
-            return rawList;
-        }
-        public string getlistFSPEC()
-        {
-            return this.listFSPECraw;
-        }
         public DateTime getTOD()
         {
             switch (CAT)
@@ -115,7 +91,7 @@ namespace Asterix
                 case 10:
                     return new DateTime();
                 case 19:
-                    return new DateTime();
+                    return CAT19.DI140;
                 case 20:
                     return CAT20.DI140;
                 case 21:
@@ -131,7 +107,7 @@ namespace Asterix
                 case 10:
                     return 10;
                 case 19:
-                    return 19;
+                    return -1;
                 case 20:
                     return CAT20.DI161;
                 case 21:
@@ -147,7 +123,7 @@ namespace Asterix
                 case 10:
                     return "CAT10";
                 case 19:
-                    return "CAT19";
+                    return "NONE";
                 case 20:
                     return CAT20.DI220;
                 case 21:
@@ -163,7 +139,7 @@ namespace Asterix
                 case 10:
                     return "CAT10";
                 case 19:
-                    return "CAT19";
+                    return "MLAT Status Message";
                 case 20:
                     return CAT20.DI300;
                 case 21:
@@ -179,12 +155,28 @@ namespace Asterix
                 case 10:
                     return "CAT10";
                 case 19:
-                    return "CAT19";
+                    return "NONE";
                 case 20:
                     if (CAT20.DI245 == null)
                         return "NONE";
                     else
                         return CAT20.DI245[1].getStr();
+                case 21:
+                    return "CAT21";
+                default:
+                    return "";
+            }
+        }
+        public string getCAT()
+        {
+            switch (CAT)
+            {
+                case 10:
+                    return "CAT10";
+                case 19:
+                    return "CAT19";
+                case 20:
+                    return "CAT20";
                 case 21:
                     return "CAT21";
                 default:
@@ -223,24 +215,45 @@ namespace Asterix
                     return -1;
             }
         }
-
-
-        //SETs needed
-        public void setID(int ID)
+        public int getSAC()
         {
-            this.ID = ID;
+            switch (CAT)
+            {
+                case 10:
+                    return -1;
+                case 19:
+                    return Convert.ToInt32(CAT19.DI010[0].getVal());
+                case 20:
+                    return Convert.ToInt32(CAT20.DI010[0].getVal());
+                case 21:
+                    return -1;
+                default:
+                    return -1;
+            }
         }
-        public void setRaw(List<String> raw)
+        public int getSIC()
         {
-            this.rawList = raw;
+            switch (CAT)
+            {
+                case 10:
+                    return -1;
+                case 19:
+                    return Convert.ToInt32(CAT19.DI010[1].getVal());
+                case 20:
+                    return Convert.ToInt32(CAT20.DI010[1].getVal());
+                case 21:
+                    return -1;
+                default:
+                    return -1;
+            }
         }
-        public void setCAT(int CAT)
+        public int getLength()
         {
-            this.CAT = CAT;
+            return this.Length;
         }
-        public void setLengthMessage(int Length)
+        public string getFSPEC()
         {
-            this.Length = Length;
+            return this.listFSPECraw;
         }
 
         //Functions
@@ -248,14 +261,47 @@ namespace Asterix
         {
 
         }
+
         private void decodeCAT19()
         {
+            CAT19 = new CAT19();
+            if (this.listFSPEC[1]) //I019/010
+                CAT19.DI010 = decodeSACSIC();
+            if (this.listFSPEC[2]) //I019/000
+                CAT19.DI000 = decodeMessType();
+            if (this.listFSPEC[3]) //I019/140
+                CAT19.DI140 = decodeTOD();
+            if (this.listFSPEC[4]) //I019/550
+                CAT19.DI550 = decodeSysStats();
+            if (this.listFSPEC[5]) //I019/551
+                CAT19.DI551 = decodeTrackProcStats();
+            if (this.listFSPEC[6]) //I019/552
+                CAT19.DI552 = decodeRemSensorStats();
+            if (this.listFSPEC[7]) //I019/553
+            {
+                //CAT19.DI553 = decodeRefTransStats();
+            }
 
+            if (this.listFSPEC[8])
+            {
+                if (this.listFSPEC[9]) //I019/600
+                {
+                    //CAT19.DI600 = decodeMLTRefPoint();
+                }
+                if (this.listFSPEC[10]) //I019/610
+                {
+                    //CAT19.DI610 = decodeMLTheightPoint();
+                }
+                if (this.listFSPEC[11]) //I019/620
+                {
+                    //CAT19.DI620 = decodeUndulation();
+                }
+            }
         }
-        private void decodeCAT20()                     //DataItem(string tag, string desc, int leng, List<atom> atoms)
+
+        private void decodeCAT20()
         {
             CAT20 = new CAT20();
-            Atom a;
             if (this.listFSPEC[1])
                 CAT20.DI010 = decodeSACSIC();
             
@@ -352,6 +398,7 @@ namespace Asterix
                 }
             }
         }
+
         private void decodeCAT21()
         {
 
@@ -359,7 +406,7 @@ namespace Asterix
 
 
 
-        private List<Atom> decodeSACSIC() //only checked for CAT20
+        private List<Atom> decodeSACSIC() //only checked for CAT20 and CAT19
         {
             List<Atom> atoms = new List<Atom>();
             List<string> ls = new List<string>() { "SAC", "SIC" };
@@ -374,6 +421,7 @@ namespace Asterix
         {
             int LSB = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
             Offset += 3;
+
             return new DateTime().AddSeconds((float)LSB / 128);
         }
         private Point decodeXY()
@@ -467,7 +515,6 @@ namespace Asterix
         }
         private List<Atom> decodeTRD()
         {
-            Atom a;
             List<Atom> atoms = new List<Atom>();
             var ls = new List<string> { "SSR", "MS", "HF", "VDL4", "UAT", "DME", "OT", "FX", "RAB", "SPI", "CHN", "GBS", "CRT", "SIM", "TST", "FX" };
             var ls1 = new List<string> { "Non-Mode S 1090MHz multilateration", "Mode S 1090MHz multilateration", "HF multilateration",
@@ -563,7 +610,7 @@ namespace Asterix
         }
         private string decodeICAOAddress()
         {
-            string BB = string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]);
+            string BB = string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]).ToUpper();
             Offset += 3;
 
             return BB;
@@ -855,6 +902,308 @@ namespace Asterix
                     Offset++;
                 }
                 atoms.Add(new Atom("MB DATA", s.Length, s));
+            }
+            return atoms;
+        }
+        private int decodeMessType()
+        {
+            Offset++;
+            return Convert.ToInt32(this.rawList[Offset], 16);
+        }
+        private List<Atom> decodeSysStats()
+        {
+            List<Atom> atoms = new List<Atom>();
+            
+            int BB = Convert.ToInt32(this.rawList[Offset].PadLeft(8, '0').Substring(0, 5));
+            Offset++;
+            switch(BB)
+            {
+                case 0:
+                    atoms.Add(new Atom("NOGO",00,"Operational"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 1:
+                    atoms.Add(new Atom("NOGO", 00, "Operational"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 2:
+                    atoms.Add(new Atom("NOGO", 00, "Operational"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 3:
+                    atoms.Add(new Atom("NOGO", 00, "Operational"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 4:
+                    atoms.Add(new Atom("NOGO", 00, "Operational"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 5:
+                    atoms.Add(new Atom("NOGO", 00, "Operational"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 6:
+                    atoms.Add(new Atom("NOGO", 00, "Operational"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 7:
+                    atoms.Add(new Atom("NOGO", 00, "Operational"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 8:
+                    atoms.Add(new Atom("NOGO", 01, "Degraded"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 9:
+                    atoms.Add(new Atom("NOGO", 01, "Degraded"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 10:
+                    atoms.Add(new Atom("NOGO", 01, "Degraded"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 11:
+                    atoms.Add(new Atom("NOGO", 01, "Degraded"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 12:
+                    atoms.Add(new Atom("NOGO", 01, "Degraded"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 13:
+                    atoms.Add(new Atom("NOGO", 01, "Degraded"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 14:
+                    atoms.Add(new Atom("NOGO", 01, "Degraded"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 15:
+                    atoms.Add(new Atom("NOGO", 01, "Degraded"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 16:
+                    atoms.Add(new Atom("NOGO", 10, "NOGO"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 17:
+                    atoms.Add(new Atom("NOGO", 10, "NOGO"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 18:
+                    atoms.Add(new Atom("NOGO", 10, "NOGO"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 19:
+                    atoms.Add(new Atom("NOGO", 10, "NOGO"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 20:
+                    atoms.Add(new Atom("NOGO", 10, "NOGO"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 21:
+                    atoms.Add(new Atom("NOGO", 10, "NOGO"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 22:
+                    atoms.Add(new Atom("NOGO", 10, "NOGO"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 23:
+                    atoms.Add(new Atom("NOGO", 10, "NOGO"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 24:
+                    atoms.Add(new Atom("NOGO", 11, "undefined"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 25:
+                    atoms.Add(new Atom("NOGO", 11, "undefined"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 26:
+                    atoms.Add(new Atom("NOGO", 11, "undefined"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 27:
+                    atoms.Add(new Atom("NOGO", 11, "undefined"));
+                    atoms.Add(new Atom("OVL", 0, "No overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 28:
+                    atoms.Add(new Atom("NOGO", 11, "undefined"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 29:
+                    atoms.Add(new Atom("NOGO", 11, "undefined"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 0, "Valid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+                case 30:
+                    atoms.Add(new Atom("NOGO", 11, "undefined"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 0, "Test Target Operative"));
+                    break;
+                case 31:
+                    atoms.Add(new Atom("NOGO", 11, "undefined"));
+                    atoms.Add(new Atom("OVL", 1, "Overload"));
+                    atoms.Add(new Atom("TSV", 1, "Invalid"));
+                    atoms.Add(new Atom("TTF", 1, "Test Target Failure"));
+                    break;
+            }
+            return atoms;
+        }
+        private List<Atom> decodeTrackProcStats()
+        {
+            List<Atom> atoms = new List<Atom>();
+            string s = Convert.ToString(this.rawList[Offset]);
+
+            for(int i = 1; i < 5; i++)
+            {
+                int bb = Convert.ToInt32(s.Substring((i - 1) * 2 , 2));
+                switch (bb)
+                {
+                    case 0:
+                        atoms.Add(new Atom("TP" + Convert.ToString(i), 00, "Standby - Faulted"));
+                        break;
+                    case 1:
+                        atoms.Add(new Atom("TP" + Convert.ToString(i), 01, "Standby - Good"));
+                        break;
+                    case 2:
+                        atoms.Add(new Atom("TP" + Convert.ToString(i), 10, "Exec - Faulted"));
+                        break;
+                    case 3:
+                        atoms.Add(new Atom("TP" + Convert.ToString(i), 11, "Exec - Good"));
+                        break;
+                }
+            }
+            Offset++;
+            return atoms;
+        }
+        private List<Atom> decodeRemSensorStats()
+        {
+            List<Atom> atoms = new List<Atom>();
+            //Amount of Octets that will extent this camp (REP)
+            int REP = Convert.ToInt32(this.rawList[Offset], 16);
+            Offset++;
+
+            for (int i = 0; i < (REP - 1); i++)
+            {
+                string RSid = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                Offset++;
+                int AA = Convert.ToInt32(this.rawList[Offset].PadLeft(8, '0').Substring(4,2));
+                switch(AA)
+                {
+                    case 0:
+                        atoms.Add(new Atom("RS Status", 0, "Faulted"));
+                        atoms.Add(new Atom("RS Operational", 0, "Offline"));
+                        break;
+                    case 1:
+                        atoms.Add(new Atom("RS Status", 0, "Faulted"));
+                        atoms.Add(new Atom("RS Operational", 1, "Online"));
+                        break;
+                    case 2:
+                        atoms.Add(new Atom("RS Status", 1, "Good"));
+                        atoms.Add(new Atom("RS Operational", 0, "Offline"));
+                        break;
+                    case 3:
+                        atoms.Add(new Atom("RS Status", 1, "Good"));
+                        atoms.Add(new Atom("RS Operational", 1, "Online"));
+                        break;
+                }
+                AA = Convert.ToInt32(this.rawList[Offset].PadLeft(8, '0').Substring(1, 3));
+                switch (AA)
+                {
+                    case 0:;
+                        break;
+                    case 1:
+                        atoms.Add(new Atom("Transmitter 1090MHz", 1, "Present"));
+                        break;
+                    case 2:
+                        atoms.Add(new Atom("Transmitter 1030MHz", 1, "Present"));
+                        break;
+                    case 3:
+                        atoms.Add(new Atom("Transmitter 1090MHz", 1, "Present"));
+                        atoms.Add(new Atom("Transmitter 1030MHz", 1, "Present"));
+                        break;
+                    case 4:
+                        atoms.Add(new Atom("Receiver 1090MHz", 1, "Present"));
+                        break;
+                    case 5:
+                        atoms.Add(new Atom("Transmitter 1090MHz", 1, "Present"));
+                        atoms.Add(new Atom("Receiver 1090MHz", 1, "Present"));
+                        break;
+                    case 6:
+                        atoms.Add(new Atom("Transmitter 1090MHz", 1, "Present"));
+                        atoms.Add(new Atom("Receiver 1090MHz", 1, "Present"));
+                        break;
+                    case 7:
+                        atoms.Add(new Atom("Transmitter 1090MHz", 1, "Present"));
+                        atoms.Add(new Atom("Transmitter 1030MHz", 1, "Present"));
+                        atoms.Add(new Atom("Receiver 1090MHz", 1, "Present"));
+                        break;
+                }
+                Offset++;
             }
             return atoms;
         }

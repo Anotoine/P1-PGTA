@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Asterix
+namespace ASTERIX
 {
     class Vehicle
     {

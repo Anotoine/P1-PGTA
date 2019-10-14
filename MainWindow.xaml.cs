@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Asterix
+namespace ASTERIX
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -17,7 +17,7 @@ namespace Asterix
     {
 
         List<Message> listMessages;
-        DataTable dt; //taula que omple el grid
+        List<ShowRow> listRow;
 
         public MainWindow()
         {
@@ -33,6 +33,7 @@ namespace Asterix
                 byte[] fileBytes = File.ReadAllBytes(openFileDialog.FileName);
                 List<string> list = new List<string>();
                 listMessages = new List<Message>();
+                listRow = new List<ShowRow>();
 
                 foreach (byte b in fileBytes)
                 {
@@ -45,33 +46,13 @@ namespace Asterix
                     int length = Int32.Parse(list[i + 1] + list[i + 2], System.Globalization.NumberStyles.HexNumber);
                     Message m = new Message(list.GetRange(i, length));
                     listMessages.Add(m);
+                    listRow.Add(new ShowRow(m));
                     i += length;
                 }
 
                 MessageBox.Show(listMessages.Count + " are loaded to the program.", "Loaded!",MessageBoxButton.OK, MessageBoxImage.Information);
 
-                dt = new DataTable();
-                dt.Columns.Add(new DataColumn("CAT", typeof(int)));
-                dt.Columns.Add(new DataColumn("Length", typeof(int)));
-                dt.Columns.Add(new DataColumn("FSPEC", typeof(string)));
-                dt.Columns.Add(new DataColumn("Time", typeof(string)));
-                dt.Columns.Add(new DataColumn("ICAO Address", typeof(string)));
-                dt.Columns.Add(new DataColumn("CallSign", typeof(string)));
-                dt.Columns.Add(new DataColumn("# Recievers", typeof(int)));
-
-                foreach (Message m in listMessages)
-                {
-                    DataRow Row = dt.NewRow();
-                    Row[0] = m.getCAT();
-                    Row[1] = m.getLength();
-                    Row[2] = m.getlistFSPEC();
-                    Row[3] = m.getTOD().ToString("HH:mm:ss.ffff");
-                    Row[4] = m.getAddressICAO().ToUpper();
-                    Row[5] = m.getCallsign();
-                    Row[6] = m.getTotalReceivers();
-                    dt.Rows.Add(Row);
-                    DataGrid.ItemsSource = dt.DefaultView;
-                }
+                DataGrid.ItemsSource = listRow;
             }
         }
 

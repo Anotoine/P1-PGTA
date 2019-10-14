@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Asterix
+namespace ASTERIX
 {
     public class Point
     {

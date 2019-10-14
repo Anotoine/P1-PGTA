@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Asterix
+namespace ASTERIX
 {
-    class CAT20
+    public class CAT20
     {
         internal List<Atom> DI010 { get; set; }
         internal List<Atom> DI020 { get; set; }
