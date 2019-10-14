@@ -22,5 +22,18 @@ namespace ASTERIX.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\UPC\\2019-5A\\05.PGTA\\P1\\Myd" +
+            "b.mdf;Integrated Security=True")]
+        public string connection_String {
+            get {
+                return ((string)(this["connection_String"]));
+            }
+            set {
+                this["connection_String"] = value;
+            }
+        }
     }
 }

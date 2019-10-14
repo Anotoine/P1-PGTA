@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data; //for datatable
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -45,6 +46,7 @@ namespace ASTERIX
                 {
                     int length = Int32.Parse(list[i + 1] + list[i + 2], System.Globalization.NumberStyles.HexNumber);
                     Message m = new Message(list.GetRange(i, length));
+
                     listMessages.Add(m);
                     listRow.Add(new ShowRow(m));
                     i += length;
@@ -54,6 +56,12 @@ namespace ASTERIX
 
                 DataGrid.ItemsSource = listRow;
             }
+        }
+
+        private void SaveMessage(Message m)
+        {
+            listMessages.Add(m);
+            listRow.Add(new ShowRow(m));
         }
 
         private void MouseClickTable(object sender, MouseButtonEventArgs e)

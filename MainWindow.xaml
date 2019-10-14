@@ -22,7 +22,8 @@
                 <DataGridTextColumn Header="TOD" Binding="{Binding TOD}"/>
                 <DataGridTextColumn Header="FSPEC" Binding="{Binding FSPEC}"/>
                 <DataGridTextColumn Header="ICAO Address" Binding="{Binding ICAOAddress}"/>
-                <DataGridTextColumn Header="CallSign" Binding="{Binding Callsign}"/>
+                <DataGridTextColumn Header="Callsign" Binding="{Binding Callsign}"/>
+                <DataGridTextColumn Header="Reg. ID" Binding="{Binding Matricula}"/>
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>

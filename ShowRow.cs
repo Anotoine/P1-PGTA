@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
 using HtmlAgilityPack;
 
 namespace ASTERIX
@@ -21,7 +20,7 @@ namespace ASTERIX
         public string SIC { get; set; }
         public string FSPEC { get; set; }
         public string Type { get; set; }
-        private static readonly HttpClient client = new HttpClient();
+        public string RegID { get; set; }
 
         public ShowRow(Message m)
         {
@@ -33,16 +32,32 @@ namespace ASTERIX
             this.Type = m.getType();
             this.SAC = Convert.ToString(m.getSAC());
             this.SIC = Convert.ToString(m.getSIC());
-            this.Country = "NOT sp";
+            this.Country = "NONE";
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
-            //var response = client.GetAsync("https://junzis.com/adb/?q=" + this.ICAOAddress).Result;
-            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            //string matricula = "";
+            //try
             //{
-            //    var htmlDoc = new HtmlDocument();
-            //    htmlDoc.LoadHtml(response.Content.ToString());
-            //    //var A = htmlDoc.DocumentNode.SelectNodes("//table/tr/td").LastOrDefault().InnerHtml;
+            //    if (m.getAddressICAO() != "" && m.getAddressICAO() != "NONE")
+            //    {
+            //        string URL = "https://junzis.com/adb/?q=" + m.getAddressICAO();
+            //        HtmlWeb web = new HtmlWeb();
+            //        var htmlDoc = web.Load(@URL);
+
+            //        if (htmlDoc.DocumentNode.SelectNodes("//table/tr/td") != null)
+            //            matricula = htmlDoc.DocumentNode.SelectNodes("//table/tr/td")[1].InnerHtml;
+            //    }
             //}
+            //catch (Exception e)
+            //{
+            //    this.RegID = e.ToString();
+            //}
+            //finally
+            //{
+            //    this.RegID = matricula;
+            //}
+            //this.RegID = matricula;
+
         }
     }
 }
