@@ -55,7 +55,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Test.ico</ApplicationIcon>
+    <ApplicationIcon>_data\Test.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>ASTERIX.App</StartupObject>
@@ -88,15 +88,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Atom.cs" />
-    <Compile Include="CAT19.cs" />
-    <Compile Include="CAT20.cs" />
+    <Compile Include="_classes\Atom.cs" />
+    <Compile Include="_classes\CAT19.cs" />
+    <Compile Include="_classes\CAT20.cs" />
     <Compile Include="Map.xaml.cs">
       <DependentUpon>Map.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Point.cs" />
-    <Compile Include="ShowRow.cs" />
-    <Compile Include="Vehicle.cs" />
+    <Compile Include="_classes\Point.cs" />
+    <Compile Include="_classes\ShowRow.cs" />
+    <Compile Include="_classes\Vehicle.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,7 +115,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Message.cs" />
+    <Compile Include="_classes\Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -143,7 +143,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Test.ico" />
+    <Resource Include="_data\Test.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -158,13 +158,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Mydb.mdf">
+    <Content Include="_data\Mydb.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Mydb_log.ldf">
+    <Content Include="_data\Mydb_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Mydb.mdf</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="_data\maps\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
