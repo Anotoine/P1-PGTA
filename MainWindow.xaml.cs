@@ -17,6 +17,7 @@ namespace ASTERIX
 
         List<Message> listMessages;
         List<ShowRow> listRow;
+        List<Tuple<string, string, string, string, string>> listPlaneDB;
 
         public MainWindow()
         {
@@ -25,6 +26,8 @@ namespace ASTERIX
 
         private void Button_Click_File(object sender, RoutedEventArgs e)
         {
+            Load_db();
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             if (openFileDialog.ShowDialog() == true)
@@ -46,7 +49,7 @@ namespace ASTERIX
                     Message m = new Message(list.GetRange(i, length));
 
                     listMessages.Add(m);
-                    listRow.Add(new ShowRow(m));
+                    listRow.Add(new ShowRow(m,listPlaneDB));
                     i += length;
                 }
 
@@ -54,12 +57,6 @@ namespace ASTERIX
 
                 DataGrid.ItemsSource = listRow;
             }
-        }
-
-        private void SaveMessage(Message m)
-        {
-            listMessages.Add(m);
-            listRow.Add(new ShowRow(m));
         }
 
         private void MouseClickTable(object sender, MouseButtonEventArgs e)
@@ -82,6 +79,18 @@ namespace ASTERIX
                 Map map = new Map(listMessages);
                 map.Show();
                 this.Close();
+            }
+        }
+        private void Load_db()
+        {
+            listPlaneDB = new List<Tuple<string, string, string, string, string>>();
+            using (var reader = new StreamReader(@"_data/aircraft_db.csv"))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var val = reader.ReadLine().Split(',');
+                    listPlaneDB.Add(new Tuple<string, string, string, string, string>(val[0], val[1], val[2], val[3], val[4]));
+                }
             }
         }
     }

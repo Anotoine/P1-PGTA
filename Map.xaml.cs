@@ -197,7 +197,7 @@ namespace ASTERIX
                     {
                         Line l1 = new Line();
                         l1.StrokeThickness = 1;
-                        l1.Stroke = Brushes.Red;
+                        l1.Stroke = Brushes.ForestGreen;
                         l1.X1 = (l.X1 + A) / alpha;
                         l1.Y1 = (l.Y1 + B) / beta;
 
@@ -209,7 +209,7 @@ namespace ASTERIX
                     {
                         Polyline poly = new Polyline();
                         poly.StrokeThickness = 1;
-                        poly.Stroke = Brushes.Red;
+                        poly.Stroke = Brushes.ForestGreen;
                         PointCollection points = new PointCollection();
                         foreach (System.Windows.Point pp in pl.Points)
                             points.Add(new System.Windows.Point((pp.X + A ) / alpha, (pp.Y + B) / beta));
@@ -235,31 +235,30 @@ namespace ASTERIX
             {
                 foreach (Vehicle v in VehiclesList)
                 {
-                    if (v.Type == "Aircraft")
+                    foreach (Point p in v.GetPointsByDate(new DateTime().AddHours(24.1)))
                     {
-                        foreach (Point p in v.GetPointsByDate(new DateTime().AddHours(22.1)))
+                        if (v.Type == "Aircraft")
                         {
                             Ellipse p0 = new Ellipse();
                             p0.Stroke = Brushes.Red;
-                            p0.StrokeThickness = 3;
-                            p0.Width = 10;
-                            p0.Height = 10;
+                            p0.StrokeThickness = 1;
+                            p0.Width = 1;
+                            p0.Height = 1;
                             Lienzo.Children.Add(p0);
 
-                            //Canvas.SetLeft(p0, ((p.X + A) / alpha) - p0.Width / 2);
-                            //Canvas.SetTop(p0, ((p.Y + B) / beta) - p0.Height / 2);
                             Canvas.SetLeft(p0, p.X * alphaARP - AARP - p0.Width / 2);
-                            Canvas.SetTop(p0, p.Y * betaARP - BARP  - p0.Height / 2);
+                            Canvas.SetTop(p0, p.Y * betaARP - BARP - p0.Height / 2);
+                        } else {
+                            Ellipse p0 = new Ellipse();
+                            p0.Stroke = Brushes.Yellow;
+                            p0.StrokeThickness = 1;
+                            p0.Width = 1;
+                            p0.Height = 1;
+                            Lienzo.Children.Add(p0);
+
+                            Canvas.SetLeft(p0, p.X * alphaARP - AARP - p0.Width / 2);
+                            Canvas.SetTop(p0, p.Y * betaARP - BARP - p0.Height / 2);
                         }
-                    } else {
-                        Ellipse p0 = new Ellipse();
-                        p0.Stroke = Brushes.Green;
-                        p0.StrokeThickness = 3;
-                        p0.Width = 10;
-                        p0.Height = 10;
-                        Lienzo.Children.Add(p0);
-                        Canvas.SetLeft(p0, (v.Positions[0].X + A) / alpha - p0.Width / 2);
-                        Canvas.SetTop(p0, (v.Positions[0].Y + B) / beta - p0.Height / 2);
                     }
                 }
             }

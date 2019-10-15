@@ -16,6 +16,7 @@
         <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" Margin="40,30,40,30" SelectionMode="Single" SelectionUnit="FullRow" MouseDoubleClick="MouseClickTable" Grid.Column="1" Background="Black"
                   BorderBrush="#FF04284C" AlternatingRowBackground="Cyan" GridLinesVisibility="Vertical" RowBackground="#FF7C84B6" AreRowDetailsFrozen="True">
             <DataGrid.Columns>
+                <DataGridTextColumn Header="Track" Binding="{Binding TrackN}"/>
                 <DataGridTextColumn Header="Country" Binding="{Binding Country}"/>
                 <DataGridTextColumn Header="CAT" Binding="{Binding CAT}"/>
                 <DataGridTextColumn Header="Length" Binding="{Binding Length}"/>
@@ -23,7 +24,7 @@
                 <DataGridTextColumn Header="FSPEC" Binding="{Binding FSPEC}"/>
                 <DataGridTextColumn Header="ICAO Address" Binding="{Binding ICAOAddress}"/>
                 <DataGridTextColumn Header="Callsign" Binding="{Binding Callsign}"/>
-                <DataGridTextColumn Header="Reg. ID" Binding="{Binding Matricula}"/>
+                <DataGridTextColumn Header="Reg. ID" Binding="{Binding RegID}"/>
             </DataGrid.Columns>
             <DataGrid.RowDetailsTemplate>
                 <DataTemplate>

@@ -20,9 +20,10 @@ namespace ASTERIX
         public string SIC { get; set; }
         public string FSPEC { get; set; }
         public string Type { get; set; }
+        public string TrackN { get; set; }
         public string RegID { get; set; }
 
-        public ShowRow(Message m)
+        public ShowRow(Message m, List<Tuple<string, string, string, string, string>> listPlanes)
         {
             this.ImageUrl = "https://cdn.jetphotos.com/full/6/69088_1542915518.jpg";
             this.TOD = m.getTOD().ToString("HH:mm:ss.fff");
@@ -30,34 +31,28 @@ namespace ASTERIX
             this.Length = Convert.ToString(m.getLength());
             this.FSPEC = m.getFSPEC();
             this.Type = m.getType();
+            if (m.getTrackN() != -1)
+                this.TrackN = Convert.ToString(m.getTrackN());
             this.SAC = Convert.ToString(m.getSAC());
             this.SIC = Convert.ToString(m.getSIC());
             this.Country = "NONE";
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
-            //string matricula = "";
-            //try
-            //{
-            //    if (m.getAddressICAO() != "" && m.getAddressICAO() != "NONE")
-            //    {
-            //        string URL = "https://junzis.com/adb/?q=" + m.getAddressICAO();
-            //        HtmlWeb web = new HtmlWeb();
-            //        var htmlDoc = web.Load(@URL);
 
-            //        if (htmlDoc.DocumentNode.SelectNodes("//table/tr/td") != null)
-            //            matricula = htmlDoc.DocumentNode.SelectNodes("//table/tr/td")[1].InnerHtml;
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    this.RegID = e.ToString();
-            //}
-            //finally
-            //{
-            //    this.RegID = matricula;
-            //}
-            //this.RegID = matricula;
-
+            bool exit = false;
+            int i = 0;
+            if (this.ICAOAddress != "NONE")
+            {
+                //while (!(exit || i >= listPlanes.Count))
+                //{
+                    //if (string.Compare(this.ICAOAddress, listPlanes[i].Item1) == 0)
+                    //{
+                        this.RegID = listPlanes[i].Item2.ToUpper();
+                        exit = true;
+                    //}
+                    i++;
+                //}
+            }
         }
     }
 }
