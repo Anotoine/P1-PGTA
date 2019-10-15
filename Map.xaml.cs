@@ -245,8 +245,11 @@ namespace ASTERIX
                             p0.Width = 10;
                             p0.Height = 10;
                             Lienzo.Children.Add(p0);
-                            Canvas.SetLeft(p0, ((p.X + A) / alpha) - p0.Width / 2);
-                            Canvas.SetTop(p0, ((p.Y + B) / beta) - p0.Height / 2);
+
+                            //Canvas.SetLeft(p0, ((p.X + A) / alpha) - p0.Width / 2);
+                            //Canvas.SetTop(p0, ((p.Y + B) / beta) - p0.Height / 2);
+                            Canvas.SetLeft(p0, p.X * alphaARP - AARP - p0.Width / 2);
+                            Canvas.SetTop(p0, p.Y * betaARP - BARP  - p0.Height / 2);
                         }
                     } else {
                         Ellipse p0 = new Ellipse();
