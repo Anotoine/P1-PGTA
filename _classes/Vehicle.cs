@@ -35,5 +35,22 @@ namespace ASTERIX
             this.Positions.Add(m.getPosition());
             this.DateTimes.Add(m.getTOD());
         }
+
+        public List<Point> GetPointsByDate(DateTime dt)
+        {
+            List<Point> points = new List<Point>();
+            bool exit = false;
+            int i = 0;
+            while (!exit && i < DateTimes.Count)
+            {
+                if (DateTime.Compare(DateTimes[i], dt) < 0)
+                    points.Add(Positions[i]);
+                else if (DateTime.Compare(DateTimes[i], dt) == 0)
+                    exit = true;
+                
+                i++;
+            }
+            return points;
+        }
     }
 }

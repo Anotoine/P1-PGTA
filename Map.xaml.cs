@@ -237,14 +237,17 @@ namespace ASTERIX
                 {
                     if (v.Type == "Aircraft")
                     {
-                        Ellipse p0 = new Ellipse();
-                        p0.Stroke = Brushes.Red;
-                        p0.StrokeThickness = 3;
-                        p0.Width = 10;
-                        p0.Height = 10;
-                        Lienzo.Children.Add(p0);
-                        Canvas.SetLeft(p0, ((v.Positions[0].X + A) / alpha) - p0.Width / 2);
-                        Canvas.SetTop(p0, ((v.Positions[0].Y + B) / beta) - p0.Height / 2);
+                        foreach (Point p in v.GetPointsByDate(new DateTime().AddHours(22.1)))
+                        {
+                            Ellipse p0 = new Ellipse();
+                            p0.Stroke = Brushes.Red;
+                            p0.StrokeThickness = 3;
+                            p0.Width = 10;
+                            p0.Height = 10;
+                            Lienzo.Children.Add(p0);
+                            Canvas.SetLeft(p0, ((p.X + A) / alpha) - p0.Width / 2);
+                            Canvas.SetTop(p0, ((p.Y + B) / beta) - p0.Height / 2);
+                        }
                     } else {
                         Ellipse p0 = new Ellipse();
                         p0.Stroke = Brushes.Green;
