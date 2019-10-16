@@ -21,7 +21,7 @@
                 <DataGridTextColumn Header="CAT" Binding="{Binding CAT}"/>
                 <DataGridTextColumn Header="Length" Binding="{Binding Length}"/>
                 <DataGridTextColumn Header="TOD" Binding="{Binding TOD}"/>
-                <DataGridTextColumn Header="FSPEC" Binding="{Binding FSPEC}"/>
+                <DataGridTextColumn Header="DataItems Count" Binding="{Binding FSPECount}"/>
                 <DataGridTextColumn Header="ICAO Address" Binding="{Binding ICAOAddress}"/>
                 <DataGridTextColumn Header="Callsign" Binding="{Binding Callsign}"/>
                 <DataGridTextColumn Header="Reg. ID" Binding="{Binding RegID}"/>

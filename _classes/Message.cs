@@ -255,6 +255,10 @@ namespace ASTERIX
         {
             return this.listFSPECraw;
         }
+        public int getFSPECount()
+        {
+            return this.listFSPEC.Count(c => c);
+        }
 
         //Functions
         private void decodeCAT10()

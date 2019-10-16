@@ -29,7 +29,6 @@ namespace ASTERIX
                 this.Type = m.getType();
         }
 
-        
         public void AddPoint(Message m)
         {
             this.Positions.Add(m.getPosition());

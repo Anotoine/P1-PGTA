@@ -19,6 +19,7 @@ namespace ASTERIX
         public string SAC { get; set; }
         public string SIC { get; set; }
         public string FSPEC { get; set; }
+        public int FSPECount { get; set; }
         public string Type { get; set; }
         public string TrackN { get; set; }
         public string RegID { get; set; }
@@ -30,6 +31,7 @@ namespace ASTERIX
             this.ICAOAddress = m.getAddressICAO();
             this.Length = Convert.ToString(m.getLength());
             this.FSPEC = m.getFSPEC();
+            this.FSPECount = m.getFSPECount();
             this.Type = m.getType();
             if (m.getTrackN() != -1)
                 this.TrackN = Convert.ToString(m.getTrackN());

@@ -13,7 +13,8 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <CheckBox x:Name="CheckARP" Content="ARP LEBL" Foreground="AliceBlue" HorizontalAlignment="Stretch" Margin="52,14,66,0" Height="18" VerticalAlignment="Top" Click="CheckBoxClick"/>
+        <Button x:Name="Butt_Refresh" Content="Refresh" Margin="10,8,142,543.4" Click="Butt_Refresh_Click"/>
+        <CheckBox x:Name="CheckARP" Content="ARP LEBL" Foreground="AliceBlue" HorizontalAlignment="Stretch" Margin="68,10,50,0" Height="18" VerticalAlignment="Top" Click="CheckBoxClick"/>
         <Canvas x:Name="Lienzo" Grid.Column="1" Background="Black" MouseMove="Lienzo_MouseMove" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
         <StatusBar x:Name="PointLabel" HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Bottom" Grid.ColumnSpan="1" Background="#FF373F47">
             <Grid>
@@ -34,6 +35,6 @@
             </Grid>
         </StatusBar>
         <StackPanel Name="st1" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" Margin="0,32,0,31"/>
-        <CheckBox x:Name="CheckVehicles" HorizontalAlignment="Left" Margin="154,14,0,0" VerticalAlignment="Top" Click="CheckBoxClick"/>
+        <CheckBox x:Name="CheckVehicles" HorizontalAlignment="Left" Margin="159,13,0,0" VerticalAlignment="Top" Click="CheckBoxClick"/>
     </Grid>
 </Window>
