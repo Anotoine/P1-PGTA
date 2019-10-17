@@ -22,7 +22,7 @@ namespace ASTERIX
         List<Vehicle> VehiclesList;
 
         List<Message> listMessages;
-        List<int> Vistos = new List<int>();
+        List<string> Vistos = new List<string>();
 
         List<CheckBox> checkBoxes;
 
@@ -107,9 +107,9 @@ namespace ASTERIX
             mapsPolylines = new List<List<Polyline>>();
 
             string path = Directory.GetCurrentDirectory();
-            if (Directory.Exists(path + "/maps/"))
+            if (Directory.Exists(path + @"\maps\"))
             {
-                string[] listfiles = Directory.GetFiles(@"maps/");
+                string[] listfiles = Directory.GetFiles(path + @"\maps\");
 
                 foreach (string file in listfiles)
                 {
@@ -222,12 +222,13 @@ namespace ASTERIX
                 MessageBoxResult res = MessageBox.Show("No maps folder found.\nDo you want to create the folder?\n (" + path + "/maps/)", "No directory found", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (res == MessageBoxResult.Yes)
                 {
-                    Directory.CreateDirectory(path + "/maps/");
+                    Directory.CreateDirectory(path + "/maps/"); 
                 }
             }
         }
         private void CheckBoxClick(object sender, RoutedEventArgs e)
         {
+            string str = "";
             Lienzo.Children.Clear();
             for (int i = 0; i < checkBoxes.Count; i++)
             {
@@ -275,16 +276,22 @@ namespace ASTERIX
             {
                 foreach (Vehicle v in VehiclesList)
                 {
+                    str += v.TrackN + "-" + v.ICAOaddress + "-" + v.Callsign + "\n";
                     foreach (Point p in v.GetPointsByDate(new DateTime().AddHours(28)))
                     {
                         if (v.Type == "Aircraft")
                         {
                             Ellipse p0 = new Ellipse();
 
-                            if (v.Callsign.StartsWith("F"))
-                                p0.Stroke = Brushes.White;
-                            else
+                            //if (v.Callsign.StartsWith("F"))
+                            //    p0.Stroke = Brushes.White;
+                            if (v.Callsign == "NONE")
+                            {
                                 p0.Stroke = Brushes.Red;
+                                p0.StrokeThickness = 10;
+                            }
+                            else
+                                p0.Stroke = Brushes.AliceBlue;
 
                             p0.StrokeThickness = 1;
                             p0.Width = 5;
@@ -311,6 +318,7 @@ namespace ASTERIX
                     }
                 }
             }
+            MessageBox.Show(str);
         }
         private void CreateAircrafts()
         {
@@ -319,13 +327,13 @@ namespace ASTERIX
                 VehiclesList = new List<Vehicle>();
                 foreach (Message m in listMessages)
                 {
-                    if (Vistos.Contains(m.getTrackN()))
+                    if (Vistos.Contains(m.getAddressICAO()))
                     {
-                        VehiclesList[Vistos.IndexOf(m.getTrackN())].AddPoint(m);
+                        VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
                     }
                     else
                     {
-                        Vistos.Add(m.getTrackN());
+                        Vistos.Add(m.getAddressICAO());
                         VehiclesList.Add(new Vehicle(m));
                     }
                 }
