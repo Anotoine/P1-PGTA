@@ -16,7 +16,7 @@ namespace ASTERIX
     {
 
         Point ARP, zero0;
-        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, propW, propH;
+        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, propW, propH, xA, yA;
         List<List<Line>> mapsLines;
         List<List<Polyline>> mapsPolylines;
         List<Vehicle> VehiclesList;
@@ -36,6 +36,7 @@ namespace ASTERIX
             CreateAircrafts();
         }
 
+
         private void Butt_Refresh_Click(object sender, RoutedEventArgs e)
         {
             st1.Children.Clear();
@@ -54,24 +55,44 @@ namespace ASTERIX
             alpha = A / (Lienzo.ActualWidth / 2);
             beta = B / (Lienzo.ActualHeight / 2);
 
-            //x y del ARP dins el lienzo en el size inicial
-            double xarp_li = (ARP.X + A) / alpha;
-            double yarp_li = (ARP.Y + B) / beta;
-            propW = xarp_li / Lienzo.ActualWidth; //la proporció s'ha de mantenir!!!
-            propH = yarp_li / Lienzo.ActualHeight;
-            AARP = -Lienzo.ActualWidth * propW;
-            BARP = -Lienzo.ActualHeight * propH;
+            //new
+            xA = (ARP.X + A) / alpha;
+            yA = (ARP.Y + B) / beta;
+            AARP = -xA;
+            BARP = -yA;
             alphaARP = AARP / -2887;
             betaARP = BARP / 2078;
+
+            //x y del ARP dins el lienzo en el size inicial
+            //double xarp_li = (ARP.X + A) / alpha;
+            //double yarp_li = (ARP.Y + B) / beta;
+            //propW = xarp_li / Lienzo.ActualWidth; //la proporció s'ha de mantenir!!!
+            //propH = yarp_li / Lienzo.ActualHeight;
+            //AARP = -Lienzo.ActualWidth * propW;
+            //BARP = -Lienzo.ActualHeight * propH;
+            //alphaARP = AARP / -2887;
+            //betaARP = BARP / 2078;
         }
+
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {   //entra just despres de fer el load
+        {   //entre abans del load, no comprendo
+            ARP = new Point().LatLong2XY(41.296944, 2.078333);
+
             alpha = A / (Lienzo.ActualWidth / 2);
             beta = B / (Lienzo.ActualHeight / 2);
-            AARP = -Lienzo.ActualWidth * propW;
-            BARP = -Lienzo.ActualHeight * propH;
+           
+            //new
+            xA = (ARP.X + A) / alpha;
+            yA = (ARP.Y + B) / beta;
+            AARP = -xA;
+            BARP = -yA;
             alphaARP = AARP / -2887;
             betaARP = BARP / 2078;
+
+            //AARP = -Lienzo.ActualWidth * propW;
+            //BARP = -Lienzo.ActualHeight * propH;
+            //alphaARP = AARP / -2887;
+            //betaARP = BARP / 2078;
             CheckBoxClick(sender, e);
         }
         private void Lienzo_MouseMove(object sender, MouseEventArgs e)
@@ -322,11 +343,11 @@ namespace ASTERIX
                 i++;
             }
 
-            string str = "ICAO Addres: " + VehiclesList[i].ICAOaddress + "\n" + "Callsign: " + VehiclesList[i].Callsign + "\n"
-                + "X: " + VehiclesList[i].Positions[0].X + "m\n" + "Y: " + VehiclesList[i].Positions[0].Y + "m\n"
-                + "XCanvas: " + Convert.ToString((VehiclesList[i].Positions[0].X * alphaARP) -AARP) + "m\n" +
-                "YCanvas: " + Convert.ToString((VehiclesList[i].Positions[0].Y * betaARP) - BARP) + "m\n";
-            MessageBox.Show(str, "TN: " + VehiclesList[i].TrackN);
+            string str = "ICAO Addres: " + VehiclesList[i-1].ICAOaddress + "\n" + "Callsign: " + VehiclesList[i-1].Callsign + "\n"
+                + "X: " + VehiclesList[i-1].Positions[0].X + "m\n" + "Y: " + VehiclesList[i-1].Positions[0].Y + "m\n"
+                + "XCanvas: " + Convert.ToString((VehiclesList[i-1].Positions[0].X * alphaARP) -AARP) + "m\n" +
+                "YCanvas: " + Convert.ToString((VehiclesList[i-1].Positions[0].Y * betaARP) - BARP) + "m\n";
+            MessageBox.Show(str, "TN: " + VehiclesList[i-1].TrackN);
         }
     }
 }
