@@ -86,9 +86,9 @@ namespace ASTERIX
             mapsPolylines = new List<List<Polyline>>();
 
             string path = Directory.GetCurrentDirectory();
-            if (Directory.Exists(path + "/maps/"))
+            if (Directory.Exists(path + @"\maps\"))
             {
-                string[] listfiles = Directory.GetFiles(path + @"../../_data/maps/");
+                string[] listfiles = Directory.GetFiles(path + @"\maps\");
 
                 foreach (string file in listfiles)
                 {

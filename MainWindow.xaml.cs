@@ -84,7 +84,7 @@ namespace ASTERIX
         private void Load_db()
         {
             listPlaneDB = new List<Tuple<string, string, string, string, string>>();
-            using (var reader = new StreamReader(@"/aircraft_db.csv"))
+            using (var reader = new StreamReader(Directory.GetCurrentDirectory() + @"/aircraft_db.csv"))
             {
                 while (!reader.EndOfStream)
                 {
