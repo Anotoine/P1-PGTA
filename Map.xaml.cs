@@ -107,9 +107,10 @@ namespace ASTERIX
             mapsPolylines = new List<List<Polyline>>();
 
             string path = Directory.GetCurrentDirectory();
-            if (Directory.Exists(path + @"\maps\"))
+            //string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            if (Directory.Exists(path + @"\_data\maps\"))
             {
-                string[] listfiles = Directory.GetFiles(path + @"\maps\");
+                var listfiles = Directory.EnumerateFiles(path + @"\_data\maps\");
 
                 foreach (string file in listfiles)
                 {
@@ -117,6 +118,7 @@ namespace ASTERIX
                     {
                         //Reading lines and creating Lists for Line and Polyline
                         string[] lines = File.ReadAllLines(file);
+                        string filename = file.Split('\\')[file.Split('\\').Length - 1];
                         List<Line> mapL = new List<Line>();
                         List<Polyline> mapP = new List<Polyline>();
 
@@ -201,7 +203,7 @@ namespace ASTERIX
                         {
                             //Creating the Checkbox to be checked
                             CheckBox checkBox = new CheckBox();
-                            checkBox.Content = file.Substring(5);
+                            checkBox.Content = filename;
                             checkBox.FontSize = 12;
                             checkBox.Foreground = Brushes.White;
                             checkBox.Margin = new Thickness(10, 10, 10, 10);
@@ -219,10 +221,10 @@ namespace ASTERIX
             }
             else
             {
-                MessageBoxResult res = MessageBox.Show("No maps folder found.\nDo you want to create the folder?\n (" + path + "/maps/)", "No directory found", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult res = MessageBox.Show("No maps folder found.\nDo you want to create the folder?\n (" + path + @"\_data\maps\)", "No directory found", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (res == MessageBoxResult.Yes)
                 {
-                    Directory.CreateDirectory(path + "/maps/"); 
+                    Directory.CreateDirectory(path + @"\_data\maps\"); 
                 }
             }
         }
@@ -283,15 +285,12 @@ namespace ASTERIX
                         {
                             Ellipse p0 = new Ellipse();
 
-                            //if (v.Callsign.StartsWith("F"))
-                            //    p0.Stroke = Brushes.White;
                             if (v.Callsign == "NONE")
-                            {
-                                p0.Stroke = Brushes.Red;
-                                p0.StrokeThickness = 10;
-                            }
+                                p0.Stroke = Brushes.LightSkyBlue;
+                            else if (v.Callsign.StartsWith("F"))
+                                p0.Stroke = Brushes.White;
                             else
-                                p0.Stroke = Brushes.AliceBlue;
+                                p0.Stroke = Brushes.Red;
 
                             p0.StrokeThickness = 1;
                             p0.Width = 5;
@@ -348,14 +347,13 @@ namespace ASTERIX
             {
                 if (VehiclesList[i].TrackN == trackN)
                     exit = true;
-                i++;
+                else
+                    i++;
             }
 
-            string str = "ICAO Addres: " + VehiclesList[i-1].ICAOaddress + "\n" + "Callsign: " + VehiclesList[i-1].Callsign + "\n"
-                + "X: " + VehiclesList[i-1].Positions[0].X + "m\n" + "Y: " + VehiclesList[i-1].Positions[0].Y + "m\n"
-                + "XCanvas: " + Convert.ToString((VehiclesList[i-1].Positions[0].X * alphaARP) -AARP) + "m\n" +
-                "YCanvas: " + Convert.ToString((VehiclesList[i-1].Positions[0].Y * betaARP) - BARP) + "m\n";
-            MessageBox.Show(str, "TN: " + VehiclesList[i-1].TrackN);
+            string str = "ICAO Addres: " + VehiclesList[i].ICAOaddress + "\n" + "Callsign: " + VehiclesList[i].Callsign + "\n"
+                + "X: " + VehiclesList[i].Positions[0].X + "m\n" + "Y: " + VehiclesList[i].Positions[0].Y + "m";
+            MessageBox.Show(str, "TrackN: " + VehiclesList[i].TrackN);
         }
     }
 }

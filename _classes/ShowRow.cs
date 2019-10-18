@@ -41,19 +41,22 @@ namespace ASTERIX
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
 
-            bool exit = false;
-            int i = 0;
-            if (this.ICAOAddress != "NONE")
+            if (listPlanes != null)
             {
-                //while (!(exit || i >= listPlanes.Count))
-                //{
+                bool exit = false;
+                int i = 0;
+                if (this.ICAOAddress != "NONE")
+                {
+                    //while (!(exit || i >= listPlanes.Count))
+                    //{
                     //if (string.Compare(this.ICAOAddress, listPlanes[i].Item1) == 0)
                     //{
-                        this.RegID = listPlanes[i].Item2.ToUpper();
-                        exit = true;
+                    this.RegID = listPlanes[i].Item2.ToUpper();
+                    exit = true;
                     //}
                     i++;
-                //}
+                    //}
+                }
             }
         }
     }
