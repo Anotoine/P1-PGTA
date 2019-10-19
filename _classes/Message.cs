@@ -17,7 +17,7 @@ namespace ASTERIX
         private int Offset;//Donde empieza el siguiente campo
         public CAT20 CAT20;
         private CAT19 CAT19;
-        //private CAT10 CAT10;
+        private CAT10 CAT10;
         //private CAT21 CAT21;
 
 
@@ -263,6 +263,281 @@ namespace ASTERIX
         //Functions
         private void decodeCAT10()
         {
+            CAT10 = new CAT10();
+            if (this.listFSPEC[1]) //I010/010
+                CAT10.DI010 = decodeSACSIC();
+            if (this.listFSPEC[2]) //I010/000
+            {
+                int code = Convert.ToInt32(this.rawList[Offset], 16);
+                switch (code)
+                {
+                    case 1:
+                        CAT10.DI000 = "Target Report";
+                        break;
+                    case 2:
+                        CAT10.DI000 = "Start of Update Cycle";
+                        break;
+                    case 3:
+                        CAT10.DI000 = "Periodic Status Message";
+                        break;
+                    case 4:
+                        CAT10.DI000 = "Event-triggered Status Message";
+                        break;
+                }
+            }
+            if (this.listFSPEC[3]) //I010/020          
+
+            {
+                var ls = new List<string> { "TYP", "DCR", "CHN", "GBS", "CRT", "FX", "SIM", "TST", "RAB", "LOP", "TOT", "FX", "SPI", "FX" };
+
+                var ls0 = new List<string> { "SSR multilateration", "Mode S multilateration","ADS-B", "PSR", "No differential correction(ADS-B)","Chain 1","Transponder Ground bit not set","No Corrupted reply in multilateration",
+                                               "End of Data Item","Actual target report","Default","Undetermined","Loop start","Undetermined","Aircraft","End of Data Item","Absence of SPI","End of Data Item" };
+
+                var ls1 = new List<string> { "Magnetic Loop System","HF multilateration", "Not defined","Other types","Differential correction (ADS-B)", "Chain 2","Transponder Ground bit set","Corrupted replies in multilateration",
+                                             "Extension into first extent","Simulated target report","Test Target","Report from field monitor(fixed transponder)","Loop finish","","Ground vehicle","Helicopter","Extension into next extent",
+                                             "Special Position Identification","Extension into next extent"};
+
+                List<Atom> atoms = new List<Atom>();
+                Atom a;
+                int cont1 = 0;
+                int cont2 = 0;
+                int i = 1;
+                bool exit = false;
+                while (!exit)
+                {
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (i == 1)
+                        {
+                            if (char.Equals(s[j], '1'))
+                            {
+                                j++;
+                                if (char.Equals(s[j], '1'))
+                                {
+                                    j++;
+                                    if (char.Equals(s[j], '1'))
+                                        a = new Atom(ls[cont1], 7, ls1[cont2 + 3]);
+                                    else
+                                        a = new Atom(ls[cont1], 6, ls1[cont2 + 2]);
+                                }
+                                else
+                                {
+                                    j++;
+                                    if (char.Equals(s[j], '1'))
+                                        a = new Atom(ls[cont1], 5, ls1[cont2 + 1]);
+                                    else
+                                        a = new Atom(ls[cont1], 4, ls1[cont2]);
+                                }
+                            }
+                            else
+                            {
+                                j++;
+                                if (char.Equals(s[j], '1'))
+                                {
+                                    j++;
+                                    if (char.Equals(s[j], '1'))
+                                        a = new Atom(ls[cont1], 3, ls1[cont2 + 3]);
+                                    else
+                                        a = new Atom(ls[cont1], 2, ls1[cont2 + 2]);
+                                }
+                                else
+                                {
+                                    j++;
+                                    if (char.Equals(s[j], '1'))
+                                        a = new Atom(ls[cont1], 1, ls1[cont2 + 1]);
+                                    else
+                                        a = new Atom(ls[cont1], 0, ls1[cont2]);
+                                }
+                            }
+                            cont2 = 3;
+                        }
+                        else if (i == 10)
+                        {
+                            if (char.Equals(s[j], '0'))
+                            {
+                                j++;
+                                if (char.Equals(s[j], '0'))
+                                    a = new Atom(ls[cont1], 0, ls1[cont2]);
+                                else
+                                    a = new Atom(ls[cont1], 1, ls1[cont2 + 1]);
+
+                            }
+                            else
+                            {
+                                a = new Atom(ls[cont1], 2, ls1[cont2]);
+                                j++;
+                            }
+                            cont2++;
+                        }
+                        else if (i == 11)
+                        {
+                            if (char.Equals(s[j], '0'))
+                            {
+                                j++;
+                                if (char.Equals(s[j], '0'))
+                                    a = new Atom(ls[cont1], 0, ls1[cont2]);
+                                else
+                                    a = new Atom(ls[cont1], 1, ls1[cont2 + 1]);
+                            }
+                            else
+                            {
+                                j++;
+                                if (char.Equals(s[j], '0'))
+                                    a = new Atom(ls[cont1], 2, ls1[cont2]);
+                                else
+                                    a = new Atom(ls[cont1], 3, ls1[cont2 + 1]);
+                            }
+                            j++;
+                            cont2++;
+                        }
+                        else if (char.Equals(s[j], '1'))
+                            a = new Atom(ls[cont1], 1, ls1[cont2]);
+                        else
+                            a = new Atom(ls[cont1], 0, ls0[cont2]);
+
+                        cont1++;
+                        cont2++;
+                        i++;
+                        atoms.Add(a);
+
+                        if (j == 7)
+                        {
+                            Offset++;
+                            if (char.Equals(s[j], '0'))
+                                exit = true;
+                            if (char.Equals(s[j], '1'))
+                            {
+                                i += 1;
+                                Offset++;
+                            }
+                        }
+                    }
+                }
+                CAT10.DI020 = atoms;
+            }
+            if (this.listFSPEC[4]) //I010/140
+                CAT10.DI140 = decodeTOD();
+            if (this.listFSPEC[5])  
+                CAT10.DI041 = decodeLatLong();
+            if (this.listFSPEC[6])
+                CAT10.DI040 = decodePolarCoordinates();
+            if (this.listFSPEC[7])
+                CAT10.DI042 = decodeXY();
+            if (this.listFSPEC[8]) 
+            {
+                if (this.listFSPEC[9])  //I010/200
+                    CAT10.DI200 = decodeTrackVelPolar();
+                if (this.listFSPEC[10])  //I010/202
+                    CAT10.DI202 = decodeTrackVel();
+                if (this.listFSPEC[11])  //I010/161
+                    CAT10.DI161 = decodeTrackNumber();
+                if (this.listFSPEC[12])  //I010/170
+                    CAT10.DI170 = decodeTrackStatus();
+                if (this.listFSPEC[13]) //I010/060
+                    CAT10.DI060 = decodeM3A();
+                if (this.listFSPEC[14]) //I010/220
+                    CAT10.DI220 = decodeICAOAddress();
+                if (this.listFSPEC[15]) //I010/245
+                    CAT10.DI245 = decodeCallSign();
+                if (this.listFSPEC[16])
+                {
+                    if (this.listFSPEC[17])  //I010/250
+                        CAT10.DI250 = decodeMSdata();
+                    if (this.listFSPEC[18])  //I010/300
+                        CAT10.DI300 = decodeVehicleId();
+                    if (this.listFSPEC[19])  //I010/090
+                        CAT10.DI090 = decodeFLbin();
+                    if (this.listFSPEC[20])  //I010/091
+                        CAT10.DI091 = decodeMheight();
+                    if (this.listFSPEC[21])  //I010/270
+                    {
+                        Atom a;
+                        List<Atom> atoms = new List<Atom>();
+                        string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                        int Length = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3], s[4], s[5], s[6]), 2);
+                        a = new Atom("Length", 0, Convert.ToString((float) Length * 1));
+                        atoms.Add(a);
+                        Offset++;
+                        if (s[7] == '1')
+                        {
+                            s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                            int Orientation = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3], s[4], s[5], s[6]), 2);
+                            a = new Atom("Orientation", 0, Convert.ToString((float)Orientation * (360/128)));
+                            atoms.Add(a);
+                            Offset++;
+                            if (s[7] == '1')
+                            {
+                                s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                                int Width = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3], s[4], s[5], s[6]), 2);
+                                a = new Atom("Width", 0, Convert.ToString((float)Width * 1));
+                                atoms.Add(a);
+                                Offset++;
+                            }
+                        }
+                        CAT10.DI270 = atoms;     
+                    }
+                    if (this.listFSPEC[22])  //I010/550
+                        CAT10.DI550 = decodeSysStats();
+                    if (this.listFSPEC[23])  //I010/310
+                        CAT10.DI310 = decodePPmes();
+                    if(this.listFSPEC[24])
+                    {
+                        if (this.listFSPEC[25])  //I010/500
+                        {
+                            Atom a;
+                            List<Atom> atoms = new List<Atom>();
+                            float Ox = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 2) * 0.25);
+                            Offset += 1;
+                            a = new Atom("Ox", 0, Convert.ToString(Ox));
+                            atoms.Add(a);
+                            float Oy = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 2) * 0.25);
+                            Offset += 1;
+                            a = new Atom("Oy", 0, Convert.ToString(Oy));
+                            atoms.Add(a);
+                            float Oxy = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 0.25);
+                            Offset += 2;
+                            a = new Atom("Oxy", 0, Convert.ToString(Oxy));
+                            atoms.Add(a);
+                            CAT10.DI500 = atoms;
+                        }
+                        if (this.listFSPEC[25])  //I010/280
+                        {
+                            Atom a;
+                            List<Atom> atoms = new List<Atom>();
+                            int REP = Convert.ToInt16(this.rawList[Offset], 2);
+                            Offset += 1;
+                            a = new Atom("REP", 0, Convert.ToString(REP));
+                            atoms.Add(a);
+                            int DRHO = Convert.ToInt16(this.rawList[Offset], 2);
+                            Offset += 1;
+                            a = new Atom("DRHO", 0, Convert.ToString(DRHO));
+                            atoms.Add(a);
+                            float DTHETA = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 2) * 0.15);
+                            Offset += 1;
+                            a = new Atom("DTHETA", 0, Convert.ToString(DTHETA));
+                            atoms.Add(a);
+                            CAT10.DI280 = atoms;
+                        }
+                        if (this.listFSPEC[26])  //I010/131
+                            CAT10.DI131 = Convert.ToInt16(this.rawList[Offset], 2);
+                        if (this.listFSPEC[27])  //I010/210
+                        {
+                            Atom a;
+                            List<Atom> atoms = new List<Atom>();
+                            float ax = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 2) * 0.25);
+                            Offset += 1;
+                            a = new Atom("ax", 0, Convert.ToString(ax));
+                            atoms.Add(a);
+                            float ay = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 2) * 0.25);
+                            Offset += 1;
+                            a = new Atom("ay", 0, Convert.ToString(ay));
+                            atoms.Add(a);
+                            CAT10.DI210 = atoms;
+                        }
+                    }
+                }
+            }
 
         }
 
@@ -520,6 +795,18 @@ namespace ASTERIX
             }
             return atoms;
         }
+        private List<Atom> decodeTrackVelPolar()
+        {
+            List<Atom> atoms = new List<Atom>();
+            List<string> ls = new List<string>() { "Speed", "Track Angle" };
+            int speed = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
+            atoms.Add(new Atom("Speed", (float)speed * (2 ^ (-14)), Convert.ToString((float)speed * (2^(-14)))));
+            Offset += 2;
+            int TA = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
+            atoms.Add(new Atom("Track Angle", (float)TA * (2^16), Convert.ToString((float) TA * (2 ^ 16))));
+            Offset += 2;
+            return atoms;
+        }
         private List<Atom> decodeTRD()
         {
             List<Atom> atoms = new List<Atom>();
@@ -568,6 +855,21 @@ namespace ASTERIX
 
             atoms.Add(new Atom("Latitude", lonreal, Convert.ToString(lonreal)));
             atoms.Add(new Atom("Longitude", latreal, Convert.ToString(latreal)));
+            return atoms;
+        }
+        private List<Atom> decodePolarCoordinates()
+        {
+            List<Atom> atoms = new List<Atom>();
+            int RHO = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
+            float RHOreal = Convert.ToSingle(RHO);
+
+            int Theta = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
+            float Thetareal = Convert.ToSingle(Theta * 360 / 2 ^ 16);
+
+            Offset += 8;
+
+            atoms.Add(new Atom("Latitude", RHOreal, Convert.ToString(RHOreal)));
+            atoms.Add(new Atom("Longitude", Thetareal, Convert.ToString(Thetareal)));
             return atoms;
         }
         private List<Atom> decodeCallSign()
