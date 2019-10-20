@@ -138,6 +138,15 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="_data\aircraft_db.csv" />
+    <None Include="_data\maps\Aeropuerto_Barcelona.map" />
+    <None Include="_data\maps\Aeropuerto_Barcelonanue.map" />
+    <None Include="_data\maps\BCN_Aparcamientos.map" />
+    <None Include="_data\maps\BCN_CarreterasServicio.map" />
+    <None Include="_data\maps\BCN_Edificios.map" />
+    <None Include="_data\maps\BCN_Parterres.map" />
+    <None Include="_data\maps\BCN_Pistas.map" />
+    <None Include="_data\maps\BCN_ZonasMovimiento.map" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -154,9 +163,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="_data\maps\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Test.ico" />
   </ItemGroup>

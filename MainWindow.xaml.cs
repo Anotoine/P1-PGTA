@@ -20,6 +20,36 @@ namespace ASTERIX
             InitializeComponent();
         }
 
-       
+        private void BLoad_Click(object sender, RoutedEventArgs e)
+        {
+            WLoad.Visibility = Visibility.Visible;
+            WRadar.Visibility = Visibility.Hidden;
+            WTable.Visibility = Visibility.Hidden;
+            WSettings.Visibility = Visibility.Hidden;
+        }
+
+        private void BRadar_Click(object sender, RoutedEventArgs e)
+        {
+            WLoad.Visibility = Visibility.Hidden;
+            WRadar.Visibility = Visibility.Visible;
+            WTable.Visibility = Visibility.Hidden;
+            WSettings.Visibility = Visibility.Hidden;
+        }
+
+        private void BTable_Click(object sender, RoutedEventArgs e)
+        {
+            WLoad.Visibility = Visibility.Hidden;
+            WRadar.Visibility = Visibility.Hidden;
+            WTable.Visibility = Visibility.Visible;
+            WSettings.Visibility = Visibility.Hidden;
+        }
+
+        private void BSettings_Click(object sender, RoutedEventArgs e)
+        {
+            WLoad.Visibility = Visibility.Hidden;
+            WRadar.Visibility = Visibility.Hidden;
+            WTable.Visibility = Visibility.Hidden;
+            WSettings.Visibility = Visibility.Visible;
+        }
     }
 }
