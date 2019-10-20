@@ -83,14 +83,22 @@ namespace ASTERIX
         }
         private void Load_db()
         {
-            listPlaneDB = new List<Tuple<string, string, string, string, string>>();
-            using (var reader = new StreamReader(@"_data/aircraft_db.csv"))
+            string path = Directory.GetCurrentDirectory();
+            if (File.Exists(path + @"\_data\aircraft_db.csv"))
             {
-                while (!reader.EndOfStream)
+                listPlaneDB = new List<Tuple<string, string, string, string, string>>();
+                using (var reader = new StreamReader(path + @"\_data\aircraft_db.csv"))
                 {
-                    var val = reader.ReadLine().Split(',');
-                    listPlaneDB.Add(new Tuple<string, string, string, string, string>(val[0], val[1], val[2], val[3], val[4]));
+                    while (!reader.EndOfStream)
+                    {
+                        var val = reader.ReadLine().Split(',');
+                        listPlaneDB.Add(new Tuple<string, string, string, string, string>(val[0], val[1], val[2], val[3], val[4]));
+                    }
                 }
+            }
+            else
+            {
+                MessageBox.Show("No aircraft_db.csv file found in " + path + @"\_data\aircraft_db.csv.", "Warning");
             }
         }
     }

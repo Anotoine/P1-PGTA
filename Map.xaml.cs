@@ -16,13 +16,13 @@ namespace ASTERIX
     {
 
         Point ARP, zero0;
-        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, propW, propH;
+        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, propW, propH, xA, yA;
         List<List<Line>> mapsLines;
         List<List<Polyline>> mapsPolylines;
         List<Vehicle> VehiclesList;
 
         List<Message> listMessages;
-        List<int> Vistos = new List<int>();
+        List<string> Vistos = new List<string>();
 
         List<CheckBox> checkBoxes;
 
@@ -35,6 +35,7 @@ namespace ASTERIX
             this.listMessages = messages;
             CreateAircrafts();
         }
+
 
         private void Butt_Refresh_Click(object sender, RoutedEventArgs e)
         {
@@ -54,24 +55,44 @@ namespace ASTERIX
             alpha = A / (Lienzo.ActualWidth / 2);
             beta = B / (Lienzo.ActualHeight / 2);
 
-            //x y del ARP dins el lienzo en el size inicial
-            double xarp_li = (ARP.X + A) / alpha;
-            double yarp_li = (ARP.Y + B) / beta;
-            propW = xarp_li / Lienzo.ActualWidth; //la proporció s'ha de mantenir!!!
-            propH = yarp_li / Lienzo.ActualHeight;
-            AARP = -Lienzo.ActualWidth * propW;
-            BARP = -Lienzo.ActualHeight * propH;
+            //new
+            xA = (ARP.X + A) / alpha;
+            yA = (ARP.Y + B) / beta;
+            AARP = -xA;
+            BARP = -yA;
             alphaARP = AARP / -2887;
             betaARP = BARP / 2078;
+
+            //x y del ARP dins el lienzo en el size inicial
+            //double xarp_li = (ARP.X + A) / alpha;
+            //double yarp_li = (ARP.Y + B) / beta;
+            //propW = xarp_li / Lienzo.ActualWidth; //la proporció s'ha de mantenir!!!
+            //propH = yarp_li / Lienzo.ActualHeight;
+            //AARP = -Lienzo.ActualWidth * propW;
+            //BARP = -Lienzo.ActualHeight * propH;
+            //alphaARP = AARP / -2887;
+            //betaARP = BARP / 2078;
         }
+
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {   //entra just despres de fer el load
+        {   //entre abans del load, no comprendo
+            ARP = new Point().LatLong2XY(41.296944, 2.078333);
+
             alpha = A / (Lienzo.ActualWidth / 2);
             beta = B / (Lienzo.ActualHeight / 2);
-            AARP = -Lienzo.ActualWidth * propW;
-            BARP = -Lienzo.ActualHeight * propH;
+           
+            //new
+            xA = (ARP.X + A) / alpha;
+            yA = (ARP.Y + B) / beta;
+            AARP = -xA;
+            BARP = -yA;
             alphaARP = AARP / -2887;
             betaARP = BARP / 2078;
+
+            //AARP = -Lienzo.ActualWidth * propW;
+            //BARP = -Lienzo.ActualHeight * propH;
+            //alphaARP = AARP / -2887;
+            //betaARP = BARP / 2078;
             CheckBoxClick(sender, e);
         }
         private void Lienzo_MouseMove(object sender, MouseEventArgs e)
@@ -86,9 +107,10 @@ namespace ASTERIX
             mapsPolylines = new List<List<Polyline>>();
 
             string path = Directory.GetCurrentDirectory();
-            if (Directory.Exists(path + "/maps/"))
+            //string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            if (Directory.Exists(path + @"\_data\maps\"))
             {
-                string[] listfiles = Directory.GetFiles(@"maps/");
+                var listfiles = Directory.EnumerateFiles(path + @"\_data\maps\");
 
                 foreach (string file in listfiles)
                 {
@@ -96,6 +118,7 @@ namespace ASTERIX
                     {
                         //Reading lines and creating Lists for Line and Polyline
                         string[] lines = File.ReadAllLines(file);
+                        string filename = file.Split('\\')[file.Split('\\').Length - 1];
                         List<Line> mapL = new List<Line>();
                         List<Polyline> mapP = new List<Polyline>();
 
@@ -180,7 +203,7 @@ namespace ASTERIX
                         {
                             //Creating the Checkbox to be checked
                             CheckBox checkBox = new CheckBox();
-                            checkBox.Content = file.Substring(5);
+                            checkBox.Content = filename;
                             checkBox.FontSize = 12;
                             checkBox.Foreground = Brushes.White;
                             checkBox.Margin = new Thickness(10, 10, 10, 10);
@@ -198,15 +221,16 @@ namespace ASTERIX
             }
             else
             {
-                MessageBoxResult res = MessageBox.Show("No maps folder found.\nDo you want to create the folder?\n (" + path + "/maps/)", "No directory found", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult res = MessageBox.Show("No maps folder found.\nDo you want to create the folder?\n (" + path + @"\_data\maps\)", "No directory found", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (res == MessageBoxResult.Yes)
                 {
-                    Directory.CreateDirectory(path + "/maps/");
+                    Directory.CreateDirectory(path + @"\_data\maps\"); 
                 }
             }
         }
         private void CheckBoxClick(object sender, RoutedEventArgs e)
         {
+            string str = "";
             Lienzo.Children.Clear();
             for (int i = 0; i < checkBoxes.Count; i++)
             {
@@ -254,13 +278,16 @@ namespace ASTERIX
             {
                 foreach (Vehicle v in VehiclesList)
                 {
+                    str += v.TrackN + "-" + v.ICAOaddress + "-" + v.Callsign + "\n";
                     foreach (Point p in v.GetPointsByDate(new DateTime().AddHours(28)))
                     {
                         if (v.Type == "Aircraft")
                         {
                             Ellipse p0 = new Ellipse();
 
-                            if (v.Callsign.StartsWith("F"))
+                            if (v.Callsign == "NONE")
+                                p0.Stroke = Brushes.LightSkyBlue;
+                            else if (v.Callsign.StartsWith("F"))
                                 p0.Stroke = Brushes.White;
                             else
                                 p0.Stroke = Brushes.Red;
@@ -290,6 +317,7 @@ namespace ASTERIX
                     }
                 }
             }
+            MessageBox.Show(str);
         }
         private void CreateAircrafts()
         {
@@ -298,13 +326,13 @@ namespace ASTERIX
                 VehiclesList = new List<Vehicle>();
                 foreach (Message m in listMessages)
                 {
-                    if (Vistos.Contains(m.getTrackN()))
+                    if (Vistos.Contains(m.getAddressICAO()))
                     {
-                        VehiclesList[Vistos.IndexOf(m.getTrackN())].AddPoint(m);
+                        VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
                     }
                     else
                     {
-                        Vistos.Add(m.getTrackN());
+                        Vistos.Add(m.getAddressICAO());
                         VehiclesList.Add(new Vehicle(m));
                     }
                 }
@@ -319,14 +347,13 @@ namespace ASTERIX
             {
                 if (VehiclesList[i].TrackN == trackN)
                     exit = true;
-                i++;
+                else
+                    i++;
             }
 
             string str = "ICAO Addres: " + VehiclesList[i].ICAOaddress + "\n" + "Callsign: " + VehiclesList[i].Callsign + "\n"
-                + "X: " + VehiclesList[i].Positions[0].X + "m\n" + "Y: " + VehiclesList[i].Positions[0].Y + "m\n"
-                + "XCanvas: " + Convert.ToString((VehiclesList[i].Positions[0].X * alphaARP) -AARP) + "m\n" +
-                "YCanvas: " + Convert.ToString((VehiclesList[i].Positions[0].Y * betaARP) - BARP) + "m\n";
-            MessageBox.Show(str, "TN: " + VehiclesList[i].TrackN);
+                + "X: " + VehiclesList[i].Positions[0].X + "m\n" + "Y: " + VehiclesList[i].Positions[0].Y + "m";
+            MessageBox.Show(str, "TrackN: " + VehiclesList[i].TrackN);
         }
     }
 }
