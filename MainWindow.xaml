@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:ASTERIX"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="ASTERIX Decoder" Icon="Test.ico" Height="500" Width="750"  Background="#FF373F47">
+        Title="ASTERIX Decoder" Icon="Test.ico" Height="750" Width="1000"  Background="#FF373F47">
 
     <Grid x:Name="Base">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -48,23 +48,172 @@
                 </Path.Data>
             </Path>
         </Button>
-        <TextBox Grid.Row="2" Grid.ColumnSpan="4">
-            Welcome to ASTERIX -- Something will be here eventually
-        </TextBox>
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="0" Margin="0" Background="Gray" HorizontalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ProgressBar Height="15" Width="150" Name="PBLoadFile" Grid.Column="0" ValueChanged="PBLoadFile_ValueChanged" BorderBrush="Black"></ProgressBar>
+                <TextBox x:Name="LPBLoadFile"  Grid.Column="0" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></TextBox>
+                <ProgressBar Height="15" Width="150" Name="PBLoadMaps" Grid.Column="1" ValueChanged="PBLoadMaps_ValueChanged" BorderBrush="Black"></ProgressBar>
+                <TextBox x:Name="LPBLoadMaps"  Grid.Column="1" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></TextBox>
+                <ProgressBar Height="15" Width="150" Name="PBLoadDB" Grid.Column="2" ValueChanged="PBLoadDB_ValueChanged" BorderBrush="Black"></ProgressBar>
+                <TextBox x:Name="LPBLoadDB"  Grid.Column="2" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></TextBox>
+                <!-- Temporal items   -->
+                <TextBox x:Name="LPosX" Margin="0" Grid.Column="3" Visibility="Visible" Background="Gray" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
+                <TextBox x:Name="LPosY" Margin="0" Grid.Column="4" Visibility="Visible" Background="Gray" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
+            </Grid>
+        </StatusBar>
+
         
         <!-- Temporal items   -->
 
-        <GroupBox x:Name="WLoad" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden">
-            <TextBox ClipToBounds="True">LOAD</TextBox>
+        <GroupBox x:Name="WLoad" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="BLoadFile"  Grid.Column="1" Grid.Row="1" Click="BLoadFile_Click">File...</Button>
+                <TextBox x:Name="TLoadFile" Grid.Row="1" Grid.Column="3"></TextBox>
+                <Button x:Name="BLoadMaps" Grid.Column="1" Grid.Row="3" Click="BLoadMaps_Click">Maps Folder...</Button>
+                <TextBox x:Name="TLoadMaps" Grid.Row="3" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-GUI\_data\maps</TextBox>
+                <Button x:Name="BLoadDB" Grid.Column="1" Grid.Row="5" Click="BLoadDB_Click">ACFT DB...</Button>
+                <TextBox x:Name="TLoadDB" Grid.Row="5" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-GUI\_data\aircraft_db.csv</TextBox>
+                <Button x:Name="BLoadRefresh" Grid.Column="3" Grid.Row="7" Width="100" Click="BLoadRefresh_Click">Refresh</Button>
+            </Grid>
         </GroupBox>
-        <GroupBox x:Name="WRadar" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden">
-            <TextBox>RADAR</TextBox>
+        <GroupBox x:Name="WRadar" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
+            <Grid SizeChanged="Grid_SizeChanged">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                <Canvas x:Name="LienzoMaps" Background="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3"/>
+                <Canvas x:Name="LienzoVehicles" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" MouseMove="LienzoMaps_MouseMove"/>
+                <Expander x:Name="TimeExpand" Background="Gray" ExpandDirection="Right" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                    <Expander.Header>
+                        <TextBlock Text="Time Options">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="90"></RotateTransform>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Expander.Header>
+                    <TextBlock TextWrapping="Wrap" Foreground="White">Option 1 Option 2</TextBlock>
+                </Expander>
+                <Expander x:Name="MapsExpand" Background="Gray" ExpandDirection="Left" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Right">
+                    <Expander.Header>
+                        <TextBlock Text="Maps Options">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="-90"></RotateTransform>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Expander.Header>
+                    <StackPanel x:Name="StackOptionMaps">
+                        <CheckBox x:Name="CheckARP" Click="CheckBoxClickMaps" Margin="10" Foreground="White">ARP</CheckBox>
+                        <CheckBox x:Name="CheckVehicles" Click="CheckBoxClickVehicles" Margin="10" Foreground="White" Visibility="Hidden">Vehicles</CheckBox>
+                        <StackPanel x:Name="StackMaps"></StackPanel>
+                    </StackPanel>
+                </Expander>
+            </Grid>
         </GroupBox>
-        <GroupBox x:Name="WTable" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden">
-            <TextBox>TABLE</TextBox>
+        <GroupBox x:Name="WTable" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
+            <DataGrid x:Name="Table" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" Background="Black" BorderBrush="#FF04284C" AlternatingRowBackground="Cyan" GridLinesVisibility="Vertical" RowBackground="#FF7C84B6" AreRowDetailsFrozen="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Track" Binding="{Binding TrackN}"/>
+                    <DataGridTextColumn Header="Country" Binding="{Binding Country}"/>
+                    <DataGridTextColumn Header="CAT" Binding="{Binding CAT}"/>
+                    <DataGridTextColumn Header="Length" Binding="{Binding Length}"/>
+                    <DataGridTextColumn Header="TOD" Binding="{Binding TOD}"/>
+                    <DataGridTextColumn Header="DataItems Count" Binding="{Binding FSPECount}"/>
+                    <DataGridTextColumn Header="ICAO Address" Binding="{Binding ICAOAddress}"/>
+                    <DataGridTextColumn Header="Callsign" Binding="{Binding Callsign}"/>
+                    <DataGridTextColumn Header="Reg. ID" Binding="{Binding RegID}"/>
+                </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <Image DockPanel.Dock="Left" Source="{Binding ImageUrl}" Height="64" Margin="15"/>
+                            <Grid Margin="0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="CAT: " FontWeight="Bold" Grid.Column="0" Grid.Row="0" Margin="5"/>
+                                <TextBlock Text="{Binding CAT}" Grid.Column="1" Grid.Row="0" Margin="5"/>
+                                <TextBlock Text="Length: " FontWeight="Bold" Grid.Row="1" Margin="5"/>
+                                <TextBlock Text="{Binding Length}" Grid.Column="1" Grid.Row="1" Margin="5"/>
+                                <TextBlock Text="ICAO Address: " FontWeight="Bold" Grid.Row="2" Margin="5"/>
+                                <TextBlock Text="{Binding ICAOAddress}" Grid.Column="1" Grid.Row="2" Margin="5"/>
+                                <TextBlock Text="Callsign: " FontWeight="Bold" Grid.Row="3" Margin="5"/>
+                                <TextBlock Text="{Binding Callsign}" Grid.Column="1" Grid.Row="3" Margin="5"/>
+
+
+                                <TextBlock Text="Country: " FontWeight="Bold" Grid.Row="0" Grid.Column="2" Margin="5"/>
+                                <TextBlock Text="{Binding Country}" Grid.Column="3" Grid.Row="0" Margin="5"/>
+                                <TextBlock Text="Type: " FontWeight="Bold" Grid.Row="1" Grid.Column="2" Margin="5"/>
+                                <TextBlock Text="{Binding Type}" Grid.Column="3" Grid.Row="1" Margin="5"/>
+
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            </DataGrid>
         </GroupBox>
-        <GroupBox x:Name="WSettings" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden">
-            <TextBox>SETTINGS</TextBox>
+        <GroupBox x:Name="WSettings" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <GroupBox x:Name="SettLangApp" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Header="Lang. and Appearance Settings">
+                    <CheckBox>HOLA</CheckBox>
+                </GroupBox>
+                <GroupBox x:Name="SettMap" Grid.Row="1" Grid.Column="3" Header="RADAR Settings">
+
+                </GroupBox>
+                <GroupBox x:Name="SettTable" Grid.Row="3" Grid.Column="3" Header="Table Settings">
+
+                </GroupBox>
+            </Grid>
         </GroupBox>
     </Grid>
 </Window>

@@ -24,7 +24,7 @@ namespace ASTERIX
         internal double theta { get; set; }
         internal double phi { get; set; }
 
-        //ref lat lon for Lamber projection -> referenciat al centre de l'atirport
+        //ref lat lon for Lamber projection -> referenciat al centre de l'aeroport
         //private double latRef = 41.296531 * Math.PI / 180;
         //private double lonRef = 2.075594 * Math.PI / 180;
         private double latRef = 41.295885 * Math.PI / 180;
