@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +28,7 @@ namespace ASTERIX
         List<Tuple<string, string, string, string, string>> listPlaneDB;
 
         //Logic stuff
-        Dictionary<string, string> paths = new Dictionary<string, string> (){{"File", @""}, {"Maps", @""}, {"DB", @""}};
+        Dictionary<string, string> paths = new Dictionary<string, string>() { { "File", @"" }, { "Maps", @"" }, { "DB", @"" } };
 
         //Mapping stuff
         List<List<Tuple<Point, Point>>> mapsLines;
@@ -203,7 +202,7 @@ namespace ASTERIX
                 listRow.Add(new ShowRow(m, listPlaneDB));
                 i += length;
 
-                (sender as BackgroundWorker).ReportProgress((int)(((i+1) * 100 / list.Count) + 0.001));
+                (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / list.Count) + 0.001));
             }
         }
 
@@ -218,7 +217,7 @@ namespace ASTERIX
                 {
                     //Reading lines and creating Lists for Line and Polyline
                     string[] lines = File.ReadAllLines(file);
-                    List<Tuple<Point,Point>> mapL = new List<Tuple<Point, Point>>();
+                    List<Tuple<Point, Point>> mapL = new List<Tuple<Point, Point>>();
                     List<List<Point>> mapP = new List<List<Point>>();
 
                     //Start to read the lines
@@ -249,7 +248,7 @@ namespace ASTERIX
 
                                     tPoint.Add(new Point().LatLong2XY(x1, x2));
                                 }
-                                mapL.Add(new Tuple<Point,Point> (tPoint[0], tPoint[1]));
+                                mapL.Add(new Tuple<Point, Point>(tPoint[0], tPoint[1]));
                                 j++;
                             }
                             else if (l1[0].StartsWith("Polilinea"))
@@ -289,7 +288,7 @@ namespace ASTERIX
                     }
                     mapsLines.Add(mapL);
                     mapsPolylines.Add(mapP);
-                    (sender as BackgroundWorker).ReportProgress((int)(((k+1) * 100 / listfiles.Length) + 0.001));
+                    (sender as BackgroundWorker).ReportProgress((int)(((k + 1) * 100 / listfiles.Length) + 0.001));
                     mapsNames.Add(file.Split('\\')[file.Split('\\').Length - 1]);
 
                     e.Result = listfiles.ToString();
@@ -321,7 +320,7 @@ namespace ASTERIX
                         Vistos.Add(m.getAddressICAO());
                         VehiclesList.Add(new Vehicle(m));
                     }
-                    (sender as BackgroundWorker).ReportProgress((int)(((i+1) * 100 / listMessages.Count) + 0.001));
+                    (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / listMessages.Count) + 0.001));
                 }
             }
         }
@@ -344,7 +343,7 @@ namespace ASTERIX
             if (PBLoadMaps.Value >= 100)
                 LPBLoadMaps.Text = "Maps loaded!";
             else
-                LPBLoadMaps.Text =  "Loading maps...";
+                LPBLoadMaps.Text = "Loading maps...";
         }
 
         private void PBLoadDB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -519,7 +518,7 @@ namespace ASTERIX
         private void CheckBoxClickVehicles(object sender, RoutedEventArgs e)
         {
             LienzoVehicles.Children.Clear();
-            
+
             if (CheckVehicles.IsChecked == true)
             {
                 if (!(VehiclesList == null))
@@ -564,7 +563,7 @@ namespace ASTERIX
                         }
                     }
                 }
-                
+
             }
         }
 
