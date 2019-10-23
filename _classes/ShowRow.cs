@@ -24,9 +24,36 @@ namespace ASTERIX
         public string TrackN { get; set; }
         public string RegID { get; set; }
 
+        public ShowRow(Message m)
+        {
+            loadMessage(m);
+        }
+
         public ShowRow(Message m, List<Tuple<string, string, string, string, string>> listPlanes)
         {
-            this.ImageUrl = "https://cdn.jetphotos.com/full/6/69088_1542915518.jpg";
+            loadMessage(m);
+
+            if (listPlanes != null)
+            {
+                bool exit = false;
+                int i = 0;
+                if (this.ICAOAddress != "NONE")
+                {
+                    while (!(exit || i >= listPlanes.Count))
+                    {
+                        if (string.Compare(this.ICAOAddress, listPlanes[i].Item1) == 0)
+                        {
+                            this.RegID = listPlanes[i].Item2.ToUpper();
+                            this.ImageUrl = "https://cdn.jetphotos.com/full/6/69088_1542915518.jpg";
+                            exit = true;
+                        }
+                    i++;
+                    }
+                }
+            }
+        }
+        private void loadMessage(Message m)
+        {
             this.TOD = m.getTOD().ToString("HH:mm:ss.fff");
             this.ICAOAddress = m.getAddressICAO();
             this.Length = Convert.ToString(m.getLength());
@@ -40,24 +67,6 @@ namespace ASTERIX
             this.Country = "NONE";
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
-
-            if (listPlanes != null)
-            {
-                bool exit = false;
-                int i = 0;
-                if (this.ICAOAddress != "NONE")
-                {
-                    //while (!(exit || i >= listPlanes.Count))
-                    //{
-                    //if (string.Compare(this.ICAOAddress, listPlanes[i].Item1) == 0)
-                    //{
-                    this.RegID = listPlanes[i].Item2.ToUpper();
-                    exit = true;
-                    //}
-                    i++;
-                    //}
-                }
-            }
         }
     }
 }

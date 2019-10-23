@@ -38,6 +38,7 @@ namespace ASTERIX
 
         //Info stuff
         List<Vehicle> VehiclesList;
+        List<string> Vistos;
         bool relaunch = false;
 
         public MainWindow()
@@ -173,8 +174,14 @@ namespace ASTERIX
 
             if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                // Giving the user the path that it was selected
-                TLoadDB.Text = openFileDialog.FileName;
+                if (File.Exists(openFileDialog.FileName))
+                {
+                    // Giving the user the path that it was selected
+                    TLoadDB.Text = openFileDialog.FileName;
+                }
+                else
+                    //TODO: Incorrect path messagebox
+                    MessageBox.Show("No aircraft_db.csv file found in " + openFileDialog.FileName, "Warning");
             }
         }
 
@@ -288,22 +295,34 @@ namespace ASTERIX
                     }
                     mapsLines.Add(mapL);
                     mapsPolylines.Add(mapP);
-                    (sender as BackgroundWorker).ReportProgress((int)(((k + 1) * 100 / listfiles.Length) + 0.001));
                     mapsNames.Add(file.Split('\\')[file.Split('\\').Length - 1]);
 
                     e.Result = listfiles.ToString();
                 }
                 catch
                 {
-                    //TODO: MessageBox saying the ones that could not be solved
                     MessageBox.Show("The file at: " + file + " could not be read. The file will be skipped.", "Error while reading.", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    (sender as BackgroundWorker).ReportProgress((int)(((k + 1) * 100 / listfiles.Length) + 0.001));
                 }
             }
         }
 
         private void Worker_DoWork_DB(object sender, DoWorkEventArgs e)
         {
-            List<string> Vistos = new List<string>();
+            listPlaneDB = new List<Tuple<string, string, string, string, string>>();
+            using (var reader = new StreamReader((string)e.Argument))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var val = reader.ReadLine().Split(',');
+                    listPlaneDB.Add(new Tuple<string, string, string, string, string>(val[0], val[1], val[2], val[3], val[4]));
+                }
+            }
+
+            Vistos = new List<string>();
 
             if (!(listMessages == null))
             {
@@ -313,7 +332,11 @@ namespace ASTERIX
                     Message m = listMessages[i];
                     if (Vistos.Contains(m.getAddressICAO()))
                     {
-                        VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
+                        if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(1))
+                        {
+                            VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
+                        }
+                        
                     }
                     else
                     {
@@ -328,6 +351,16 @@ namespace ASTERIX
         void worker_ProgressChanged_LoadFile(object sender, ProgressChangedEventArgs e)
         {
             PBLoadFile.Value = e.ProgressPercentage;
+        }
+
+        void worker_ProgressChanged_Maps(object sender, ProgressChangedEventArgs e)
+        {
+            PBLoadMaps.Value = e.ProgressPercentage;
+        }
+
+        void worker_ProgressChanged_DB(object sender, ProgressChangedEventArgs e)
+        {
+            PBLoadDB.Value = e.ProgressPercentage;
         }
 
         private void PBLoadFile_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -352,16 +385,6 @@ namespace ASTERIX
                 LPBLoadDB.Text = "Aircraft DB loaded!";
             else
                 LPBLoadDB.Text = "Loading DB...";
-        }
-
-        void worker_ProgressChanged_Maps(object sender, ProgressChangedEventArgs e)
-        {
-            PBLoadMaps.Value = e.ProgressPercentage;
-        }
-
-        void worker_ProgressChanged_DB(object sender, ProgressChangedEventArgs e)
-        {
-            PBLoadDB.Value = e.ProgressPercentage;
         }
 
         private void worker_RunWorkerCompleated_LoadFile(object sender, RunWorkerCompletedEventArgs e)
@@ -446,7 +469,7 @@ namespace ASTERIX
             }
 
             //Check condition, not working properly
-            if (!TLoadDB.Text.Equals(paths["DB"]) || TLoadDB.Equals("") || relaunch)
+            if (!TLoadDB.Text.Equals(paths["DB"]) || TLoadDB.Equals("") || !relaunch)
             {
                 paths["DB"] = TLoadDB.Text;
 

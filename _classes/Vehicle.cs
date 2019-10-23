@@ -51,5 +51,10 @@ namespace ASTERIX
             }
             return points;
         }
+
+        public DateTime getLastTime()
+        {
+            return this.DateTimes[this.DateTimes.Count - 1];
+        }
     }
 }
