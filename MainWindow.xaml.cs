@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -137,9 +138,12 @@ namespace ASTERIX
 
         private void BLoadFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog();
 
-            if (openFileDialog.ShowDialog() == true)
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            openFileDialog.IsFolderPicker = false;
+
+            if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 // Giving the user the path that it was selected
                 TLoadFile.Text = openFileDialog.FileName;
@@ -148,9 +152,12 @@ namespace ASTERIX
 
         private void BLoadMaps_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog();
 
-            if (openFileDialog.ShowDialog() == true)
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            openFileDialog.IsFolderPicker = true;
+
+            if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 // Giving the user the path that it was selected
                 TLoadMaps.Text = openFileDialog.FileName;
@@ -160,9 +167,12 @@ namespace ASTERIX
 
         private void BLoadDB_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog();
 
-            if (openFileDialog.ShowDialog() == true)
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            openFileDialog.IsFolderPicker = false;
+
+            if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 // Giving the user the path that it was selected
                 TLoadDB.Text = openFileDialog.FileName;
@@ -208,7 +218,6 @@ namespace ASTERIX
                 {
                     //Reading lines and creating Lists for Line and Polyline
                     string[] lines = File.ReadAllLines(file);
-                    mapsNames.Add(file.Split('\\')[file.Split('\\').Length - 1]);
                     List<Tuple<Point,Point>> mapL = new List<Tuple<Point, Point>>();
                     List<List<Point>> mapP = new List<List<Point>>();
 
@@ -281,6 +290,7 @@ namespace ASTERIX
                     mapsLines.Add(mapL);
                     mapsPolylines.Add(mapP);
                     (sender as BackgroundWorker).ReportProgress((int)(((k+1) * 100 / listfiles.Length) + 0.001));
+                    mapsNames.Add(file.Split('\\')[file.Split('\\').Length - 1]);
 
                     e.Result = listfiles.ToString();
                 }
@@ -516,7 +526,7 @@ namespace ASTERIX
                 {
                     foreach (Vehicle v in VehiclesList)
                     {
-                        foreach (Point p in v.GetPointsByDate(new DateTime().AddHours(28)))
+                        foreach (Point p in v.GetPointsByDate(new DateTime().AddHours(23)))
                         {
                             if (v.Type == "Aircraft")
                             {

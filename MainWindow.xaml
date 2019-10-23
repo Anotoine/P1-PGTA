@@ -104,7 +104,7 @@
         <GroupBox x:Name="WRadar" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
             <Grid SizeChanged="Grid_SizeChanged">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="100*"/>
                     <ColumnDefinition Width="250"/>
                 </Grid.ColumnDefinitions>
@@ -118,7 +118,23 @@
                             </TextBlock.LayoutTransform>
                         </TextBlock>
                     </Expander.Header>
-                    <TextBlock TextWrapping="Wrap" Foreground="White">Option 1 Option 2</TextBlock>
+                    <StackPanel x:Name="StackOptionsTime" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200">
+                        <DockPanel Margin="5" HorizontalAlignment="Stretch">
+                            <TextBlock x:Name="LStartTime" DockPanel.Dock="Top" Margin="5">Start Time:</TextBlock>
+                            <TextBox Margin="5" Text="{Binding ElementName=SlStart, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" />
+                            <Slider Maximum="24" Minimum="22" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True" Name="SlStart" HorizontalAlignment="Stretch"/>
+                        </DockPanel>
+                        <DockPanel Margin="5" HorizontalAlignment="Stretch">
+                            <TextBlock x:Name="LStopTime"  DockPanel.Dock="Top" Margin="5">Stop Time:</TextBlock>
+                            <TextBox Margin="5" Text="{Binding ElementName=SlStop, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" TextAlignment="Center" Width="25" />
+                            <Slider Maximum="24" Minimum="22" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True" Name="SlStop" HorizontalAlignment="Stretch"/>
+                        </DockPanel>
+                        <DockPanel Margin="5" HorizontalAlignment="Stretch">
+                            <TextBlock x:Name="LSpeed"  DockPanel.Dock="Top" Margin="5">Speed Time:</TextBlock>
+                            <TextBox Margin="5" Text="{Binding ElementName=SlSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" />
+                            <Slider Maximum="20" Minimum="1" TickPlacement="BottomRight" TickFrequency="0.5" Ticks="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"  IsSnapToTickEnabled="True" Name="SlSpeed" HorizontalAlignment="Stretch"/>
+                        </DockPanel>
+                    </StackPanel>
                 </Expander>
                 <Expander x:Name="MapsExpand" Background="Gray" ExpandDirection="Left" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Right">
                     <Expander.Header>
