@@ -25,7 +25,7 @@ namespace ASTERIX
         List<ShowRow> listRow;
 
         //DB stuff
-        List<Tuple<string, string, string, string, string>> listPlaneDB;
+        List<Tuple<string, string, string, string, string, string>> listPlaneDB;
 
         //Logic stuff
         Dictionary<string, string> paths = new Dictionary<string, string>() { { "File", @"" }, { "Maps", @"" }, { "DB", @"" } };
@@ -206,7 +206,7 @@ namespace ASTERIX
                 Message m = new Message(list.GetRange(i, length));
 
                 listMessages.Add(m);
-                listRow.Add(new ShowRow(m, listPlaneDB));
+                listRow.Add(new ShowRow(m));
                 i += length;
 
                 (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / list.Count) + 0.001));
@@ -312,14 +312,19 @@ namespace ASTERIX
 
         private void Worker_DoWork_DB(object sender, DoWorkEventArgs e)
         {
-            listPlaneDB = new List<Tuple<string, string, string, string, string>>();
+            listPlaneDB = new List<Tuple<string, string, string, string, string, string>>();
             using (var reader = new StreamReader((string)e.Argument))
             {
                 while (!reader.EndOfStream)
                 {
                     var val = reader.ReadLine().Split(',');
-                    listPlaneDB.Add(new Tuple<string, string, string, string, string>(val[0], val[1], val[2], val[3], val[4]));
+                    listPlaneDB.Add(new Tuple<string, string, string, string, string, string>(val[0], val[1], val[2], val[3], val[4], val[5]));
                 }
+            }
+
+            foreach (ShowRow sr in listRow)
+            {
+                sr.AddDBData(listPlaneDB);
             }
 
             Vistos = new List<string>();
@@ -469,7 +474,7 @@ namespace ASTERIX
             }
 
             //Check condition, not working properly
-            if (!TLoadDB.Text.Equals(paths["DB"]) || TLoadDB.Equals("") || !relaunch)
+            if (!TLoadDB.Text.Equals(paths["DB"]) || TLoadDB.Equals("") || relaunch)
             {
                 paths["DB"] = TLoadDB.Text;
 
@@ -562,7 +567,7 @@ namespace ASTERIX
                                     p0.Stroke = Brushes.Red;
 
                                 p0.StrokeThickness = 1;
-                                p0.Width = 5;
+                                p0.Width = 2;
                                 p0.Height = p0.Width;
                                 p0.Tag = v.TrackN;
                                 p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
@@ -586,7 +591,6 @@ namespace ASTERIX
                         }
                     }
                 }
-
             }
         }
 

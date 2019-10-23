@@ -26,34 +26,6 @@ namespace ASTERIX
 
         public ShowRow(Message m)
         {
-            loadMessage(m);
-        }
-
-        public ShowRow(Message m, List<Tuple<string, string, string, string, string>> listPlanes)
-        {
-            loadMessage(m);
-
-            if (listPlanes != null)
-            {
-                bool exit = false;
-                int i = 0;
-                if (this.ICAOAddress != "NONE")
-                {
-                    while (!(exit || i >= listPlanes.Count))
-                    {
-                        if (string.Compare(this.ICAOAddress, listPlanes[i].Item1) == 0)
-                        {
-                            this.RegID = listPlanes[i].Item2.ToUpper();
-                            this.ImageUrl = "https://cdn.jetphotos.com/full/6/69088_1542915518.jpg";
-                            exit = true;
-                        }
-                    i++;
-                    }
-                }
-            }
-        }
-        private void loadMessage(Message m)
-        {
             this.TOD = m.getTOD().ToString("HH:mm:ss.fff");
             this.ICAOAddress = m.getAddressICAO();
             this.Length = Convert.ToString(m.getLength());
@@ -67,6 +39,28 @@ namespace ASTERIX
             this.Country = "NONE";
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
+        }
+
+        public void AddDBData(List<Tuple<string, string, string, string, string, string>> listPlanes)
+        {
+            if (listPlanes != null)
+            {
+                bool exit = false;
+                int i = 0;
+                if (this.ICAOAddress != "NONE")
+                {
+                    while (!(exit || i >= listPlanes.Count))
+                    {
+                        if (string.Compare(this.ICAOAddress, listPlanes[i].Item1) == 0)
+                        {
+                            this.RegID = listPlanes[i].Item2.ToUpper();
+                            this.ImageUrl = listPlanes[i].Item6;
+                            exit = true;
+                        }
+                    i++;
+                    }
+                }
+            }
         }
     }
 }
