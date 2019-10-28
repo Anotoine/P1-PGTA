@@ -25,7 +25,7 @@ namespace ASTERIX
         List<ShowRow> listRow;
 
         //DB stuff
-        List<Tuple<string, string, string, string, string, string>> listPlaneDB;
+        List<AircraftDB> listPlaneDB;
 
         //Logic stuff
         Dictionary<string, string> paths = new Dictionary<string, string>() { { "File", @"" }, { "Maps", @"" }, { "DB", @"" } };
@@ -138,51 +138,70 @@ namespace ASTERIX
 
         private void BLoadFile_Click(object sender, RoutedEventArgs e)
         {
-            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog();
+            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = false,
+                EnsurePathExists = true,
+                EnsureValidNames = true,
+                Multiselect = false,
+                Title = "Load the ASTERIX file..."
+            };
+            openFileDialog.Filters.Add(new CommonFileDialogFilter("ASTERIX files", "*.ast"));
 
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            openFileDialog.IsFolderPicker = false;
+
+            if (string.IsNullOrEmpty(TLoadFile.Text) || !File.Exists(TLoadFile.Text))
+                openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            else
+                openFileDialog.InitialDirectory = TLoadFile.Text;
 
             if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
                 // Giving the user the path that it was selected
                 TLoadFile.Text = openFileDialog.FileName;
-            }
+            
         }
 
         private void BLoadMaps_Click(object sender, RoutedEventArgs e)
         {
-            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog();
+            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true,
+                EnsurePathExists = true,
+                EnsureValidNames = true,
+                Multiselect = false,
+                Title = "Load the maps folder..."
+            };
+            //openFileDialog.Filters.Add(new CommonFileDialogFilter("Map file", "*.map"));
 
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            openFileDialog.IsFolderPicker = true;
+            if (string.IsNullOrEmpty(TLoadMaps.Text) || !Directory.Exists(TLoadMaps.Text))
+                openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            else
+                openFileDialog.InitialDirectory = TLoadMaps.Text;
 
             if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
                 // Giving the user the path that it was selected
                 TLoadMaps.Text = openFileDialog.FileName;
-
-            }
         }
 
         private void BLoadDB_Click(object sender, RoutedEventArgs e)
         {
-            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog();
+            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = false,
+                EnsurePathExists = true,
+                EnsureValidNames = true,
+                Multiselect = false,
+                Title = "Load the Database file..."
+            };
+            openFileDialog.Filters.Add(new CommonFileDialogFilter("Aircraft DB", "*.csv"));
 
-            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            openFileDialog.IsFolderPicker = false;
+            if (string.IsNullOrEmpty(TLoadDB.Text) || !File.Exists(TLoadDB.Text))
+                openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            else
+                openFileDialog.InitialDirectory = TLoadDB.Text;
 
             if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                if (File.Exists(openFileDialog.FileName))
-                {
-                    // Giving the user the path that it was selected
-                    TLoadDB.Text = openFileDialog.FileName;
-                }
-                else
-                    //TODO: Incorrect path messagebox
-                    MessageBox.Show("No aircraft_db.csv file found in " + openFileDialog.FileName, "Warning");
-            }
+                // Giving the user the path that it was selected
+                TLoadDB.Text = openFileDialog.FileName;
         }
 
         private void Worker_DoWork_LoadFile(object sender, DoWorkEventArgs e)
@@ -312,25 +331,24 @@ namespace ASTERIX
 
         private void Worker_DoWork_DB(object sender, DoWorkEventArgs e)
         {
-            listPlaneDB = new List<Tuple<string, string, string, string, string, string>>();
+            listPlaneDB = new List<AircraftDB>();
             using (var reader = new StreamReader((string)e.Argument))
             {
                 while (!reader.EndOfStream)
+                    listPlaneDB.Add(new AircraftDB(reader.ReadLine().Split(',')));
+            }
+
+            if (!(listRow == null))
+            {
+                foreach (ShowRow sr in listRow)
                 {
-                    var val = reader.ReadLine().Split(',');
-                    listPlaneDB.Add(new Tuple<string, string, string, string, string, string>(val[0], val[1], val[2], val[3], val[4], val[5]));
+                    sr.AddDBData(listPlaneDB);
                 }
             }
 
-            foreach (ShowRow sr in listRow)
-            {
-                sr.AddDBData(listPlaneDB);
-            }
-
-            Vistos = new List<string>();
-
             if (!(listMessages == null))
             {
+                Vistos = new List<string>();
                 VehiclesList = new List<Vehicle>();
                 for (int i = 0; i < listMessages.Count; i++)
                 {
@@ -338,10 +356,7 @@ namespace ASTERIX
                     if (Vistos.Contains(m.getAddressICAO()))
                     {
                         if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(1))
-                        {
                             VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
-                        }
-                        
                     }
                     else
                     {
@@ -636,6 +651,5 @@ namespace ASTERIX
             LPosX.Text = ((e.GetPosition(LienzoMaps).X + AARP) / alphaARP).ToString("0.###m");
             LPosY.Text = ((e.GetPosition(LienzoMaps).Y + BARP) / betaARP).ToString("0.###m");
         }
-
     }
 }

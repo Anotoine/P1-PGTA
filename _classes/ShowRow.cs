@@ -41,7 +41,7 @@ namespace ASTERIX
             this.Callsign = m.getCallsign();
         }
 
-        public void AddDBData(List<Tuple<string, string, string, string, string, string>> listPlanes)
+        public void AddDBData(List<AircraftDB> listPlanes)
         {
             if (listPlanes != null)
             {
@@ -51,10 +51,10 @@ namespace ASTERIX
                 {
                     while (!(exit || i >= listPlanes.Count))
                     {
-                        if (string.Compare(this.ICAOAddress, listPlanes[i].Item1) == 0)
+                        if (string.Compare(this.ICAOAddress, listPlanes[i].ICAOAddress) == 0)
                         {
-                            this.RegID = listPlanes[i].Item2.ToUpper();
-                            this.ImageUrl = listPlanes[i].Item6;
+                            this.RegID = listPlanes[i].RegID.ToUpper();
+                            this.ImageUrl = listPlanes[i].ImageUrl;
                             exit = true;
                         }
                     i++;

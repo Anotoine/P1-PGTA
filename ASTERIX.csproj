@@ -93,6 +93,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="_classes\AircraftDB.cs" />
     <Compile Include="_classes\Atom.cs" />
     <Compile Include="_classes\CAT10.cs" />
     <Compile Include="_classes\CAT19.cs" />

@@ -95,9 +95,9 @@
                 <Button x:Name="BLoadFile"  Grid.Column="1" Grid.Row="1" Click="BLoadFile_Click">File...</Button>
                 <TextBox x:Name="TLoadFile" Grid.Row="1" Grid.Column="3"></TextBox>
                 <Button x:Name="BLoadMaps" Grid.Column="1" Grid.Row="3" Click="BLoadMaps_Click">Maps Folder...</Button>
-                <TextBox x:Name="TLoadMaps" Grid.Row="3" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-GUI\_data\maps</TextBox>
+                <TextBox x:Name="TLoadMaps" Grid.Row="3" Grid.Column="3"></TextBox>
                 <Button x:Name="BLoadDB" Grid.Column="1" Grid.Row="5" Click="BLoadDB_Click">ACFT DB...</Button>
-                <TextBox x:Name="TLoadDB" Grid.Row="5" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-GUI\_data\aircraft_db.csv</TextBox>
+                <TextBox x:Name="TLoadDB" Grid.Row="5" Grid.Column="3"></TextBox>
                 <Button x:Name="BLoadRefresh" Grid.Column="3" Grid.Row="7" Width="100" Click="BLoadRefresh_Click">Refresh</Button>
             </Grid>
         </GroupBox>
