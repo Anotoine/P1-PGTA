@@ -20,9 +20,6 @@ namespace ASTERIX
         private CAT10 CAT10;
         private CAT21 CAT21;
 
-
-
-
         //Constructors needed
         public Message(int ID, List<string> raw, int CAT, int Length)
         {

@@ -98,6 +98,7 @@
     <Compile Include="_classes\CAT10.cs" />
     <Compile Include="_classes\CAT19.cs" />
     <Compile Include="_classes\CAT20.cs" />
+    <Compile Include="_classes\CAT21.cs" />
     <Compile Include="_classes\Point.cs" />
     <Compile Include="_classes\ShowRow.cs" />
     <Compile Include="_classes\Vehicle.cs" />
