@@ -48,25 +48,27 @@
                 </Path.Data>
             </Path>
         </Button>
-        <StatusBar Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="0" Margin="0" Background="Gray" HorizontalAlignment="Stretch">
-            <Grid HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <ProgressBar Height="15" Width="150" Name="PBLoadFile" Grid.Column="0" ValueChanged="PBLoadFile_ValueChanged" BorderBrush="Black"></ProgressBar>
-                <TextBox x:Name="LPBLoadFile"  Grid.Column="0" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="Black"></TextBox>
-                <ProgressBar Height="15" Width="150" Name="PBLoadMaps" Grid.Column="1" ValueChanged="PBLoadMaps_ValueChanged" BorderBrush="Black"></ProgressBar>
-                <TextBox x:Name="LPBLoadMaps"  Grid.Column="1" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  IsReadOnly="True" Foreground="Black"></TextBox>
-                <ProgressBar Height="15" Width="150" Name="PBLoadDB" Grid.Column="2" ValueChanged="PBLoadDB_ValueChanged" BorderBrush="Black"></ProgressBar>
-                <TextBox x:Name="LPBLoadDB"  Grid.Column="2" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  IsReadOnly="True" Foreground="Black"></TextBox>
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="0" Margin="0" Background="Gray">
+            <DockPanel HorizontalAlignment="Center" LastChildFill="True">
+                <Grid>
+                    <ProgressBar Height="15" Width="150" Name="PBLoadFile"  ValueChanged="PBLoadFile_ValueChanged" BorderBrush="Black"></ProgressBar>
+                    <TextBox x:Name="LPBLoadFile"  Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="Black"></TextBox>
+                </Grid>
+                <Grid>
+                    <ProgressBar Height="15" Width="150" Name="PBLoadMaps" ValueChanged="PBLoadMaps_ValueChanged" BorderBrush="Black"></ProgressBar>
+                    <TextBox x:Name="LPBLoadMaps" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  IsReadOnly="True" Foreground="Black"></TextBox>
+                </Grid>
+                <Grid>
+                    <ProgressBar Height="15" Width="150" Name="PBLoadDB"  ValueChanged="PBLoadDB_ValueChanged" BorderBrush="Black"></ProgressBar>
+                    <TextBox x:Name="LPBLoadDB" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  IsReadOnly="True" Foreground="Black"></TextBox>
+                </Grid>
+
                 <!-- Temporal items   -->
-                <TextBox x:Name="LPosX" Margin="0" Grid.Column="3" Visibility="Visible" Background="Gray" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
-                <TextBox x:Name="LPosY" Margin="0" Grid.Column="4" Visibility="Visible" Background="Gray" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
-            </Grid>
+                <DockPanel>
+                    <TextBox x:Name="LPosX" Margin="0" Visibility="Visible" Background="Gray" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
+                    <TextBox x:Name="LPosY" Margin="0" Visibility="Visible" Background="Gray" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
+                </DockPanel>
+            </DockPanel>
         </StatusBar>
 
         
@@ -93,11 +95,11 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Button x:Name="BLoadFile"  Grid.Column="1" Grid.Row="1" Click="BLoadFile_Click">File...</Button>
-                <TextBox x:Name="TLoadFile" Grid.Row="1" Grid.Column="3"></TextBox>
+                <TextBox x:Name="TLoadFile" Grid.Row="1" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\data\Ficheros Asterix de prueba-20190921\MLAT_cat20\160510-lebl-220001.ast</TextBox>
                 <Button x:Name="BLoadMaps" Grid.Column="1" Grid.Row="3" Click="BLoadMaps_Click">Maps Folder...</Button>
-                <TextBox x:Name="TLoadMaps" Grid.Row="3" Grid.Column="3"></TextBox>
+                <TextBox x:Name="TLoadMaps" Grid.Row="3" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\data\Mapas-20190922</TextBox>
                 <Button x:Name="BLoadDB" Grid.Column="1" Grid.Row="5" Click="BLoadDB_Click">ACFT DB...</Button>
-                <TextBox x:Name="TLoadDB" Grid.Row="5" Grid.Column="3"></TextBox>
+                <TextBox x:Name="TLoadDB" Grid.Row="5" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\aircraft_db\diffCAT20.csv</TextBox>
                 <Button x:Name="BLoadRefresh" Grid.Column="3" Grid.Row="7" Width="100" Click="BLoadRefresh_Click">Refresh</Button>
             </Grid>
         </GroupBox>
@@ -122,12 +124,12 @@
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LStartTime" DockPanel.Dock="Top" Margin="5">Start Time:</TextBlock>
                             <TextBox Margin="5" Text="{Binding ElementName=SlStart, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" />
-                            <Slider Maximum="24" Minimum="22" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True" Name="SlStart" HorizontalAlignment="Stretch"/>
+                            <Slider Maximum="24" Minimum="22" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True" Name="SlStart" HorizontalAlignment="Stretch" ValueChanged="SliderTime_ValueChanged"/>
                         </DockPanel>
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LStopTime"  DockPanel.Dock="Top" Margin="5">Stop Time:</TextBlock>
                             <TextBox Margin="5" Text="{Binding ElementName=SlStop, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" TextAlignment="Center" Width="25" />
-                            <Slider Maximum="24" Minimum="22" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True" Name="SlStop" HorizontalAlignment="Stretch"/>
+                            <Slider Maximum="24" Minimum="22" TickPlacement="BottomRight" TickFrequency="0.1" IsSnapToTickEnabled="True" Name="SlStop" HorizontalAlignment="Stretch" ValueChanged="SliderTime_ValueChanged"/>
                         </DockPanel>
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LSpeed"  DockPanel.Dock="Top" Margin="5">Speed Time:</TextBlock>

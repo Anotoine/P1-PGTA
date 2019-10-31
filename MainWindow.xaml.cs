@@ -44,24 +44,6 @@ namespace ASTERIX
         public MainWindow()
         {
             InitializeComponent();
-
-
-            zero0 = new Point().LatLong2XY(41.315300, 2.043297); //x y superior esquerra 
-            ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport
-
-            //xyz de Lambert --> xyz LienzoMaps (amb origen de coordenades a d'alt a l'esquerra)
-            A = -zero0.X;
-            B = -zero0.Y;
-            alpha = A / (LienzoMaps.ActualWidth / 2);
-            beta = B / (LienzoMaps.ActualHeight / 2);
-
-            //new
-            xA = (ARP.X + A) / alpha;
-            yA = (ARP.Y + B) / beta;
-            AARP = -xA;
-            BARP = -yA;
-            alphaARP = AARP / -2887;
-            betaARP = BARP / 2078;
         }
 
         private void BLoad_Click(object sender, RoutedEventArgs e)
@@ -84,6 +66,23 @@ namespace ASTERIX
 
         private void BRadar_Click(object sender, RoutedEventArgs e)
         {
+            zero0 = new Point().LatLong2XY(41.315300, 2.043297); //x y superior esquerra 
+            ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport
+
+            //xyz de Lambert --> xyz LienzoMaps (amb origen de coordenades a d'alt a l'esquerra)
+            A = -zero0.X;
+            B = -zero0.Y;
+            alpha = A / (LienzoMaps.ActualWidth / 2);
+            beta = B / (LienzoMaps.ActualHeight / 2);
+
+            //new
+            xA = (ARP.X + A) / alpha;
+            yA = (ARP.Y + B) / beta;
+            AARP = -xA;
+            BARP = -yA;
+            alphaARP = AARP / -2887;
+            betaARP = BARP / 2078;
+
             WLoad.Visibility = Visibility.Hidden;
             WRadar.Visibility = Visibility.Visible;
             WTable.Visibility = Visibility.Hidden;
@@ -147,17 +146,18 @@ namespace ASTERIX
                 Title = "Load the ASTERIX file..."
             };
             openFileDialog.Filters.Add(new CommonFileDialogFilter("ASTERIX files", "*.ast"));
+            openFileDialog.Filters.Add(new CommonFileDialogFilter("All files", "*.*"));
 
 
-            if (string.IsNullOrEmpty(TLoadFile.Text) || !File.Exists(TLoadFile.Text))
-                openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            else
-                openFileDialog.InitialDirectory = TLoadFile.Text;
+            //if (string.IsNullOrEmpty(TLoadFile.Text) || !File.Exists(TLoadFile.Text))
+            //    openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            //else
+            //openFileDialog.InitialDirectory = TLoadFile.Text;
 
             if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
                 // Giving the user the path that it was selected
                 TLoadFile.Text = openFileDialog.FileName;
-            
+
         }
 
         private void BLoadMaps_Click(object sender, RoutedEventArgs e)
@@ -193,6 +193,7 @@ namespace ASTERIX
                 Title = "Load the Database file..."
             };
             openFileDialog.Filters.Add(new CommonFileDialogFilter("Aircraft DB", "*.csv"));
+            openFileDialog.Filters.Add(new CommonFileDialogFilter("All files", "*.*"));
 
             if (string.IsNullOrEmpty(TLoadDB.Text) || !File.Exists(TLoadDB.Text))
                 openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -355,7 +356,7 @@ namespace ASTERIX
                     Message m = listMessages[i];
                     if (Vistos.Contains(m.getAddressICAO()))
                     {
-                        if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(1))
+                        if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(60))
                             VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
                     }
                     else
@@ -397,6 +398,12 @@ namespace ASTERIX
                 LPBLoadMaps.Text = "Maps loaded!";
             else
                 LPBLoadMaps.Text = "Loading maps...";
+        }
+
+        private void SliderTime_ValueChanged(object sender, RoutedEventArgs e)
+        {
+            if (CheckVehicles != null)
+                CheckBoxClickVehicles(sender, e);
         }
 
         private void PBLoadDB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -564,11 +571,11 @@ namespace ASTERIX
 
             if (CheckVehicles.IsChecked == true)
             {
-                if (!(VehiclesList == null))
+                if (VehiclesList != null)
                 {
                     foreach (Vehicle v in VehiclesList)
                     {
-                        foreach (Point p in v.GetPointsByDate(new DateTime().AddHours(23)))
+                        foreach (Point p in v.GetPointsByRangeDate(new DateTime().AddHours(SlStart.Value), new DateTime().AddHours(SlStop.Value)))
                         {
                             if (v.Type == "Aircraft")
                             {
@@ -651,5 +658,6 @@ namespace ASTERIX
             LPosX.Text = ((e.GetPosition(LienzoMaps).X + AARP) / alphaARP).ToString("0.###m");
             LPosY.Text = ((e.GetPosition(LienzoMaps).Y + BARP) / betaARP).ToString("0.###m");
         }
+
     }
 }
