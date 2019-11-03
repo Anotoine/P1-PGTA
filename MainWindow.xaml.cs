@@ -20,6 +20,9 @@ namespace ASTERIX
         Point ARP, zero0;
         double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, xA, yA;
 
+        //User options stuff
+        Options UserOptions = new Options();
+
         //Decoding stuff
         List<Message> listMessages;
         List<ShowRow> listRow;
@@ -31,9 +34,7 @@ namespace ASTERIX
         Dictionary<string, string> paths = new Dictionary<string, string>() { { "File", @"" }, { "Maps", @"" }, { "DB", @"" } };
 
         //Mapping stuff
-        List<List<Tuple<Point, Point>>> mapsLines;
-        List<List<List<Point>>> mapsPolylines;
-        List<string> mapsNames;
+        List<Map> Maps;
         List<CheckBox> checkBoxes;
 
         //Info stuff
@@ -242,82 +243,7 @@ namespace ASTERIX
                 string file = listfiles[k];
                 try
                 {
-                    //Reading lines and creating Lists for Line and Polyline
-                    string[] lines = File.ReadAllLines(file);
-                    List<Tuple<Point, Point>> mapL = new List<Tuple<Point, Point>>();
-                    List<List<Point>> mapP = new List<List<Point>>();
-
-                    //Start to read the lines
-                    int j = 0;
-                    while (j < lines.Length)
-                    {
-                        if (!lines[j].StartsWith("#"))
-                        {
-                            string[] l1 = lines[j].Split();
-                            if (l1[0].StartsWith("Linea"))
-                            {
-                                List<Point> tPoint = new List<Point>();
-                                for (int i = 1; i < 4; i += 2)
-                                {
-                                    float a1 = Convert.ToSingle(l1[i].Substring(0, 2)); // grados
-                                    float b1 = Convert.ToSingle(l1[i].Substring(2, 2)); // minutos
-                                    float c1 = Convert.ToSingle(l1[i].Substring(4, 2)); // segundos
-                                    float d1 = Convert.ToSingle(l1[i].Substring(6, 3)); // milisegundos
-
-                                    float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
-
-                                    float a2 = Convert.ToSingle(l1[i + 1].Substring(0, 3)); // grados
-                                    float b2 = Convert.ToSingle(l1[i + 1].Substring(3, 2)); // minutos
-                                    float c2 = Convert.ToSingle(l1[i + 1].Substring(5, 2)); // segundos
-                                    float d2 = Convert.ToSingle(l1[i + 1].Substring(7, 3)); // milisegundos
-
-                                    float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
-
-                                    tPoint.Add(new Point().LatLong2XY(x1, x2));
-                                }
-                                mapL.Add(new Tuple<Point, Point>(tPoint[0], tPoint[1]));
-                                j++;
-                            }
-                            else if (l1[0].StartsWith("Polilinea"))
-                            {
-                                int num = Convert.ToInt32(l1[1]);
-                                List<Point> pp = new List<Point>();
-
-                                for (int i = j; i < j + num; i++)
-                                {
-
-                                    string[] l2 = lines[i + 1].Split();
-
-                                    float a1 = Convert.ToSingle(l2[0].Substring(0, 2)); // grados
-                                    float b1 = Convert.ToSingle(l2[0].Substring(2, 2)); // minutos
-                                    float c1 = Convert.ToSingle(l2[0].Substring(4, 2)); // segundos
-                                    float d1 = Convert.ToSingle(l2[0].Substring(6, 3)); // milisegundos
-
-                                    float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
-
-                                    float a2 = Convert.ToSingle(l2[1].Substring(0, 3)); // grados
-                                    float b2 = Convert.ToSingle(l2[1].Substring(3, 2)); // minutos
-                                    float c2 = Convert.ToSingle(l2[1].Substring(5, 2)); // segundos
-                                    float d2 = Convert.ToSingle(l2[1].Substring(7, 3)); // milisegundos
-
-                                    float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
-
-                                    pp.Add(new Point().LatLong2XY(x1, x2));
-                                }
-                                mapP.Add(pp);
-                                j += num;
-                            }
-                            else
-                                j++;
-                        }
-                        else
-                            j++;
-                    }
-                    mapsLines.Add(mapL);
-                    mapsPolylines.Add(mapP);
-                    mapsNames.Add(file.Split('\\')[file.Split('\\').Length - 1]);
-
-                    e.Result = listfiles.ToString();
+                    Maps.Add(new Map(file));
                 }
                 catch
                 {
@@ -356,7 +282,7 @@ namespace ASTERIX
                     Message m = listMessages[i];
                     if (Vistos.Contains(m.getAddressICAO()))
                     {
-                        if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(60))
+                        if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(1))
                             VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
                     }
                     else
@@ -429,11 +355,11 @@ namespace ASTERIX
 
         private void worker_RunWorkerCompleated_Maps(object sender, RunWorkerCompletedEventArgs e)
         {
-            foreach (string str in mapsNames)
+            foreach (Map map in Maps)
             {
                 //Creating the Checkbox to be checked
                 CheckBox checkBox = new CheckBox();
-                checkBox.Content = str;
+                checkBox.Content = map.getName();
                 checkBox.FontSize = 12;
                 checkBox.Foreground = Brushes.White;
                 checkBox.Margin = new Thickness(10, 10, 10, 10);
@@ -479,10 +405,8 @@ namespace ASTERIX
                 paths["Maps"] = TLoadMaps.Text;
 
                 //Starting variables to be filled
-                mapsLines = new List<List<Tuple<Point, Point>>>();
-                mapsPolylines = new List<List<List<Point>>>();
+                Maps = new List<Map>();
                 checkBoxes = new List<CheckBox>();
-                mapsNames = new List<string>();
 
                 PBLoadMaps.Value = 0;
                 //Loading a worker to do the Decoding stuff
@@ -525,11 +449,11 @@ namespace ASTERIX
                 {
                     if (checkBoxes[i].IsChecked == true)
                     {
-                        foreach (Tuple<Point, Point> l in mapsLines[i])
+                        foreach (Tuple<Point, Point> l in Maps[i].getPoints())
                         {
                             Line l1 = new Line();
                             l1.StrokeThickness = 1;
-                            l1.Stroke = Brushes.ForestGreen;
+                            l1.Stroke = UserOptions.MapsColor;
                             l1.X1 = (l.Item1.X + A) / alpha;
                             l1.Y1 = (l.Item1.Y + B) / beta;
 
@@ -537,11 +461,11 @@ namespace ASTERIX
                             l1.Y2 = (l.Item2.Y + B) / beta;
                             LienzoMaps.Children.Add(l1);
                         }
-                        foreach (List<Point> pl in mapsPolylines[i])
+                        foreach (List<Point> pl in Maps[i].getPolylines())
                         {
                             Polyline poly = new Polyline();
                             poly.StrokeThickness = 1;
-                            poly.Stroke = Brushes.ForestGreen;
+                            poly.Stroke = UserOptions.MapsColor;
                             PointCollection points = new PointCollection();
                             foreach (Point pp in pl)
                                 points.Add(new System.Windows.Point((pp.X + A) / alpha, (pp.Y + B) / beta));
@@ -575,41 +499,29 @@ namespace ASTERIX
                 {
                     foreach (Vehicle v in VehiclesList)
                     {
-                        foreach (Point p in v.GetPointsByRangeDate(new DateTime().AddHours(SlStart.Value), new DateTime().AddHours(SlStop.Value)))
+                        if (v.Type.Equals("Aircraft"))
                         {
-                            if (v.Type == "Aircraft")
-                            {
-                                Ellipse p0 = new Ellipse();
+                            PointCollection pp = new PointCollection();
 
-                                if (v.Callsign == "NONE")
-                                    p0.Stroke = Brushes.LightSkyBlue;
-                                else if (v.Callsign.StartsWith("F"))
-                                    p0.Stroke = Brushes.White;
-                                else
-                                    p0.Stroke = Brushes.Red;
+                            Polyline pl = new Polyline();
 
-                                p0.StrokeThickness = 1;
-                                p0.Width = 2;
-                                p0.Height = p0.Width;
-                                p0.Tag = v.TrackN;
-                                p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
-                                LienzoVehicles.Children.Add(p0);
-
-                                Canvas.SetLeft(p0, (p.X * alphaARP) - AARP - p0.Width / 2);
-                                Canvas.SetTop(p0, (p.Y * betaARP) - BARP - p0.Height / 2);
-                            }
+                            if (v.Callsign == "NONE")
+                                pl.Stroke = UserOptions.OtherColor;
+                            else if (v.Callsign.StartsWith("F"))
+                                pl.Stroke = UserOptions.VehiclesColor;
                             else
-                            {
-                                Ellipse p0 = new Ellipse();
-                                p0.Stroke = Brushes.Yellow;
-                                p0.StrokeThickness = 1;
-                                p0.Width = 1;
-                                p0.Height = p0.Width;
-                                LienzoVehicles.Children.Add(p0);
+                                pl.Stroke = UserOptions.AircraftColor;
 
-                                Canvas.SetLeft(p0, p.X * alphaARP - AARP - p0.Width / 2);
-                                Canvas.SetTop(p0, p.Y * betaARP - BARP - p0.Height / 2);
+                            pl.Tag = v.TrackN;
+                            pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+
+                            foreach (Point p in v.GetPointsByRangeDate(new DateTime().AddHours(SlStart.Value), new DateTime().AddHours(SlStop.Value)))
+                            {
+                                pp.Add(new System.Windows.Point(p.X * alphaARP - AARP, p.Y * betaARP - BARP));
                             }
+
+                            pl.Points = pp;
+                            LienzoVehicles.Children.Add(pl);
                         }
                     }
                 }

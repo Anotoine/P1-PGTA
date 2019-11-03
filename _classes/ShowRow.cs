@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
 
 namespace ASTERIX
 {
@@ -36,7 +35,6 @@ namespace ASTERIX
                 this.TrackN = Convert.ToString(m.getTrackN());
             this.SAC = Convert.ToString(m.getSAC());
             this.SIC = Convert.ToString(m.getSIC());
-            this.Country = "NONE";
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
         }
@@ -54,6 +52,8 @@ namespace ASTERIX
                         if (string.Compare(this.ICAOAddress, listPlanes[i].ICAOAddress) == 0)
                         {
                             this.RegID = listPlanes[i].RegID.ToUpper();
+                            this.Country = listPlanes[i].Country.ToUpper();
+                            this.Type = "Aircraft";
                             this.ImageUrl = listPlanes[i].ImageUrl;
                             exit = true;
                         }

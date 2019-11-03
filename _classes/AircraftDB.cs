@@ -10,6 +10,7 @@ namespace ASTERIX
     {
         public string ICAOAddress { get; set; }
         public string RegID { get; set; }
+        public string Country { get; set; }
         public string Type { get; set; }
         public string Model { get; set; }
         public string Airline { get; set; }
@@ -19,10 +20,11 @@ namespace ASTERIX
         {
             this.ICAOAddress = vs[0];
             this.RegID = vs[1];
-            this.Type = vs[2];
-            this.Model = vs[3];
-            this.Airline = vs[4];
-            this.ImageUrl = vs[5];
+            this.Country = vs[2];
+            this.Type = vs[3];
+            this.Model = vs[4];
+            this.Airline = vs[5];
+            this.ImageUrl = vs[6];
         }
     }
 }
