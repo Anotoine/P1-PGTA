@@ -216,26 +216,68 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="10*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <GroupBox x:Name="SettLangApp" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Header="Lang. and Appearance Settings">
-                    <CheckBox>HOLA</CheckBox>
+                    <DockPanel>
+                        <StackPanel Margin="5" DockPanel.Dock="Top">
+                            <TextBlock>Language Selection:</TextBlock>
+                            <ComboBox>
+                                <ComboBoxItem>English</ComboBoxItem>
+                                <ComboBoxItem>French</ComboBoxItem>
+                                <ComboBoxItem>Spanish</ComboBoxItem>
+                                <ComboBoxItem>Catalan</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Margin="5" DockPanel.Dock="Top">
+                            <TextBlock>Appearance:</TextBlock>
+                            <Button>MainColor</Button>
+                            <Button>TextColor</Button>
+                            <Button>BackgroundColor</Button>
+                        </StackPanel>
+                    </DockPanel>
                 </GroupBox>
                 <GroupBox x:Name="SettMap" Grid.Row="1" Grid.Column="3" Header="RADAR Settings">
-                    <Slider></Slider>
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <StackPanel Margin="5" DockPanel.Dock="Left">
+                                <TextBlock>Vehicles:</TextBlock>
+                                <Button>AircraftColor</Button>
+                                <Button>VehiclesColor</Button>
+                                <Button>OthersColor</Button>
+                            </StackPanel>
+                            <StackPanel Margin="5" DockPanel.Dock="Left">
+                                <TextBlock>Maps:</TextBlock>
+                                <Button>MainColor</Button>
+                                <Button>SecondayColor</Button>
+                                <Button>HighligthColor</Button>
+                                <Button>BackgroundColor</Button>
+                            </StackPanel>
+                        </DockPanel>
+                        <StackPanel Margin="5">
+                            <TextBlock>Sampling Freq:</TextBlock>
+                            <Slider></Slider>
+                        </StackPanel>
+                    </DockPanel>
                 </GroupBox>
                 <GroupBox x:Name="SettTable" Grid.Row="3" Grid.Column="3" Header="Table Settings">
-
+                    <DockPanel>
+                        <StackPanel Margin="5">
+                            <TextBlock>RowColors:</TextBlock>
+                            <Button>MainColor</Button>
+                            <Button>SecondayColor</Button>
+                        </StackPanel>
+                    </DockPanel>
                 </GroupBox>
             </Grid>
         </GroupBox>

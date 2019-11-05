@@ -453,7 +453,7 @@ namespace ASTERIX
                         {
                             Line l1 = new Line();
                             l1.StrokeThickness = 1;
-                            l1.Stroke = UserOptions.MapsColor;
+                            l1.Stroke = UserOptions.MapsColor.MainColor;
                             l1.X1 = (l.Item1.X + A) / alpha;
                             l1.Y1 = (l.Item1.Y + B) / beta;
 
@@ -465,7 +465,7 @@ namespace ASTERIX
                         {
                             Polyline poly = new Polyline();
                             poly.StrokeThickness = 1;
-                            poly.Stroke = UserOptions.MapsColor;
+                            poly.Stroke = UserOptions.MapsColor.MainColor;
                             PointCollection points = new PointCollection();
                             foreach (Point pp in pl)
                                 points.Add(new System.Windows.Point((pp.X + A) / alpha, (pp.Y + B) / beta));
@@ -476,16 +476,16 @@ namespace ASTERIX
                         {
                             TextBlock textBlock = new TextBlock();
                             textBlock.Text = txt.Item2;
-                            textBlock.Foreground = Brushes.Yellow;
-                            Canvas.SetLeft(textBlock, 100);// (txt.Item1.X + A) / alpha);
-                            Canvas.SetTop(textBlock, 100);//(txt.Item1.Y + B) / beta); 
+                            textBlock.Foreground = UserOptions.MapsColor.SecondaryColor;
+                            Canvas.SetLeft(textBlock, (txt.Item1.X + 10 + A) / alpha);
+                            Canvas.SetTop(textBlock, (txt.Item1.Y + 10 + B) / beta); 
                             LienzoMaps.Children.Add(textBlock);
                         }
                         foreach (Tuple<Point, int> sim in Maps[i].getSimbols())
                         { //Maybe a polygon to help diferenciate?
                             Ellipse SIM = new Ellipse();
-                            SIM.Stroke = Brushes.Yellow;
-                            SIM.Fill = Brushes.Yellow;
+                            SIM.Stroke = UserOptions.MapsColor.HighlightColor;
+                            SIM.Fill = UserOptions.MapsColor.HighlightColor;
                             SIM.Width = 5;
                             SIM.Height = 5;
                             Canvas.SetLeft(SIM, ((sim.Item1.X + A) / alpha) - SIM.Width / 2);
