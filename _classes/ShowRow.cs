@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
 
 namespace ASTERIX
 {
@@ -24,9 +23,8 @@ namespace ASTERIX
         public string TrackN { get; set; }
         public string RegID { get; set; }
 
-        public ShowRow(Message m, List<Tuple<string, string, string, string, string>> listPlanes)
+        public ShowRow(Message m)
         {
-            this.ImageUrl = "https://cdn.jetphotos.com/full/6/69088_1542915518.jpg";
             this.TOD = m.getTOD().ToString("HH:mm:ss.fff");
             this.ICAOAddress = m.getAddressICAO();
             this.Length = Convert.ToString(m.getLength());
@@ -37,25 +35,30 @@ namespace ASTERIX
                 this.TrackN = Convert.ToString(m.getTrackN());
             this.SAC = Convert.ToString(m.getSAC());
             this.SIC = Convert.ToString(m.getSIC());
-            this.Country = "NONE";
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
+        }
 
+        public void AddDBData(List<AircraftDB> listPlanes)
+        {
             if (listPlanes != null)
             {
                 bool exit = false;
                 int i = 0;
                 if (this.ICAOAddress != "NONE")
                 {
-                    //while (!(exit || i >= listPlanes.Count))
-                    //{
-                    //if (string.Compare(this.ICAOAddress, listPlanes[i].Item1) == 0)
-                    //{
-                    this.RegID = listPlanes[i].Item2.ToUpper();
-                    exit = true;
-                    //}
+                    while (!(exit || i >= listPlanes.Count))
+                    {
+                        if (string.Compare(this.ICAOAddress, listPlanes[i].ICAOAddress) == 0)
+                        {
+                            this.RegID = listPlanes[i].RegID.ToUpper();
+                            this.Country = listPlanes[i].Country.ToUpper();
+                            this.Type = "Aircraft";
+                            this.ImageUrl = listPlanes[i].ImageUrl;
+                            exit = true;
+                        }
                     i++;
-                    //}
+                    }
                 }
             }
         }

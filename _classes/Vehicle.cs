@@ -44,12 +44,38 @@ namespace ASTERIX
             {
                 if (DateTime.Compare(DateTimes[i], dt) < 0)
                     points.Add(Positions[i]);
-                else if (DateTime.Compare(DateTimes[i], dt) == 0)
+                else if (DateTime.Compare(DateTimes[i], dt) >= 0)
                     exit = true;
                 
                 i++;
             }
             return points;
+        }
+
+        public List<Point> GetPointsByRangeDate(DateTime dtStart, DateTime dtStop)
+        {
+            List<Point> points = new List<Point>();
+            bool exit = false;
+            int i = 0;
+            while (!exit && i < DateTimes.Count)
+            {
+                if (DateTime.Compare(DateTimes[i],dtStart) > 0) //if time is after dtStart
+                {
+                    if (DateTime.Compare(DateTimes[i], dtStop) < 0) // if time is before dtStop
+                        points.Add(Positions[i]); //Add to the list
+                    else if (DateTime.Compare(DateTimes[i], dtStop) >= 0) //but if time is after dtStop
+                        exit = true; //exit
+                }
+
+
+                i++;
+            }
+            return points;
+        }
+
+        public DateTime getLastTime()
+        {
+            return this.DateTimes[this.DateTimes.Count - 1];
         }
     }
 }
