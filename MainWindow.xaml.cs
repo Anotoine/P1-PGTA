@@ -472,6 +472,26 @@ namespace ASTERIX
                             poly.Points = points;
                             LienzoMaps.Children.Add(poly);
                         }
+                        foreach (Tuple<Point, string> txt in Maps[i].getTexts())
+                        {
+                            TextBlock textBlock = new TextBlock();
+                            textBlock.Text = txt.Item2;
+                            textBlock.Foreground = Brushes.Yellow;
+                            Canvas.SetLeft(textBlock, 100);// (txt.Item1.X + A) / alpha);
+                            Canvas.SetTop(textBlock, 100);//(txt.Item1.Y + B) / beta); 
+                            LienzoMaps.Children.Add(textBlock);
+                        }
+                        foreach (Tuple<Point, int> sim in Maps[i].getSimbols())
+                        { //Maybe a polygon to help diferenciate?
+                            Ellipse SIM = new Ellipse();
+                            SIM.Stroke = Brushes.Yellow;
+                            SIM.Fill = Brushes.Yellow;
+                            SIM.Width = 5;
+                            SIM.Height = 5;
+                            Canvas.SetLeft(SIM, ((sim.Item1.X + A) / alpha) - SIM.Width / 2);
+                            Canvas.SetTop(SIM, ((sim.Item1.Y + B) / beta) - SIM.Height / 2);
+                            LienzoMaps.Children.Add(SIM);
+                        }
                     }
                 }
             }
@@ -483,9 +503,9 @@ namespace ASTERIX
                 ARPpoint.Fill = Brushes.Yellow;
                 ARPpoint.Width = 5;
                 ARPpoint.Height = 5;
-                LienzoMaps.Children.Add(ARPpoint);
                 Canvas.SetLeft(ARPpoint, ((ARP.X + A) / alpha) - ARPpoint.Width / 2);
                 Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
+                LienzoMaps.Children.Add(ARPpoint);
             }
         }
 
@@ -493,35 +513,38 @@ namespace ASTERIX
         {
             LienzoVehicles.Children.Clear();
 
-            if (CheckVehicles.IsChecked == true)
+            if (CheckVehicles != null)
             {
-                if (VehiclesList != null)
+                if (CheckVehicles.IsChecked == true)
                 {
-                    foreach (Vehicle v in VehiclesList)
+                    if (VehiclesList != null)
                     {
-                        if (v.Type.Equals("Aircraft"))
+                        foreach (Vehicle v in VehiclesList)
                         {
-                            PointCollection pp = new PointCollection();
-
-                            Polyline pl = new Polyline();
-
-                            if (v.Callsign == "NONE")
-                                pl.Stroke = UserOptions.OtherColor;
-                            else if (v.Callsign.StartsWith("F"))
-                                pl.Stroke = UserOptions.VehiclesColor;
-                            else
-                                pl.Stroke = UserOptions.AircraftColor;
-
-                            pl.Tag = v.TrackN;
-                            pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
-
-                            foreach (Point p in v.GetPointsByRangeDate(new DateTime().AddHours(SlStart.Value), new DateTime().AddHours(SlStop.Value)))
+                            if (v.Type.Equals("Aircraft"))
                             {
-                                pp.Add(new System.Windows.Point(p.X * alphaARP - AARP, p.Y * betaARP - BARP));
-                            }
+                                PointCollection pp = new PointCollection();
 
-                            pl.Points = pp;
-                            LienzoVehicles.Children.Add(pl);
+                                Polyline pl = new Polyline();
+
+                                if (v.Callsign == "NONE")
+                                    pl.Stroke = UserOptions.OtherColor;
+                                else if (v.Callsign.StartsWith("F"))
+                                    pl.Stroke = UserOptions.VehiclesColor;
+                                else
+                                    pl.Stroke = UserOptions.AircraftColor;
+
+                                pl.Tag = v.TrackN;
+                                pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+
+                                foreach (Point p in v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.UpperValue)))
+                                {
+                                    pp.Add(new System.Windows.Point(p.X * alphaARP - AARP, p.Y * betaARP - BARP));
+                                }
+
+                                pl.Points = pp;
+                                LienzoVehicles.Children.Add(pl);
+                            }
                         }
                     }
                 }

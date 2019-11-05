@@ -125,9 +125,9 @@
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LTime"  DockPanel.Dock="Top" Margin="5">Time window:</TextBlock>
                             <TextBox Margin="5" Text="{Binding ElementName=SlTime, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" TextAlignment="Center" Width="25" />
-                            <Controls:RangeSlider x:Name="SlTime" Value="24" Minimum="22" Maximum="24" TickPlacement="BottomRight"
+                            <Controls:RangeSlider x:Name="SlTime" Minimum="22" Maximum="24" TickPlacement="BottomRight" 
                                 AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" MoveWholeRange="True" TickFrequency="0.1"
-                                IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" ExtendedMode="True"/>
+                                IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" ExtendedMode="True" CentralThumbDragDelta="CheckBoxClickVehicles" UpperThumbDragDelta="CheckBoxClickVehicles" LowerThumbDragDelta="CheckBoxClickVehicles"/>
                         </DockPanel>
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LSpeed"  DockPanel.Dock="Top" Margin="5">Speed Time:</TextBlock>
