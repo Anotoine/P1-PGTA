@@ -481,7 +481,7 @@ namespace ASTERIX
                             Canvas.SetTop(textBlock, (txt.Item1.Y + 10 + B) / beta); 
                             LienzoMaps.Children.Add(textBlock);
                         }
-                        foreach (Tuple<Point, int> sim in Maps[i].getSimbols())
+                        foreach (Tuple<Point, string> sim in Maps[i].getSimbols())
                         { //Maybe a polygon to help diferenciate?
                             Ellipse SIM = new Ellipse();
                             SIM.Stroke = UserOptions.MapsColor.HighlightColor;

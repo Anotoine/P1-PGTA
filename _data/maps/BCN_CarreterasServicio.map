@@ -1,28 +1,8 @@
-Rango
-512
-ColorLinea
-9
-variarse
-en
-cualquier
-punto
-del
-mapa
-ColorRelleno
-9
-#
-file
-generated
-with
-the
-command
-#
-java
--jar
-BatchUTMjar
-J:\JAVA-UTM-GEO\carreterasdxf
-411744N
-0020542E
+TituloMapa Aeropuerto Barcelona Carreteras Servicio
+
+ColorLinea      220 60 220
+ColorSimbolos   220 60 220
+
 Linea 411812768N 0020505780E 411812823N 0020505940E
 Linea 411747829N 0020332368E 411740015N 0020337066E
 Linea 411748186N 0020339065E 411748283N 0020339010E

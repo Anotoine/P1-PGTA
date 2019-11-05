@@ -1,12 +1,6 @@
-
-/*
- * MODULO.....: Incluye ATZ y CTR de península y canarias
- */
-   
-
 TituloMapa        ATZ/CTR
 ColorLinea         0  220 0
-/* FUERTEVENTURA ATZ */
+
 Linea  282118N0135504W 282711N0135459W 
 Linea  282711N0135459W 283305N0135454W 
 Linea  283305N0135454W 283307N0135448W 

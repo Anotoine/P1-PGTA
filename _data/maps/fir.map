@@ -1,12 +1,7 @@
 
-/*
- * MODULO.....: Incluye fir de peninsula y canarias
- */
-   
-
 TituloMapa        FIR
 ColorLinea         250  0  0
-/* CANARIAS FIR */
+
 Linea  190000N0190000W 192024N0192317W 
 Linea  192024N0192317W 194045N0194639W 
 Linea  194045N0194639W 200103N0201008W 

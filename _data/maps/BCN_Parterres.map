@@ -1,28 +1,8 @@
-Rango
-512
-ColorLinea
-9
-variarse
-en
-cualquier
-punto
-del
-mapa
-ColorRelleno
-9
-#
-file
-generated
-with
-the
-command
-#
-java
--jar
-BatchUTMjar
-h:\JAVA-UTM-GEO\PARTERRACOSdxf
-411744N
-0020542E
+TituloMapa Aeropuerto Barcelona Parterres
+
+ColorLinea      220 60 220
+ColorSimbolos   220 60 220
+
 Linea 411726035N 0020509016E 411734824N 0020513029E
 Linea 411734824N 0020513029E 411743449N 0020507835E
 Linea 411748200N 0020511028E 411751482N 0020520631E

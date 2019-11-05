@@ -1,19 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ASTERIX
 {
     class Map
     {
-        List<Tuple<Point, Point>> Lines = new List<Tuple<Point, Point>>();
-        List<Tuple<Point, int>> Simbolos = new List<Tuple<Point, int>>();
-        List<Tuple<Point, string>> Textos = new List<Tuple<Point, string>>();
-        List<List<Point>> Polylines = new List<List<Point>>();
         string Name;
+        
+        List<Tuple<Point, Point>> Lines = new List<Tuple<Point, Point>>();
+        List<Tuple<Point, string>> Simbols = new List<Tuple<Point, string>>();
+        List<Tuple<Point, string>> Texts = new List<Tuple<Point, string>>();
+        List<List<Point>> Polylines = new List<List<Point>>();
+
+        Color SimbolsColor = new Color();
+        Color TextsColor = new Color();
+        Color LinesColor = new Color();
 
         public Map(string file)
         {
@@ -24,165 +31,251 @@ namespace ASTERIX
             int j = 0;
             while (j < lines.Length)
             {
-                if (!(lines[j].StartsWith("#") || string.IsNullOrEmpty(lines[j])))
+                string[] auxstr, auxstr2;
+                float a, b, c, d, x, y;
+                int lengthN, lengthW;
+                if (!(string.IsNullOrEmpty(lines[j]) || string.IsNullOrWhiteSpace(lines[j])))
                 {
-                    string[] l1 = lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (l1[0].StartsWith("Linea"))
+                    switch (lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[0])
                     {
-                        List<Point> tPoint = new List<Point>();
-                        for (int i = 1; i < 4; i += 2)
-                        {
-                            float a1 = Convert.ToSingle(l1[i].Substring(0, 2)); // grados
-                            float b1 = Convert.ToSingle(l1[i].Substring(2, 2)); // minutos
-                            float c1 = Convert.ToSingle(l1[i].Substring(4, 2)); // segundos
-                            float d1 = 0;
-                            if (!(l1[i].Substring(6, 1) == "N" || l1[i].Substring(6, 1) == "S"))
-                                d1 = Convert.ToSingle(l1[i].Substring(6, 3)); // milisegundos -- if applicable
+                        case "TituloMapa":
+                            Name = lines[j].Substring(10).Trim(new char[] { ' ', '\t' });
+                            j++;
+                            break;
 
-                            //Obtaining the final value
-                            float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
+                        case "ColorTexto":
+                            auxstr = lines[j].Substring(10).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                            TextsColor = Color.FromArgb(Convert.ToInt32(auxstr[0], 10), Convert.ToInt32(auxstr[1], 10), Convert.ToInt32(auxstr[2], 10));
                             
-                            //Checking if should be positive or negative
-                            if (l1[i].EndsWith("S"))
-                                x1 = -1 * x1;
+                            j++;
+                            break;
 
-                            float a2 = Convert.ToSingle(l1[i + 1].Substring(0, 3)); // grados
-                            float b2 = Convert.ToSingle(l1[i + 1].Substring(3, 2)); // minutos
-                            float c2 = Convert.ToSingle(l1[i + 1].Substring(5, 2)); // segundos
-                            float d2 = 0;
-                            if (!(l1[i + 1].Substring(7, 1) == "E" || l1[i + 1].Substring(7, 1) == "W" || l1[i + 1].Substring(7, 1) == "O"))
-                                d2 = Convert.ToSingle(l1[i + 1].Substring(7, 3)); // milisegundos  -- if applicable
+                        case "ColorSimbolos":
+                            auxstr = lines[j].Substring(13).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                            SimbolsColor = Color.FromArgb(Convert.ToInt32(auxstr[0], 10), Convert.ToInt32(auxstr[1], 10), Convert.ToInt32(auxstr[2], 10));
 
-                            //Obtaining the final value
-                            float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
+                            j++;
+                            break;
 
-                            //Checking if should be positive or negative
-                            if (l1[i + 1].EndsWith("O") || l1[i + 1].EndsWith("W"))
-                                x2 = -1 * x2;
+                        case "ColorLinea":
+                            auxstr = lines[j].Substring(10).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                            LinesColor = Color.FromArgb(Convert.ToInt32(auxstr[0], 10), Convert.ToInt32(auxstr[1], 10), Convert.ToInt32(auxstr[2], 10));
 
-                            tPoint.Add(new Point().LatLong2XY(x1, x2));
-                        }
-                        Lines.Add(new Tuple<Point, Point>(tPoint[0], tPoint[1]));
-                        j++;
-                    }
-                    else if (l1[0].StartsWith("Texto"))
-                    {
-                        float a1 = Convert.ToSingle(l1[1].Substring(0, 2)); // grados
-                        float b1 = Convert.ToSingle(l1[1].Substring(2, 2)); // minutos
-                        float c1 = Convert.ToSingle(l1[1].Substring(4, 2)); // segundos
-                        float d1 = 0;
-                        if (!(l1[1].Substring(6, 1) == "N" || l1[1].Substring(6, 1) == "S"))
-                            d1 = Convert.ToSingle(l1[1].Substring(6, 3)); // milisegundos -- if applicable
+                            j++;
+                            break;
 
-                        //Obtaining the final value
-                        float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
 
-                        //Checking if should be positive or negative
-                        if (l1[1].EndsWith("S"))
-                            x1 = -1 * x1;
+                        case "Simbolo":
+                            auxstr = lines[j].Substring(7).Trim(new char[] { ' ', '\t' }).Split('N');
+                            lengthN = auxstr[0].Length;
 
-                        float a2 = Convert.ToSingle(l1[2].Substring(0, 3)); // grados
-                        float b2 = Convert.ToSingle(l1[2].Substring(3, 2)); // minutos
-                        float c2 = Convert.ToSingle(l1[2].Substring(5, 2)); // segundos
-                        float d2 = 0;
-                        if (!(l1[2].Substring(7, 1) == "E" || l1[2].Substring(7, 1) == "W" || l1[2].Substring(7, 1) == "O"))
-                            d2 = Convert.ToSingle(l1[2].Substring(7, 3)); // milisegundos  -- if applicable
-
-                        //Obtaining the final value
-                        float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
-
-                        //Checking if should be positive or negative
-                        if (l1[2].EndsWith("O") || l1[2].EndsWith("W"))
-                            x2 = -1 * x2;
-
-                        Textos.Add(new Tuple<Point, string>(new Point().LatLong2XY(x1, x2), l1[3]));
-                        j++;
-                    }
-                    else if (l1[0].StartsWith("Simbolo"))
-                    {
-                        float a1 = Convert.ToSingle(l1[1].Substring(0, 2)); // grados
-                        float b1 = Convert.ToSingle(l1[1].Substring(2, 2)); // minutos
-                        float c1 = Convert.ToSingle(l1[1].Substring(4, 2)); // segundos
-                        float d1 = 0;
-                        if (!(l1[1].Substring(6, 1) == "N" || l1[1].Substring(6, 1) == "S"))
-                            d1 = Convert.ToSingle(l1[1].Substring(6, 3)); // milisegundos -- if applicable
-
-                        //Obtaining the final value
-                        float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
-
-                        //Checking if should be positive or negative
-                        if (l1[1].EndsWith("S"))
-                            x1 = -1 * x1;
-
-                        float a2 = Convert.ToSingle(l1[2].Substring(0, 3)); // grados
-                        float b2 = Convert.ToSingle(l1[2].Substring(3, 2)); // minutos
-                        float c2 = Convert.ToSingle(l1[2].Substring(5, 2)); // segundos
-                        float d2 = 0;
-                        if (!(l1[2].Substring(7, 1) == "E" || l1[2].Substring(7, 1) == "W" || l1[2].Substring(7, 1) == "O"))
-                            d2 = Convert.ToSingle(l1[2].Substring(7, 3)); // milisegundos  -- if applicable
-
-                        //Obtaining the final value
-                        float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
-
-                        //Checking if should be positive or negative
-                        if (l1[2].EndsWith("O") || l1[2].EndsWith("W"))
-                            x2 = -1 * x2;
-
-                        Simbolos.Add(new Tuple<Point, int>(new Point().LatLong2XY(x1, x2), Convert.ToInt32(l1[3])));
-                        j++;
-                    }
-                    else if (l1[0].StartsWith("Polilinea"))
-                    {
-                        int num = Convert.ToInt32(l1[1]);
-                        List<Point> pp = new List<Point>();
-
-                        for (int i = j; i < j + num; i++)
-                        {
-                            string[] l2 = lines[i + 1].Split();
-
-                            float a1 = Convert.ToSingle(l2[0].Substring(0, 2)); // grados
-                            float b1 = Convert.ToSingle(l2[0].Substring(2, 2)); // minutos
-                            float c1 = Convert.ToSingle(l2[0].Substring(4, 2)); // segundos
-                            float d1 = 0;
-                            if (!(l2[0].Substring(6, 1) == "N" || l2[0].Substring(6, 1) == "S"))
-                                d1 = Convert.ToSingle(l2[0].Substring(6, 3)); // milisegundos  -- if applicable
+                            a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                            b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                            c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                            d = 0;
+                            if (lengthN > 6)
+                                d = Convert.ToSingle(auxstr[0].Substring(6, 3), null); // milisegundos -- if applicable
 
                             //Obtaining the final value
-                            float x1 = a1 + (b1 / 60) + ((c1 + d1 / 1000) / 3600);
+                            x = a + (b / 60) + ((c + d / 1000) / 3600);
 
                             //Checking if should be positive or negative
-                            if (l1[0].EndsWith("S"))
-                                x1 = -1 * x1;
+                            if (auxstr[0].EndsWith("S", StringComparison.Ordinal))
+                                x = -1 * x;
 
-                            float a2 = Convert.ToSingle(l2[1].Substring(0, 3)); // grados
-                            float b2 = Convert.ToSingle(l2[1].Substring(3, 2)); // minutos
-                            float c2 = Convert.ToSingle(l2[1].Substring(5, 2)); // segundos
-                            float d2 = 0;
-                            if (!(l2[1].Substring(7, 1) == "E" || l2[1].Substring(7, 1) == "W" || l2[1].Substring(7, 1) == "O"))
-                                d2 = Convert.ToSingle(l2[1].Substring(7, 3)); // milisegundos
+
+                            auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                            lengthW = auxstr[0].Length;
+                            if (lengthW > 8)
+                            {
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                                d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
+                            } 
+                            else
+                            {
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                                d = 0;
+                            }
+                            //Obtaining the final value
+                            y = a + (b / 60) + ((c + d / 1000) / 3600);
+
+                            //Checking if should be positive or negative
+                            if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
+                                y = -1 * y;
+
+                            Simbols.Add(new Tuple<Point, string>(new Point().LatLong2XY(x, y), lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[2]));
+
+                            j++;
+                            break;
+
+                        case "Texto":
+                            auxstr = lines[j].Substring(7).Trim(new char[] { ' ', '\t' }).Split('N');
+                            lengthN = auxstr[0].Length;
+
+                            a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                            b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                            c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                            d = 0;
+                            if (lengthN > 6)
+                                d = Convert.ToSingle(auxstr[0].Substring(6, 3), null); // milisegundos -- if applicable
 
                             //Obtaining the final value
-                            float x2 = a2 + (b2 / 60) + ((c2 + d2 / 1000) / 3600);
+                            x = a + (b / 60) + ((c + d / 1000) / 3600);
 
                             //Checking if should be positive or negative
-                            if (l2[1].EndsWith("O") || l2[1].EndsWith("W"))
-                                x2 = -1 * x2;
+                            if (auxstr[0].EndsWith("S", StringComparison.Ordinal))
+                                x = -1 * x;
 
-                            pp.Add(new Point().LatLong2XY(x1, x2));
-                        }
-                        Polylines.Add(pp);
-                        j += num + 1;
+
+                            auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                            lengthW = auxstr[0].Length;
+                            if (lengthW > 8)
+                            {
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                                d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
+                            }
+                            else
+                            {
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                                d = 0;
+                            }
+
+                            //Obtaining the final value
+                            y = a + (b / 60) + ((c + d / 1000) / 3600);
+
+                            //Checking if should be positive or negative
+                            if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
+                                y = -1 * y;
+
+                            Texts.Add(new Tuple<Point, string>(new Point().LatLong2XY(x, y), lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[2]));
+
+                            j++;
+                            break;
+
+                        case "Linea":
+                            MatchCollection match = Regex.Matches(lines[j].Substring(5).Trim(), @"\d{5,9}(N|S){1}\s*\d{5,11}(E|W|O){1}");
+                            auxstr2 = new string[] { match[0].Value, match[1].Value };
+                            List<Point> tPoint = new List<Point>();
+
+                            for (int i = 0; i < 2; i ++)
+                            {
+                                auxstr = auxstr2[i].Trim(new char[] { ' ', '\t' }).Split('N');
+                                lengthN = auxstr[0].Length;
+
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                                d = 0;
+                                if (lengthN > 6)
+                                    d = Convert.ToSingle(auxstr[0].Substring(6, 3), null); // milisegundos -- if applicable
+
+                                //Obtaining the final value
+                                x = a + (b / 60) + ((c + d / 1000) / 3600);
+
+                                //Checking if should be positive or negative
+                                if (auxstr[0].EndsWith("S", StringComparison.Ordinal))
+                                    x = -1 * x;
+
+
+                                auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                                lengthW = auxstr[0].Length;
+                                if (lengthW > 8)
+                                {
+                                    a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                                    b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                                    c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                                    d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
+                                }
+                                else
+                                {
+                                    a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                                    b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                                    c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                                    d = 0;
+                                }
+
+                                //Obtaining the final value
+                                y = a + (b / 60) + ((c + d / 1000) / 3600);
+
+                                //Checking if should be positive or negative
+                                if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
+                                    y = -1 * y;
+
+                                tPoint.Add(new Point().LatLong2XY(x, y));
+                            }
+                            Lines.Add(new Tuple<Point, Point>(tPoint[0], tPoint[1]));
+
+                            j++;
+                            break;
+
+                        case "Polilinea":
+                            int num = Convert.ToInt32(lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1], 10);
+                            List<Point> pp = new List<Point>();
+
+                            for (int i = j + 1; i <= j + num; i++)
+                            {
+                                auxstr = lines[i].Trim(new char[] { ' ', '\t' }).Split('N');
+                                lengthN = auxstr[0].Length;
+
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                                d = 0;
+                                if (lengthN > 6)
+                                    d = Convert.ToSingle(auxstr[0].Substring(6, 3), null); // milisegundos -- if applicable
+
+                                //Obtaining the final value
+                                x = a + (b / 60) + ((c + d / 1000) / 3600);
+
+                                //Checking if should be positive or negative
+                                if (auxstr[0].EndsWith("S", StringComparison.Ordinal))
+                                    x = -1 * x;
+
+                                auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                                lengthW = auxstr[0].Length;
+                                if (lengthW > 8)
+                                {
+                                    a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                                    b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                                    c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                                    d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
+                                }
+                                else
+                                {
+                                    a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                                    b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                                    c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                                    d = 0;
+                                }
+                                //Obtaining the final value
+                                y = a + (b / 60) + ((c + d / 1000) / 3600);
+
+                                //Checking if should be positive or negative
+                                if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
+                                    y = -1 * y;
+
+                                pp.Add(new Point().LatLong2XY(x, y));
+                            }
+                            Polylines.Add(pp);
+
+                            j += num;
+                            break;
+
+                        default:
+                            j++;
+                            break;
                     }
-                    else
-                        j++;
                 }
-                else
-                    j++;
+                else j++;
             }
-
-            Name = file.Split('\\')[file.Split('\\').Length - 1];
-
-            //e.Result = listfiles.ToString();
         }
 
         public string getName()
@@ -200,14 +293,14 @@ namespace ASTERIX
             return this.Polylines;
         }
 
-        public List<Tuple<Point, int>> getSimbols()
+        public List<Tuple<Point, string>> getSimbols()
         {
-            return this.Simbolos;
+            return this.Simbols;
         }
 
         public List<Tuple<Point, string>> getTexts()
         {
-            return this.Textos;
+            return this.Texts;
         }
     }
 }

@@ -1,12 +1,7 @@
 
-/*
- * MODULO.....: Incluye fir de peninsula y canarias
- */
-   
-
 TituloMapa        TMA
 ColorLinea         0  0  220
-/* CORREDOR DE MELILLA */
+
 Linea  354959N0032959W 354959N0032435W 
 Linea  354959N0032435W 354959N0031911W 
 Linea  354959N0031911W 354959N0031347W 

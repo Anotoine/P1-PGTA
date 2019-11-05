@@ -98,7 +98,7 @@
                 <Button x:Name="BLoadFile"  Grid.Column="1" Grid.Row="1" Click="BLoadFile_Click">File...</Button>
                 <TextBox x:Name="TLoadFile" Grid.Row="1" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1\data\Ficheros Asterix de prueba-20190921\MLAT_cat20\160510-lebl-220001.ast</TextBox>
                 <Button x:Name="BLoadMaps" Grid.Column="1" Grid.Row="3" Click="BLoadMaps_Click">Maps Folder...</Button>
-                <TextBox x:Name="TLoadMaps" Grid.Row="3" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1\data\Mapas-20190922</TextBox>
+                <TextBox x:Name="TLoadMaps" Grid.Row="3" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-master\_data\maps</TextBox>
                 <Button x:Name="BLoadDB" Grid.Column="1" Grid.Row="5" Click="BLoadDB_Click">ACFT DB...</Button>
                 <TextBox x:Name="TLoadDB" Grid.Row="5" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1\aircraft_db\diffCAT20.csv</TextBox>
                 <Button x:Name="BLoadRefresh" Grid.Column="3" Grid.Row="7" Width="100" Click="BLoadRefresh_Click">Refresh</Button>
