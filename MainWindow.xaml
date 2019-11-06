@@ -135,11 +135,17 @@
                             <TextBox Margin="5" Text="{Binding ElementName=SlSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" />
                             <Slider Maximum="20" Minimum="1" TickPlacement="BottomRight" TickFrequency="0.5" IsSnapToTickEnabled="True" Name="SlSpeed" HorizontalAlignment="Stretch"/>
                         </DockPanel>
+                        
                         <DataGrid x:Name="TEST" ItemsSource="{Binding Vistos}" Width="110">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ICAO Address" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>
+                        <DockPanel Margin="5" HorizontalAlignment="Center">
+                            <TextBlock  DockPanel.Dock="Top" Margin="5">Zoom:</TextBlock>
+                            <Button x:Name="BZoomIn" DockPanel.Dock="Left" Width="50">+</Button>
+                            <Button x:Name="BZoomout" DockPanel.Dock="Right" Width="50">-</Button>
+                        </DockPanel>
                     </StackPanel>
                 </Expander>
                 <Expander x:Name="MapsExpand" Background="Gray" ExpandDirection="Left" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Right">
