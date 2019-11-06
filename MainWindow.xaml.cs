@@ -337,6 +337,22 @@ namespace ASTERIX
             UserOptions.Interval = SlInterval.Value;
         }
 
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (checkBoxes != null)
+                MessageBox.Show("From: " + e.OldValue + "\n" + "To: " + e.NewValue, "TEST");
+        }
+
+        private void BZoomout_Click(object sender, RoutedEventArgs e)
+        {
+            SlZoom.Value = SlZoom.Value - 1;
+        }
+
+        private void BZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            SlZoom.Value = SlZoom.Value + 1;
+        }
+
         private void PBLoadDB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (PBLoadDB.Value >= 100)

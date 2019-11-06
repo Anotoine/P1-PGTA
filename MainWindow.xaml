@@ -115,6 +115,7 @@
                 </Grid.ColumnDefinitions>
                 <Canvas x:Name="LienzoMaps" Background="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3"/>
                 <Canvas x:Name="LienzoVehicles" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" MouseMove="LienzoMaps_MouseMove"/>
+
                 <Expander x:Name="TimeExpand" Background="Gray" ExpandDirection="Right" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Left">
                     <Expander.Header>
                         <TextBlock Text="Time Options">
@@ -135,17 +136,12 @@
                             <TextBox Margin="5" Text="{Binding ElementName=SlSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" />
                             <Slider Maximum="20" Minimum="1" TickPlacement="BottomRight" TickFrequency="0.5" IsSnapToTickEnabled="True" Name="SlSpeed" HorizontalAlignment="Stretch"/>
                         </DockPanel>
-                        
+
                         <DataGrid x:Name="TEST" ItemsSource="{Binding Vistos}" Width="110">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ICAO Address" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <DockPanel Margin="5" HorizontalAlignment="Center">
-                            <TextBlock  DockPanel.Dock="Top" Margin="5">Zoom:</TextBlock>
-                            <Button x:Name="BZoomIn" DockPanel.Dock="Left" Width="50">+</Button>
-                            <Button x:Name="BZoomout" DockPanel.Dock="Right" Width="50">-</Button>
-                        </DockPanel>
                     </StackPanel>
                 </Expander>
                 <Expander x:Name="MapsExpand" Background="Gray" ExpandDirection="Left" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Right">
@@ -164,6 +160,14 @@
                         </StackPanel>
                     </ScrollViewer>
                 </Expander>
+                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <Button x:Name="BZoomout" Click="BZoomout_Click" Width="25" Height="25">-</Button>
+                    <Slider x:Name="SlZoom" Grid.ColumnSpan="4" Orientation="Horizontal" TickFrequency="1" VerticalAlignment="Bottom"
+                        HorizontalAlignment="Center" Margin="20" Width="150" IsSnapToTickEnabled="True" Minimum="1" Maximum="4" ValueChanged="Slider_ValueChanged"
+                        />
+                    <Button x:Name="BZoomIn" Click="BZoomIn_Click" Width="25" Height="25">+</Button>
+                </StackPanel>
+
             </Grid>
         </GroupBox>
         <GroupBox x:Name="WTable" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
