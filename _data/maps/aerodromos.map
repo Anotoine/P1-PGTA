@@ -3,143 +3,143 @@ TituloMapa           Aerodromos
 ColorSimbolos     10   90  90
 ColorTexto        10  100 100
 
-Simbolo                282709N135149W   GCFV 1
-Simbolo                280146N171252W   GCGM 1
-Simbolo                274853N175313W   GCHI 1
-Simbolo                283735N174520W   GCLA 1
-Simbolo                275554N152311W   GCLP 1
-Simbolo                285643N133618W   GCRR 1
-Simbolo                280240N163420W   GCTS 1
-Simbolo                282901N162104W   GCXM 1
-Simbolo                282857N162029W   GCXO 1
-Simbolo                355333N051822W   GECE 1
-Simbolo                351807N025640W   GEHM 1
-Simbolo                351647N025722W   GEML 1
-Simbolo                270905N131308W   GSAI 1
-Simbolo                234306N155555W   GSVO 1
-Simbolo                385654N015148W   LEAB 1
-Simbolo                360743N052628W   LEAG 1
-Simbolo                381655N003329W   LEAL 1
-Simbolo                365038N022212W   LEAM 1
-Simbolo                385712N034429W   LEAO 1
-Simbolo                433348N060204W   LEAS 1
-Simbolo                375031N045055W   LEBA 1
-Simbolo                431803N025438W   LEBB 1
-Simbolo                422126N033649W   LEBG 1
-Simbolo                411749N020442E   LEBL 1
-Simbolo                393728N002820W   LEBT 1
-Simbolo                385328N064916W   LEBZ 1
-Simbolo                401250N000424E   LECH 1
-Simbolo                431807N082238W   LECO 1
-Simbolo                402214N034706W   LECU 1
-Simbolo                404150N034547W   LECV 1
-Simbolo                414340N003207E   LEDA 1
-Simbolo                371847N055956W   LEEC 1
-Simbolo                370759N033808W   LEGA 1
-Simbolo                415403N024537E   LEGE 1
-Simbolo                371119N034638W   LEGR 1
-Simbolo                401738N034325W   LEGT 1
-Simbolo                420451N001924W   LEHC 1
-Simbolo                385222N012223E   LEIB 1
-Simbolo                364440N060336W   LEJR 1
-Simbolo                374629N004844W   LELC 1
-Simbolo                413115N020618E   LELL 1
-Simbolo                423518N053922W   LELN 1
-Simbolo                422737N021913W   LELO 1
-Simbolo                402820N033339W   LEMD 1
-Simbolo                364029N042957W   LEMG 1
-Simbolo                395145N041307E   LEMH 1
-Simbolo                371029N053657W   LEMO 1
-Simbolo                393306N024419E   LEPA 1
-Simbolo                395356N030556E   LEPO 1
-Simbolo                424612N013846W   LEPP 1
-Simbolo                375708N011351W   LERI 1
-Simbolo                422737N021913W   LERJ 1
-Simbolo                410850N011001E   LERS 1
-Simbolo                363842N062058W   LERT 1
-Simbolo                405707N053007W   LESA 1
-Simbolo                393556N024209E   LESB 1
-Simbolo                432123N014726W   LESO 1
-Simbolo                425346N082454W   LEST 1
-Simbolo                422046N012453E   LESU 1
-Simbolo                413426N021524E   LETA 1
-Simbolo                402443N011303W   LETL 1
-Simbolo                402948N032645W   LETO 1
-Simbolo                392921N002853W   LEVC 1
-Simbolo                414221N045106W   LEVD 1
-Simbolo                425258N024328W   LEVT 1
-Simbolo                421344N083739W   LEVX 1
-Simbolo                432537N034912W   LEXJ 1
-Simbolo                413958N010229W   LEZG 1
-Simbolo                372504N055356W   LEZL 1
-Simbolo                360903N052058W   LXGB 1
-Texto                282709N135149W   GCFV
-Texto                280146N171252W   GCGM
-Texto                274853N175313W   GCHI
-Texto                283735N174520W   GCLA
-Texto                275554N152311W   GCLP
-Texto                285643N133618W   GCRR
-Texto                280240N163420W   GCTS
-Texto                282901N162104W   GCXM
-Texto                282857N162029W   GCXO
-Texto                355333N051822W   GECE
-Texto                351807N025640W   GEHM
-Texto                351647N025722W   GEML
-Texto                270905N131308W   GSAI
-Texto                234306N155555W   GSVO
-Texto                385654N015148W   LEAB
-Texto                360743N052628W   LEAG
-Texto                381655N003329W   LEAL
-Texto                365038N022212W   LEAM
-Texto                385712N034429W   LEAO
-Texto                433348N060204W   LEAS
-Texto                375031N045055W   LEBA
-Texto                431803N025438W   LEBB
-Texto                422126N033649W   LEBG
-Texto                411749N020442E   LEBL
-Texto                393728N002820W   LEBT
-Texto                385328N064916W   LEBZ
-Texto                401250N000424E   LECH
-Texto                431807N082238W   LECO
-Texto                402214N034706W   LECU
-Texto                404150N034547W   LECV
-Texto                414340N003207E   LEDA
-Texto                371847N055956W   LEEC
-Texto                370759N033808W   LEGA
-Texto                415403N024537E   LEGE
-Texto                371119N034638W   LEGR
-Texto                401738N034325W   LEGT
-Texto                420451N001924W   LEHC
-Texto                385222N012223E   LEIB
-Texto                364440N060336W   LEJR
-Texto                374629N004844W   LELC
-Texto                413115N020618E   LELL
-Texto                423518N053922W   LELN
-Texto                422737N021913W   LELO
-Texto                402820N033339W   LEMD
-Texto                364029N042957W   LEMG
-Texto                395145N041307E   LEMH
-Texto                371029N053657W   LEMO
-Texto                393306N024419E   LEPA
-Texto                395356N030556E   LEPO
-Texto                424612N013846W   LEPP
-Texto                375708N011351W   LERI
-Texto                422737N021913W   LERJ
-Texto                410850N011001E   LERS
-Texto                363842N062058W   LERT
-Texto                405707N053007W   LESA
-Texto                393556N024209E   LESB
-Texto                432123N014726W   LESO
-Texto                425346N082454W   LEST
-Texto                422046N012453E   LESU
-Texto                413426N021524E   LETA
-Texto                402443N011303W   LETL
-Texto                402948N032645W   LETO
-Texto                392921N002853W   LEVC
-Texto                414221N045106W   LEVD
-Texto                425258N024328W   LEVT
-Texto                421344N083739W   LEVX
-Texto                432537N034912W   LEXJ
-Texto                413958N010229W   LEZG
-Texto                372504N055356W   LEZL
-Texto                360903N052058W   LXGB
+Simbolo                282709N0135149W   GCFV 1
+Simbolo                280146N0171252W   GCGM 1
+Simbolo                274853N0175313W   GCHI 1
+Simbolo                283735N0174520W   GCLA 1
+Simbolo                275554N0152311W   GCLP 1
+Simbolo                285643N0133618W   GCRR 1
+Simbolo                280240N0163420W   GCTS 1
+Simbolo                282901N0162104W   GCXM 1
+Simbolo                282857N0162029W   GCXO 1
+Simbolo                355333N0051822W   GECE 1
+Simbolo                351807N0025640W   GEHM 1
+Simbolo                351647N0025722W   GEML 1
+Simbolo                270905N0131308W   GSAI 1
+Simbolo                234306N0155555W   GSVO 1
+Simbolo                385654N0015148W   LEAB 1
+Simbolo                360743N0052628W   LEAG 1
+Simbolo                381655N0003329W   LEAL 1
+Simbolo                365038N0022212W   LEAM 1
+Simbolo                385712N0034429W   LEAO 1
+Simbolo                433348N0060204W   LEAS 1
+Simbolo                375031N0045055W   LEBA 1
+Simbolo                431803N0025438W   LEBB 1
+Simbolo                422126N0033649W   LEBG 1
+Simbolo                411749N0020442E   LEBL 1
+Simbolo                393728N0002820W   LEBT 1
+Simbolo                385328N0064916W   LEBZ 1
+Simbolo                401250N0000424E   LECH 1
+Simbolo                431807N0082238W   LECO 1
+Simbolo                402214N0034706W   LECU 1
+Simbolo                404150N0034547W   LECV 1
+Simbolo                414340N0003207E   LEDA 1
+Simbolo                371847N0055956W   LEEC 1
+Simbolo                370759N0033808W   LEGA 1
+Simbolo                415403N0024537E   LEGE 1
+Simbolo                371119N0034638W   LEGR 1
+Simbolo                401738N0034325W   LEGT 1
+Simbolo                420451N0001924W   LEHC 1
+Simbolo                385222N0012223E   LEIB 1
+Simbolo                364440N0060336W   LEJR 1
+Simbolo                374629N0004844W   LELC 1
+Simbolo                413115N0020618E   LELL 1
+Simbolo                423518N0053922W   LELN0 1
+Simbolo                422737N0021913W   LELO 1
+Simbolo                402820N0033339W   LEMD 1
+Simbolo                364029N0042957W   LEMG 1
+Simbolo                395145N0041307E   LEMH 1
+Simbolo                371029N0053657W   LEMO 1
+Simbolo                393306N0024419E   LEPA 1
+Simbolo                395356N0030556E   LEPO 1
+Simbolo                424612N0013846W   LEPP 1
+Simbolo                375708N0011351W   LERI 1
+Simbolo                422737N0021913W   LERJ 1
+Simbolo                410850N0011001E   LERS 1
+Simbolo                363842N0062058W   LERT 1
+Simbolo                405707N0053007W   LESA 1
+Simbolo                393556N0024209E   LESB 1
+Simbolo                432123N0014726W   LESO 1
+Simbolo                425346N0082454W   LEST 1
+Simbolo                422046N0012453E   LESU 1
+Simbolo                413426N0021524E   LETA 1
+Simbolo                402443N0011303W   LETL 1
+Simbolo                402948N0032645W   LETO 1
+Simbolo                392921N0002853W   LEVC 1
+Simbolo                414221N0045106W   LEVD 1
+Simbolo                425258N0024328W   LEVT 1
+Simbolo                421344N0083739W   LEVX 1
+Simbolo                432537N0034912W   LEXJ 1
+Simbolo                413958N0010229W   LEZG 1
+Simbolo                372504N0055356W   LEZL 1
+Simbolo                360903N0052058W   LXGB 1
+Texto                282709N0135149W   GCFV
+Texto                280146N0171252W   GCGM
+Texto                274853N0175313W   GCHI
+Texto                283735N0174520W   GCLA
+Texto                275554N0152311W   GCLP
+Texto                285643N0133618W   GCRR
+Texto                280240N0163420W   GCTS
+Texto                282901N0162104W   GCXM
+Texto                282857N0162029W   GCXO
+Texto                355333N0051822W   GECE
+Texto                351807N0025640W   GEHM
+Texto                351647N0025722W   GEML
+Texto                270905N0131308W   GSAI
+Texto                234306N0155555W   GSVO
+Texto                385654N0015148W   LEAB
+Texto                360743N0052628W   LEAG
+Texto                381655N0003329W   LEAL
+Texto                365038N0022212W   LEAM
+Texto                385712N0034429W   LEAO
+Texto                433348N0060204W   LEAS
+Texto                375031N0045055W   LEBA
+Texto                431803N0025438W   LEBB
+Texto                422126N0033649W   LEBG
+Texto                411749N0020442E   LEBL
+Texto                393728N0002820W   LEBT
+Texto                385328N0064916W   LEBZ
+Texto                401250N0000424E   LECH
+Texto                431807N0082238W   LECO
+Texto                402214N0034706W   LECU
+Texto                404150N0034547W   LECV
+Texto                414340N0003207E   LEDA
+Texto                371847N0055956W   LEEC
+Texto                370759N0033808W   LEGA
+Texto                415403N0024537E   LEGE
+Texto                371119N0034638W   LEGR
+Texto                401738N0034325W   LEGT
+Texto                420451N0001924W   LEHC
+Texto                385222N0012223E   LEIB
+Texto                364440N0060336W   LEJR
+Texto                374629N0004844W   LELC
+Texto                413115N0020618E   LELL
+Texto                423518N0053922W   LELN0
+Texto                422737N0021913W   LELO
+Texto                402820N0033339W   LEMD
+Texto                364029N0042957W   LEMG
+Texto                395145N0041307E   LEMH
+Texto                371029N0053657W   LEMO
+Texto                393306N0024419E   LEPA
+Texto                395356N0030556E   LEPO
+Texto                424612N0013846W   LEPP
+Texto                375708N0011351W   LERI
+Texto                422737N0021913W   LERJ
+Texto                410850N0011001E   LERS
+Texto                363842N0062058W   LERT
+Texto                405707N0053007W   LESA
+Texto                393556N0024209E   LESB
+Texto                432123N0014726W   LESO
+Texto                425346N0082454W   LEST
+Texto                422046N0012453E   LESU
+Texto                413426N0021524E   LETA
+Texto                402443N0011303W   LETL
+Texto                402948N0032645W   LETO
+Texto                392921N0002853W   LEVC
+Texto                414221N0045106W   LEVD
+Texto                425258N0024328W   LEVT
+Texto                421344N0083739W   LEVX
+Texto                432537N0034912W   LEXJ
+Texto                413958N0010229W   LEZG
+Texto                372504N0055356W   LEZL
+Texto                360903N0052058W   LXGB

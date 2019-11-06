@@ -128,7 +128,7 @@
                             <TextBlock x:Name="LTime"  DockPanel.Dock="Top" Margin="5">Time window:</TextBlock>
                             <xctk:RangeSlider x:Name="SlTime" Minimum="22" Maximum="24" TickPlacement="BottomRight" LowerValue="22"
                                 AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" TickFrequency="0.0833333"  HigherValue="24"
-                                IsSnapToTickEnabled="True" HigherValueChanged="SliderTime_ValueChanged" RangeBackground="Green" HigherRangeBackground="Red" LowerRangeBackground="Red"/>
+                                IsSnapToTickEnabled="True" LowerValueChanged="SliderTime_ValueChanged" HigherValueChanged="SliderTime_ValueChanged" RangeBackground="Green" HigherRangeBackground="Red" LowerRangeBackground="Red"/>
                         </DockPanel>
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LSpeed"  DockPanel.Dock="Top" Margin="5">Speed Time:</TextBlock>
@@ -280,12 +280,12 @@
                                 <xctk:ColorPicker DisplayColorAndName="True"/>
                             </StackPanel>
                         </DockPanel>
-                        <StackPanel Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="AliceBlue">
-                            <TextBlock>Seconds interval:</TextBlock>
-                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" Background="Aqua">
-                                    <Slider Maximum="60" Minimum="1" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Name="Interval" HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-                                    <TextBox Margin="5" Text="{Binding ElementName=Interval, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" HorizontalAlignment="Right"/>
-                                </StackPanel>
+                        <StackPanel Margin="5">
+                            <TextBlock>Interval (in s):</TextBlock>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Slider Maximum="60" Minimum="1" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Name="SlInterval" Margin="0" LargeChange="10" Width="300" ValueChanged="Interval_ValueChanged"/>
+                                <TextBox Margin="5" Text="{Binding ElementName=SlInterval, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" HorizontalAlignment="Right"/>
+                            </StackPanel>
                         </StackPanel>
                     </DockPanel>
                 </GroupBox>

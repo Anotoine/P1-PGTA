@@ -282,7 +282,7 @@ namespace ASTERIX
                     Message m = listMessages[i];
                     if (Vistos.Contains(m.getAddressICAO()))
                     {
-                        if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(1))
+                        if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(UserOptions.Interval))
                             VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
                     }
                     else
@@ -330,6 +330,11 @@ namespace ASTERIX
         {
             if (CheckVehicles != null)
                 CheckBoxClickVehicles(sender, e);
+        }
+
+        private void Interval_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            UserOptions.Interval = SlInterval.Value;
         }
 
         private void PBLoadDB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

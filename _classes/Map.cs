@@ -86,20 +86,13 @@ namespace ASTERIX
 
                             auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                             lengthW = auxstr[0].Length;
+                            a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                            b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                            c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                            d = 0;
                             if (lengthW > 8)
-                            {
-                                a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
-                                b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
-                                c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
                                 d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
-                            } 
-                            else
-                            {
-                                a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
-                                b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
-                                c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
-                                d = 0;
-                            }
+
                             //Obtaining the final value
                             y = a + (b / 60) + ((c + d / 1000) / 3600);
 
@@ -133,21 +126,13 @@ namespace ASTERIX
 
                             auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                             lengthW = auxstr[0].Length;
+                            a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                            b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                            c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                            d = 0;
                             if (lengthW > 8)
-                            {
-                                a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
-                                b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
-                                c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
                                 d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
-                            }
-                            else
-                            {
-                                a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
-                                b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
-                                c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
-                                d = 0;
-                            }
-
+                            
                             //Obtaining the final value
                             y = a + (b / 60) + ((c + d / 1000) / 3600);
 
@@ -187,20 +172,13 @@ namespace ASTERIX
 
                                 auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                                 lengthW = auxstr[0].Length;
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                                d = 0;
                                 if (lengthW > 8)
-                                {
-                                    a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
-                                    b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
-                                    c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
                                     d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
-                                }
-                                else
-                                {
-                                    a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
-                                    b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
-                                    c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
-                                    d = 0;
-                                }
+
 
                                 //Obtaining the final value
                                 y = a + (b / 60) + ((c + d / 1000) / 3600);
@@ -241,20 +219,13 @@ namespace ASTERIX
 
                                 auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                                 lengthW = auxstr[0].Length;
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                                d = 0;
                                 if (lengthW > 8)
-                                {
-                                    a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
-                                    b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
-                                    c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
                                     d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
-                                }
-                                else
-                                {
-                                    a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
-                                    b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
-                                    c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
-                                    d = 0;
-                                }
+
                                 //Obtaining the final value
                                 y = a + (b / 60) + ((c + d / 1000) / 3600);
 

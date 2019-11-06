@@ -9,8 +9,10 @@ namespace ASTERIX
 {
     class Options
     {
-        string lang = "ENG";
-        double fm = 1;
+        string lang = "en-US";
+        double interval = 1;
+
+        public double Interval { get => interval; set => interval = value; }
 
         //Colors for the Canvas
         mapsColorClass mapsColor = new mapsColorClass();
