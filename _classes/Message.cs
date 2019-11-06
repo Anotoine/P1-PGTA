@@ -14,14 +14,12 @@ namespace ASTERIX
         public int Length;
         private List<bool> listFSPEC;
         public string listFSPECraw;
-        private int Offset;//Donde empieza el siguiente campo
-        public CAT20 CAT20;
+        private int Offset; //Donde empieza el siguiente campo
+        private CAT20 CAT20;
         private CAT19 CAT19;
         private CAT10 CAT10;
-        private CAT21v1 CAT21v1; //p12ed023
-        private CAT21v2 CAT21v2; //el otro
-
-
+        private CAT21v023 CAT21v023; //p12ed023
+        private CAT21v24 CAT21v24; //el otro
 
 
         //Constructors needed
@@ -80,7 +78,7 @@ namespace ASTERIX
                     decodeCAT20();
                     break;
                 case 21:
-                    decodeCAT21v1();
+                    decodeCAT21v023();
                     break;
             }
         }
@@ -261,7 +259,7 @@ namespace ASTERIX
             return this.listFSPEC.Count(c => c);
         }
 
-        //Functions
+        //Decoding CATs
         private void decodeCAT10()
         {
             CAT10 = new CAT10();
@@ -679,11 +677,11 @@ namespace ASTERIX
             }
         }
 
-        private void decodeCAT21v1() //p12ed023
+        private void decodeCAT21v023() //p12ed023 -- CAT21v023
         {
-            CAT21v1 = new CAT21v1();
+            CAT21v023 = new CAT21v023();
             if (this.listFSPEC[1])
-                CAT21v1.DI010 = decodeSACSIC();
+                CAT21v023.DI010 = decodeSACSIC();
             if (this.listFSPEC[2])
             {
                 var ls = new List<string> { "DCR", "GBS", "SIM", "TST", "RAB", "SAA", "SPI", "FX", "ATP", "ARC" };
@@ -746,21 +744,21 @@ namespace ASTERIX
                     atoms.Add(a);
                 }
                 Offset = +1;
-                CAT21v1.DI040 = atoms;
+                CAT21v023.DI040 = atoms;
             }
             if (this.listFSPEC[3])
-                CAT21v1.DI030 = decodeTOD();
+                CAT21v023.DI030 = decodeTOD();
             if (this.listFSPEC[4])
-                CAT21v1.DI130 = decodeLatLong();
+                CAT21v023.DI130 = decodeLatLong();
             if (this.listFSPEC[5])
             {
-                CAT21v1.DI080 = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16), 2).PadLeft(16, '0');
+                CAT21v023.DI080 = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16), 2).PadLeft(16, '0');
                 Offset += 3;
             }
             if (this.listFSPEC[6])
             {
                 int alt = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
-                CAT21v1.DI140 = Convert.ToSingle(alt * 6.25);
+                CAT21v023.DI140 = Convert.ToSingle(alt * 6.25);
                 Offset += 3;
             }
             if (this.listFSPEC[7])
@@ -833,7 +831,7 @@ namespace ASTERIX
                 code = Int32.Parse(string.Concat(s[4], s[5],s[6] ,s[7]), System.Globalization.NumberStyles.HexNumber);
                 a = new Atom("Position Accuracy", code, Convert.ToString(code));
                 Offset += 1;
-                CAT21v1.DI090 = atoms;
+                CAT21v023.DI090 = atoms;
             }
             if(listFSPEC[8])
             {
@@ -903,23 +901,23 @@ namespace ASTERIX
                             break;
                     }
                     Offset += 1;
-                    CAT21v1.DI210 = atoms;
+                    CAT21v023.DI210 = atoms;
                 }
                 if (listFSPEC[10])
                 {
-                    float RA = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 0.01);
-                    CAT21v1.DI230 = RA;
+                    float RA = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.01);
+                    CAT21v023.DI230 = RA;
                     Offset += 2;
                 }
                 if (listFSPEC[11])
                 {
-                    float FL = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 0.25);
-                    CAT21v1.DI145 = (int)FL;
+                    float FL = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.25);
+                    CAT21v023.DI145 = (int)FL;
                     Offset += 2;
                 }
                 if (listFSPEC[12])
                 {
-                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2));
+                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     int code = Convert.ToInt16(s[0]);
                     s.Remove(0, 1);
                     float Airspeed;
@@ -927,54 +925,54 @@ namespace ASTERIX
                     {
                         case 0:
                             Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * 2*10^(-14));
-                            CAT21v1.DI150 = Airspeed;
+                            CAT21v023.DI150 = Airspeed;
                             break;
                         case 1:
                             Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * 0.001);
-                            CAT21v1.DI150 = Airspeed;
+                            CAT21v023.DI150 = Airspeed;
                             break;
                     }      
                     Offset += 2;
                 }
                 if (listFSPEC[13])
                 {
-                    CAT21v1.DI151 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2));
+                    CAT21v023.DI151 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     Offset += 2;
                 }
                 if (listFSPEC[14])
                 {
-                    CAT21v1.DI152 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * (360/(2^16)));
+                    CAT21v023.DI152 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * (360/(2^16)));
                     Offset += 2;
                 }
                 if (listFSPEC[15])
                 {
-                    CAT21v1.DI155 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 6.25);
+                    CAT21v023.DI155 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 6.25);
                     Offset += 2;
                 }
                 if (listFSPEC[16])
                 {
                     if(listFSPEC[17])
                     {
-                        CAT21v1.DI157 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 6.25);
+                        CAT21v023.DI157 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 6.25);
                         Offset += 2;
                     }
                     if (listFSPEC[18])
                     {
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
-                        a = new Atom("Ground Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 2 ^ (-14))));
+                        a = new Atom("Ground Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 2 ^ (-14))));
                         atoms.Add(a);
                         Offset += 2;
-                        a = new Atom("Track Angle", 1, Convert.ToString(Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * (360 / (2 ^ 16)))));
+                        a = new Atom("Track Angle", 1, Convert.ToString(Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * (360 / (2 ^ 16)))));
                         atoms.Add(a);
-                        CAT21v1.DI160 = atoms;
+                        CAT21v023.DI160 = atoms;
                         Offset += 2;
                     }
                     if (listFSPEC[19])
                     {
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
-                        string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 2));
+                        string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                         int code = Convert.ToInt16(string.Concat(s[0],s[1]));
                         switch(code)
                         {
@@ -999,7 +997,7 @@ namespace ASTERIX
                         switch(code)
                         {
                             case 0:
-                                CAT21v1.DI165 = atoms;
+                                CAT21v023.DI165 = atoms;
                                 Offset += 1;
                                 break;
                             case 1:
@@ -1008,7 +1006,7 @@ namespace ASTERIX
                                 s.Remove(7, 1);
                                 a = new Atom("Rate of Turn", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt16(s, 2) * 0.25)));
                                 atoms.Add(a);
-                                CAT21v1.DI165 = atoms;
+                                CAT21v023.DI165 = atoms;
                                 break;
                         }
 
@@ -1027,29 +1025,29 @@ namespace ASTERIX
                         for (int i = 0; i < 8; i++)
                         {
                             if (stringCode.Substring(6 * i, 6).StartsWith("0"))
-                                code.Add((char)Convert.ToInt32(string.Concat("01", stringCode.Substring(6 * i, 6)), 2));
+                                code.Add((char)Convert.ToInt32(string.Concat("01", stringCode.Substring(6 * i, 6)), 16));
                             else
-                                code.Add((char)Convert.ToInt32(string.Concat("00", stringCode.Substring(6 * i, 6)), 2));
+                                code.Add((char)Convert.ToInt32(string.Concat("00", stringCode.Substring(6 * i, 6)), 16));
                         }
                         atoms.Add(new Atom("Callsign", 0, Regex.Replace(string.Join("", code.ToArray()), @"\s", "")));
 
-                        CAT21v1.DI170 = atoms;
+                        CAT21v023.DI170 = atoms;
                     }
                     if (listFSPEC[21])
                     {
-                        CAT21v1.DI095 = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 2));
+                        CAT21v023.DI095 = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16));
                         Offset += 1;
                     }
                     if (listFSPEC[22])
                     {
-                        CAT21v1.DI032 = Convert.ToSingle(Convert.ToInt16( this.rawList[Offset], 2) * (2 ^(-8)));
+                        CAT21v023.DI032 = Convert.ToSingle(Convert.ToInt16( this.rawList[Offset], 16) * (2 ^(-8)));
                         Offset += 1;
                     }
                     if (listFSPEC[23])
                     {
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
-                        string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 2));
+                        string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16));
                         switch(Convert.ToInt16(s))
                         {
                             case 0:
@@ -1078,87 +1076,87 @@ namespace ASTERIX
                                 break;
                         }
                         Offset += 1;
-                        CAT21v1.DI200 = atoms;
+                        CAT21v023.DI200 = atoms;
                     }
                     if (listFSPEC[24])
                     {
                         if (listFSPEC[25])
                         {
-                            int s = Convert.ToInt16(this.rawList[Offset], 2);
+                            int s = Convert.ToInt16(this.rawList[Offset], 16);
                             Offset += 1;
                             switch(s)
                             {
                                 case 1:
-                                    CAT21v1.DI020 = "light aircraft";
+                                    CAT21v023.DI020 = "light aircraft";
                                     break;
                                 case 2:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 3:
-                                    CAT21v1.DI020 = "medium aircraft";
+                                    CAT21v023.DI020 = "medium aircraft";
                                     break;
                                 case 4:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 5:
-                                    CAT21v1.DI020 = "heavy aircraft";
+                                    CAT21v023.DI020 = "heavy aircraft";
                                     break;
                                 case 6:
-                                    CAT21v1.DI020 = "highly manoeuvrable and high speed";
+                                    CAT21v023.DI020 = "highly manoeuvrable and high speed";
                                     break;
                                 case 7:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 8:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 9:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 10:
-                                    CAT21v1.DI020 = "rotocraft";
+                                    CAT21v023.DI020 = "rotocraft";
                                     break;
                                 case 11:
-                                    CAT21v1.DI020 = "glider/sailplane";
+                                    CAT21v023.DI020 = "glider/sailplane";
                                     break;
                                 case 12:
-                                    CAT21v1.DI020 = "lighter-than-air";
+                                    CAT21v023.DI020 = "lighter-than-air";
                                     break;
                                 case 13:
-                                    CAT21v1.DI020 = "unmanned aerial vehicle";
+                                    CAT21v023.DI020 = "unmanned aerial vehicle";
                                     break;
                                 case 14:
-                                    CAT21v1.DI020 = "space/transatmospheric vehicle";
+                                    CAT21v023.DI020 = "space/transatmospheric vehicle";
                                     break;
                                 case 15:
-                                    CAT21v1.DI020 = "ultralight/handglider/paraglider";
+                                    CAT21v023.DI020 = "ultralight/handglider/paraglider";
                                     break;
                                 case 16:
-                                    CAT21v1.DI020 = "parachutist/skydiver";
+                                    CAT21v023.DI020 = "parachutist/skydiver";
                                     break;
                                 case 17:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 18:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 19:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 20:
-                                    CAT21v1.DI020 = "surface emergency vehicle";
+                                    CAT21v023.DI020 = "surface emergency vehicle";
                                     break;
                                 case 21:
-                                    CAT21v1.DI020 = "surface service vehicle";
+                                    CAT21v023.DI020 = "surface service vehicle";
                                     break;
                                 case 22:
-                                    CAT21v1.DI020 = "fixed ground or tethered obstruction";
+                                    CAT21v023.DI020 = "fixed ground or tethered obstruction";
                                     break;
                                 case 23:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                                 case 24:
-                                    CAT21v1.DI020 = "reserved";
+                                    CAT21v023.DI020 = "reserved";
                                     break;
                             }
                         }
@@ -1187,12 +1185,10 @@ namespace ASTERIX
             }
         }
 
-
-
-        private void decodeCAT21v2()
+        private void decodeCAT21v24() //(Alex, inserte aqui el pdf) -- CAT21v24
         {
             if (listFSPEC[1])
-                CAT21v2.DI010 = decodeSACSIC();
+                CAT21v24.DI010 = decodeSACSIC();
             if (listFSPEC[2])
             {
                 List<Atom> atoms = new List<Atom>();
@@ -1278,8 +1274,8 @@ namespace ASTERIX
             }
         }
 
-
-        private List<Atom> decodeSACSIC() //only checked for CAT20 and CAT19
+        //Functions
+        private List<Atom> decodeSACSIC()
         {
             List<Atom> atoms = new List<Atom>();
             List<string> ls = new List<string>() { "SAC", "SIC" };
@@ -1290,6 +1286,7 @@ namespace ASTERIX
             }
             return atoms;
         }
+
         private DateTime decodeTOD()
         {
             int LSB = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
@@ -1297,6 +1294,7 @@ namespace ASTERIX
 
             return new DateTime().AddSeconds((float)LSB / 128);
         }
+
         private Point decodeXY()
         {
             string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16), 2).PadLeft(24, '0');
@@ -1307,12 +1305,14 @@ namespace ASTERIX
             Offset += 6;
             return new Point().XY2LatLong((float)x / 2, (float)y / 2);
         }
+
         private int decodeTrackNumber()
         {
             int trackNumber = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
             Offset += 2;
             return trackNumber;
         }
+
         private List<Atom> decodeM3A()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1377,6 +1377,7 @@ namespace ASTERIX
             atoms.Add(new Atom("Mode-3/A reply", Convert.ToInt32(code), code));
             return atoms;
         }
+
         private List<Atom> decodeTrackVel()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1389,6 +1390,7 @@ namespace ASTERIX
             }
             return atoms;
         }
+
         private List<Atom> decodeTrackVelPolar()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1401,6 +1403,7 @@ namespace ASTERIX
             Offset += 2;
             return atoms;
         }
+
         private List<Atom> decodeTRD()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1436,6 +1439,7 @@ namespace ASTERIX
             }
             return atoms;
         }
+
         private List<Atom> decodeLatLong()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1451,6 +1455,7 @@ namespace ASTERIX
             atoms.Add(new Atom("Longitude", latreal, Convert.ToString(latreal)));
             return atoms;
         }
+
         private List<Atom> decodePolarCoordinates()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1466,6 +1471,7 @@ namespace ASTERIX
             atoms.Add(new Atom("Longitude", Thetareal, Convert.ToString(Thetareal)));
             return atoms;
         }
+
         private List<Atom> decodeCallSign()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1511,6 +1517,7 @@ namespace ASTERIX
 
             return atoms;
         }
+
         private string decodeICAOAddress()
         {
             string BB = string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]).ToUpper();
@@ -1518,6 +1525,7 @@ namespace ASTERIX
 
             return BB;
         }
+
         private List<string> decodeReceivers()
         {
             //Amount of Octets that will extent this camp (REP)
@@ -1538,6 +1546,7 @@ namespace ASTERIX
 
             return dev;
         }
+
         private List<Atom> decodeTrackStatus()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1596,6 +1605,7 @@ namespace ASTERIX
             }
             return atoms;
         }
+
         private List<Atom> decodeFLbin()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1632,6 +1642,7 @@ namespace ASTERIX
             Offset += 2;
             return atoms;
         }
+
         private float decodeMheight()
         {
             float BB = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 6.25);
@@ -1639,6 +1650,7 @@ namespace ASTERIX
 
             return BB;
         }
+
         private float decodeGheight()
         {
             float BB = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 6.25);
@@ -1646,6 +1658,7 @@ namespace ASTERIX
 
             return BB;
         }
+
         private List<Atom> decodeCalAcc()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1659,6 +1672,7 @@ namespace ASTERIX
 
             return atoms;
         }
+
         private string decodeVehicleId()
         {
             int BB = Convert.ToInt16(this.rawList[Offset], 2);
@@ -1703,6 +1717,7 @@ namespace ASTERIX
                     return "";
             }
         }
+
         private List<Atom> decodePosAcu()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1750,6 +1765,7 @@ namespace ASTERIX
 
             return atoms;
         }
+
         private string decodePPmes()
         {
             int BB = Convert.ToInt32(this.rawList[Offset], 16);
@@ -1781,6 +1797,7 @@ namespace ASTERIX
                     return "Invalid information";
             }
         }
+
         private List<Atom> decodeMSdata()
         {
             List<Atom> atoms = new List<Atom>();
@@ -1808,11 +1825,13 @@ namespace ASTERIX
             }
             return atoms;
         }
+
         private int decodeMessType()
         {
             Offset++;
             return Convert.ToInt32(this.rawList[Offset], 16);
         }
+
         private List<Atom> decodeSysStats()
         {
             List<Atom> atoms = new List<Atom>();
@@ -2016,6 +2035,7 @@ namespace ASTERIX
             }
             return atoms;
         }
+
         private List<Atom> decodeTrackProcStats()
         {
             List<Atom> atoms = new List<Atom>();
@@ -2043,6 +2063,7 @@ namespace ASTERIX
             Offset++;
             return atoms;
         }
+
         private List<Atom> decodeRemSensorStats()
         {
             List<Atom> atoms = new List<Atom>();
@@ -2110,5 +2131,6 @@ namespace ASTERIX
             }
             return atoms;
         }
+
     }
 }

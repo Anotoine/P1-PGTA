@@ -127,17 +127,10 @@
     <Compile Include="_classes\CAT10.cs" />
     <Compile Include="_classes\CAT19.cs" />
     <Compile Include="_classes\CAT20.cs" />
-<<<<<<< HEAD
-    <Compile Include="Map.xaml.cs">
-      <DependentUpon>Map.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="_classes\CAT21v2.cs" />
-    <Compile Include="_classes\CAT21v1.cs" />
-=======
-    <Compile Include="_classes\CAT21.cs" />
+    <Compile Include="_classes\CAT21v24.cs" />
+    <Compile Include="_classes\CAT21v023.cs" />
     <Compile Include="_classes\Map.cs" />
     <Compile Include="_classes\Options.cs" />
->>>>>>> 3bafb9b44dcfa83f97ebb9bbd697b7069f877bb8
     <Compile Include="_classes\Point.cs" />
     <Compile Include="_classes\ShowRow.cs" />
     <Compile Include="_classes\Vehicle.cs" />

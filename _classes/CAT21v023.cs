@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ASTERIX
 {
-    class CAT21v1
+    class CAT21v023
     {
         internal List<Atom> DI010 { get; set; }
         internal string DI020 { get; set; }
