@@ -18,7 +18,7 @@ namespace ASTERIX
     public partial class MainWindow : Window
     {
         Point ARP, zero0;
-        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, xA, yA;
+        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, xA, yA, xe, yn;
 
         //User options stuff
         Options UserOptions = new Options();
@@ -67,8 +67,15 @@ namespace ASTERIX
 
         private void BRadar_Click(object sender, RoutedEventArgs e)
         {
-            zero0 = new Point().LatLong2XY(41.315300, 2.043297); //x y superior esquerra 
+
             ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport
+            zero0 = new Point().LatLong2XY(41.315955, 2.028508);
+            xe = -4148;
+            yn = 2156;
+
+
+
+            MessageBox.Show((ARP.X - zero0.X).ToString());
 
             //xyz de Lambert --> xyz LienzoMaps (amb origen de coordenades a d'alt a l'esquerra)
             A = -zero0.X;
@@ -81,8 +88,8 @@ namespace ASTERIX
             yA = (ARP.Y + B) / beta;
             AARP = -xA;
             BARP = -yA;
-            alphaARP = AARP / -2887;
-            betaARP = BARP / 2078;
+            alphaARP = AARP / xe;
+            betaARP = BARP / yn;
 
             WLoad.Visibility = Visibility.Hidden;
             WRadar.Visibility = Visibility.Visible;
@@ -339,8 +346,45 @@ namespace ASTERIX
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (checkBoxes != null)
-                MessageBox.Show("From: " + e.OldValue + "\n" + "To: " + e.NewValue, "TEST");
+            if (checkBoxes != null) {
+                double[] zoom = new double[] { 41.315955, 2.028508, -4148, 2156, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
+
+                int p = 0;
+                for (int i = 0; i < zoom.Length; i++) //busquem amb quin zoom estem
+                    if (xe == zoom[i])
+                    {
+                        p = i;
+                        i = zoom.Length;
+                    }
+
+                if (e.OldValue < e.NewValue)
+                { //Zoom Out
+                    xe = zoom[p + 4];
+                    yn = zoom[p + 5];
+                    zero0 = new Point().LatLong2XY(zoom[p+2], zoom[p+3]);
+                }
+                else
+                { //Zoom in
+                    xe = zoom[p - 4];
+                    yn = zoom[p - 3];
+                    zero0 = new Point().LatLong2XY(zoom[p -6], zoom[p -5]);
+                }
+
+                A = -zero0.X;
+                B = -zero0.Y;
+                alpha = A / (LienzoMaps.ActualWidth / 2);
+                beta = B / (LienzoMaps.ActualHeight / 2);
+                xA = (ARP.X + A) / alpha;
+                yA = (ARP.Y + B) / beta;
+                AARP = -xA;
+                BARP = -yA;
+                alphaARP = AARP / xe;
+                betaARP = BARP / yn;
+
+                CheckBoxClickVehicles(sender, e);
+                CheckBoxClickMaps(sender, e);
+
+            }
         }
 
         private void BZoomout_Click(object sender, RoutedEventArgs e)
@@ -637,8 +681,8 @@ namespace ASTERIX
             yA = (ARP.Y + B) / beta;
             AARP = -xA;
             BARP = -yA;
-            alphaARP = AARP / -2887;
-            betaARP = BARP / 2078;
+            alphaARP = AARP / xe;
+            betaARP = BARP / yn;
 
             CheckBoxClickVehicles(sender, e);
             CheckBoxClickMaps(sender, e);
