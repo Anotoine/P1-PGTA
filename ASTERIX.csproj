@@ -94,7 +94,8 @@
     <Compile Include="Map.xaml.cs">
       <DependentUpon>Map.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_classes\CAT21.cs" />
+    <Compile Include="_classes\CAT21v2.cs" />
+    <Compile Include="_classes\CAT21v1.cs" />
     <Compile Include="_classes\Point.cs" />
     <Compile Include="_classes\ShowRow.cs" />
     <Compile Include="_classes\Vehicle.cs" />
