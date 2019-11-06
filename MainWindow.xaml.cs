@@ -519,31 +519,64 @@ namespace ASTERIX
                 {
                     if (VehiclesList != null)
                     {
-                        foreach (Vehicle v in VehiclesList)
+                        if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
                         {
-                            if (v.Type.Equals("Aircraft"))
+                            foreach (Vehicle v in VehiclesList)
                             {
-                                PointCollection pp = new PointCollection();
-
-                                Polyline pl = new Polyline();
-
-                                if (v.Callsign == "NONE")
-                                    pl.Stroke = UserOptions.OtherColor;
-                                else if (v.Callsign.StartsWith("F"))
-                                    pl.Stroke = UserOptions.VehiclesColor;
-                                else
-                                    pl.Stroke = UserOptions.AircraftColor;
-
-                                pl.Tag = v.TrackN;
-                                pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
-
-                                foreach (Point p in v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.UpperValue)))
+                                if (v.Type.Equals("Aircraft"))
                                 {
-                                    pp.Add(new System.Windows.Point(p.X * alphaARP - AARP, p.Y * betaARP - BARP));
-                                }
+                                    Polyline pl = new Polyline();
+                                    PointCollection pp = new PointCollection();
 
-                                pl.Points = pp;
-                                LienzoVehicles.Children.Add(pl);
+                                    List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    for (int i = 0; i < list.Count; i++)
+                                    {
+                                        pp.Add(new System.Windows.Point(list[i].X * alphaARP - AARP, list[i].Y * betaARP - BARP));
+                                        pl.Tag = v.TrackN + "/" + i;
+                                    }
+
+                                    if (v.Callsign == "NONE")
+                                        pl.Stroke = UserOptions.OtherColor;
+                                    else if (v.Callsign.StartsWith("F"))
+                                        pl.Stroke = UserOptions.VehiclesColor;
+                                    else
+                                        pl.Stroke = UserOptions.AircraftColor;
+
+                                    pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+
+                                    pl.Points = pp;
+                                    LienzoVehicles.Children.Add(pl);
+                                }
+                            }
+                        } else if (MergingTypeRADAR.SelectedIndex == 1) //Points
+                        {
+                            foreach (Vehicle v in VehiclesList)
+                            {
+                                if (v.Type == "Aircraft")
+                                {
+                                    List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    for (int i = 0; i < list.Count; i++)
+                                    {
+                                        Ellipse p0 = new Ellipse();
+
+                                        if (v.Callsign == "NONE")
+                                            p0.Stroke = Brushes.LightSkyBlue;
+                                        else if (v.Callsign.StartsWith("F"))
+                                            p0.Stroke = Brushes.White;
+                                        else
+                                            p0.Stroke = Brushes.Red;
+
+                                        p0.StrokeThickness = 1;
+                                        p0.Width = 2;
+                                        p0.Height = p0.Width;
+                                        p0.Tag = v.TrackN + "/" + i;
+                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                        LienzoVehicles.Children.Add(p0);
+
+                                        Canvas.SetLeft(p0, (list[i].X * alphaARP) - AARP - p0.Width / 2);
+                                        Canvas.SetTop(p0, (list[i].Y * betaARP) - BARP - p0.Height / 2);
+                                    }
+                                }
                             }
                         }
                     }
@@ -553,7 +586,9 @@ namespace ASTERIX
 
         private void PlaneClick(object sender, RoutedEventArgs e)
         {
-            int trackN = Convert.ToInt32((e.OriginalSource as FrameworkElement).Tag.ToString());
+            string[] TagValue = (e.OriginalSource as FrameworkElement).Tag.ToString().Split('/');
+            int trackN = Convert.ToInt32(TagValue[0]);
+            int j = Convert.ToInt32(TagValue[1]);
 
             bool exit = false; int i = 0;
             while (!(exit || i >= VehiclesList.Count))
@@ -565,7 +600,7 @@ namespace ASTERIX
             }
 
             string str = "ICAO Addres: " + VehiclesList[i].ICAOaddress + "\n" + "Callsign: " + VehiclesList[i].Callsign + "\n"
-                + "X: " + VehiclesList[i].Positions[0].X + "m\n" + "Y: " + VehiclesList[i].Positions[0].Y + "m";
+                + "X: " + VehiclesList[i].Positions[j].X + "m\n" + "Y: " + VehiclesList[i].Positions[j].Y + "m";
             MessageBox.Show(str, "TrackN: " + VehiclesList[i].TrackN);
         }
 
@@ -593,6 +628,5 @@ namespace ASTERIX
             LPosX.Text = ((e.GetPosition(LienzoMaps).X + AARP) / alphaARP).ToString("0.###m");
             LPosY.Text = ((e.GetPosition(LienzoMaps).Y + BARP) / betaARP).ToString("0.###m");
         }
-
     }
 }

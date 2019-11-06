@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:ASTERIX"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -21,6 +22,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
         <Button x:Name="BLoad" Grid.Column="0" Grid.Row="0" Background="#FF373F47" Click="BLoad_Click">
             <Path Stroke="Red" Fill="Red" Stretch="Uniform">
                 <Path.Data>
@@ -124,10 +126,9 @@
                     <StackPanel x:Name="StackOptionsTime" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200">
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LTime"  DockPanel.Dock="Top" Margin="5">Time window:</TextBlock>
-                            <TextBox Margin="5" Text="{Binding ElementName=SlTime, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" TextAlignment="Center" Width="25" />
-                            <Controls:RangeSlider x:Name="SlTime" Minimum="22" Maximum="24" TickPlacement="BottomRight" 
-                                AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" MoveWholeRange="True" TickFrequency="0.1"
-                                IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" ExtendedMode="True" CentralThumbDragDelta="CheckBoxClickVehicles" UpperThumbDragDelta="CheckBoxClickVehicles" LowerThumbDragDelta="CheckBoxClickVehicles"/>
+                            <xctk:RangeSlider x:Name="SlTime" Minimum="22" Maximum="24" TickPlacement="BottomRight" LowerValue="22"
+                                AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" TickFrequency="0.0833333"  HigherValue="24"
+                                IsSnapToTickEnabled="True" HigherValueChanged="SliderTime_ValueChanged" RangeBackground="Green" HigherRangeBackground="Red" LowerRangeBackground="Red"/>
                         </DockPanel>
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LSpeed"  DockPanel.Dock="Top" Margin="5">Speed Time:</TextBlock>
@@ -241,32 +242,50 @@
                         </StackPanel>
                         <StackPanel Margin="5" DockPanel.Dock="Top">
                             <TextBlock>Appearance:</TextBlock>
-                            <Button>MainColor</Button>
-                            <Button>TextColor</Button>
-                            <Button>BackgroundColor</Button>
+                            <TextBlock>MainColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True"/>
+                            <TextBlock>TextColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True"/>
+                            <TextBlock>BackgroundColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True"/>
                         </StackPanel>
                     </DockPanel>
                 </GroupBox>
                 <GroupBox x:Name="SettMap" Grid.Row="1" Grid.Column="3" Header="RADAR Settings">
                     <DockPanel>
                         <DockPanel DockPanel.Dock="Top">
-                            <StackPanel Margin="5" DockPanel.Dock="Left">
+                            <StackPanel Margin="5" DockPanel.Dock="Left" Width="125">
                                 <TextBlock>Vehicles:</TextBlock>
-                                <Button>AircraftColor</Button>
-                                <Button>VehiclesColor</Button>
-                                <Button>OthersColor</Button>
+                                <TextBlock>AircraftColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True"/>
+                                <TextBlock>VehiclesColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True"/>
+                                <TextBlock>OthersColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True"/>
+                                <TextBlock>Type:</TextBlock>
+                                <ComboBox Width="125" x:Name="MergingTypeRADAR" IsEditable="False" SelectedIndex="0">
+                                    <ComboBoxItem>Polylines</ComboBoxItem>
+                                    <ComboBoxItem>Points</ComboBoxItem>
+                                </ComboBox>
                             </StackPanel>
                             <StackPanel Margin="5" DockPanel.Dock="Left">
                                 <TextBlock>Maps:</TextBlock>
-                                <Button>MainColor</Button>
-                                <Button>SecondayColor</Button>
-                                <Button>HighligthColor</Button>
-                                <Button>BackgroundColor</Button>
+                                <TextBlock>MainColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True"/>
+                                <TextBlock>SecondayColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True"/>
+                                <TextBlock>HighligthColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True"/>
+                                <TextBlock>BackgroundColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True"/>
                             </StackPanel>
                         </DockPanel>
-                        <StackPanel Margin="5">
-                            <TextBlock>Sampling Freq:</TextBlock>
-                            <Slider></Slider>
+                        <StackPanel Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="AliceBlue">
+                            <TextBlock>Seconds interval:</TextBlock>
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" Background="Aqua">
+                                    <Slider Maximum="60" Minimum="1" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Name="Interval" HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                                    <TextBox Margin="5" Text="{Binding ElementName=Interval, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" HorizontalAlignment="Right"/>
+                                </StackPanel>
                         </StackPanel>
                     </DockPanel>
                 </GroupBox>
@@ -274,8 +293,10 @@
                     <DockPanel>
                         <StackPanel Margin="5">
                             <TextBlock>RowColors:</TextBlock>
-                            <Button>MainColor</Button>
-                            <Button>SecondayColor</Button>
+                            <TextBlock>MainColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True"/>
+                            <TextBlock>SecondayColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True"/>
                         </StackPanel>
                     </DockPanel>
                 </GroupBox>
