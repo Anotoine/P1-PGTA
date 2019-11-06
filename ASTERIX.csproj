@@ -60,7 +60,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Test.ico</ApplicationIcon>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>ASTERIX.App</StartupObject>
@@ -198,7 +198,7 @@
     <Analyzer Include="packages\Microsoft.NetFramework.Analyzers.2.9.7\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Test.ico" />
+    <Resource Include="Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

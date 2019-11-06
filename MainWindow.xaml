@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:ASTERIX"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="ASTERIX Decoder" Icon="Test.ico" Height="750" Width="1000"  Background="#FF373F47">
+        Title="ASTERIX Decoder" Icon="Icon.ico" Height="750" Width="1000"  Background="#FF373F47">
 
     <Grid x:Name="Base">
         <Grid.RowDefinitions>
