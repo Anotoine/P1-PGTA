@@ -1,0 +1,301 @@
+TituloMapa           VOR/DME
+  
+ColorTexto           10 120 120
+ColorSimbolos        10 100 100
+  
+Simbolo                 393257N0022345E   ADX 14
+Simbolo                 364104N0042914W   AGP 14
+Simbolo                 381746N0003936W   AI 14
+Simbolo                 410151N0052648W   AL 14
+Simbolo                 381605N0003412W   ALT 14
+Simbolo                 365233N0021423W   AM 14
+Simbolo                 365054N0022244W   AMN0 14
+Simbolo                 364959N0021533W   AMR 14
+Simbolo                 433328N0060142W   AST 14
+Simbolo                 381710N0003512W   ATE 14
+Simbolo                 433220N0055549W   AV 14
+Simbolo                 392846N0002722W   B 14
+Simbolo                 411925N0023747W   BAN0 14
+Simbolo                 410100N0052724W   BBI 14
+Simbolo                 411825N0020628E   BCN0 14
+Simbolo                 415651N0031232E   BGR 14
+Simbolo                 380909N0033730W   BLN0 14
+Simbolo                 431815N0025609W   BLV 14
+Simbolo                 402808N0033327W   BRA 14
+Simbolo                 432759N0013037W   BTZ 14
+Simbolo                 422118N0033648W   BUR 14
+Simbolo                 283605N0174523W   BV 14
+Simbolo                 283606N0174524W   BX 14
+Simbolo                 431925N0082138W   C 14
+Simbolo                 393127N0062604W   CCS 14
+Simbolo                 375045N0045041W   CDB 14
+Simbolo                 394151N0032602E   CDP 14
+Simbolo                 355333N0051819W   CEU 14
+Simbolo                 402219N0023240W   CJN0 14
+Simbolo                 413823N0023804E   CLE 14
+Simbolo                 394225N0005911W   CLS 14
+Simbolo                 405202N0011752W   CMA 14
+Simbolo                 403845N0034408W   CN0R 14
+Simbolo                 432155N0081941W   COA 14
+Simbolo                 375033N0045048W   COR 14
+Simbolo                 393828N0025456E   CST 14
+Simbolo                 401307N0000521E   CTN0 14
+Simbolo                 402203N0034624W   CVT 14
+Simbolo                 422712N0025250W   DGO 14
+Simbolo                 234440N0155510W   DKH 14
+Simbolo                 422704N0021852W   EAG 14
+Simbolo                 385709N0034517W   EAL 14
+Simbolo                 393731N0002819W   EBT 14
+Simbolo                 404158N0034546W   ECV 14
+Simbolo                 371843N0060007W   EEC 14
+Simbolo                 423537N0053845W   EON0 14
+Simbolo                 282930N0162209W   FP 14
+Simbolo                 282551N0135152W   FTV 14
+Simbolo                 282256N0135158W   FUE 14
+Simbolo                 282257N0135158W   FV 14
+Simbolo                 415534N0024612E   G 14
+Simbolo                 371059N0035927W   GDA 14
+Simbolo                 280437N0152542W   GDV 14
+Simbolo                 401159N0035039W   GE 14
+Simbolo                 415552N0024618E   GIR 14
+Simbolo                 364335N0043417W   GM 14
+Simbolo                 371117N0035027W   GR 14
+Simbolo                 371121N0034039W   GRA 14
+Simbolo                 420129N0024825E   GRN0 14
+Simbolo                 274858N0175310W   HIE 14
+Simbolo                 432310N0014745W   HIG 14
+Simbolo                 383029N0050558W   HIJ 14
+Simbolo                 274857N0175311W   HR 14
+Simbolo                 420424N0001908W   HUE 14
+Simbolo                 385206N0012157E   IBA 14
+Simbolo                 385455N0012813E   IZA 14
+Simbolo                 365004N0060058W   JER 14
+Simbolo                 393353N0024447E   JOA 14
+Simbolo                 364854N0060134W   JRZ 14
+Simbolo                 270834N0131304W   LAY 14
+Simbolo                 280143N0171253W   LGM 14
+Simbolo                 414347N0003138E   LLE 14
+Simbolo                 422737N0021937W   LPA 14
+Simbolo                 274943N0152555W   LPC 14
+Simbolo                 432346N0081825W   LRA 14
+Simbolo                 413310N0003852E   LRD 14
+Simbolo                 282905N0162105W   LRO 14
+Simbolo                 285653N0133604W   LTE 14
+Simbolo                 285719N0133643W   LZ 14
+Simbolo                 290956N0133039W   LZR 14
+Simbolo                 370319N0045623W   MAR 14
+Simbolo                 351649N0025729W   MEL 14
+Simbolo                 364851N0042210W   MGA 14
+Simbolo                 395149N0041258E   MHN0 14
+Simbolo                 351828N0025719W   MIA 14
+Simbolo                 392606N0024529E   MJV 14
+Simbolo                 410746N0000956E   MLA 14
+Simbolo                 364043N0043024W   MLG 14
+Simbolo                 351826N0025719W   MLL 14
+Simbolo                 395011N0041248E   MN0 14
+Simbolo                 371030N0053708W   MRN0 14
+Simbolo                 420139N0040632W   N0EA 14
+Simbolo                 414219N0045103W   N0UB 14
+Simbolo                 402206N0041457W   N0VS 14
+Simbolo                 393557N0024916E   PA 14
+Simbolo                 424251N0013820W   PAM 14
+Simbolo                 424117N0013939W   PAP 14
+Simbolo                 401510N0032052W   PDT 14
+Simbolo                 392614N0002047W   PN0D 14
+Simbolo                 395539N0030653E   POS 14
+Simbolo                 425159N0014300W   PP 14
+Simbolo                 424401N0014206W   PPN0 14
+Simbolo                 411658N0020454E   PRA 14
+Simbolo                 392538N0031524E   PTC 14
+Simbolo                 405114N0031447W   RBO 14
+Simbolo                 410858N0011016E   RES 14
+Simbolo                 363932N0042836W   RMA 14
+Simbolo                 410852N0010846E   RUS 14
+Simbolo                 432606N0035059W   SA 14
+Simbolo                 394027N0001228W   SGO 14
+Simbolo                 410906N0033617W   SIE 14
+Simbolo                 413111N0020635E   SLL 14
+Simbolo                 425428N0082542W   SN0O 14
+Simbolo                 432659N0035408W   SN0R 14
+Simbolo                 425808N0082622W   SO 14
+Simbolo                 372505N0054743W   SPP 14
+Simbolo                 431840N0014949W   SSN0 14
+Simbolo                 403247N0033431W   SSY 14
+Simbolo                 425536N0082531W   STG 14
+Simbolo                 372539N0054544W   SVL 14
+Simbolo                 280316N0163346W   TES 14
+Simbolo                 283212N0161607W   TFN0 14
+Simbolo                 280008N0164114W   TFS 14
+Simbolo                 395810N0042014W   TLD 14
+Simbolo                 415540N0003049W   TON0 14
+Simbolo                 385649N0015133W   VAB 14
+Simbolo                 385323N0064856W   VBZ 14
+Simbolo                 433325N0060026W   VES 14
+Simbolo                 425249N0024327W   VFD 14
+Simbolo                 401723N0034334W   VGE 14
+Simbolo                 421916N0083605W   VGO 14
+Simbolo                 421905N0083611W   VI 14
+Simbolo                 361421N0055831W   VJF 14
+Simbolo                 412033N0013252E   VLA 14
+Simbolo                 392907N0002859W   VLC 14
+Simbolo                 411238N0014221E   VN0V 14
+Simbolo                 421109N0083820W   VON0 14
+Simbolo                 275124N0152511W   VR 14
+Simbolo                 424354N0025156W   VRA 14
+Simbolo                 374647N0004845W   VSJ 14
+Simbolo                 424807N0024814W   VT 14
+Simbolo                 425541N0024046W   VTA 14
+Simbolo                 394650N0032751W   VTB 14
+Simbolo                 402832N0032819W   VTZ 14
+Simbolo                 382138N0022109W   YES 14
+Simbolo                 413928N0010151W   ZAR 14
+Simbolo                 413148N0053823W   ZMR 14
+Simbolo                 414349N0011135W   ZRZ 14
+Texto                393257N0022345E   ADX
+Texto                364104N0042914W   AGP
+Texto                381746N0003936W   AI
+Texto                410151N0052648W   AL
+Texto                381605N0003412W   ALT
+Texto                365233N0021423W   AM
+Texto                365054N0022244W   AMN0
+Texto                364959N0021533W   AMR
+Texto                433328N0060142W   AST
+Texto                381710N0003512W   ATE
+Texto                433220N0055549W   AV
+Texto                392846N0002722W   B
+Texto                411925N0023747W   BAN0
+Texto                410100N0052724W   BBI
+Texto                411825N0020628E   BCN0
+Texto                415651N0031232E   BGR
+Texto                380909N0033730W   BLN0
+Texto                431815N0025609W   BLV
+Texto                402808N0033327W   BRA
+Texto                432759N0013037W   BTZ
+Texto                422118N0033648W   BUR
+Texto                283605N0174523W   BV
+Texto                283606N0174524W   BX
+Texto                431925N0082138W   C
+Texto                393127N0062604W   CCS
+Texto                375045N0045041W   CDB
+Texto                394151N0032602E   CDP
+Texto                355333N0051819W   CEU
+Texto                402219N0023240W   CJN0
+Texto                413823N0023804E   CLE
+Texto                394225N0005911W   CLS
+Texto                405202N0011752W   CMA
+Texto                403845N0034408W   CN0R
+Texto                432155N0081941W   COA
+Texto                375033N0045048W   COR
+Texto                393828N0025456E   CST
+Texto                401307N0000521E   CTN0
+Texto                402203N0034624W   CVT
+Texto                422712N0025250W   DGO
+Texto                234440N0155510W   DKH
+Texto                422704N0021852W   EAG
+Texto                385709N0034517W   EAL
+Texto                393731N0002819W   EBT
+Texto                404158N0034546W   ECV
+Texto                371843N0060007W   EEC
+Texto                423537N0053845W   EON0
+Texto                282930N0162209W   FP
+Texto                282551N0135152W   FTV
+Texto                282256N0135158W   FUE
+Texto                282257N0135158W   FV
+Texto                415534N0024612E   G
+Texto                371059N0035927W   GDA
+Texto                280437N0152542W   GDV
+Texto                401159N0035039W   GE
+Texto                415552N0024618E   GIR
+Texto                364335N0043417W   GM
+Texto                371117N0035027W   GR
+Texto                371121N0034039W   GRA
+Texto                420129N0024825E   GRN0
+Texto                274858N0175310W   HIE
+Texto                432310N0014745W   HIG
+Texto                383029N0050558W   HIJ
+Texto                274857N0175311W   HR
+Texto                420424N0001908W   HUE
+Texto                385206N0012157E   IBA
+Texto                385455N0012813E   IZA
+Texto                365004N0060058W   JER
+Texto                393353N0024447E   JOA
+Texto                364854N0060134W   JRZ
+Texto                270834N0131304W   LAY
+Texto                280143N0171253W   LGM
+Texto                414347N0003138E   LLE
+Texto                422737N0021937W   LPA
+Texto                274943N0152555W   LPC
+Texto                432346N0081825W   LRA
+Texto                413310N0003852E   LRD
+Texto                282905N0162105W   LRO
+Texto                285653N0133604W   LTE
+Texto                285719N0133643W   LZ
+Texto                290956N0133039W   LZR
+Texto                370319N0045623W   MAR
+Texto                351649N0025729W   MEL
+Texto                364851N0042210W   MGA
+Texto                395149N0041258E   MHN0
+Texto                351828N0025719W   MIA
+Texto                392606N0024529E   MJV
+Texto                410746N0000956E   MLA
+Texto                364043N0043024W   MLG
+Texto                351826N0025719W   MLL
+Texto                395011N0041248E   MN0
+Texto                371030N0053708W   MRN0
+Texto                420139N0040632W   N0EA
+Texto                414219N0045103W   N0UB
+Texto                402206N0041457W   N0VS
+Texto                393557N0024916E   PA
+Texto                424251N0013820W   PAM
+Texto                424117N0013939W   PAP
+Texto                401510N0032052W   PDT
+Texto                392614N0002047W   PN0D
+Texto                395539N0030653E   POS
+Texto                425159N0014300W   PP
+Texto                424401N0014206W   PPN0
+Texto                411658N0020454E   PRA
+Texto                392538N0031524E   PTC
+Texto                405114N0031447W   RBO
+Texto                410858N0011016E   RES
+Texto                363932N0042836W   RMA
+Texto                410852N0010846E   RUS
+Texto                432606N0035059W   SA
+Texto                394027N0001228W   SGO
+Texto                410906N0033617W   SIE
+Texto                413111N0020635E   SLL
+Texto                425428N0082542W   SN0O
+Texto                432659N0035408W   SN0R
+Texto                425808N0082622W   SO
+Texto                372505N0054743W   SPP
+Texto                431840N0014949W   SSN0
+Texto                403247N0033431W   SSY
+Texto                425536N0082531W   STG
+Texto                372539N0054544W   SVL
+Texto                280316N0163346W   TES
+Texto                283212N0161607W   TFN0
+Texto                280008N0164114W   TFS
+Texto                395810N0042014W   TLD
+Texto                415540N0003049W   TON0
+Texto                385649N0015133W   VAB
+Texto                385323N0064856W   VBZ
+Texto                433325N0060026W   VES
+Texto                425249N0024327W   VFD
+Texto                401723N0034334W   VGE
+Texto                421916N0083605W   VGO
+Texto                421905N0083611W   VI
+Texto                361421N0055831W   VJF
+Texto                412033N0013252E   VLA
+Texto                392907N0002859W   VLC
+Texto                411238N0014221E   VN0V
+Texto                421109N0083820W   VON0
+Texto                275124N0152511W   VR
+Texto                424354N0025156W   VRA
+Texto                374647N0004845W   VSJ
+Texto                424807N0024814W   VT
+Texto                425541N0024046W   VTA
+Texto                394650N0032751W   VTB
+Texto                402832N0032819W   VTZ
+Texto                382138N0022109W   YES
+Texto                413928N0010151W   ZAR
+Texto                413148N0053823W   ZMR
+Texto                414349N0011135W   ZRZ

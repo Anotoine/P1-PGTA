@@ -1218,7 +1218,7 @@ namespace ASTERIX
                         atoms.Add(a);
                         break;
                 }
-                code = Convert.ToInt16(string.Concat(s[0], s[1]), 2);
+                code = Convert.ToInt16(string.Concat(s[3], s[4]), 2);
                 switch (code)
                 {
                     case 0:
@@ -1235,6 +1235,42 @@ namespace ASTERIX
                         break;
                     case 3:
                         a = new Atom("Altitude Reporting Capability", 3, "Invalid");
+                        atoms.Add(a);
+                        break;
+                }
+                code = Convert.ToInt16(s[5]);
+                switch (code)
+                {
+                    case 0:
+                        a = new Atom("Range Check", 0, "Default");
+                        atoms.Add(a);
+                        break;
+                    case 1:
+                        a = new Atom("Range Check", 1, "Range Check passed, CPR Validation pending");
+                        atoms.Add(a);
+                        break;
+                }
+                code = Convert.ToInt16(s[6]);
+                switch (code)
+                {
+                    case 0:
+                        a = new Atom("Report Type", 0, "Report from target transponder");
+                        atoms.Add(a);
+                        break;
+                    case 1:
+                        a = new Atom("Report Type", 1, "Report from field monitor(fixed transponder)");
+                        atoms.Add(a);
+                        break;
+                }
+                code = Convert.ToInt16(s[7]);
+                switch (code)
+                {
+                    case 0:
+                        a = new Atom("Report Type", 0, "Report from target transponder");
+                        atoms.Add(a);
+                        break;
+                    case 1:
+                        a = new Atom("Report Type", 1, "Report from field monitor(fixed transponder)");
                         atoms.Add(a);
                         break;
                 }

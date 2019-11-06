@@ -1,28 +1,8 @@
-Rango
-512
-ColorLinea
-9
-variarse
-en
-cualquier
-punto
-del
-mapa
-ColorRelleno
-9
-#
-file
-generated
-with
-the
-command
-#
-java
--jar
-BatchUTMjar
-j:\JAVA-UTM-GEO\BCN_aparcamientos2dxf
-411744N
-0020542E
+TituloMapa LEBL Nuevo
+
+ColorLinea      220 60 220
+ColorSimbolos   220 60 220
+
 Linea 411748186N 0020339065E 411748283N 0020339010E
 Linea 411827875N 0020514911E 411828355N 0020516317E
 Linea 411827751N 0020514990E 411828232N 0020516397E
