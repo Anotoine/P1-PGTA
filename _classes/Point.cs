@@ -30,10 +30,13 @@ namespace ASTERIX
         private double latRef = 41.295885 * Math.PI / 180;
         private double lonRef = 2.086214 * Math.PI / 180;
 
-
         //standard latitudes 
         private double lat1 = 40 * Math.PI / 180;
         private double lat2 = 42 * Math.PI / 180;
+
+        private double Re = 6378137;
+        private double Rp = 6357000;
+        private double Rm = 6371000;
 
         public Point()
         {
@@ -66,6 +69,17 @@ namespace ASTERIX
 
             return this;
         }
-
+        public double[] xEyN(double latref, double lonref) {//retorna la distancia x (direccio E) i y (direcció N) entre el punt i el punt de referencia
+            double lat = this.latR;
+            double lon = this.lonR;
+            double zarp = Rm * Math.Sin(latref);
+            double z = Rm * Math.Sin(lat);
+            double Rarp = Math.Sqrt((1 - Math.Pow(zarp, 2) / Math.Pow(Rp, 2)) * Math.Pow(Re, 2) + Math.Pow(zarp, 2));
+            double R = Math.Sqrt((1 - Math.Pow(z, 2) / Math.Pow(Rp, 2)) * Math.Pow(Re, 2) + Math.Pow(z, 2));
+            double Rlon = Rarp * Math.Cos(latref);
+            double x = (lon - lonref) * Rlon;
+            double y = (lat - latref) * R;
+            return new double[] {x,y};
+        }
     }
 }

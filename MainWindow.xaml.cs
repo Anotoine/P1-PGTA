@@ -70,8 +70,13 @@ namespace ASTERIX
 
             ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport
             zero0 = new Point().LatLong2XY(41.315955, 2.028508);
-            xe = -4148;
-            yn = 2156;
+            double[] xy = zero0.xEyN(ARP.latR, ARP.lonR);
+            //MessageBox.Show(xy[0].ToString());
+
+            xe = xy[0];
+            yn = xy[1];
+            //xe = -4148;
+            //yn = 2156;
 
             //xyz de Lambert --> xyz LienzoMaps (amb origen de coordenades a d'alt a l'esquerra)
             A = -zero0.X;
@@ -344,7 +349,7 @@ namespace ASTERIX
         {
             if (checkBoxes != null) {
                 //double[] zoom = new double[] { 41.315955, 2.028508, -4148, 2156, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
-                double[] zoom = new double[] { 41.315955, 2.028508, -4161, 2113, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
+                double[] zoom = new double[] { 41.315955, 2.028508, -4161, 2110, 41.393904, 1.842814, -19670, 10780, 42.115028, 0.005309, -173120, 90930, 43.542697, -3.904945, -499630, 249600 };
 
                 int a = Convert.ToInt32(e.NewValue * 4);
                 xe = zoom[a - 2];
