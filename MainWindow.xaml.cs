@@ -349,13 +349,7 @@ namespace ASTERIX
             if (checkBoxes != null) {
                 double[] zoom = new double[] { 41.315955, 2.028508, -4148, 2156, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
 
-                int p = 0;
-                for (int i = 0; i < zoom.Length; i++) //busquem amb quin zoom estem
-                    if (xe == zoom[i])
-                    {
-                        p = i;
-                        i = zoom.Length;
-                    }
+                int p = Convert.ToInt32(e.OldValue * 4 - 2);
 
                 if (e.OldValue < e.NewValue)
                 { //Zoom Out
