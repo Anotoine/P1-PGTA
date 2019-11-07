@@ -73,10 +73,6 @@ namespace ASTERIX
             xe = -4148;
             yn = 2156;
 
-
-
-            MessageBox.Show((ARP.X - zero0.X).ToString());
-
             //xyz de Lambert --> xyz LienzoMaps (amb origen de coordenades a d'alt a l'esquerra)
             A = -zero0.X;
             B = -zero0.Y;
@@ -347,22 +343,13 @@ namespace ASTERIX
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (checkBoxes != null) {
-                double[] zoom = new double[] { 41.315955, 2.028508, -4148, 2156, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
+                //double[] zoom = new double[] { 41.315955, 2.028508, -4148, 2156, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
+                double[] zoom = new double[] { 41.315955, 2.028508, -4161, 2113, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
 
-                int p = Convert.ToInt32(e.OldValue * 4 - 2);
-
-                if (e.OldValue < e.NewValue)
-                { //Zoom Out
-                    xe = zoom[p + 4];
-                    yn = zoom[p + 5];
-                    zero0 = new Point().LatLong2XY(zoom[p+2], zoom[p+3]);
-                }
-                else
-                { //Zoom in
-                    xe = zoom[p - 4];
-                    yn = zoom[p - 3];
-                    zero0 = new Point().LatLong2XY(zoom[p -6], zoom[p -5]);
-                }
+                int a = Convert.ToInt32(e.NewValue * 4);
+                xe = zoom[a - 2];
+                yn = zoom[a - 1];
+                zero0 = new Point().LatLong2XY(zoom[a-4], zoom[a-3]);
 
                 A = -zero0.X;
                 B = -zero0.Y;
