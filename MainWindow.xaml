@@ -193,11 +193,12 @@
                     </ScrollViewer>
                 </Expander>
                 <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                    <Button x:Name="BZoomout" Click="BZoomout_Click" Width="25" Height="25">-</Button>
+                  <Button x:Name="BZoomIn" Click="BZoomIn_Click" Width="25" Height="25">+</Button>
+                    
                     <Slider x:Name="SlZoom" Grid.ColumnSpan="4" Orientation="Horizontal" TickFrequency="1" VerticalAlignment="Bottom"
                         HorizontalAlignment="Center" Margin="20" Width="150" IsSnapToTickEnabled="True" Minimum="1" Maximum="4" ValueChanged="Slider_ValueChanged"
                         />
-                    <Button x:Name="BZoomIn" Click="BZoomIn_Click" Width="25" Height="25">+</Button>
+                  <Button x:Name="BZoomout" Click="BZoomout_Click" Width="25" Height="25">-</Button>
                 </StackPanel>
 
             </Grid>

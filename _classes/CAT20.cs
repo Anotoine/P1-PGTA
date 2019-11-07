@@ -11,7 +11,7 @@ namespace ASTERIX
         internal List<Atom> DI010 { get; set; }
         internal List<Atom> DI020 { get; set; }
         internal List<Atom> DI030 { get; set; }
-        internal List<Atom> DI041 { get; set; }
+        internal Point DI041 { get; set; }
         internal Point DI042 { get; set; }
         internal List<Atom> DI050 { get; set; }
         internal List<Atom> DI070 { get; set; }

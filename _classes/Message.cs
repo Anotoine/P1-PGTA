@@ -126,7 +126,10 @@ namespace ASTERIX
                 case 20:
                     return CAT20.DI220;
                 case 21:
-                    return "CAT21";
+                    if (CAT21v023 == null)
+                        return CAT21v24.DI080;
+                    else
+                        return CAT21v023.DI080;
                 default:
                     return "";
             }
@@ -193,7 +196,10 @@ namespace ASTERIX
                 case 20:
                     return CAT20.DI042;
                 case 21:
-                    return new Point();
+                    if (CAT21v023 == null)
+                        return CAT21v24.DI071;
+                    else
+                        return CAT21v023.DI130;
                 default:
                     return new Point();
             }
@@ -241,7 +247,10 @@ namespace ASTERIX
                 case 20:
                     return Convert.ToInt32(CAT20.DI010[1].getVal());
                 case 21:
-                    return -1;
+                    if (CAT21v023 == null)
+                        return Convert.ToInt32(CAT21v24.DI010[1].getVal());
+                    else
+                        return Convert.ToInt32(CAT21v023.DI010[1].getVal());
                 default:
                     return -1;
             }
@@ -1440,9 +1449,8 @@ namespace ASTERIX
             return atoms;
         }
 
-        private List<Atom> decodeLatLong()
+        private Point decodeLatLong()
         {
-            List<Atom> atoms = new List<Atom>();
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
             float latreal = Convert.ToSingle(lat * 180 / 2 ^ 25);
             
@@ -1451,9 +1459,7 @@ namespace ASTERIX
             
             Offset += 8;
 
-            atoms.Add(new Atom("Latitude", lonreal, Convert.ToString(lonreal)));
-            atoms.Add(new Atom("Longitude", latreal, Convert.ToString(latreal)));
-            return atoms;
+            return new Point().LatLong2XY(latreal, lonreal);
         }
 
         private List<Atom> decodePolarCoordinates()

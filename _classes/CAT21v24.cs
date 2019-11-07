@@ -22,11 +22,11 @@ namespace ASTERIX
         internal List<Atom> DI075 { get; set; }
         internal List<Atom> DI076 { get; set; }
         internal List<Atom> DI077 { get; set; }
-        internal List<Atom> DI080 { get; set; }
+        internal string DI080 { get; set; } //ICAO Address
         internal List<Atom> DI090 { get; set; }
         internal float DI110 { get; set; }
-        internal float DI130 { get; set; }
-        internal float DI131 { get; set; }
+        internal Point DI130 { get; set; } //Position 
+        internal Point DI131 { get; set; } //Position high-res
         internal float DI132 { get; set; }
         internal DateTime DI140 { get; set; }
         internal float DI145 { get; set; }

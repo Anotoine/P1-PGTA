@@ -383,18 +383,17 @@ namespace ASTERIX
 
                 CheckBoxClickVehicles(sender, e);
                 CheckBoxClickMaps(sender, e);
-
             }
         }
 
         private void BZoomout_Click(object sender, RoutedEventArgs e)
         {
-            SlZoom.Value = SlZoom.Value - 1;
+            SlZoom.Value = SlZoom.Value + 1;
         }
 
         private void BZoomIn_Click(object sender, RoutedEventArgs e)
         {
-            SlZoom.Value = SlZoom.Value + 1;
+            SlZoom.Value = SlZoom.Value - 1;
         }
 
         private void PBLoadDB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
