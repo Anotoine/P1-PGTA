@@ -17,8 +17,10 @@ namespace ASTERIX
     /// 
     public partial class MainWindow : Window
     {
-        Point ARP, zero0;
-        double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, xA, yA, xe, yn;
+        //Point ARP, zero0;
+        Point zero0;
+        //double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, xA, yA, xe, yn;
+        double A, B, alpha, beta;
 
         //User options stuff
         Options UserOptions = new Options();
@@ -67,16 +69,15 @@ namespace ASTERIX
 
         private void BRadar_Click(object sender, RoutedEventArgs e)
         {
-
-            ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport
+            //ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport
             zero0 = new Point().LatLong2XY(41.315955, 2.028508);
-            double[] xy = zero0.xEyN(ARP.latR, ARP.lonR);
-            //MessageBox.Show(xy[0].ToString());
 
-            xe = xy[0];
-            yn = xy[1];
-            //xe = -4148;
-            //yn = 2156;
+            //xe = (zero0.X - ARP.X)*6.360;
+            //yn = (zero0.Y - ARP.Y)*6.502;
+
+
+            //xe = zero0.X;
+            //yn = zero0.Y;
 
             //xyz de Lambert --> xyz LienzoMaps (amb origen de coordenades a d'alt a l'esquerra)
             A = -zero0.X;
@@ -84,13 +85,20 @@ namespace ASTERIX
             alpha = A / (LienzoMaps.ActualWidth / 2);
             beta = B / (LienzoMaps.ActualHeight / 2);
 
+            //xA = A / alpha;
+            //yA = B / beta;
+            //AARP = -xA;
+            //BARP = -yA;
+            //alphaARP = AARP / xe;
+            //betaARP = BARP / yn;
+
             //new
-            xA = (ARP.X + A) / alpha;
-            yA = (ARP.Y + B) / beta;
-            AARP = -xA;
-            BARP = -yA;
-            alphaARP = AARP / xe;
-            betaARP = BARP / yn;
+            //xA = (ARP.X + A) / alpha;
+            //yA = (ARP.Y + B) / beta;
+            //AARP = -xA;
+            //BARP = -yA;
+            //alphaARP = AARP / xe;
+            //betaARP = BARP / yn;
 
             WLoad.Visibility = Visibility.Hidden;
             WRadar.Visibility = Visibility.Visible;
@@ -349,24 +357,41 @@ namespace ASTERIX
         {
             if (checkBoxes != null) {
                 //double[] zoom = new double[] { 41.315955, 2.028508, -4148, 2156, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
-                double[] zoom = new double[] { 41.315955, 2.028508, -4161, 2110, 41.393904, 1.842814, -19670, 10780, 42.115028, 0.005309, -173120, 90930, 43.542697, -3.904945, -499630, 249600 };
+                double[] zoom = new double[] { 41.315955, 2.028508, 41.393904, 1.842814, 42.115028, 0.005309, 43.542697, -3.904945};
 
-                int a = Convert.ToInt32(e.NewValue * 4);
-                xe = zoom[a - 2];
-                yn = zoom[a - 1];
-                zero0 = new Point().LatLong2XY(zoom[a-4], zoom[a-3]);
+                int a = Convert.ToInt32(e.NewValue * 2);
+                double lat = zoom[a - 2];
+                double lon = zoom[a - 1];
+                zero0 = new Point().LatLong2XY(lat, lon);
+
+                //xe = (zero0.X - ARP.X) * 6.360;
+                //yn = (zero0.Y - ARP.Y) * 6.502;
+
+                //A = -zero0.X;
+                //B = -zero0.Y;
+                //alpha = A / (LienzoMaps.ActualWidth / 2);
+                //beta = B / (LienzoMaps.ActualHeight / 2);
+                //xA = (ARP.X + A) / alpha;
+                //yA = (ARP.Y + B) / beta;
+                //AARP = -xA;
+                //BARP = -yA;
+                //alphaARP = AARP / xe;
+                //betaARP = BARP / yn;
+
+                //xe = zero0.X;
+                //yn = zero0.Y;
 
                 A = -zero0.X;
                 B = -zero0.Y;
                 alpha = A / (LienzoMaps.ActualWidth / 2);
                 beta = B / (LienzoMaps.ActualHeight / 2);
-                xA = (ARP.X + A) / alpha;
-                yA = (ARP.Y + B) / beta;
-                AARP = -xA;
-                BARP = -yA;
-                alphaARP = AARP / xe;
-                betaARP = BARP / yn;
 
+                //xA = A/ alpha;
+                //yA = B / beta;
+                //AARP = -xA;
+                //BARP = -yA;
+                //alphaARP = AARP / xe;
+                //betaARP = BARP / yn;
                 CheckBoxClickVehicles(sender, e);
                 CheckBoxClickMaps(sender, e);
             }
@@ -553,8 +578,10 @@ namespace ASTERIX
                 ARPpoint.Fill = Brushes.Yellow;
                 ARPpoint.Width = 5;
                 ARPpoint.Height = 5;
-                Canvas.SetLeft(ARPpoint, ((ARP.X + A) / alpha) - ARPpoint.Width / 2);
-                Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
+                //Canvas.SetLeft(ARPpoint, ((ARP.X + A) / alpha) - ARPpoint.Width / 2);
+                //Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
+                Canvas.SetLeft(ARPpoint, ((A) / alpha) - ARPpoint.Width / 2);
+                Canvas.SetTop(ARPpoint, ((B) / beta) - ARPpoint.Height / 2);
                 LienzoMaps.Children.Add(ARPpoint);
             }
         }
@@ -581,7 +608,8 @@ namespace ASTERIX
                                     List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
                                     for (int i = 0; i < list.Count; i++)
                                     {
-                                        pp.Add(new System.Windows.Point(list[i].X * alphaARP - AARP, list[i].Y * betaARP - BARP));
+                                        //pp.Add(new System.Windows.Point(list[i].X * alphaARP - AARP, list[i].Y * betaARP - BARP));
+                                        pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y+B)/beta));
                                         pl.Tag = v.TrackN + "/" + i;
                                     }
 
@@ -623,8 +651,10 @@ namespace ASTERIX
                                         p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
                                         LienzoVehicles.Children.Add(p0);
 
-                                        Canvas.SetLeft(p0, (list[i].X * alphaARP) - AARP - p0.Width / 2);
-                                        Canvas.SetTop(p0, (list[i].Y * betaARP) - BARP - p0.Height / 2);
+                                        //Canvas.SetLeft(p0, (list[i].X * alphaARP) - AARP - p0.Width / 2);
+                                        //Canvas.SetTop(p0, (list[i].Y * betaARP) - BARP - p0.Height / 2);
+                                        Canvas.SetLeft(p0, (list[i].X + A)/alpha - p0.Width / 2);
+                                        Canvas.SetTop(p0, (list[i].Y +B)/beta - p0.Height / 2);
                                     }
                                 }
                             }
@@ -656,18 +686,21 @@ namespace ASTERIX
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {   //entre abans del load, no comprendo
-            ARP = new Point().LatLong2XY(41.296944, 2.078333);
+            //ARP = new Point().LatLong2XY(41.296944, 2.078333);
 
             alpha = A / (LienzoMaps.ActualWidth / 2);
             beta = B / (LienzoMaps.ActualHeight / 2);
 
             //new
-            xA = (ARP.X + A) / alpha;
-            yA = (ARP.Y + B) / beta;
-            AARP = -xA;
-            BARP = -yA;
-            alphaARP = AARP / xe;
-            betaARP = BARP / yn;
+            //xA = (ARP.X + A) / alpha;
+            //yA = (ARP.Y + B) / beta;
+
+            //xA = (A) / alpha;
+            //yA = (B) / beta;
+            //AARP = -xA;
+            //BARP = -yA;
+            //alphaARP = AARP / xe;
+            //betaARP = BARP / yn;
 
             CheckBoxClickVehicles(sender, e);
             CheckBoxClickMaps(sender, e);
@@ -675,8 +708,10 @@ namespace ASTERIX
 
         private void LienzoMaps_MouseMove(object sender, MouseEventArgs e)
         {
-            LPosX.Text = ((e.GetPosition(LienzoMaps).X + AARP) / alphaARP).ToString("0.###m");
-            LPosY.Text = ((e.GetPosition(LienzoMaps).Y + BARP) / betaARP).ToString("0.###m");
+            //LPosX.Text = ((e.GetPosition(LienzoMaps).X + AARP) / alphaARP).ToString("0.###m");
+            //LPosY.Text = ((e.GetPosition(LienzoMaps).Y + BARP) / betaARP).ToString("0.###m");
+            LPosX.Text = (e.GetPosition(LienzoMaps).X *alpha - A).ToString("0.###m");
+            LPosY.Text = (e.GetPosition(LienzoMaps).Y*beta -B).ToString("0.###m");
         }
     }
 }

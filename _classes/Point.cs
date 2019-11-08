@@ -4,6 +4,7 @@ namespace ASTERIX
 {
     public class Point
     {
+ 
         //Cartesians
         internal double X { get; set; }
         internal double Y { get; set; }
@@ -24,15 +25,25 @@ namespace ASTERIX
         internal double theta { get; set; }
         internal double phi { get; set; }
 
-        //ref lat lon for Lamber projection -> referenciat al centre de l'aeroport
-        //private double latRef = 41.296531 * Math.PI / 180;
-        //private double lonRef = 2.075594 * Math.PI / 180;
-        private double latRef = 41.295885 * Math.PI / 180;
-        private double lonRef = 2.086214 * Math.PI / 180;
+        //ref lat lon -> centre de l'aeroport
+        private double latRef = 41.296944 * Math.PI / 180;
+        private double lonRef = 2.078333 * Math.PI / 180;
+
+        private double latARP = 41.296944 * Math.PI / 180;
+        private double lonARP = 2.078333 * Math.PI / 180;
+
+        private double escalaX = 6.360;
+        private double escalaY = 6.502;
+        //private double latRef = 41.295885 * Math.PI / 180;
+        //private double lonRef = 2.086214 * Math.PI / 180;
 
         //standard latitudes 
-        private double lat1 = 40 * Math.PI / 180;
-        private double lat2 = 42 * Math.PI / 180;
+        //private double lat1 = 40 * Math.PI / 180;
+        //private double lat2 = 42 * Math.PI / 180;
+        private double lat1 = 43 * Math.PI / 180;
+        private double lat2 = 36 * Math.PI / 180;
+
+
 
         private double Re = 6378137;
         private double Rp = 6357000;
@@ -42,7 +53,7 @@ namespace ASTERIX
         {
 
         }
-        public Point LatLong2XY(double lat, double lon)
+        public Point LatLong2XY(double lat, double lon) //centrat a ARP !!!
         {
             this.latD = lat;
             this.lonD = lon;
@@ -54,9 +65,9 @@ namespace ASTERIX
             double n = num / denum;
             double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2), n)) / n;
             double rho = F * Math.Pow(Math.Tan(Math.PI / 4 + this.latR / 2), -n);
-            double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latRef / 2), -n);
-            this.X = 1E6 * (rho * Math.Sin(n * (this.lonR - lonRef)));
-            this.Y = 1E6 * (rho0 - rho * Math.Cos(n * (this.lonR - lonRef)));
+            double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latARP / 2), -n);
+            this.X = 6.360*1E6 * (rho * Math.Sin(n * (this.lonR - lonARP)));
+            this.Y = 6.502*1E6 * (rho0 - rho * Math.Cos(n * (this.lonR - lonARP)));
 
             return this;
         }
@@ -68,18 +79,6 @@ namespace ASTERIX
             //this.latR;
 
             return this;
-        }
-        public double[] xEyN(double latref, double lonref) {//retorna la distancia x (direccio E) i y (direcció N) entre el punt i el punt de referencia
-            double lat = this.latR;
-            double lon = this.lonR;
-            double zarp = Rm * Math.Sin(latref);
-            double z = Rm * Math.Sin(lat);
-            double Rarp = Math.Sqrt((1 - Math.Pow(zarp, 2) / Math.Pow(Rp, 2)) * Math.Pow(Re, 2) + Math.Pow(zarp, 2));
-            double R = Math.Sqrt((1 - Math.Pow(z, 2) / Math.Pow(Rp, 2)) * Math.Pow(Re, 2) + Math.Pow(z, 2));
-            double Rlon = Rarp * Math.Cos(latref);
-            double x = (lon - lonref) * Rlon;
-            double y = (lat - latref) * R;
-            return new double[] {x,y};
         }
     }
 }
