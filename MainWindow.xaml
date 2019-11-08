@@ -186,7 +186,7 @@
                     </Expander.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel x:Name="StackOptionMaps" CanVerticallyScroll="True">
-                            <CheckBox x:Name="CheckARP" Click="CheckBoxClickMaps" Margin="10" Foreground="White">LEBL ARP</CheckBox>
+                            <!--<CheckBox x:Name="CheckARP" Click="CheckBoxClickMaps" Margin="10" Foreground="White" Visibility="Hidden">LEBL ARP</CheckBox>-->
                             <CheckBox x:Name="CheckVehicles" Click="CheckBoxClickVehicles" Margin="10" Foreground="White" Visibility="Hidden">Vehicles</CheckBox>
                             <StackPanel x:Name="StackMaps" CanVerticallyScroll="True"></StackPanel>
                         </StackPanel>

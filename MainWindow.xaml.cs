@@ -571,19 +571,19 @@ namespace ASTERIX
                 }
             }
 
-            if (CheckARP.IsChecked == true)
-            {
-                Ellipse ARPpoint = new Ellipse();
-                ARPpoint.Stroke = Brushes.Yellow;
-                ARPpoint.Fill = Brushes.Yellow;
-                ARPpoint.Width = 5;
-                ARPpoint.Height = 5;
-                //Canvas.SetLeft(ARPpoint, ((ARP.X + A) / alpha) - ARPpoint.Width / 2);
-                //Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
-                Canvas.SetLeft(ARPpoint, ((A) / alpha) - ARPpoint.Width / 2);
-                Canvas.SetTop(ARPpoint, ((B) / beta) - ARPpoint.Height / 2);
-                LienzoMaps.Children.Add(ARPpoint);
-            }
+            //if (CheckARP.IsChecked == true)
+            //{
+            //    Ellipse ARPpoint = new Ellipse();
+            //    ARPpoint.Stroke = Brushes.Yellow;
+            //    ARPpoint.Fill = Brushes.Yellow;
+            //    ARPpoint.Width = 5;
+            //    ARPpoint.Height = 5;
+            //    //Canvas.SetLeft(ARPpoint, ((ARP.X + A) / alpha) - ARPpoint.Width / 2);
+            //    //Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
+            //    Canvas.SetLeft(ARPpoint, ((A) / alpha) - ARPpoint.Width / 2);
+            //    Canvas.SetTop(ARPpoint, ((B) / beta) - ARPpoint.Height / 2);
+            //    LienzoMaps.Children.Add(ARPpoint);
+            //}
         }
 
         private void CheckBoxClickVehicles(object sender, RoutedEventArgs e)
