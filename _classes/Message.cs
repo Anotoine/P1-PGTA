@@ -197,7 +197,7 @@ namespace ASTERIX
                     return CAT20.DI042;
                 case 21:
                     if (CAT21v023 == null)
-                        return CAT21v24.DI071;
+                        return CAT21v24.DI130;
                     else
                         return CAT21v023.DI130;
                 default:
@@ -299,7 +299,7 @@ namespace ASTERIX
                 var ls = new List<string> { "TYP", "DCR", "CHN", "GBS", "CRT", "FX", "SIM", "TST", "RAB", "LOP", "TOT", "FX", "SPI", "FX" };
 
                 var ls0 = new List<string> { "SSR multilateration", "Mode S multilateration","ADS-B", "PSR", "No differential correction(ADS-B)","Chain 1","Transponder Ground bit not set","No Corrupted reply in multilateration",
-                                               "End of Data Item","Actual target report","Default","Undetermined","Loop start","Undetermined","Aircraft","End of Data Item","Absence of SPI","End of Data Item" };
+                                               "End of Data Item","Actual target report","Default","Report from target transponder","Undetermined","Loop start","Undetermined","Aircraft","End of Data Item","Absence of SPI","End of Data Item" };
 
                 var ls1 = new List<string> { "Magnetic Loop System","HF multilateration", "Not defined","Other types","Differential correction (ADS-B)", "Chain 2","Transponder Ground bit set","Corrupted replies in multilateration",
                                              "Extension into first extent","Simulated target report","Test Target","Report from field monitor(fixed transponder)","Loop finish","","Ground vehicle","Helicopter","Extension into next extent",
@@ -345,17 +345,17 @@ namespace ASTERIX
                                 {
                                     j++;
                                     if (char.Equals(s[j], '1'))
-                                        a = new Atom(ls[cont1], 3, ls1[cont2 + 3]);
+                                        a = new Atom(ls[cont1], 3, ls0[cont2 + 3]);
                                     else
-                                        a = new Atom(ls[cont1], 2, ls1[cont2 + 2]);
+                                        a = new Atom(ls[cont1], 2, ls0[cont2 + 2]);
                                 }
                                 else
                                 {
                                     j++;
                                     if (char.Equals(s[j], '1'))
-                                        a = new Atom(ls[cont1], 1, ls1[cont2 + 1]);
+                                        a = new Atom(ls[cont1], 1, ls0[cont2 + 1]);
                                     else
-                                        a = new Atom(ls[cont1], 0, ls1[cont2]);
+                                        a = new Atom(ls[cont1], 0, ls0[cont2]);
                                 }
                             }
                             cont2 = 3;
@@ -366,9 +366,9 @@ namespace ASTERIX
                             {
                                 j++;
                                 if (char.Equals(s[j], '0'))
-                                    a = new Atom(ls[cont1], 0, ls1[cont2]);
+                                    a = new Atom(ls[cont1], 0, ls0[cont2]);
                                 else
-                                    a = new Atom(ls[cont1], 1, ls1[cont2 + 1]);
+                                    a = new Atom(ls[cont1], 1, ls0[cont2 + 1]);
 
                             }
                             else
@@ -384,9 +384,9 @@ namespace ASTERIX
                             {
                                 j++;
                                 if (char.Equals(s[j], '0'))
-                                    a = new Atom(ls[cont1], 0, ls1[cont2]);
+                                    a = new Atom(ls[cont1], 0, ls0[cont2]);
                                 else
-                                    a = new Atom(ls[cont1], 1, ls1[cont2 + 1]);
+                                    a = new Atom(ls[cont1], 1, ls0[cont2 + 1]);
                             }
                             else
                             {
@@ -1202,9 +1202,9 @@ namespace ASTERIX
             {
                 List<Atom> atoms = new List<Atom>();
                 Atom a;
-                string s = Convert.ToString(this.rawList[Offset]);
+                string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16));
                 int code = Convert.ToInt16(string.Concat(s[0], s[1], s[2]), 2);
-                switch(code)
+                switch (code)
                 {
                     case 0:
                         a = new Atom("Address Type", 0, "24-Bit ICAO address");
@@ -1279,7 +1279,82 @@ namespace ASTERIX
                         atoms.Add(a);
                         break;
                 }
+                CAT21v24.DI040 = atoms;
+                Offset += 1;
 
+            }
+            if (listFSPEC[3])
+                CAT21v24.DI161 = decodeTrackNumber();
+            if (listFSPEC[4])
+            {
+                CAT21v24.DI015 = Convert.ToInt16(this.rawList[Offset], 16);
+                Offset += 1;
+            }
+            if (listFSPEC[5])
+            {
+                CAT21v24.DI071 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset +1], this.rawList[Offset+2]),16)*(1/128));
+                Offset += 3;
+            }
+            if (listFSPEC[6])
+                CAT21v24.DI130 = decodeLatLong();
+            if (listFSPEC[7])
+            {
+                int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3], this.rawList[Offset + 4]), System.Globalization.NumberStyles.HexNumber);
+                float latreal = Convert.ToSingle(lat * 180 / 2 ^ 30);
+
+                int lon = Int32.Parse(string.Concat(this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7], this.rawList[Offset + 8], this.rawList[Offset + 9]), System.Globalization.NumberStyles.HexNumber);
+                float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 30);
+
+                Offset += 10;
+                CAT21v24.DI131 = new Point().LatLong2XY(latreal, lonreal);
+            }
+            if (listFSPEC[8])
+            {
+                if(listFSPEC[9])
+                    CAT21v24.DI072 = decodeTOD();
+
+                if (listFSPEC[10])
+                {
+                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                    int code = Convert.ToInt16(s[0]);
+                    s.Remove(0, 1);
+                    float Airspeed;
+                    switch (code)
+                    {
+                        case 0:
+                            Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * 2 * 10 ^ (-14));
+                            CAT21v24.DI150 = Airspeed;
+                            break;
+                        case 1:
+                            Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * 0.001);
+                            CAT21v24.DI150 = Airspeed;
+                            break;
+                    }
+                    Offset += 2;
+
+                }
+                if (listFSPEC[11])
+                {
+                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                    int code = Convert.ToInt16(s[0]);
+                    s.Remove(0, 1);
+                    float Airspeed;
+                    switch (code)
+                    {
+                        case 0:
+                            Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2));
+                            CAT21v24.DI151 = Airspeed;
+                            break;
+                        case 1:
+                            Airspeed = 32768;
+                            CAT21v24.DI151 = Airspeed;
+                            break;
+                    }
+                    Offset += 2;
+                }
+                if (listFSPEC[12])
+                    CAT21v24.DI080 = decodeICAOAddress();
+                
             }
         }
 

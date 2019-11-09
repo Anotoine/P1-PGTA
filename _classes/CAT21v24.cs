@@ -10,13 +10,13 @@ namespace ASTERIX
     {
         internal string DI008 { get; set; }
         internal List<Atom> DI010 { get; set; }
-        internal List<Atom> DI015 { get; set; }
+        internal int DI015 { get; set; }
         internal List<Atom> DI016 { get; set; }
         internal List<Atom> DI020 { get; set; }
         internal List<Atom> DI040 { get; set; }
         internal List<Atom> DI070 { get; set; }
-        internal Point DI071 { get; set; }
-        internal List<Atom> DI072 { get; set; }
+        internal float DI071 { get; set; }
+        internal DateTime DI072 { get; set; }
         internal List<Atom> DI073 { get; set; }
         internal List<Atom> DI074 { get; set; }
         internal List<Atom> DI075 { get; set; }
