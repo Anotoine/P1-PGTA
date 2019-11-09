@@ -292,6 +292,7 @@ namespace ASTERIX
                         CAT10.DI000 = "Event-triggered Status Message";
                         break;
                 }
+                ++Offset;
             }
             if (this.listFSPEC[3]) //I010/020          
 
@@ -415,10 +416,7 @@ namespace ASTERIX
                             if (char.Equals(s[j], '0'))
                                 exit = true;
                             if (char.Equals(s[j], '1'))
-                            {
                                 i += 1;
-                                Offset++;
-                            }
                         }
                     }
                 }
