@@ -80,7 +80,7 @@ namespace ASTERIX
                     decodeICAOAddress();
                 if (this.listFSPEC[15]) //I010/245
                     decodeCallSign();
-                if (this.listFSPEC[16])
+                if (this.listFSPEC[16]) //FX
                 {
                     if (this.listFSPEC[17])  //I010/250
                         decodeMSdata();
@@ -96,7 +96,7 @@ namespace ASTERIX
                         decodeSysStats();
                     if (this.listFSPEC[23])  //I010/310
                         decodePPmes();
-                    if (this.listFSPEC[24])
+                    if (this.listFSPEC[24]) //FX
                     {
                         if (this.listFSPEC[25])  //I010/500
                             decodeStandardDeviationPosition();
