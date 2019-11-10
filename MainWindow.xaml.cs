@@ -600,31 +600,32 @@ namespace ASTERIX
                         {
                             foreach (Vehicle v in VehiclesList)
                             {
-                                if (v.Type.Equals("Aircraft"))
-                                {
-                                    Polyline pl = new Polyline();
-                                    PointCollection pp = new PointCollection();
+                                Polyline pl = new Polyline();
+                                PointCollection pp = new PointCollection();
 
-                                    List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                                    for (int i = 0; i < list.Count; i++)
+                                List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                for (int i = 0; i < list.Count; i++)
+                                {
+                                    //pp.Add(new System.Windows.Point(list[i].X * alphaARP - AARP, list[i].Y * betaARP - BARP));
+                                    if (list[i] != null)
                                     {
-                                        //pp.Add(new System.Windows.Point(list[i].X * alphaARP - AARP, list[i].Y * betaARP - BARP));
-                                        pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y+B)/beta));
+                                        pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y + B) / beta));
                                         pl.Tag = v.TrackN + "/" + i;
                                     }
-
-                                    if (v.Callsign == "NONE")
-                                        pl.Stroke = UserOptions.OtherColor;
-                                    else if (v.Callsign.StartsWith("F"))
-                                        pl.Stroke = UserOptions.VehiclesColor;
-                                    else
-                                        pl.Stroke = UserOptions.AircraftColor;
-
-                                    pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
-
-                                    pl.Points = pp;
-                                    LienzoVehicles.Children.Add(pl);
                                 }
+
+                                if (v.Callsign == "NONE")
+                                    pl.Stroke = UserOptions.OtherColor;
+                                else if (v.Callsign.StartsWith("F"))
+                                    pl.Stroke = UserOptions.VehiclesColor;
+                                else
+                                    pl.Stroke = UserOptions.AircraftColor;
+
+                                pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+
+                                pl.Points = pp;
+                                LienzoVehicles.Children.Add(pl);
+                                
                             }
                         } else if (MergingTypeRADAR.SelectedIndex == 1) //Points
                         {
