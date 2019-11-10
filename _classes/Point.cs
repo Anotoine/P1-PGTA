@@ -89,6 +89,5 @@ namespace ASTERIX
 
             return this;
         }
-
     }
 }
