@@ -190,7 +190,12 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return new Point();
+                    if (!(CAT10.DI040 == null))
+                        return CAT10.DI040;
+                    else if (!(CAT10.DI041 == null))
+                        return CAT10.DI041;
+                    else
+                        return CAT10.DI042;
                 case 19:
                     return new Point();
                 case 20:
@@ -295,7 +300,6 @@ namespace ASTERIX
                 ++Offset;
             }
             if (this.listFSPEC[3]) //I010/020          
-
             {
                 var ls = new List<string> { "TYP", "DCR", "CHN", "GBS", "CRT", "FX", "SIM", "TST", "RAB", "LOP", "TOT", "FX", "SPI", "FX" };
 
@@ -424,8 +428,8 @@ namespace ASTERIX
             }
             if (this.listFSPEC[4]) //I010/140
                 CAT10.DI140 = decodeTOD();
-            if (this.listFSPEC[5])  
-                CAT10.DI041 = decodeLatLong();
+            if (this.listFSPEC[5])
+                CAT10.DI041 = decodeLatLong_CAT20_10();
             if (this.listFSPEC[6])
                 CAT10.DI040 = decodePolarCoordinates();
             if (this.listFSPEC[7])
@@ -462,21 +466,21 @@ namespace ASTERIX
                         List<Atom> atoms = new List<Atom>();
                         string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                         int Length = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3], s[4], s[5], s[6]), 2);
-                        a = new Atom("Length", 0, Convert.ToString((float) Length * 1));
+                        a = new Atom("Length", Length, Convert.ToString((float) Length * 1));
                         atoms.Add(a);
                         Offset++;
                         if (s[7] == '1')
                         {
                             s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                             int Orientation = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3], s[4], s[5], s[6]), 2);
-                            a = new Atom("Orientation", 0, Convert.ToString((float)Orientation * (360/128)));
+                            a = new Atom("Orientation", (float)Orientation * (360 / 128), Convert.ToString((float)Orientation * (360/128)));
                             atoms.Add(a);
                             Offset++;
                             if (s[7] == '1')
                             {
                                 s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                 int Width = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3], s[4], s[5], s[6]), 2);
-                                a = new Atom("Width", 0, Convert.ToString((float)Width * 1));
+                                a = new Atom("Width", Width, Convert.ToString((float)Width * 1));
                                 atoms.Add(a);
                                 Offset++;
                             }
@@ -596,8 +600,8 @@ namespace ASTERIX
             if (this.listFSPEC[3])
                 CAT20.DI140 = decodeTOD();
 
-            if (this.listFSPEC[4])  //TODO: check is never in use in CAT20
-                CAT20.DI041 = decodeLatLong();
+            if (this.listFSPEC[4])
+                CAT20.DI041 = decodeLatLong_CAT20_10();
             
             if (this.listFSPEC[5])
                 CAT20.DI042 = decodeXY();
@@ -756,7 +760,7 @@ namespace ASTERIX
             if (this.listFSPEC[3])
                 CAT21v023.DI030 = decodeTOD();
             if (this.listFSPEC[4])
-                CAT21v023.DI130 = decodeLatLong();
+                CAT21v023.DI130 = decodeLatLong_CAT21v023();
             if (this.listFSPEC[5])
             {
                 CAT21v023.DI080 = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16), 2).PadLeft(16, '0');
@@ -1294,7 +1298,7 @@ namespace ASTERIX
                 Offset += 3;
             }
             if (listFSPEC[6])
-                CAT21v24.DI130 = decodeLatLong();
+                CAT21v24.DI130 = decodeLatLong_CAT21v023();
             if (listFSPEC[7])
             {
                 int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3], this.rawList[Offset + 4]), System.Globalization.NumberStyles.HexNumber);
@@ -1671,7 +1675,20 @@ namespace ASTERIX
             return atoms;
         }
 
-        private Point decodeLatLong()
+        private Point decodeLatLong_CAT21v023()
+        {
+            int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
+            float latreal = Convert.ToSingle(lat * 180 / 2 ^ 23);
+
+            int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5]), System.Globalization.NumberStyles.HexNumber);
+            float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 23);
+
+            Offset += 6;
+
+            return new Point().LatLong2XY(latreal, lonreal);
+        }
+
+        private Point decodeLatLong_CAT20_10()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
             float latreal = Convert.ToSingle(lat * 180 / 2 ^ 25);
@@ -1687,13 +1704,13 @@ namespace ASTERIX
         private List<Atom> decodePolarCoordinates()
         {
             List<Atom> atoms = new List<Atom>();
-            int RHO = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
+            int RHO = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
             float RHOreal = Convert.ToSingle(RHO);
 
-            int Theta = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
+            int Theta = Int32.Parse(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
             float Thetareal = Convert.ToSingle(Theta * 360 / 2 ^ 16);
 
-            Offset += 8;
+            Offset += 4;
 
             atoms.Add(new Atom("Latitude", RHOreal, Convert.ToString(RHOreal)));
             atoms.Add(new Atom("Longitude", Thetareal, Convert.ToString(Thetareal)));
