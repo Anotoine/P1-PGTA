@@ -21,7 +21,7 @@ namespace ASTERIX
 
 
         //Constructors needed
-        public Message(int ID, List<string> raw, int CAT, int Length)
+        public Message(List<string> raw, int CAT, int Length)
         {
             this.rawList = raw;
             this.CAT = CAT;
@@ -67,13 +67,13 @@ namespace ASTERIX
             switch(this.CAT)
             {
                 case 10:
-                    CAT10 = new CAT10(rawList, listFSPEC, Offset).decode();
+                    CAT10 = new CAT10(rawList, listFSPEC, Offset).Decode();
                     break;
                 case 19:
                     CAT19 = new CAT19(rawList, listFSPEC, Offset).decode();
                     break;
                 case 20:
-                    CAT20 = new CAT20(rawList, listFSPEC, Offset).decode();
+                    CAT20 = new CAT20(rawList, listFSPEC, Offset).Decode();
                     break;
                 case 21:
                     try

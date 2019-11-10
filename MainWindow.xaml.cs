@@ -399,12 +399,12 @@ namespace ASTERIX
 
         private void BZoomout_Click(object sender, RoutedEventArgs e)
         {
-            SlZoom.Value = SlZoom.Value + 1;
+            SlZoom.Value += SlZoom.Value;
         }
 
         private void BZoomIn_Click(object sender, RoutedEventArgs e)
         {
-            SlZoom.Value = SlZoom.Value - 1;
+            SlZoom.Value -= SlZoom.Value;
         }
 
         private void PBLoadDB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -433,11 +433,13 @@ namespace ASTERIX
             foreach (Map map in Maps)
             {
                 //Creating the Checkbox to be checked
-                CheckBox checkBox = new CheckBox();
-                checkBox.Content = map.getName();
-                checkBox.FontSize = 12;
-                checkBox.Foreground = Brushes.White;
-                checkBox.Margin = new Thickness(10, 10, 10, 10);
+                CheckBox checkBox = new CheckBox
+                {
+                    Content = map.getName(),
+                    FontSize = 12,
+                    Foreground = Brushes.White,
+                    Margin = new Thickness(10, 10, 10, 10)
+                };
                 checkBox.Click += new RoutedEventHandler(CheckBoxClickMaps);
                 checkBoxes.Add(checkBox);
                 StackMaps.Children.Add(checkBox);
@@ -526,21 +528,25 @@ namespace ASTERIX
                     {
                         foreach (Tuple<Point, Point> l in Maps[i].getPoints())
                         {
-                            Line l1 = new Line();
-                            l1.StrokeThickness = 1;
-                            l1.Stroke = UserOptions.MapsColor.MainColor;
-                            l1.X1 = (l.Item1.X + A) / alpha;
-                            l1.Y1 = (l.Item1.Y + B) / beta;
+                            Line l1 = new Line
+                            {
+                                StrokeThickness = 1,
+                                Stroke = UserOptions.MapsColor.MainColor,
+                                X1 = (l.Item1.X + A) / alpha,
+                                Y1 = (l.Item1.Y + B) / beta,
 
-                            l1.X2 = (l.Item2.X + A) / alpha;
-                            l1.Y2 = (l.Item2.Y + B) / beta;
+                                X2 = (l.Item2.X + A) / alpha,
+                                Y2 = (l.Item2.Y + B) / beta
+                            };
                             LienzoMaps.Children.Add(l1);
                         }
                         foreach (List<Point> pl in Maps[i].getPolylines())
                         {
-                            Polyline poly = new Polyline();
-                            poly.StrokeThickness = 1;
-                            poly.Stroke = UserOptions.MapsColor.MainColor;
+                            Polyline poly = new Polyline
+                            {
+                                StrokeThickness = 1,
+                                Stroke = UserOptions.MapsColor.MainColor
+                            };
                             PointCollection points = new PointCollection();
                             foreach (Point pp in pl)
                                 points.Add(new System.Windows.Point((pp.X + A) / alpha, (pp.Y + B) / beta));
@@ -549,20 +555,24 @@ namespace ASTERIX
                         }
                         foreach (Tuple<Point, string> txt in Maps[i].getTexts())
                         {
-                            TextBlock textBlock = new TextBlock();
-                            textBlock.Text = txt.Item2;
-                            textBlock.Foreground = UserOptions.MapsColor.SecondaryColor;
+                            TextBlock textBlock = new TextBlock
+                            {
+                                Text = txt.Item2,
+                                Foreground = UserOptions.MapsColor.SecondaryColor
+                            };
                             Canvas.SetLeft(textBlock, (txt.Item1.X + 10 + A) / alpha);
                             Canvas.SetTop(textBlock, (txt.Item1.Y + 10 + B) / beta); 
                             LienzoMaps.Children.Add(textBlock);
                         }
                         foreach (Tuple<Point, string> sim in Maps[i].getSimbols())
                         { //Maybe a polygon to help diferenciate?
-                            Ellipse SIM = new Ellipse();
-                            SIM.Stroke = UserOptions.MapsColor.HighlightColor;
-                            SIM.Fill = UserOptions.MapsColor.HighlightColor;
-                            SIM.Width = 5;
-                            SIM.Height = 5;
+                            Ellipse SIM = new Ellipse
+                            {
+                                Stroke = UserOptions.MapsColor.HighlightColor,
+                                Fill = UserOptions.MapsColor.HighlightColor,
+                                Width = 5,
+                                Height = 5
+                            };
                             Canvas.SetLeft(SIM, ((sim.Item1.X + A) / alpha) - SIM.Width / 2);
                             Canvas.SetTop(SIM, ((sim.Item1.Y + B) / beta) - SIM.Height / 2);
                             LienzoMaps.Children.Add(SIM);

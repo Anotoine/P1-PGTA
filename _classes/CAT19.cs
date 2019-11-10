@@ -9,8 +9,8 @@ namespace ASTERIX
     class CAT19
     {
         //Message stuff
-        private List<bool> listFSPEC;
-        private List<string> rawList;
+        private readonly List<bool> listFSPEC;
+        private readonly List<string> rawList;
         private int Offset;
 
         //DataItem
@@ -67,7 +67,7 @@ namespace ASTERIX
             List<string> ls = new List<string>() { "SAC", "SIC" };
             for (int i = 0; i < 2; i++)
             {
-                this.DI010.Add(new Atom(ls[i], Convert.ToInt32(this.rawList[Offset], 16), Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16)).PadLeft(3, '0')));
+                this.DI010.Add(new Atom(ls[i], Convert.ToInt32(this.rawList[Offset], 16), Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 10).PadLeft(3, '0')));
                 Offset++;
             }
         }
