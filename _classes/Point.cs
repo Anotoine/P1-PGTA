@@ -84,8 +84,8 @@ namespace ASTERIX
         {
             this.rad = rho;
             this.theta = theta;
-            //Lambert conformal conic reprojection
-            //this.latR;
+            this.X = this.rad * Math.Sin(theta * Math.PI / 180);
+            this.Y = this.rad * Math.Cos(theta * Math.PI / 180);
 
             return this;
         }

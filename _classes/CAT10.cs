@@ -298,7 +298,7 @@ namespace ASTERIX
             float RHOreal = Convert.ToSingle(RHO);
 
             int Theta = Int32.Parse(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
-            float Thetareal = Convert.ToSingle(Theta * 360 / 2 ^ 16);
+            float Thetareal = Convert.ToSingle(Theta * 360 / Math.Pow(2,16));
 
             Offset += 4;
 
