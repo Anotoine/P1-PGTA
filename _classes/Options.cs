@@ -41,7 +41,7 @@ namespace ASTERIX
             VehiclesColor = Brushes.White;
             OtherColor = Brushes.LightSkyBlue;
 
-            MapBackgroundColor = Brushes.Black;
+            MapBackgroundColor = Brushes.DarkSlateGray;
             MapMainColor = Brushes.ForestGreen;
             MapSecondaryColor = Brushes.LightYellow;
             MapHighlightColor = Brushes.Yellow;
@@ -51,7 +51,7 @@ namespace ASTERIX
             TableTextColor = Brushes.LightGray;
 
             WindowMainColor = Brushes.PaleVioletRed;
-            WindowTextColor = Brushes.White;
+            WindowTextColor = Brushes.Black;
             WindowBackgroundColor = Brushes.DarkGray;
         }
     }

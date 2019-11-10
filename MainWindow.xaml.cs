@@ -71,36 +71,13 @@ namespace ASTERIX
 
         private void BRadar_Click(object sender, RoutedEventArgs e)
         {
-            //ARP = new Point().LatLong2XY(41.296944, 2.078333); //ARP BCN airport
             zero0 = new Point().LatLong2XY(41.315955, 2.028508);
-
-            //xe = (zero0.X - ARP.X)*6.360;
-            //yn = (zero0.Y - ARP.Y)*6.502;
-
-
-            //xe = zero0.X;
-            //yn = zero0.Y;
 
             //xyz de Lambert --> xyz LienzoMaps (amb origen de coordenades a d'alt a l'esquerra)
             A = -zero0.X;
             B = -zero0.Y;
             alpha = A / (LienzoMaps.ActualWidth / 2);
             beta = B / (LienzoMaps.ActualHeight / 2);
-
-            //xA = A / alpha;
-            //yA = B / beta;
-            //AARP = -xA;
-            //BARP = -yA;
-            //alphaARP = AARP / xe;
-            //betaARP = BARP / yn;
-
-            //new
-            //xA = (ARP.X + A) / alpha;
-            //yA = (ARP.Y + B) / beta;
-            //AARP = -xA;
-            //BARP = -yA;
-            //alphaARP = AARP / xe;
-            //betaARP = BARP / yn;
 
             WLoad.Visibility = Visibility.Hidden;
             WRadar.Visibility = Visibility.Visible;
@@ -229,26 +206,37 @@ namespace ASTERIX
             //Temporal list for reading
             List<string> list = new List<string>();
 
-            //Actually reading the file
-            byte[] fileBytes = File.ReadAllBytes((string)e.Argument);
+            try
+            { 
+                //Actually reading the file
+                byte[] fileBytes = File.ReadAllBytes((string)e.Argument);
 
-            foreach (byte b in fileBytes)
-            {
-                list.Add(Convert.ToString(b, 16).PadLeft(2, '0'));
+                foreach (byte b in fileBytes)
+                {
+                    list.Add(Convert.ToString(b, 16).PadLeft(2, '0'));
+                }
+
+                //And parsing it
+                int i = 0;
+                while (i < list.Count)
+                {
+                    int length = Int32.Parse(list[i + 1] + list[i + 2], System.Globalization.NumberStyles.HexNumber);
+                    Message m = new Message(list.GetRange(i, length));
+
+                    listMessages.Add(m);
+                    listRow.Add(new ShowRow(m));
+                    i += length;
+
+                    (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / list.Count) + 0.001));
+                }
             }
-
-            //And parsing it
-            int i = 0;
-            while (i < list.Count)
+            catch(IOException ex)
             {
-                int length = Int32.Parse(list[i + 1] + list[i + 2], System.Globalization.NumberStyles.HexNumber);
-                Message m = new Message(list.GetRange(i, length));
-
-                listMessages.Add(m);
-                listRow.Add(new ShowRow(m));
-                i += length;
-
-                (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / list.Count) + 0.001));
+                MessageBox.Show("Could not open the file: " + (string)e.Argument +"\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch
+            {
+                MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -256,61 +244,88 @@ namespace ASTERIX
         {
             var listfiles = Directory.GetFiles((string)e.Argument);
 
-            for (int k = 0; k < listfiles.Length; k++)
+            if (listfiles.Length > 0)
+            { 
+                for (int k = 0; k < listfiles.Length; k++)
+                {
+                    string file = listfiles[k];
+                    try
+                    {
+                        Maps.Add(new Map(file));
+                    }
+                    catch
+                    {
+                        MessageBox.Show("The file at: " + file + " could not be read. The file will be skipped.", "Error while reading.", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        (sender as BackgroundWorker).ReportProgress((int)(((k + 1) * 100 / listfiles.Length) + 0.001));
+                    }
+                }
+            } else
             {
-                string file = listfiles[k];
-                try
-                {
-                    Maps.Add(new Map(file));
-                }
-                catch
-                {
-                    MessageBox.Show("The file at: " + file + " could not be read. The file will be skipped.", "Error while reading.", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                finally
-                {
-                    (sender as BackgroundWorker).ReportProgress((int)(((k + 1) * 100 / listfiles.Length) + 0.001));
-                }
+                MessageBox.Show("No files found at: " + (string)e.Argument + ".\nThe directory will be skipped.", "Error not reading any file.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void Worker_DoWork_DB(object sender, DoWorkEventArgs e)
         {
             listPlaneDB = new List<AircraftDB>();
-            using (var reader = new StreamReader((string)e.Argument))
+            try
             {
-                while (!reader.EndOfStream)
-                    listPlaneDB.Add(new AircraftDB(reader.ReadLine().Split(',')));
-            }
-
-            if (!(listRow == null))
-            {
-                foreach (ShowRow sr in listRow)
+                using (var reader = new StreamReader((string)e.Argument))
                 {
-                    sr.AddDBData(listPlaneDB);
+                    while (!reader.EndOfStream)
+                        listPlaneDB.Add(new AircraftDB(reader.ReadLine().Split(',')));
                 }
             }
-
-            if (!(listMessages == null))
+            catch
             {
-                Vistos = new List<string>();
-                VehiclesList = new List<Vehicle>();
-                for (int i = 0; i < listMessages.Count; i++)
+                MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nThe DB maybe corrupted.", "Error while reading.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            try
+            {
+                if (!(listRow == null))
                 {
-                    Message m = listMessages[i];
-                    if (Vistos.Contains(m.getAddressICAO()))
+                    foreach (ShowRow sr in listRow)
                     {
-                        if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(UserOptions.Interval))
-                            VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
+                        sr.AddDBData(listPlaneDB);
                     }
-                    else
-                    {
-                        Vistos.Add(m.getAddressICAO());
-                        VehiclesList.Add(new Vehicle(m));
-                    }
-                    (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / listMessages.Count) + 0.001));
                 }
             }
+            catch
+            {
+                MessageBox.Show("It was not possible to add the database data to the table", "Error.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            try { 
+                if (!(listMessages == null))
+                {
+                    Vistos = new List<string>();
+                    VehiclesList = new List<Vehicle>();
+                    for (int i = 0; i < listMessages.Count; i++)
+                    {
+                        Message m = listMessages[i];
+                        if (Vistos.Contains(m.getAddressICAO()))
+                        {
+                            if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(UserOptions.Interval))
+                                VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
+                        }
+                        else
+                        {
+                            Vistos.Add(m.getAddressICAO());
+                            VehiclesList.Add(new Vehicle(m));
+                        }
+                        (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / listMessages.Count) + 0.001));
+                    }
+                }
+            } catch
+            {
+                MessageBox.Show("It was not possible to add the information from the Database.", "Error comparing.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
         }
 
         void worker_ProgressChanged_LoadFile(object sender, ProgressChangedEventArgs e)
@@ -342,6 +357,14 @@ namespace ASTERIX
                 LPBLoadMaps.Text = "Maps loaded!";
             else
                 LPBLoadMaps.Text = "Loading maps...";
+        }
+
+        private void PBLoadDB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (PBLoadDB.Value >= 100)
+                LPBLoadDB.Text = "Aircraft DB loaded!";
+            else
+                LPBLoadDB.Text = "Loading DB...";
         }
 
         private void SliderTime_ValueChanged(object sender, RoutedEventArgs e)
@@ -409,14 +432,6 @@ namespace ASTERIX
             SlZoom.Value -= SlZoom.Value;
         }
 
-        private void PBLoadDB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (PBLoadDB.Value >= 100)
-                LPBLoadDB.Text = "Aircraft DB loaded!";
-            else
-                LPBLoadDB.Text = "Loading DB...";
-        }
-
         private void worker_RunWorkerCompleated_LoadFile(object sender, RunWorkerCompletedEventArgs e)
         {
             //Showing a MessageBox on the final solution
@@ -439,7 +454,7 @@ namespace ASTERIX
                 {
                     Content = map.getName(),
                     FontSize = 12,
-                    Foreground = Brushes.White,
+                    Foreground = UserOptions.WindowTextColor,
                     Margin = new Thickness(10, 10, 10, 10)
                 };
                 checkBox.Click += new RoutedEventHandler(CheckBoxClickMaps);

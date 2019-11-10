@@ -43,8 +43,6 @@ namespace ASTERIX
         private readonly double lat1 = 43 * Math.PI / 180;
         private readonly double lat2 = 36 * Math.PI / 180;
 
-
-
         private readonly double Re = 6378137;
         private readonly double Rp = 6357000;
         private readonly double Rm = 6371000;
