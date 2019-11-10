@@ -21,7 +21,7 @@ namespace ASTERIX
         internal List<Atom> DI074 { get; set; }
         internal float DI075 { get; set; }
         internal List<Atom> DI076 { get; set; }
-        internal List<Atom> DI077 { get; set; }
+        internal float DI077 { get; set; }
         internal string DI080 { get; set; } //ICAO Address
         internal List<Atom> DI090 { get; set; }
         internal float DI110 { get; set; }
@@ -35,16 +35,16 @@ namespace ASTERIX
         internal float DI150 { get; set; }
         internal float DI151 { get; set; }
         internal float DI152 { get; set; }
-        internal float DI155 { get; set; }
-        internal float DI157 { get; set; }
-        internal float DI160 { get; set; }
+        internal List<Atom> DI155 { get; set; }
+        internal List<Atom> DI157 { get; set; }
+        internal List<Atom> DI160 { get; set; }
         internal int DI161 { get; set; }
         internal float DI165 { get; set; }
         internal List<Atom> DI170 { get; set; }
         internal List<Atom> DI200 { get; set; }
         internal List<Atom> DI210 { get; set; }
         internal string DI220 { get; set; }
-        internal List<Atom> DI230 { get; set; }
+        internal float DI230 { get; set; }
         internal List<Atom> DI250 { get; set; }
         internal List<Atom> DI260 { get; set; }
         internal List<Atom> DI271 { get; set; }
