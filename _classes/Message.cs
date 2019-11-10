@@ -99,7 +99,12 @@ namespace ASTERIX
                 case 20:
                     return CAT20.DI140;
                 case 21:
-                    return new DateTime();
+                    if (CAT21v023 != null)
+                        return CAT21v023.DI030;
+                    if (CAT21v24 != null)
+                        return CAT21v24.DI073;
+                    else
+                        return new DateTime();
                 default:
                     return new DateTime();
             }
@@ -116,7 +121,12 @@ namespace ASTERIX
                 case 20:
                     return CAT20.DI161;
                 case 21:
-                    return 21;
+                    if (CAT21v023 != null)
+                        return -1;
+                    if (CAT21v24 != null)
+                        return CAT21v24.DI161;
+                    else
+                        return -1;
                 default:
                     return -1;
             }
@@ -133,10 +143,12 @@ namespace ASTERIX
                 case 20:
                     return CAT20.DI220;
                 case 21:
-                    if (CAT21v023 == null)
+                    if (CAT21v023 != null)
+                        return CAT21v023.DI080;
+                    if (CAT21v24 != null)
                         return CAT21v24.DI080;
                     else
-                        return CAT21v023.DI080;
+                        return "";
                 default:
                     return "";
             }
@@ -153,7 +165,12 @@ namespace ASTERIX
                 case 20:
                     return CAT20.DI300;
                 case 21:
-                    return "CAT21";
+                    if (CAT21v023 != null)
+                        return CAT21v023.DI020;
+                    if (CAT21v24 != null)
+                        return CAT21v24.DI020;
+                    else
+                        return "";
                 default:
                     return "";
             }
@@ -176,7 +193,12 @@ namespace ASTERIX
                     else
                         return CAT20.DI245[1].getStr();
                 case 21:
-                    return "CAT21";
+                    if (CAT21v023 != null)
+                        return "NONE";
+                    if (CAT21v24 != null)
+                        return CAT21v24.DI020;
+                    else
+                        return CAT10.DI245[1].getStr();
                 default:
                     return "";
             }
