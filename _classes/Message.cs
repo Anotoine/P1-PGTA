@@ -193,7 +193,12 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return new Point();
+                    if (!(CAT10.DI040 == null))
+                        return CAT10.DI040;
+                    else if (!(CAT10.DI041 == null))
+                        return CAT10.DI041;
+                    else
+                        return CAT10.DI042;
                 case 19:
                     return new Point();
                 case 20:
@@ -1684,7 +1689,7 @@ namespace ASTERIX
             return atoms;
         }
 
-        private Point decodeLatLong()
+        private Point decodeLatLong_CAT21v023()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
             float latreal = Convert.ToSingle(lat * 180 / 2 ^ 23);
