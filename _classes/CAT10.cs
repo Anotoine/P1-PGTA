@@ -621,7 +621,6 @@ namespace ASTERIX
 
         private void DecodeVehicleId()
         {
-            Offset++;
             switch (Convert.ToInt16(this.rawList[Offset], 2))
             {
                 case 0:
@@ -676,9 +675,9 @@ namespace ASTERIX
                     this.DI300 = "Flyco (follow me)";
                     break;
                 default:
-                    this.DI300 = "";
                     break;
             }
+            Offset++;
         }
 
         private void DecodeFL()
@@ -949,8 +948,6 @@ namespace ASTERIX
 
         private void DecodePPmes()
         {
-            Offset++;
-
             switch (Convert.ToInt32(this.rawList[Offset], 16))
             {
                 case 1:
@@ -987,6 +984,7 @@ namespace ASTERIX
                     this.DI310 = "Invalid information";
                     break;
             }
+            Offset++;
         }
 
         private void DecodeStandardDeviationPosition()
