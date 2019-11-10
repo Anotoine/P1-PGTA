@@ -18,7 +18,7 @@
 
     <Grid x:Name="Base">
         <Grid.Background>
-            <ImageBrush ImageSource="Icon.ico" Stretch="Uniform"/>
+            <ImageBrush ImageSource="ASTERIX.png" Stretch="Uniform"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>

@@ -18,8 +18,8 @@ namespace ASTERIX
 
         public AircraftDB(string[] vs)
         {
-            this.ICAOAddress = vs[0];
-            this.RegID = vs[1];
+            this.ICAOAddress = vs[0].ToUpper();
+            this.RegID = vs[1].ToUpper();
             this.Country = vs[2];
             this.Type = vs[3];
             this.Model = vs[4];

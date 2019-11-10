@@ -76,14 +76,14 @@ namespace ASTERIX
                     CAT20 = new CAT20(rawList, listFSPEC, Offset).Decode();
                     break;
                 case 21:
-                    try
-                    {
+                    //try
+                    //{
                         CAT21v023 = new CAT21v023(rawList, listFSPEC, Offset).decode();
-                    }
-                    catch
-                    {
-                        CAT21v24 = new CAT21v24(rawList, listFSPEC, Offset).decode();
-                    }
+                    //}
+                    //catch
+                    //{
+                    //    CAT21v24 = new CAT21v24(rawList, listFSPEC, Offset).decode();
+                    //}
                     break;
             }
         }
@@ -194,11 +194,17 @@ namespace ASTERIX
                         return CAT20.DI245[1].getStr();
                 case 21:
                     if (CAT21v023 != null)
-                        return "NONE";
+                        if (CAT21v023.DI170 != null)
+                            return CAT21v023.DI170;
+                        else
+                            return "NONE";
                     if (CAT21v24 != null)
-                        return CAT21v24.DI020;
+                        if (CAT21v24.DI170 != null)
+                            return CAT21v24.DI170;
+                        else
+                            return "NONE";
                     else
-                        return CAT10.DI245[1].getStr();
+                        return "NONE";
                 default:
                     return "";
             }
@@ -237,10 +243,10 @@ namespace ASTERIX
                 case 20:
                     return CAT20.DI042;
                 case 21:
-                    if (CAT21v023 == null)
-                        return CAT21v24.DI130;
-                    else
+                    if (CAT21v023 != null)
                         return CAT21v023.DI130;
+                    else
+                        return CAT21v24.DI130;
                 default:
                     return new Point();
             }

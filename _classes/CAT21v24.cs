@@ -18,8 +18,8 @@ namespace ASTERIX
         internal List<Atom> DI008 { get; set; }
         internal List<Atom> DI010 { get; set; }
         internal int DI015 { get; set; }
-        internal List<Atom> DI016 { get; set; }
-        internal List<Atom> DI020 { get; set; }
+        internal float DI016 { get; set; }
+        internal string DI020 { get; set; }
         internal List<Atom> DI040 { get; set; }
         internal int DI070 { get; set; }
         internal float DI071 { get; set; }
@@ -47,7 +47,7 @@ namespace ASTERIX
         internal List<Atom> DI160 { get; set; }
         internal int DI161 { get; set; }
         internal float DI165 { get; set; }
-        internal List<Atom> DI170 { get; set; }
+        internal string DI170 { get; set; }
         internal List<Atom> DI200 { get; set; }
         internal List<Atom> DI210 { get; set; }
         internal List<Atom> DI220 { get; set; }
@@ -558,27 +558,7 @@ namespace ASTERIX
                     if (listFSPEC[32])
                     {
                         if (listFSPEC[33])
-                        {
-                            List<Atom> atoms = new List<Atom>();
-                            string stringCode = "";
-                            for (int i = Offset; i < Offset + 6; i++)
-                            {
-                                stringCode = string.Concat(stringCode, Convert.ToString(Convert.ToInt32(this.rawList[i], 16), 2).PadLeft(8, '0'));
-                            }
-                            Offset += 6;
-
-                            List<char> code = new List<char>();
-                            for (int i = 0; i < 8; i++)
-                            {
-                                if (stringCode.Substring(6 * i, 6).StartsWith("0"))
-                                    code.Add((char)Convert.ToInt32(string.Concat("01", stringCode.Substring(6 * i, 6)), 16));
-                                else
-                                    code.Add((char)Convert.ToInt32(string.Concat("00", stringCode.Substring(6 * i, 6)), 16));
-                            }
-                            atoms.Add(new Atom("Callsign", 0, Regex.Replace(string.Join("", code.ToArray()), @"\s", "")));
-
-                            this.DI170 = atoms;
-                        }
+                            decodeCallsign();
                         if (listFSPEC[34])
                         {
                             List<Atom> atoms = new List<Atom>();
@@ -1280,6 +1260,7 @@ namespace ASTERIX
         }
         private void decodeSACSIC()
         {
+            this.DI010 = new List<Atom>();
             List<string> ls = new List<string>() { "SAC", "SIC" };
             for (int i = 0; i < 2; i++)
             {
@@ -1512,6 +1493,24 @@ namespace ASTERIX
             }
 
         }
+        private void decodeCallsign()
+        {
+            string stringCode = "";
+            for (int i = Offset; i < Offset + 6; i++)
+            {
+                stringCode = string.Concat(stringCode, Convert.ToString(Convert.ToInt32(this.rawList[i], 16), 2).PadLeft(8, '0'));
+            }
+            Offset += 6;
 
+            List<char> code = new List<char>();
+            for (int i = 0; i < 8; i++)
+            {
+                if (stringCode.Substring(6 * i, 6).StartsWith("0"))
+                    code.Add((char)Convert.ToInt32(string.Concat("01", stringCode.Substring(6 * i, 6)), 2));
+                else
+                    code.Add((char)Convert.ToInt32(string.Concat("00", stringCode.Substring(6 * i, 6)), 2));
+            }
+            this.DI170 = Regex.Replace(string.Join("", code.ToArray()), @"\s", "");
+        }
     }
 }

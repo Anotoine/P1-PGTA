@@ -207,7 +207,7 @@ namespace ASTERIX
             List<string> list = new List<string>();
 
             try
-            { 
+            {
                 //Actually reading the file
                 byte[] fileBytes = File.ReadAllBytes((string)e.Argument);
 
@@ -232,11 +232,11 @@ namespace ASTERIX
             }
             catch(IOException ex)
             {
-                MessageBox.Show("Could not open the file: " + (string)e.Argument +"\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Could not open the file: " + (string) e.Argument +"\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch
             {
-                MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("It was not possible to read the file: " + (string) e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

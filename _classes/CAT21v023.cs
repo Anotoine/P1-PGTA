@@ -37,7 +37,7 @@ namespace ASTERIX
         internal float DI157 { get; set; }
         internal List<Atom> DI160 { get; set; }
         internal List<Atom> DI165 { get; set; }
-        internal List<Atom> DI170 { get; set; }
+        internal string DI170 { get; set; }
         internal List<Atom> DI200 { get; set; }
         internal List<Atom> DI210 { get; set; }
         internal List<Atom> DI220 { get; set; }
@@ -92,7 +92,7 @@ namespace ASTERIX
                     if (this.listFSPEC[19]) //I021/165
                         decodeRateTurn();
                     if (this.listFSPEC[20]) //I021/170
-                        decodeTarget();
+                        decodeCallsign();
                     if (this.listFSPEC[21]) //I021/095
                         decodeVelAcc();
                     if (this.listFSPEC[22]) //I021/032
@@ -138,10 +138,10 @@ namespace ASTERIX
         private void decodeLatLong()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
-            float latreal = Convert.ToSingle(lat * 180 / 2 ^ 23);
+            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2,23));
 
             int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5]), System.Globalization.NumberStyles.HexNumber);
-            float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 23);
+            float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 23));
 
             Offset += 6;
 
@@ -209,13 +209,13 @@ namespace ASTERIX
                 a = new Atom(ls[cont1], 2, ls1[cont2]);
                 atoms.Add(a);
             }
-            Offset = +1;
+            Offset++;
             this.DI040 = atoms;
         }
 
         private void decodeICAOAddress()
         {
-            this.DI080 = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16), 2).PadLeft(16, '0');
+            this.DI080 = string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]).ToUpper();
             Offset += 3;
         }
 
@@ -301,86 +301,82 @@ namespace ASTERIX
 
         private void decodeLinkTech()
         {
+            string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+            List<Atom> atoms = new List<Atom>();
+            Atom a;
+            int code = Convert.ToInt32(s[3]);
+            switch (code)
             {
-                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
-                List<Atom> atoms = new List<Atom>();
-                Atom a;
-                int code = Convert.ToInt32(s[3]);
-                switch (code)
-                {
-                    case 0:
-                        a = new Atom("Cockpit Display of Traffic Information", 0, "Unknown");
-                        atoms.Add(a);
-                        break;
-                    case 1:
-                        a = new Atom("Cockpit Display of Traffic Information", 1, "Aircraft equiped with CDTI");
-                        atoms.Add(a);
-                        break;
-                }
-                code = Convert.ToInt32(s[4]);
-                switch (code)
-                {
-                    case 0:
-                        a = new Atom("Mode-S Extended Squitter", 0, "Not used");
-                        atoms.Add(a);
-                        break;
-                    case 1:
-                        a = new Atom("Mode-S Extended Squitter", 1, "Used");
-                        atoms.Add(a);
-                        break;
-                }
-                code = Convert.ToInt32(s[5]);
-                switch (code)
-                {
-                    case 0:
-                        a = new Atom("UAT", 0, "Not used");
-                        atoms.Add(a);
-                        break;
-                    case 1:
-                        a = new Atom("UAT", 1, "Used");
-                        atoms.Add(a);
-                        break;
-                }
-                code = Convert.ToInt32(s[6]);
-                switch (code)
-                {
-                    case 0:
-                        a = new Atom("VDL Mode 4", 0, "Not used");
-                        atoms.Add(a);
-                        break;
-                    case 1:
-                        a = new Atom("VDL Mode 4", 1, "Used");
-                        atoms.Add(a);
-                        break;
-                }
-                code = Convert.ToInt32(s[7]);
-                switch (code)
-                {
-                    case 0:
-                        a = new Atom("Other Technology", 0, "Not used");
-                        atoms.Add(a);
-                        break;
-                    case 1:
-                        a = new Atom("Other Technology", 1, "Used");
-                        atoms.Add(a);
-                        break;
-                }
-                Offset += 1;
-                this.DI210 = atoms;
+                case 0:
+                    a = new Atom("Cockpit Display of Traffic Information", 0, "Unknown");
+                    atoms.Add(a);
+                    break;
+                case 1:
+                    a = new Atom("Cockpit Display of Traffic Information", 1, "Aircraft equiped with CDTI");
+                    atoms.Add(a);
+                    break;
             }
+            code = Convert.ToInt32(s[4]);
+            switch (code)
+            {
+                case 0:
+                    a = new Atom("Mode-S Extended Squitter", 0, "Not used");
+                    atoms.Add(a);
+                    break;
+                case 1:
+                    a = new Atom("Mode-S Extended Squitter", 1, "Used");
+                    atoms.Add(a);
+                    break;
+            }
+            code = Convert.ToInt32(s[5]);
+            switch (code)
+            {
+                case 0:
+                    a = new Atom("UAT", 0, "Not used");
+                    atoms.Add(a);
+                    break;
+                case 1:
+                    a = new Atom("UAT", 1, "Used");
+                    atoms.Add(a);
+                    break;
+            }
+            code = Convert.ToInt32(s[6]);
+            switch (code)
+            {
+                case 0:
+                    a = new Atom("VDL Mode 4", 0, "Not used");
+                    atoms.Add(a);
+                    break;
+                case 1:
+                    a = new Atom("VDL Mode 4", 1, "Used");
+                    atoms.Add(a);
+                    break;
+            }
+            code = Convert.ToInt32(s[7]);
+            switch (code)
+            {
+                case 0:
+                    a = new Atom("Other Technology", 0, "Not used");
+                    atoms.Add(a);
+                    break;
+                case 1:
+                    a = new Atom("Other Technology", 1, "Used");
+                    atoms.Add(a);
+                    break;
+            }
+            Offset += 1;
+            this.DI210 = atoms;
         }
 
         private void decodeRollAngle()
         {
-            float RA = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.01);
-            this.DI230 = RA;
+            this.DI230 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.01);
             Offset += 2;
         }
 
         private void decodeFL()
         {
-            float FL = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.25);
-            this.DI145 = (int)FL;
+            this.DI145 = (int) Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.25);
             Offset += 2;
         }
 
@@ -393,12 +389,10 @@ namespace ASTERIX
             switch (code)
             {
                 case 0:
-                    Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * 2 * 10 ^ (-14));
-                    this.DI150 = Airspeed;
+                    this.DI150 = Convert.ToSingle(Convert.ToInt16(s, 2) * 2 * Math.Pow(2, -14));
                     break;
                 case 1:
-                    Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * 0.001);
-                    this.DI150 = Airspeed;
+                    this.DI150 = Convert.ToSingle(Convert.ToInt16(s, 2) * 0.001);
                     break;
             }
             Offset += 2;
@@ -412,7 +406,7 @@ namespace ASTERIX
 
         private void decodeMagneticHeading()
         {
-            this.DI152 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * (360 / (2 ^ 16)));
+            this.DI152 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * (360 / Math.Pow(2, 16)));
             Offset += 2;
         }
 
@@ -430,14 +424,10 @@ namespace ASTERIX
 
         private void decodeGroundVector()
         {
-            List<Atom> atoms = new List<Atom>();
-            Atom a;
-            a = new Atom("Ground Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 2 ^ (-14))));
-            atoms.Add(a);
+            this.DI160 = new List<Atom>();
+            this.DI160.Add(new Atom("Ground Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * Math.Pow(2, -14)))));
             Offset += 2;
-            a = new Atom("Track Angle", 1, Convert.ToString(Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * (360 / (2 ^ 16)))));
-            atoms.Add(a);
-            this.DI160 = atoms;
+            this.DI160.Add(new Atom("Track Angle", 1, Convert.ToString(Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * (360 / Math.Pow(2, 16))))));
             Offset += 2;
         }
 
@@ -446,48 +436,42 @@ namespace ASTERIX
             List<Atom> atoms = new List<Atom>();
             Atom a;
             string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8, '0');
-            int code = Convert.ToInt16(string.Concat(s[0], s[1]));
-            switch (code)
+            switch (Convert.ToInt16(string.Concat(s[0], s[1])))
             {
                 case 0:
                     a = new Atom("Turn Indicator", 0, "Not available");
-                    atoms.Add(a);
+                    this.DI165.Add(a);
                     break;
                 case 1:
                     a = new Atom("Turn Indicator", 1, "Left");
-                    atoms.Add(a);
+                    this.DI165.Add(a);
                     break;
                 case 2:
                     a = new Atom("Turn Indicator", 2, "Right");
-                    atoms.Add(a);
+                    this.DI165.Add(a);
                     break;
                 case 3:
                     a = new Atom("Turn Indicator", 3, "Straight");
-                    atoms.Add(a);
+                    this.DI165.Add(a);
                     break;
             }
-            code = Convert.ToInt16(s[7]);
-            switch (code)
+            switch (Convert.ToInt16(s[7]))
             {
                 case 0:
-                    this.DI165 = atoms;
                     Offset += 1;
                     break;
                 case 1:
                     s = Convert.ToString(Convert.ToInt16(this.rawList[Offset + 1], 2));
                     Offset += 2;
                     s = s.Remove(7, 1);
-                    a = new Atom("Rate of Turn", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt16(s, 2) * 0.25)));
-                    atoms.Add(a);
-                    this.DI165 = atoms;
+                    this.DI165.Add(new Atom("Rate of Turn", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt16(s, 2) * 0.25))));
                     break;
             }
 
         }
 
-        private void decodeTarget()
+        private void decodeCallsign()
         {
-            List<Atom> atoms = new List<Atom>();
             string stringCode = "";
             for (int i = Offset; i < Offset + 6; i++)
             {
@@ -503,9 +487,7 @@ namespace ASTERIX
                 else
                     code.Add((char)Convert.ToInt32(string.Concat("00", stringCode.Substring(6 * i, 6)), 16));
             }
-            atoms.Add(new Atom("Callsign", 0, Regex.Replace(string.Join("", code.ToArray()), @"\s", "")));
-
-            this.DI170 = atoms;
+            this.DI170 = Regex.Replace(string.Join("", code.ToArray()), @"\s", "");
         }
 
         private void decodeVelAcc()
@@ -516,51 +498,41 @@ namespace ASTERIX
         
         private void decodeTODAcc()
         {
-            this.DI032 = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 16) * (2 ^ (-8)));
+            this.DI032 = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 16) * Math.Pow(2, -8));
             Offset += 1;
         }
 
         private void decodeTargetStats()
         {
-            List<Atom> atoms = new List<Atom>();
-            Atom a;
+            this.DI200 = new List<Atom>();
             string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16));
             switch (Convert.ToInt16(s))
             {
                 case 0:
-                    a = new Atom("Target Status", 0, "No emergency / not reported");
-                    atoms.Add(a);
+                    this.DI200.Add(new Atom("Target Status", 0, "No emergency / not reported"));
                     break;
                 case 1:
-                    a = new Atom("Target Status", 1, "General emergency");
-                    atoms.Add(a);
+                    this.DI200.Add(new Atom("Target Status", 1, "General emergency"));
                     break;
                 case 2:
-                    a = new Atom("Target Status", 2, "Lifeguard / medical");
-                    atoms.Add(a);
+                    this.DI200.Add(new Atom("Target Status", 2, "Lifeguard / medical"));
                     break;
                 case 3:
-                    a = new Atom("Target Status", 3, "Minimum fuel");
-                    atoms.Add(a);
+                    this.DI200.Add(new Atom("Target Status", 3, "Minimum fuel"));
                     break;
                 case 4:
-                    a = new Atom("Target Status", 4, "No communication");
-                    atoms.Add(a);
+                    this.DI200.Add(new Atom("Target Status", 4, "No communication"));
                     break;
                 case 5:
-                    a = new Atom("Target Status", 5, "Unlawful interference");
-                    atoms.Add(a);
+                    this.DI200.Add(new Atom("Target Status", 5, "Unlawful interference"));
                     break;
             }
             Offset += 1;
-            this.DI200 = atoms;
         }
 
         private void decodeEmmitterCat()
         {
-            int s = Convert.ToInt16(this.rawList[Offset], 16);
-            Offset += 1;
-            switch (s)
+            switch (Convert.ToInt16(this.rawList[Offset], 16))
             {
                 case 1:
                     this.DI020 = "light aircraft";
@@ -635,316 +607,294 @@ namespace ASTERIX
                     this.DI020 = "reserved";
                     break;
             }
+            Offset++;
         }
 
         private void decodeMetReport()
         {
-            List<Atom> atoms = new List<Atom>();
             string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
             ++Offset;
-            int code = Convert.ToInt32(s[0]);
-            switch (code)
+            switch (Convert.ToInt32(s[0]))
             {
                 case 0:
-                    atoms.Add(new Atom("Wind Speed", 0, "Absence of Subfield #1"));
+                    this.DI220.Add(new Atom("Wind Speed", 0, "Absence of Subfield #1"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Wind Speed", 1, "Presence of Subfield #1"));
+                    this.DI220.Add(new Atom("Wind Speed", 1, "Presence of Subfield #1"));
                     break;
             }
-            code = Convert.ToInt32(s[1]);
-            switch (code)
+            switch (Convert.ToInt32(s[1]))
             {
                 case 0:
-                    atoms.Add(new Atom("Wind Direction", 0, "Absence of Subfield #2"));
+                    this.DI220.Add(new Atom("Wind Direction", 0, "Absence of Subfield #2"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Wind Direction", 1, "Presence of Subfield #2"));
+                    this.DI220.Add(new Atom("Wind Direction", 1, "Presence of Subfield #2"));
                     break;
             }
-            code = Convert.ToInt32(s[2]);
-            switch (code)
+            switch (Convert.ToInt32(s[2]))
             {
                 case 0:
-                    atoms.Add(new Atom("Temperature", 0, "Absence of Subfield #3"));
+                    this.DI220.Add(new Atom("Temperature", 0, "Absence of Subfield #3"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Temperature", 1, "Presence of Subfield #3"));
+                    this.DI220.Add(new Atom("Temperature", 1, "Presence of Subfield #3"));
                     break;
             }
-            code = Convert.ToInt32(s[3]);
-            switch (code)
+            switch (Convert.ToInt32(s[3]))
             {
                 case 0:
-                    atoms.Add(new Atom("Turbulence", 0, "Absence of Subfield #4"));
+                    this.DI220.Add(new Atom("Turbulence", 0, "Absence of Subfield #4"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Turbulence", 1, "Presence of Subfield #4"));
+                    this.DI220.Add(new Atom("Turbulence", 1, "Presence of Subfield #4"));
                     break;
             }
-            code = Convert.ToInt32(s[7]);
-            switch (code)
+            switch (Convert.ToInt32(s[7]))
             {
                 case 0:
-                    this.DI220 = atoms;
                     break;
                 case 1:
                     s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     Offset += 2;
-                    atoms.Add(new Atom("Wind Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 1))));
+                    this.DI220.Add(new Atom("Wind Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 1))));
+
                     s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     Offset += 2;
-                    atoms.Add(new Atom("Wind Direction", 1, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 1))));
+                    this.DI220.Add(new Atom("Wind Direction", 1, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 1))));
+
                     s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     Offset += 2;
-                    atoms.Add(new Atom("Temperature", 2, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 0.25))));
+                    this.DI220.Add(new Atom("Temperature", 2, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 0.25))));
+
                     s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
                     ++Offset;
-                    atoms.Add(new Atom("Turbulence", 3, Convert.ToString(Convert.ToInt32(s))));
-                    this.DI220 = atoms;
+                    this.DI220.Add(new Atom("Turbulence", 3, Convert.ToString(Convert.ToInt32(s))));
                     break;
             }
         }
 
         private void decodeIntermediateStateSelAlt()
         {
-            List<Atom> atoms = new List<Atom>();
             string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
             Offset += 2;
-            int code = Convert.ToInt16(s[0]);
-            switch (code)
+            switch (Convert.ToInt16(s[0]))
             {
                 case 0:
-                    atoms.Add(new Atom("Source Availability", 0, "No source information provided"));
+                    this.DI146.Add(new Atom("Source Availability", 0, "No source information provided"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Source Availability", 1, "Source Information provided"));
+                    this.DI146.Add(new Atom("Source Availability", 1, "Source Information provided"));
                     break;
             }
-            code = Convert.ToInt16(string.Concat(s[1], s[2]));
-            switch (code)
+            switch (Convert.ToInt16(string.Concat(s[1], s[2])))
             {
                 case 0:
-                    atoms.Add(new Atom("Source", 0, "Unknown"));
+                    this.DI146.Add(new Atom("Source", 0, "Unknown"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Source", 1, "Aircraft Altitude (Holding Altitude)"));
+                    this.DI146.Add(new Atom("Source", 1, "Aircraft Altitude (Holding Altitude)"));
                     break;
                 case 2:
-                    atoms.Add(new Atom("Source", 2, "MCP/FCU Selected Altitude"));
+                    this.DI146.Add(new Atom("Source", 2, "MCP/FCU Selected Altitude"));
                     break;
                 case 3:
-                    atoms.Add(new Atom("Source", 3, "FMS Selected Altitude"));
+                    this.DI146.Add(new Atom("Source", 3, "FMS Selected Altitude"));
                     break;
             }
             s = s.Remove(0, 3);
-            atoms.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 25))));
-            this.DI146 = atoms;
+            this.DI146.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 25))));
         }
 
         private void decodeFinalStateSelAlt()
         {
-            List<Atom> atoms = new List<Atom>();
             string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
             Offset += 2;
-            int code = Convert.ToInt16(s[0]);
-            switch (code)
+            switch (Convert.ToInt16(s[0]))
             {
                 case 0:
-                    atoms.Add(new Atom("Manage Vertical Mode", 0, "Not active"));
+                    this.DI148.Add(new Atom("Manage Vertical Mode", 0, "Not active"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Manage Vertical Mode", 1, "Active"));
+                    this.DI148.Add(new Atom("Manage Vertical Mode", 1, "Active"));
                     break;
             }
-            code = Convert.ToInt16(s[1]);
-            switch (code)
+            switch (Convert.ToInt16(s[1]))
             {
                 case 0:
-                    atoms.Add(new Atom("Altitude Hold Mode", 0, "Not active"));
+                    this.DI148.Add(new Atom("Altitude Hold Mode", 0, "Not active"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Altitude Hold Mode", 1, "Active"));
+                    this.DI148.Add(new Atom("Altitude Hold Mode", 1, "Active"));
                     break;
             }
-            code = Convert.ToInt16(s[2]);
-            switch (code)
+            switch (Convert.ToInt16(s[2]))
             {
                 case 0:
-                    atoms.Add(new Atom("Approach Mode", 0, "Not active"));
+                    this.DI148.Add(new Atom("Approach Mode", 0, "Not active"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("Approach Mode", 1, "Active"));
+                    this.DI148.Add(new Atom("Approach Mode", 1, "Active"));
                     break;
             }
             s = s.Remove(0, 3);
-            atoms.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 25))));
-
-            this.DI148 = atoms;
+            this.DI148.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 25))));
         }
 
         private void decodeTrajectoryIntent()
         {
-            List<Atom> atoms = new List<Atom>();
             string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
             Offset++;
-            int code = Convert.ToInt16(s[0]);
-            switch (code)
+            switch (Convert.ToInt16(s[0]))
             {
                 case 0:
-                    atoms.Add(new Atom("NAV", 0, "Trajectory Intent Data is available for this aircraft"));
+                    this.DI110.Add(new Atom("NAV", 0, "Trajectory Intent Data is available for this aircraft"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("NAV", 1, "Trajectory Intent Data is not available for this aircraft"));
+                    this.DI110.Add(new Atom("NAV", 1, "Trajectory Intent Data is not available for this aircraft"));
                     break;
             }
-            code = Convert.ToInt16(s[1]);
-            switch (code)
+            switch (Convert.ToInt16(s[1]))
             {
                 case 0:
-                    atoms.Add(new Atom("NVB", 0, "Trajectory Intent Data is valid"));
+                    this.DI110.Add(new Atom("NVB", 0, "Trajectory Intent Data is valid"));
                     break;
                 case 1:
-                    atoms.Add(new Atom("NVB", 1, "Trajectory Intent Data is not valid"));
+                    this.DI110.Add(new Atom("NVB", 1, "Trajectory Intent Data is not valid"));
                     break;
             }
-            code = Convert.ToInt16(s[7]);
-            switch (code)
+            switch (Convert.ToInt16(s[7]))
             {
                 case 0:
-                    this.DI110 = atoms;
                     break;
                 case 1:
-                    atoms.Add(new Atom("REP", 0, Convert.ToString(Convert.ToInt32(Convert.ToInt32(this.rawList[Offset], 16)))));
+                    this.DI110.Add(new Atom("REP", 0, Convert.ToString(Convert.ToInt32(Convert.ToInt32(this.rawList[Offset], 16)))));
                     ++Offset;
                     s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
                     Offset++;
                     switch (Convert.ToInt32(s[0]))
                     {
                         case 0:
-                            atoms.Add(new Atom("TCA", 0, "TCP number available"));
+                            this.DI110.Add(new Atom("TCA", 0, "TCP number available"));
                             break;
                         case 1:
-                            atoms.Add(new Atom("TCA", 1, "TCP number not available"));
+                            this.DI110.Add(new Atom("TCA", 1, "TCP number not available"));
                             break;
                     }
                     switch (Convert.ToInt32(s[1]))
                     {
                         case 0:
-                            atoms.Add(new Atom("NC", 0, "TCP compliance"));
+                            this.DI110.Add(new Atom("NC", 0, "TCP compliance"));
                             break;
                         case 1:
-                            atoms.Add(new Atom("NC", 1, "TCP non-compliance"));
+                            this.DI110.Add(new Atom("NC", 1, "TCP non-compliance"));
                             break;
                     }
                     s = s.Remove(0, 2);
-                    atoms.Add(new Atom("TCP number", 0, Convert.ToString(Convert.ToInt32(s))));
+                    this.DI110.Add(new Atom("TCP number", 0, Convert.ToString(Convert.ToInt32(s))));
+
                     s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     Offset += 2;
-                    atoms.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 10))));
+                    this.DI110.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 10))));
+
                     int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
-                    float latreal = Convert.ToSingle(lat * 180 / 2 ^ 23);
+                    float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 23));
 
-                    int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 4]), System.Globalization.NumberStyles.HexNumber);
-                    float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 23);
+                    int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5]), System.Globalization.NumberStyles.HexNumber);
+                    float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 23));
 
-                    atoms.Add(new Atom("Latitude", 0, Convert.ToString(latreal)));
-                    atoms.Add(new Atom("Longitude", 0, Convert.ToString(lonreal)));
+                    this.DI110.Add(new Atom("Latitude", latreal, Convert.ToString(latreal)));
+                    this.DI110.Add(new Atom("Longitude", lonreal, Convert.ToString(lonreal)));
 
                     Offset += 6;
 
                     s = Convert.ToString(Convert.ToInt32((this.rawList[Offset], 16)));
                     Offset += 1;
 
-                    code = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3]));
-                    switch (code)
+                    switch (Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3])))
                     {
                         case 0:
-                            atoms.Add(new Atom("Point Type", 0, "Unknown"));
+                            this.DI110.Add(new Atom("Point Type", 0, "Unknown"));
                             break;
                         case 1:
-                            atoms.Add(new Atom("Point Type", 1, "Fly by waypoint (LT)"));
+                            this.DI110.Add(new Atom("Point Type", 1, "Fly by waypoint (LT)"));
                             break;
                         case 2:
-                            atoms.Add(new Atom("Point Type", 2, "Fly over waypoint (LT)"));
+                            this.DI110.Add(new Atom("Point Type", 2, "Fly over waypoint (LT)"));
                             break;
                         case 3:
-                            atoms.Add(new Atom("Point Type", 3, "Hold pattern (LT)"));
+                            this.DI110.Add(new Atom("Point Type", 3, "Hold pattern (LT)"));
                             break;
                         case 4:
-                            atoms.Add(new Atom("Point Type", 4, "Procedure hold (LT)"));
+                            this.DI110.Add(new Atom("Point Type", 4, "Procedure hold (LT)"));
                             break;
                         case 5:
-                            atoms.Add(new Atom("Point Type", 5, "Procedure turn (LT)"));
+                            this.DI110.Add(new Atom("Point Type", 5, "Procedure turn (LT)"));
                             break;
                         case 6:
-                            atoms.Add(new Atom("Point Type", 6, "RF leg (LT)"));
+                            this.DI110.Add(new Atom("Point Type", 6, "RF leg (LT)"));
                             break;
                         case 7:
-                            atoms.Add(new Atom("Point Type", 7, "Top of climb (VT)"));
+                            this.DI110.Add(new Atom("Point Type", 7, "Top of climb (VT)"));
                             break;
                         case 8:
-                            atoms.Add(new Atom("Point Type", 8, "Top of descent (VT)"));
+                            this.DI110.Add(new Atom("Point Type", 8, "Top of descent (VT)"));
                             break;
                         case 9:
-                            atoms.Add(new Atom("Point Type", 9, "Start of level (VT)"));
+                            this.DI110.Add(new Atom("Point Type", 9, "Start of level (VT)"));
                             break;
                         case 10:
-                            atoms.Add(new Atom("Point Type", 10, "Cross-over altitude (VT)"));
+                            this.DI110.Add(new Atom("Point Type", 10, "Cross-over altitude (VT)"));
                             break;
                         case 11:
-                            atoms.Add(new Atom("Point Type", 11, "Transition altitude (VT)"));
+                            this.DI110.Add(new Atom("Point Type", 11, "Transition altitude (VT)"));
                             break;
                     }
-                    code = Convert.ToInt32(string.Concat(s[4], s[5]));
-                    switch (code)
+                    switch (Convert.ToInt32(string.Concat(s[4], s[5])))
                     {
                         case 0:
-                            atoms.Add(new Atom("TD", 0, "N/A"));
+                            this.DI110.Add(new Atom("TD", 0, "N/A"));
                             break;
                         case 1:
-                            atoms.Add(new Atom("TD", 1, "Turn right"));
+                            this.DI110.Add(new Atom("TD", 1, "Turn right"));
                             break;
                         case 2:
-                            atoms.Add(new Atom("TD", 2, "Turn left"));
+                            this.DI110.Add(new Atom("TD", 2, "Turn left"));
                             break;
                         case 3:
-                            atoms.Add(new Atom("TD", 3, "No turn"));
+                            this.DI110.Add(new Atom("TD", 3, "No turn"));
                             break;
                     }
-
-                    code = Convert.ToInt32(s[6]);
-                    switch (code)
+                    switch (Convert.ToInt32(s[6]))
                     {
                         case 0:
-                            atoms.Add(new Atom("Turn Radius Availabilty", 0, "TTR not available"));
+                            this.DI110.Add(new Atom("Turn Radius Availabilty", 0, "TTR not available"));
                             break;
                         case 1:
-                            atoms.Add(new Atom("Turn Radius Availabilty", 1, "TTR available"));
+                            this.DI110.Add(new Atom("Turn Radius Availabilty", 1, "TTR available"));
                             break;
                     }
-                    code = Convert.ToInt32(s[7]);
-                    switch (code)
+                    switch (Convert.ToInt32(s[7]))
                     {
                         case 0:
-                            atoms.Add(new Atom("TOA", 0, "TOV available"));
+                            this.DI110.Add(new Atom("TOA", 0, "TOV available"));
                             break;
                         case 1:
-                            atoms.Add(new Atom("TOA", 1, "TOV not available"));
+                            this.DI110.Add(new Atom("TOA", 1, "TOV not available"));
                             break;
                     }
                     s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16));
                     Offset += 3;
-                    atoms.Add(new Atom("Time Over Point", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 1))));
+                    this.DI110.Add(new Atom("Time Over Point", Convert.ToInt32(s), s));
 
 
                     s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     Offset += 2;
-                    atoms.Add(new Atom("TCP Turn radius", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 0.01))));
+                    this.DI110.Add(new Atom("TCP Turn radius", Convert.ToSingle(Convert.ToInt32(s) * 0.01), Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 0.01))));
 
-                    this.DI110 = atoms;
                     break;
             }
         }
+
     }
 }
