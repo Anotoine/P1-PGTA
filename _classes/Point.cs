@@ -26,28 +26,28 @@ namespace ASTERIX
         internal double phi { get; set; }
 
         //ref lat lon -> centre de l'aeroport
-        private double latRef = 41.296944 * Math.PI / 180;
-        private double lonRef = 2.078333 * Math.PI / 180;
+        private readonly double latRef = 41.296944 * Math.PI / 180;
+        private readonly double lonRef = 2.078333 * Math.PI / 180;
 
-        private double latARP = 41.296944 * Math.PI / 180;
-        private double lonARP = 2.078333 * Math.PI / 180;
+        private readonly double latARP = 41.296944 * Math.PI / 180;
+        private readonly double lonARP = 2.078333 * Math.PI / 180;
 
-        private double escalaX = 6.360;
-        private double escalaY = 6.502;
+        private readonly double escalaX = 6.360;
+        private readonly double escalaY = 6.502;
         //private double latRef = 41.295885 * Math.PI / 180;
         //private double lonRef = 2.086214 * Math.PI / 180;
 
         //standard latitudes 
         //private double lat1 = 40 * Math.PI / 180;
         //private double lat2 = 42 * Math.PI / 180;
-        private double lat1 = 43 * Math.PI / 180;
-        private double lat2 = 36 * Math.PI / 180;
+        private readonly double lat1 = 43 * Math.PI / 180;
+        private readonly double lat2 = 36 * Math.PI / 180;
 
 
 
-        private double Re = 6378137;
-        private double Rp = 6357000;
-        private double Rm = 6371000;
+        private readonly double Re = 6378137;
+        private readonly double Rp = 6357000;
+        private readonly double Rm = 6371000;
 
         public Point()
         {

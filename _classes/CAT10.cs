@@ -10,8 +10,8 @@ namespace ASTERIX
     class CAT10
     {
         //Message stuff
-        private List<bool> listFSPEC;
-        private List<string> rawList;
+        private readonly List<bool> listFSPEC;
+        private readonly List<string> rawList;
         private int Offset;
 
         //DataItem
@@ -55,70 +55,70 @@ namespace ASTERIX
             incY = SMR.Y;
         }
 
-        public CAT10 decode()
+        public CAT10 Decode()
         {
             if (this.listFSPEC[1]) //I010/010
-                decodeSACSIC();
+                DecodeSACSIC();
             if (this.listFSPEC[2]) //I010/000
-                decodeMessageType();
+                DecodeMessageType();
             if (this.listFSPEC[3]) //I010/020          
-                decodeTargetDescriptor();
+                DecodeTargetDescriptor();
             if (this.listFSPEC[4]) //I010/140
-                decodeTOD();
+                DecodeTOD();
             if (this.listFSPEC[5]) //I010/041
-               decodeLatLong();
+               DecodeLatLong();
             if (this.listFSPEC[6]) //I010/040
-               decodePolarCoordinates();
+               DecodePolarCoordinates();
             if (this.listFSPEC[7]) //I010/042
-               decodeXY();
+               DecodeXY();
             if (this.listFSPEC[8]) //FX
             {
                 if (this.listFSPEC[9])  //I010/200
-                    decodeTrackVelPolar();
+                    DecodeTrackVelPolar();
                 if (this.listFSPEC[10])  //I010/202
-                    decodeTrackVel();
+                    DecodeTrackVel();
                 if (this.listFSPEC[11])  //I010/161
-                    decodeTrackNumber();
+                    DecodeTrackNumber();
                 if (this.listFSPEC[12])  //I010/170
-                    decodeTrackStatus();
+                    DecodeTrackStatus();
                 if (this.listFSPEC[13]) //I010/060
-                    decodeM3A();
+                    DecodeM3A();
                 if (this.listFSPEC[14]) //I010/220
-                    decodeICAOAddress();
+                    DecodeICAOAddress();
                 if (this.listFSPEC[15]) //I010/245
-                    decodeCallSign();
+                    DecodeCallSign();
                 if (this.listFSPEC[16]) //FX
                 {
                     if (this.listFSPEC[17])  //I010/250
-                        decodeMSdata();
+                        DecodeMSdata();
                     if (this.listFSPEC[18])  //I010/300
-                        decodeVehicleId();
+                        DecodeVehicleId();
                     if (this.listFSPEC[19])  //I010/090
-                        decodeFL();
+                        DecodeFL();
                     if (this.listFSPEC[20])  //I010/091
-                        decodeMheight();
+                        DecodeMheight();
                     if (this.listFSPEC[21])  //I010/270
-                        decodeTargetSize();
+                        DecodeTargetSize();
                     if (this.listFSPEC[22])  //I010/550
-                        decodeSysStats();
+                        DecodeSysStats();
                     if (this.listFSPEC[23])  //I010/310
-                        decodePPmes();
+                        DecodePPmes();
                     if (this.listFSPEC[24]) //FX
                     {
                         if (this.listFSPEC[25])  //I010/500
-                            decodeStandardDeviationPosition();
+                            DecodeStandardDeviationPosition();
                         if (this.listFSPEC[25])  //I010/280
-                            decodePresence();
+                            DecodePresence();
                         if (this.listFSPEC[26])  //I010/131
-                            decodeAmplitudePrimaryPlot();
+                            DecodeAmplitudePrimaryPlot();
                         if (this.listFSPEC[27])  //I010/210
-                            decodeCalculatedAcceleration();
+                            DecodeCalculatedAcceleration();
                     }
                 }
             }
             return this;
         }
-        private void decodeSACSIC()
+        private void DecodeSACSIC()
         {
             this.DI010 = new List<Atom>();
             List<string> ls = new List<string>() { "SAC", "SIC" };
@@ -129,7 +129,7 @@ namespace ASTERIX
             }
         }
 
-        private void decodeMessageType()
+        private void DecodeMessageType()
         {
             int code = Convert.ToInt32(this.rawList[Offset], 16);
             switch (code)
@@ -150,7 +150,7 @@ namespace ASTERIX
             ++Offset;
         }
 
-        private void decodeTargetDescriptor()
+        private void DecodeTargetDescriptor()
         {
             var ls = new List<string> { "TYP", "DCR", "CHN", "GBS", "CRT", "FX", "SIM", "TST", "RAB", "LOP", "TOT", "FX", "SPI", "FX" };
 
@@ -278,7 +278,7 @@ namespace ASTERIX
             this.DI020 = atoms;
         }
 
-        private void decodeTOD()
+        private void DecodeTOD()
         {
             int LSB = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
             Offset += 3;
@@ -286,7 +286,7 @@ namespace ASTERIX
             this.DI140 = new DateTime().AddSeconds((float)LSB / 128);
         }
 
-        private void decodeLatLong()
+        private void DecodeLatLong()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
             float latreal = Convert.ToSingle(lat * 180 / 2 ^ 31);
@@ -299,7 +299,7 @@ namespace ASTERIX
             this.DI041 = new Point().LatLong2XY(latreal, lonreal);
         }
 
-        private void decodePolarCoordinates()
+        private void DecodePolarCoordinates()
         {
             int RHO = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
             float RHOreal = Convert.ToSingle(RHO);
@@ -312,7 +312,7 @@ namespace ASTERIX
             this.DI040 = new Point().Polar2XY(RHOreal, Thetareal,incX, incY);
         }
         
-        private void decodeXY()
+        private void DecodeXY()
         {
             string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
             int x = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
@@ -323,10 +323,9 @@ namespace ASTERIX
             this.DI042 = new Point().XY2LatLong(x, y);
         }
 
-        private void decodeTrackVelPolar()
+        private void DecodeTrackVelPolar()
         {
             this.DI200 = new List<Atom>();
-            List<string> ls = new List<string>() { "Speed", "Track Angle" };
             int speed = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
             this.DI200.Add(new Atom("Speed", (float)speed * (2 ^ (-14)), Convert.ToString((float)speed * (2 ^ (-14)))));
             Offset += 2;
@@ -335,7 +334,7 @@ namespace ASTERIX
             Offset += 2;
         }
         
-        private void decodeTrackVel()
+        private void DecodeTrackVel()
         {
             this.DI202 = new List<Atom>();
             List<string> ls = new List<string>() { "V_x", "V_y" };
@@ -347,13 +346,13 @@ namespace ASTERIX
             }
         }
 
-        private void decodeTrackNumber()
+        private void DecodeTrackNumber()
         {
             this.DI161 = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
             Offset += 2;
         }
 
-        private void decodeTrackStatus()
+        private void DecodeTrackStatus()
         {
             var ls = new List<string> { "CNF", "TRE", "CST", "MAH", "TCC", "STH", "FX", "TOM", "DOU", "MRS", "FX", "GHO", "FX" };
             var ls0 = new List<string> { "Confirmed track", "Default", "Not extrapolation", "Predictable extrapolation due to sensor refresh period",
@@ -480,7 +479,7 @@ namespace ASTERIX
             }
         }
 
-        private void decodeM3A()
+        private void DecodeM3A()
         {
             Atom a;
             this.DI060 = new List<Atom>();
@@ -544,13 +543,13 @@ namespace ASTERIX
             this.DI060.Add(new Atom("Mode-3/A reply", Convert.ToInt32(code), code));
         }
 
-        private void decodeICAOAddress()
+        private void DecodeICAOAddress()
         {
             this.DI220 = string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]).ToUpper();
             Offset += 3;
         } 
 
-        private void decodeCallSign()
+        private void DecodeCallSign()
         {
             this.DI245 = new List<Atom>();
             //First decoding STI on first Byte
@@ -594,7 +593,7 @@ namespace ASTERIX
             this.DI245.Add(new Atom("Callsign", 0, Regex.Replace(string.Join("", code.ToArray()), @"\s", "")));
         }
 
-        private void decodeMSdata()
+        private void DecodeMSdata()
         {
             //Amount of Octets that will extent this camp (REP)
             int REP = Convert.ToInt32(this.rawList[Offset], 16);
@@ -620,7 +619,7 @@ namespace ASTERIX
             }
         }
 
-        private void decodeVehicleId()
+        private void DecodeVehicleId()
         {
             Offset++;
             switch (Convert.ToInt16(this.rawList[Offset], 2))
@@ -682,7 +681,7 @@ namespace ASTERIX
             }
         }
 
-        private void decodeFL()
+        private void DecodeFL()
         {
             string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
             int VG = Convert.ToInt32(s.Substring(0, 2), 2);
@@ -718,13 +717,13 @@ namespace ASTERIX
             Offset += 2;
         }
 
-        private void decodeMheight()
+        private void DecodeMheight()
         {
             this.DI091 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 2) * 6.25);
             Offset += 2;
         }
 
-        private void decodeTargetSize()
+        private void DecodeTargetSize()
         {
             this.DI270 = new List<Atom>();
             string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
@@ -747,7 +746,7 @@ namespace ASTERIX
             }
         }
 
-        private void decodeSysStats()
+        private void DecodeSysStats()
         {
             this.DI550 = new List<Atom>();
             switch (Convert.ToInt32(this.rawList[Offset].PadLeft(8, '0').Substring(0, 5)))
@@ -948,7 +947,7 @@ namespace ASTERIX
             Offset++;
         }
 
-        private void decodePPmes()
+        private void DecodePPmes()
         {
             Offset++;
 
@@ -990,7 +989,7 @@ namespace ASTERIX
             }
         }
 
-        private void decodeStandardDeviationPosition()
+        private void DecodeStandardDeviationPosition()
         {
             float Ox = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 2) * 0.25);
             Offset += 1;
@@ -1003,7 +1002,7 @@ namespace ASTERIX
             this.DI500.Add(new Atom("Oxy", Oxy, Convert.ToString(Oxy)));
         }
 
-        private void decodePresence()
+        private void DecodePresence()
         {
             int REP = Convert.ToInt16(this.rawList[Offset], 2);
             Offset += 1;
@@ -1016,12 +1015,12 @@ namespace ASTERIX
             this.DI280.Add(new Atom("DTHETA", 0, Convert.ToString(DTHETA)));
         }
 
-        private void decodeAmplitudePrimaryPlot()
+        private void DecodeAmplitudePrimaryPlot()
         {
             this.DI131 = Convert.ToInt16(this.rawList[Offset], 2);
         }
 
-        private void decodeCalculatedAcceleration()
+        private void DecodeCalculatedAcceleration()
         {
             float ax = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 2) * 0.25);
             Offset += 1;
