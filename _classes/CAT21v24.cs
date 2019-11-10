@@ -14,12 +14,12 @@ namespace ASTERIX
         internal List<Atom> DI016 { get; set; }
         internal List<Atom> DI020 { get; set; }
         internal List<Atom> DI040 { get; set; }
-        internal List<Atom> DI070 { get; set; }
+        internal int DI070 { get; set; }
         internal float DI071 { get; set; }
         internal DateTime DI072 { get; set; }
-        internal List<Atom> DI073 { get; set; }
+        internal DateTime DI073 { get; set; }
         internal List<Atom> DI074 { get; set; }
-        internal List<Atom> DI075 { get; set; }
+        internal float DI075 { get; set; }
         internal List<Atom> DI076 { get; set; }
         internal List<Atom> DI077 { get; set; }
         internal string DI080 { get; set; } //ICAO Address
@@ -28,7 +28,7 @@ namespace ASTERIX
         internal Point DI130 { get; set; } //Position 
         internal Point DI131 { get; set; } //Position high-res
         internal float DI132 { get; set; }
-        internal DateTime DI140 { get; set; }
+        internal float DI140 { get; set; }
         internal float DI145 { get; set; }
         internal float DI146 { get; set; }
         internal float DI148 { get; set; }

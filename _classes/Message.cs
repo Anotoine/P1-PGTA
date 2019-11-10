@@ -926,7 +926,7 @@ namespace ASTERIX
                 {
                     string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     int code = Convert.ToInt16(s[0]);
-                    s.Remove(0, 1);
+                    s = s.Remove(0, 1);
                     float Airspeed;
                     switch(code)
                     {
@@ -1010,7 +1010,7 @@ namespace ASTERIX
                             case 1:
                                 s = Convert.ToString(Convert.ToInt16(this.rawList[Offset + 1], 2));
                                 Offset += 2;
-                                s.Remove(7, 1);
+                                s = s.Remove(7, 1);
                                 a = new Atom("Rate of Turn", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt16(s, 2) * 0.25)));
                                 atoms.Add(a);
                                 CAT21v023.DI165 = atoms;
@@ -1315,7 +1315,7 @@ namespace ASTERIX
                 {
                     string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     int code = Convert.ToInt16(s[0]);
-                    s.Remove(0, 1);
+                    s = s.Remove(0, 1);
                     float Airspeed;
                     switch (code)
                     {
@@ -1335,7 +1335,7 @@ namespace ASTERIX
                 {
                     string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     int code = Convert.ToInt16(s[0]);
-                    s.Remove(0, 1);
+                    s = s.Remove(0, 1);
                     float Airspeed;
                     switch (code)
                     {
@@ -1352,7 +1352,156 @@ namespace ASTERIX
                 }
                 if (listFSPEC[12])
                     CAT21v24.DI080 = decodeICAOAddress();
-                
+                if (listFSPEC[13])
+                    CAT21v24.DI073 = decodeTOD();
+                if (listFSPEC[14])
+                {
+                    List<Atom> atoms = new List<Atom>();
+                    Atom a;
+                    string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16));
+                    int code = Convert.ToInt16(string.Concat(s[0], s[1]));
+                    switch(code)
+                    {
+                        case 0:
+                            a = new Atom("FSI", 0, "+0");
+                            atoms.Add(a);
+                            break;
+                        case 1:
+                            a = new Atom("FSI", 1, "+1");
+                            atoms.Add(a);
+                            break;
+                        case 2:
+                            a = new Atom("FSI", 2, "-1");
+                            atoms.Add(a);
+                            break;
+                        case 3:
+                            a = new Atom("FSI", 3, "Reserved");
+                            atoms.Add(a);
+                            break;
+                    }
+                    s = s.Remove(0, 2);
+                    a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s))*(2^(-30))));
+                    atoms.Add(a);
+                    CAT21v24.DI074 = atoms;
+                    Offset += 4;
+                        
+                }
+                if (listFSPEC[15])
+                {
+                    CAT21v24.DI075 = Convert.ToSingle(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16)*(1/128));
+                    Offset += 3;
+                }
+                if (listFSPEC[16])
+                {
+                    if (listFSPEC[17])
+                    {
+                        List<Atom> atoms = new List<Atom>();
+                        Atom a;
+                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16));
+                        int code = Convert.ToInt16(string.Concat(s[0], s[1]));
+                        switch (code)
+                        {
+                            case 0:
+                                a = new Atom("FSI", 0, "+0");
+                                atoms.Add(a);
+                                break;
+                            case 1:
+                                a = new Atom("FSI", 1, "+1");
+                                atoms.Add(a);
+                                break;
+                            case 2:
+                                a = new Atom("FSI", 2, "-1");
+                                atoms.Add(a);
+                                break;
+                            case 3:
+                                a = new Atom("FSI", 3, "Reserved");
+                                atoms.Add(a);
+                                break;
+                        }
+                        s = s.Remove(0, 2);
+                        a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)*(2^(-30)))));
+                        atoms.Add(a);
+                        CAT21v24.DI076 = atoms;
+                        Offset += 4;
+                    }
+                }
+                if (listFSPEC[18])
+                {
+                    CAT21v24.DI140 = Convert.ToSingle(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1])) * 6.25);
+                    Offset += 2;
+                }
+                if (listFSPEC[19])
+                {
+                    List<Atom> atoms = new List<Atom>();
+                    Atom a;
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                    ++Offset;
+                    atoms.Add(new Atom("NUCr or NACv", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1], s[2])))));
+                    atoms.Add(new Atom("NUCp or NIC", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4], s[5],s[6])))));
+                    if(s[7].Equals('1'))
+                    {
+                        s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                        ++Offset;
+                        atoms.Add(new Atom("Navigation Integrity Category for Barometric Altitude", 0, Convert.ToString(Convert.ToInt32(s[0]))));
+                        atoms.Add(new Atom("Surveillance (version 1) or Source (version 2) Integrity Level", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[1], s[2])))));
+                        atoms.Add(new Atom("Navigation Accuracy Category for Position",0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4], s[5])))));
+                        if (s[7].Equals('1'))
+                        {
+                            s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                            ++Offset;
+                            switch(Convert.ToInt32(s[2]))
+                            {
+                                case 0:
+                                    atoms.Add(new Atom("SIL-Supplement", 0, "measured per flight-hour"));
+                                    break;
+                                case 1: 
+                                    atoms.Add(new Atom("SIL-Supplement", 0, "measured per sample"));
+                                    break;
+                            }
+                            atoms.Add(new Atom("Horizontal Position System Design Assurance", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4])))));
+                            atoms.Add(new Atom("Geometric Altitude Accuracy",0, Convert.ToString(Convert.ToInt32(string.Concat(s[5], s[6])))));
+                            if (s[7].Equals('1'))
+                            {
+                                s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                                ++Offset;
+                                atoms.Add(new Atom("Position Integrity Category", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1],s[2], s[3])))));
+                            }
+                            else
+                                CAT21v24.DI090 = atoms;
+                        }
+                        else
+                            CAT21v24.DI090 = atoms;
+                    }
+                    else
+                        CAT21v24.DI090 = atoms;
+                }
+                if(listFSPEC[20])
+                {
+                    List<Atom> atoms = new List<Atom>();
+                    Atom a;
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                    ++Offset;
+                    atoms.Add(new Atom("Version Not Supported", 0, Convert.ToString(Convert.ToInt32(s[1]))));
+                    atoms.Add(new Atom("Version Number", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[2], s[3], s[4])))));
+                    atoms.Add(new Atom("Link Technology Type", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[5], s[6], s[7])))));
+                    CAT21v24.DI210 = atoms;
+                }
+                if(listFSPEC[21])
+                {
+                    string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
+                    int code = Convert.ToInt32(string.Concat(s[4], s[5], s[6]), 2);
+
+                    code += Convert.ToInt32(string.Concat(s[7], s[8], s[9]), 2);
+
+                    code += Convert.ToInt32(string.Concat(s[10], s[11], s[12]), 2);
+
+                    code += Convert.ToInt32(string.Concat(s[13], s[14], s[15]), 2);
+                    CAT21v24.DI070 = code;
+                }
+                if(listFSPEC[22])
+                {
+
+                }
             }
         }
 
