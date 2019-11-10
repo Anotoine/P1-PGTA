@@ -41,11 +41,18 @@ namespace ASTERIX
         internal List<Atom> DI500 { get; set; }
         internal List<Atom> DI550 { get; set; }
 
+        //increment de SNR a ARP
+        double incX, incY;
+
         public CAT10(List<string> rawList, List<bool> listFSPEC, int Offset)
         {
-        this.listFSPEC = listFSPEC;
-        this.rawList = rawList;
-        this.Offset = Offset;
+            this.listFSPEC = listFSPEC;
+            this.rawList = rawList;
+            this.Offset = Offset;
+
+            Point SMR = new Point().LatLong2XY(41.29562, 2.095114); //SMR point
+            incX = SMR.X;
+            incY = SMR.Y;
         }
 
         public CAT10 decode()
@@ -302,7 +309,7 @@ namespace ASTERIX
 
             Offset += 4;
 
-            this.DI040 = new Point().Polar2XY(RHOreal, Thetareal);
+            this.DI040 = new Point().Polar2XY(RHOreal, Thetareal,incX, incY);
         }
         
         private void decodeXY()

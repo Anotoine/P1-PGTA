@@ -80,12 +80,12 @@ namespace ASTERIX
 
             return this;
         }
-        public Point Polar2XY(double rho, double theta)
+        public Point Polar2XY(double rho, double theta, double incX, double incY)
         {
             this.rad = rho;
             this.theta = theta;
-            this.X = this.rad * Math.Sin(theta * Math.PI / 180);
-            this.Y = this.rad * Math.Cos(theta * Math.PI / 180);
+            this.X = this.rad * Math.Sin(theta * Math.PI / 180) + incX;
+            this.Y = this.rad * Math.Cos(theta * Math.PI / 180) + incY;
 
             return this;
         }
