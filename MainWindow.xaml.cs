@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -46,6 +47,7 @@ namespace ASTERIX
 
         public MainWindow()
         {
+            DataContext = UserOptions;
             InitializeComponent();
         }
 
@@ -531,7 +533,7 @@ namespace ASTERIX
                             Line l1 = new Line
                             {
                                 StrokeThickness = 1,
-                                Stroke = UserOptions.MapsColor.MainColor,
+                                Stroke = UserOptions.MapMainColor,
                                 X1 = (l.Item1.X + A) / alpha,
                                 Y1 = (l.Item1.Y + B) / beta,
 
@@ -545,7 +547,7 @@ namespace ASTERIX
                             Polyline poly = new Polyline
                             {
                                 StrokeThickness = 1,
-                                Stroke = UserOptions.MapsColor.MainColor
+                                Stroke = UserOptions.MapMainColor
                             };
                             PointCollection points = new PointCollection();
                             foreach (Point pp in pl)
@@ -558,7 +560,7 @@ namespace ASTERIX
                             TextBlock textBlock = new TextBlock
                             {
                                 Text = txt.Item2,
-                                Foreground = UserOptions.MapsColor.SecondaryColor
+                                Foreground = UserOptions.MapSecondaryColor
                             };
                             Canvas.SetLeft(textBlock, (txt.Item1.X + 10 + A) / alpha);
                             Canvas.SetTop(textBlock, (txt.Item1.Y + 10 + B) / beta); 
@@ -568,8 +570,8 @@ namespace ASTERIX
                         { //Maybe a polygon to help diferenciate?
                             Ellipse SIM = new Ellipse
                             {
-                                Stroke = UserOptions.MapsColor.HighlightColor,
-                                Fill = UserOptions.MapsColor.HighlightColor,
+                                Stroke = UserOptions.MapHighlightColor,
+                                Fill = UserOptions.MapHighlightColor,
                                 Width = 5,
                                 Height = 5
                             };

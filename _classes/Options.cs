@@ -7,37 +7,52 @@ using System.Windows.Media;
 
 namespace ASTERIX
 {
-    class Options
+    public class Options
     {
-        string lang = "en-US";
+        public string lang = "en-US";
         double interval = 1;
 
         public double Interval { get => interval; set => interval = value; }
 
-        //Colors for the Canvas
-        mapsColorClass mapsColor = new mapsColorClass();
-        SolidColorBrush aircraftColor = Brushes.Red;
-        SolidColorBrush vehiclesColor = Brushes.White;
-        SolidColorBrush otherColor = Brushes.LightSkyBlue;
+        //Points Colors
+        public SolidColorBrush AircraftColor { get ; set ; }
+        public SolidColorBrush VehiclesColor { get ; set ; }
+        public SolidColorBrush OtherColor { get ; set ; }
 
-        public SolidColorBrush AircraftColor { get => aircraftColor; set => aircraftColor = value; }
-        public SolidColorBrush VehiclesColor { get => vehiclesColor; set => vehiclesColor = value; }
-        public SolidColorBrush OtherColor { get => otherColor; set => otherColor = value; }
-        public mapsColorClass MapsColor { get => mapsColor; set => mapsColor = value; }
+        //MapsColors
+        public SolidColorBrush MapBackgroundColor { get ; set ; }
+        public SolidColorBrush MapMainColor { get ; set ; }
+        public SolidColorBrush MapSecondaryColor { get ; set ; }
+        public SolidColorBrush MapHighlightColor { get ; set ; }
 
+        //Table Colors
+        public SolidColorBrush TableMainColor { get; set; }
+        public SolidColorBrush TableSecondaryColor { get; set; }
+        public SolidColorBrush TableTextColor { get; set; }
 
-        public class mapsColorClass
+        //Window Colors
+        public SolidColorBrush WindowMainColor { get; set; }
+        public SolidColorBrush WindowTextColor { get; set; }
+        public SolidColorBrush WindowBackgroundColor { get; set; }
+
+        public Options()
         {
-            SolidColorBrush backgroundColor = Brushes.Black;
-            SolidColorBrush mainColor = Brushes.ForestGreen;
-            SolidColorBrush secondaryColor = Brushes.Yellow;
-            SolidColorBrush highlightColor = Brushes.LightSkyBlue;
+            AircraftColor = Brushes.Red;
+            VehiclesColor = Brushes.White;
+            OtherColor = Brushes.LightSkyBlue;
 
+            MapBackgroundColor = Brushes.Black;
+            MapMainColor = Brushes.ForestGreen;
+            MapSecondaryColor = Brushes.LightYellow;
+            MapHighlightColor = Brushes.Yellow;
 
-            public SolidColorBrush BackgroundColor { get => backgroundColor; set => backgroundColor = value; }
-            public SolidColorBrush MainColor { get => mainColor; set => mainColor = value; }
-            public SolidColorBrush SecondaryColor { get => secondaryColor; set => secondaryColor = value; }
-            public SolidColorBrush HighlightColor { get => highlightColor; set => highlightColor = value; }
+            TableMainColor = Brushes.LightSteelBlue;
+            TableSecondaryColor = Brushes.LightGray;
+            TableTextColor = Brushes.LightGray;
+
+            WindowMainColor = Brushes.PaleVioletRed;
+            WindowTextColor = Brushes.White;
+            WindowBackgroundColor = Brushes.DarkGray;
         }
     }
 }

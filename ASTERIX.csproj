@@ -133,6 +133,7 @@
     <Compile Include="_classes\Options.cs" />
     <Compile Include="_classes\Point.cs" />
     <Compile Include="_classes\ShowRow.cs" />
+    <Compile Include="_classes\UniversalValueConverter.cs" />
     <Compile Include="_classes\Vehicle.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
