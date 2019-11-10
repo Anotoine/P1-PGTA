@@ -631,10 +631,10 @@ namespace ASTERIX
                         {
                             foreach (Vehicle v in VehiclesList)
                             {
-                                if (v.Type == "Aircraft")
+                                List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                for (int i = 0; i < list.Count; i++)
                                 {
-                                    List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                                    for (int i = 0; i < list.Count; i++)
+                                    if (list[i] != null)
                                     {
                                         Ellipse p0 = new Ellipse();
 
@@ -654,8 +654,8 @@ namespace ASTERIX
 
                                         //Canvas.SetLeft(p0, (list[i].X * alphaARP) - AARP - p0.Width / 2);
                                         //Canvas.SetTop(p0, (list[i].Y * betaARP) - BARP - p0.Height / 2);
-                                        Canvas.SetLeft(p0, (list[i].X + A)/alpha - p0.Width / 2);
-                                        Canvas.SetTop(p0, (list[i].Y +B)/beta - p0.Height / 2);
+                                        Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
+                                        Canvas.SetTop(p0, (list[i].Y + B) / beta - p0.Height / 2);
                                     }
                                 }
                             }

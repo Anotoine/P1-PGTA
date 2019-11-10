@@ -193,12 +193,12 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    if (!(CAT10.DI040 == null))
-                        return CAT10.DI040;
-                    else if (!(CAT10.DI041 == null))
+                    if (CAT10.DI042 != null)
+                        return CAT10.DI042;
+                    else if (CAT10.DI041 != null)
                         return CAT10.DI041;
                     else
-                        return CAT10.DI042;
+                        return CAT10.DI040;
                 case 19:
                     return new Point();
                 case 20:
@@ -551,7 +551,6 @@ namespace ASTERIX
                     }
                 }
             }
-
         }
 
         private void decodeCAT19()
