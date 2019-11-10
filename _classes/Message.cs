@@ -88,7 +88,7 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return new DateTime();
+                    return CAT10.DI140;
                 case 19:
                     return CAT19.DI140;
                 case 20:
@@ -104,7 +104,7 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return 10;
+                    return CAT10.DI161;
                 case 19:
                     return -1;
                 case 20:
@@ -120,7 +120,7 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return "CAT10";
+                    return CAT10.DI220;
                 case 19:
                     return "NONE";
                 case 20:
@@ -139,7 +139,7 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return "CAT10";
+                    return CAT10.DI000;
                 case 19:
                     return "MLAT Status Message";
                 case 20:
@@ -155,7 +155,10 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return "CAT10";
+                    if (CAT10.DI245 == null)
+                        return "NONE";
+                    else
+                        return CAT10.DI245[1].getStr();
                 case 19:
                     return "NONE";
                 case 20:
@@ -190,12 +193,7 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    if (!(CAT10.DI040 == null))
-                        return CAT10.DI040;
-                    else if (!(CAT10.DI041 == null))
-                        return CAT10.DI041;
-                    else
-                        return CAT10.DI042;
+                    return new Point();
                 case 19:
                     return new Point();
                 case 20:
@@ -230,7 +228,7 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return -1;
+                    return Convert.ToInt32(CAT10.DI010[0].getVal());
                 case 19:
                     return Convert.ToInt32(CAT19.DI010[0].getVal());
                 case 20:
@@ -246,7 +244,7 @@ namespace ASTERIX
             switch (CAT)
             {
                 case 10:
-                    return -1;
+                    return Convert.ToInt32(CAT10.DI010[1].getVal());
                 case 19:
                     return Convert.ToInt32(CAT19.DI010[1].getVal());
                 case 20:
@@ -433,7 +431,7 @@ namespace ASTERIX
             if (this.listFSPEC[6])
                 CAT10.DI040 = decodePolarCoordinates();
             if (this.listFSPEC[7])
-                CAT10.DI042 = decodeXY();
+                CAT10.DI042 = decodeXY_CAT10();
             if (this.listFSPEC[8]) 
             {
                 if (this.listFSPEC[9])  //I010/200
@@ -443,7 +441,7 @@ namespace ASTERIX
                 if (this.listFSPEC[11])  //I010/161
                     CAT10.DI161 = decodeTrackNumber();
                 if (this.listFSPEC[12])  //I010/170
-                    CAT10.DI170 = decodeTrackStatus();
+                    CAT10.DI170 = decodeTrackStatus_CAT10();
                 if (this.listFSPEC[13]) //I010/060
                     CAT10.DI060 = decodeM3A();
                 if (this.listFSPEC[14]) //I010/220
@@ -610,7 +608,7 @@ namespace ASTERIX
                 CAT20.DI161 = decodeTrackNumber();
 
             if (this.listFSPEC[7])
-                CAT20.DI170 = decodeTrackStatus();
+                CAT20.DI170 = decodeTrackStatus_CAT20();
 
             if (this.listFSPEC[8])
             {
@@ -1541,6 +1539,17 @@ namespace ASTERIX
             return new Point().XY2LatLong((float)x / 2, (float)y / 2);
         }
 
+        private Point decodeXY_CAT10()
+        {
+            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
+            int x = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
+
+            s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(16, '0');
+            int y = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
+            Offset += 4;
+            return new Point().XY2LatLong((float)x / 2, (float)y / 2);
+        }
+
         private int decodeTrackNumber()
         {
             int trackNumber = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
@@ -1675,7 +1684,7 @@ namespace ASTERIX
             return atoms;
         }
 
-        private Point decodeLatLong_CAT21v023()
+        private Point decodeLatLong()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
             float latreal = Convert.ToSingle(lat * 180 / 2 ^ 23);
@@ -1701,7 +1710,7 @@ namespace ASTERIX
             return new Point().LatLong2XY(latreal, lonreal);
         }
 
-        private List<Atom> decodePolarCoordinates()
+        private Point decodePolarCoordinates()
         {
             List<Atom> atoms = new List<Atom>();
             int RHO = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
@@ -1712,9 +1721,7 @@ namespace ASTERIX
 
             Offset += 4;
 
-            atoms.Add(new Atom("Latitude", RHOreal, Convert.ToString(RHOreal)));
-            atoms.Add(new Atom("Longitude", Thetareal, Convert.ToString(Thetareal)));
-            return atoms;
+            return new Point().Polar2XY(RHOreal, Thetareal);
         }
 
         private List<Atom> decodeCallSign()
@@ -1792,7 +1799,7 @@ namespace ASTERIX
             return dev;
         }
 
-        private List<Atom> decodeTrackStatus()
+        private List<Atom> decodeTrackStatus_CAT20()
         {
             List<Atom> atoms = new List<Atom>();
             var ls = new List<string> { "CNF", "TRE", "CST", "CDM", "MAH", "STH", "FX", "GHO", "", "", "", "", "", "", "FX" };
@@ -1829,6 +1836,134 @@ namespace ASTERIX
                                 atoms.Add(new Atom(ls[cont1], 0, ls0[cont2]));
                         }
                         cont2++;
+                    }
+                    else if (char.Equals(s[j], '1'))
+                        atoms.Add(new Atom(ls[cont1], 1, ls1[cont2]));
+                    else
+                        atoms.Add(new Atom(ls[cont1], 0, ls0[cont2]));
+
+                    cont1++;
+                    cont2++;
+
+                    if (j == 7)
+                    {
+                        Offset++;
+                        if (char.Equals(s[j], '0'))
+                            exit = true;
+                        if (char.Equals(s[j], '1'))
+                            i += 1;
+                    }
+                }
+            }
+            return atoms;
+        }
+
+        private List<Atom> decodeTrackStatus_CAT10()
+        {
+            List<Atom> atoms = new List<Atom>();
+            var ls = new List<string> { "CNF", "TRE", "CST", "MAH", "TCC", "STH", "FX", "TOM", "DOU", "MRS", "FX", "GHO", "FX" };
+            var ls0 = new List<string> { "Confirmed track", "Default", "Not extrapolation", "Predictable extrapolation due to sensor refresh period",
+                "Default", "Tracking performed in 'Sensor Plane'", "Measured position", "End of Data Item"};
+            var ls1 = new List<string> { "Track in initiation phase", "Last report for a track", "Predictable extrapolation in masked area", "Extrapolation due to unpredictable absence of detection",
+                "Horizontal Manoueuvre", "Slant range correction and a suitable projection technique are used to track in a 2D.reference plane, tangential to the earth model at the Sensor Site co-ordinates.",
+                "Smoothed position", "Extension into first extent"};
+
+            int cont1 = 0;
+            int cont2 = 0;
+            int i = 0;
+            bool exit = false;
+            while (!exit)
+            {
+                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                for (int j = 0; j < 8; j++)
+                {
+                    if (j == 2 && i == 0)
+                    {
+                        if (char.Equals(s[j], '1'))
+                        {
+                            j++;
+                            if (char.Equals(s[j], '1'))
+                                atoms.Add(new Atom(ls[cont1], 3, ls1[cont2 + 1]));
+                            else
+                                atoms.Add(new Atom(ls[cont1], 2, ls1[cont2]));
+                        }
+                        else
+                        {
+                            j++;
+                            if (char.Equals(s[j], '1'))
+                                atoms.Add(new Atom(ls[cont1], 1, ls0[cont2 + 1]));
+                            else
+                                atoms.Add(new Atom(ls[cont1], 0, ls0[cont2]));
+                        }
+                        cont2++;
+
+                    }
+                    else if (i == 1)
+                    {
+                        int code = Convert.ToInt16(s.Substring(0,2));
+                        switch (code)
+                        {
+                            case 0:
+                                atoms.Add(new Atom("TOM", 0, "Unkown type of movement"));
+                                break;
+                            case 1:
+                                atoms.Add(new Atom("TOM", 1, "Taking-off"));
+                                break;
+                            case 2:
+                                atoms.Add(new Atom("TOM", 2, "Landing"));
+                                break;
+                            case 3:
+                                atoms.Add(new Atom("TOM", 3, "Other types of movements"));
+                                break;
+                        }
+                        code = Convert.ToInt16(s.Substring(2, 3));
+                        switch (code)
+                        {
+                            case 0:
+                                atoms.Add(new Atom("DOU", 0, "No doubt"));
+                                break;
+                            case 1:
+                                atoms.Add(new Atom("DOU", 1, "Doubtfull correlation (undertemined reaseon)"));
+                                break;
+                            case 2:
+                                atoms.Add(new Atom("DOU", 2, "Doubtfull correlation in clutter"));
+                                break;
+                            case 3:
+                                atoms.Add(new Atom("DOU", 3, "Loss of accuracy"));
+                                break;
+                            case 4:
+                                atoms.Add(new Atom("DOU", 4, "Loss of accuracy in clutter"));
+                                break;
+                            case 5:
+                                atoms.Add(new Atom("DOU", 5, "Untable track"));
+                                break;
+                            case 6:
+                                atoms.Add(new Atom("DOU", 6, "Previously coasted"));
+                                break;
+                        }
+                        code = Convert.ToInt16(s.Substring(5, 2));
+                        switch (code)
+                        {
+                            case 0:
+                                atoms.Add(new Atom("MRS", 0, "Merge or split indiacation undetermined"));
+                                break;
+                            case 1:
+                                atoms.Add(new Atom("MRS", 1, "Track merged by association to plot"));
+                                break;
+                            case 2:
+                                atoms.Add(new Atom("MRS", 2, "Track merged by non-association to plot"));
+                                break;
+                            case 3:
+                                atoms.Add(new Atom("MRS", 3, "Split track"));
+                                break;
+                        }
+                    }
+                    else if (i == 2)
+                    {
+                        if (s[0].Equals('0'))
+                            atoms.Add(new Atom("GHO", 0, "Default"));
+                        else
+                            atoms.Add(new Atom("GHO", 0, "Ghost track"));
                     }
                     else if (char.Equals(s[j], '1'))
                         atoms.Add(new Atom(ls[cont1], 1, ls1[cont2]));

@@ -80,5 +80,15 @@ namespace ASTERIX
 
             return this;
         }
+        public Point Polar2XY(double rho, double theta)
+        {
+            this.rad = rho;
+            this.theta = theta;
+            //Lambert conformal conic reprojection
+            //this.latR;
+
+            return this;
+        }
+
     }
 }
