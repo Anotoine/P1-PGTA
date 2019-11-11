@@ -73,8 +73,8 @@ namespace ASTERIX
             {
                 List<Atom> atoms = new List<Atom>();
                 Atom a;
-                string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16));
-                int code = Convert.ToInt16(string.Concat(s[0], s[1], s[2]), 2);
+                string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16)).PadLeft(8,'0');
+                int code = Convert.ToInt16(string.Concat(s[0], s[1], s[2]));
                 switch (code)
                 {
                     case 0:
@@ -163,17 +163,17 @@ namespace ASTERIX
             }
             if (listFSPEC[5])
             {
-                this.DI071 = Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16) * (1 / 128));
+                this.DI071 = Convert.ToSingle(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16) * (1 / 128));
                 Offset += 3;
             }
             if (listFSPEC[6])
                 decodeLatLong();
             if (listFSPEC[7])
             {
-                int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3], this.rawList[Offset + 4]), System.Globalization.NumberStyles.HexNumber);
+                long lat = Int64.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3], this.rawList[Offset + 4]), System.Globalization.NumberStyles.HexNumber);
                 float latreal = Convert.ToSingle(lat * 180 / 2 ^ 30);
 
-                int lon = Int32.Parse(string.Concat(this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7], this.rawList[Offset + 8], this.rawList[Offset + 9]), System.Globalization.NumberStyles.HexNumber);
+                long lon = Int64.Parse(string.Concat(this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7], this.rawList[Offset + 8], this.rawList[Offset + 9]), System.Globalization.NumberStyles.HexNumber);
                 float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 30);
 
                 Offset += 10;

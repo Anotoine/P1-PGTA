@@ -143,7 +143,7 @@
                         <DockPanel Margin="5" HorizontalAlignment="Stretch">
                             <TextBlock x:Name="LSpeed"  DockPanel.Dock="Top" Margin="5" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Speed Time:</TextBlock>
                             <TextBox Margin="5" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Text="{Binding ElementName=SlSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" />
-                            <Slider Maximum="20" Minimum="1" TickPlacement="BottomRight" TickFrequency="0.5" IsSnapToTickEnabled="True" Name="SlSpeed" HorizontalAlignment="Stretch"/>
+                            <Slider Maximum="20" Minimum="1" TickPlacement="BottomRight" TickFrequency="0.5" IsSnapToTickEnabled="True" x:Name="SlSpeed" HorizontalAlignment="Stretch"/>
                         </DockPanel>
                         <Grid Margin="15" HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>
@@ -151,7 +151,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button BorderThickness="0" Background="Transparent" Grid.Column="0" Margin="5">
+                            <Button x:Name="BPause" BorderThickness="0" Background="Transparent" Grid.Column="0" Margin="5" Click="BPause_Click">
                                 <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform" Width="35">
                                     <Path.Data>
                                         <PathGeometry Figures="M193.441,0h-75.484c-16.897,0-30.6,13.703-30.6,30.6v458.277c0,16.898,13.703,30.602,30.6,30.602h75.484	c16.897,0,30.6-13.703,30.6-30.602V30.6C224.042,13.703,210.339,0,193.441,0z 
@@ -160,7 +160,7 @@
 
                                 </Path>
                             </Button>
-                            <Button BorderThickness="0" Background="Transparent" Grid.Column="1" Margin="5">
+                            <Button x:Name="BPlay" BorderThickness="0" Background="Transparent" Grid.Column="1" Margin="5" Click="BPlay_Click">
                                 <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform" Width="45">
                                     <Path.Data>
                                         <PathGeometry Figures="M34.857,3.613C20.084-4.861,8.107,2.081,8.107,19.106v125.637c0,17.042,11.977,23.975,26.75,15.509L144.67,97.275 c14.778-8.477,14.778-22.211,0-30.686L34.857,3.613z"/>
@@ -168,7 +168,7 @@
 
                                 </Path>
                             </Button>
-                            <Button BorderThickness="0" Background="Transparent" Grid.Column="2" Margin="5">
+                            <Button x:Name="PRestart" BorderThickness="0" Background="Transparent" Grid.Column="2" Margin="5" Click="BRestart_Click">
                                 <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform" Width="40">
                                     <Path.Data>
                                         <PathGeometry Figures="M231.385,39C250.293,62.087,261,91.278,261,121.75c0,71.958-58.542,130.5-130.5,130.5S0,193.708,0,121.75 c0-35.358,13.911-68.463,39.17-93.215c5.917-5.798,15.414-5.701,21.212,0.216s5.701,15.413-0.216,21.212

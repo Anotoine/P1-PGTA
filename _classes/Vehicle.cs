@@ -66,16 +66,38 @@ namespace ASTERIX
                     else if (DateTime.Compare(DateTimes[i], dtStop) >= 0) //but if time is after dtStop
                         exit = true; //exit
                 }
-
-
                 i++;
             }
             return points;
         }
 
+        public List<DateTime> GetTimesByRangeDate(DateTime dtStart, DateTime dtStop)
+        {
+            List<DateTime> times = new List<DateTime>();
+            bool exit = false;
+            int i = 0;
+            while (!exit && i < DateTimes.Count)
+            {
+                if (DateTime.Compare(DateTimes[i], dtStart) > 0) //if time is after dtStart
+                {
+                    if (DateTime.Compare(DateTimes[i], dtStop) < 0) // if time is before dtStop
+                        times.Add(DateTimes[i]); //Add to the list
+                    else if (DateTime.Compare(DateTimes[i], dtStop) >= 0) //but if time is after dtStop
+                        exit = true; //exit
+                }
+                i++;
+            }
+            return times;
+        }
+
         public DateTime getLastTime()
         {
             return this.DateTimes[this.DateTimes.Count - 1];
+        }
+
+        public DateTime getFirstTime()
+        {
+            return this.DateTimes[0];
         }
     }
 }

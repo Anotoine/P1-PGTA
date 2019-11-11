@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ASTERIX
 {
@@ -44,6 +45,11 @@ namespace ASTERIX
         List<Vehicle> VehiclesList;
         List<string> Vistos;
         bool relaunch = false;
+
+        //Timer
+        DispatcherTimer timer;
+        DateTime ActualTime;
+        DateTime StopTime;
 
         public MainWindow()
         {
@@ -201,13 +207,118 @@ namespace ASTERIX
                 TLoadDB.Text = openFileDialog.FileName;
         }
 
+        private void BPause_Click(object seder, RoutedEventArgs e)
+        {
+            timer.Stop();
+        }
+
+        private void BPlay_Click(object seder, RoutedEventArgs e)
+        {
+            //if (!timer.IsEnabled)
+            //{
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += Next_Tick;
+                timer.Start();
+                ActualTime = new DateTime().AddHours(SlTime.LowerValue);
+                StopTime = new DateTime().AddHours(SlTime.HigherValue);
+            //}
+        }
+
+        private void BRestart_Click(object seder, RoutedEventArgs e)
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Next_Tick;
+        }
+
+        private void Next_Tick(object sender, EventArgs e)
+        {
+            LienzoVehicles.Children.Clear();
+            if (VehiclesList != null)
+            {
+                if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
+                {
+                    foreach (Vehicle v in VehiclesList)
+                    {
+                        Polyline pl = new Polyline();
+                        PointCollection pp = new PointCollection();
+                        bool exit = false;
+                        int i = 0;
+
+                        List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                        List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                        while (!exit && i < listP.Count)
+                        {
+                            if (listP[i] != null)
+                            {
+                                if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                    pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
+
+                                ActualTime.AddSeconds(SlSpeed.Value); //Add the speed in time
+
+                                if (DateTime.Compare(ActualTime, new DateTime().AddHours(SlTime.HigherValue)) > 0) //Check if final reach
+                                    exit = true;
+                            }
+                            i++;
+                        }
+
+                        if (v.Callsign == "NONE")
+                            pl.Stroke = UserOptions.OtherColor;
+                        else if (v.Callsign.StartsWith("F"))
+                            pl.Stroke = UserOptions.VehiclesColor;
+                        else
+                            pl.Stroke = UserOptions.AircraftColor;
+
+                        pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                        pl.Tag = v.TrackN + "/" + Convert.ToString(v.DateTimes.Count - 1);
+
+                        pl.Points = pp;
+                        LienzoVehicles.Children.Add(pl);
+
+                    }
+                }
+                else if (MergingTypeRADAR.SelectedIndex == 1) //Points
+                {
+                    foreach (Vehicle v in VehiclesList)
+                    {
+                        List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            if (list[i] != null)
+                            {
+                                Ellipse p0 = new Ellipse();
+
+                                if (v.Callsign == "NONE")
+                                    p0.Stroke = Brushes.LightSkyBlue;
+                                else if (v.Callsign.StartsWith("F"))
+                                    p0.Stroke = Brushes.White;
+                                else
+                                    p0.Stroke = Brushes.Red;
+
+                                p0.StrokeThickness = 1;
+                                p0.Width = 2;
+                                p0.Height = p0.Width;
+                                p0.Tag = v.TrackN + "/" + i;
+                                p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                LienzoVehicles.Children.Add(p0);
+
+                                Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
+                                Canvas.SetTop(p0, (list[i].Y + B) / beta - p0.Height / 2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private void Worker_DoWork_LoadFile(object sender, DoWorkEventArgs e)
         {
             //Temporal list for reading
             List<string> list = new List<string>();
 
-            try
-            {
+            //try
+            //{
                 //Actually reading the file
                 byte[] fileBytes = File.ReadAllBytes((string)e.Argument);
 
@@ -229,15 +340,15 @@ namespace ASTERIX
 
                     (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / list.Count) + 0.001));
                 }
-            }
-            catch(IOException ex)
-            {
-                MessageBox.Show("Could not open the file: " + (string) e.Argument +"\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch
-            {
-                MessageBox.Show("It was not possible to read the file: " + (string) e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //}
+            //catch(IOException ex)
+            //{
+            //    MessageBox.Show("Could not open the file: " + (string) e.Argument +"\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("It was not possible to read the file: " + (string) e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private void Worker_DoWork_Maps(object sender, DoWorkEventArgs e)
@@ -633,7 +744,6 @@ namespace ASTERIX
                                 List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
                                 for (int i = 0; i < list.Count; i++)
                                 {
-                                    //pp.Add(new System.Windows.Point(list[i].X * alphaARP - AARP, list[i].Y * betaARP - BARP));
                                     if (list[i] != null)
                                     {
                                         pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y + B) / beta));
@@ -679,8 +789,6 @@ namespace ASTERIX
                                         p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
                                         LienzoVehicles.Children.Add(p0);
 
-                                        //Canvas.SetLeft(p0, (list[i].X * alphaARP) - AARP - p0.Width / 2);
-                                        //Canvas.SetTop(p0, (list[i].Y * betaARP) - BARP - p0.Height / 2);
                                         Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
                                         Canvas.SetTop(p0, (list[i].Y + B) / beta - p0.Height / 2);
                                     }
