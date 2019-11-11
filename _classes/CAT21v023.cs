@@ -304,7 +304,7 @@ namespace ASTERIX
             string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
             List<Atom> atoms = new List<Atom>();
             Atom a;
-            int code = Convert.ToInt32(string.Concat(s[3]));
+            int code = Convert.ToInt16(string.Concat(s[3]));
             switch (code)
             {
                 case 0:
@@ -316,7 +316,7 @@ namespace ASTERIX
                     atoms.Add(a);
                     break;
             }
-            code = Convert.ToInt32(string.Concat(s[4]));
+            code = Convert.ToInt16(string.Concat(s[4]));
             switch (code)
             {
                 case 0:
@@ -328,7 +328,7 @@ namespace ASTERIX
                     atoms.Add(a);
                     break;
             }
-            code = Convert.ToInt32(string.Concat(s[5]));
+            code = Convert.ToInt16(string.Concat(s[5]));
             switch (code)
             {
                 case 0:
@@ -340,7 +340,7 @@ namespace ASTERIX
                     atoms.Add(a);
                     break;
             }
-            code = Convert.ToInt32(string.Concat(s[6]));
+            code = Convert.ToInt16(string.Concat(s[6]));
             switch (code)
             {
                 case 0:
@@ -352,7 +352,7 @@ namespace ASTERIX
                     atoms.Add(a);
                     break;
             }
-            code = Convert.ToInt32(string.Concat(s[7]));
+            code = Convert.ToInt16(string.Concat(s[7]));
             switch (code)
             {
                 case 0:
@@ -614,7 +614,7 @@ namespace ASTERIX
         {
             string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
             ++Offset;
-            switch (Convert.ToInt32(string.Concat(s[0])))
+            switch (Convert.ToInt16(string.Concat(s[0])))
             {
                 case 0:
                     this.DI220.Add(new Atom("Wind Speed", 0, "Absence of Subfield #1"));
@@ -623,7 +623,7 @@ namespace ASTERIX
                     this.DI220.Add(new Atom("Wind Speed", 1, "Presence of Subfield #1"));
                     break;
             }
-            switch (Convert.ToInt32(string.Concat(s[1])))
+            switch (Convert.ToInt16(string.Concat(s[1])))
             {
                 case 0:
                     this.DI220.Add(new Atom("Wind Direction", 0, "Absence of Subfield #2"));
@@ -632,7 +632,7 @@ namespace ASTERIX
                     this.DI220.Add(new Atom("Wind Direction", 1, "Presence of Subfield #2"));
                     break;
             }
-            switch (Convert.ToInt32(string.Concat(s[2])))
+            switch (Convert.ToInt16(string.Concat(s[2])))
             {
                 case 0:
                     this.DI220.Add(new Atom("Temperature", 0, "Absence of Subfield #3"));
@@ -641,7 +641,7 @@ namespace ASTERIX
                     this.DI220.Add(new Atom("Temperature", 1, "Presence of Subfield #3"));
                     break;
             }
-            switch (Convert.ToInt32(string.Concat(s[3])))
+            switch (Convert.ToInt16(string.Concat(s[3])))
             {
                 case 0:
                     this.DI220.Add(new Atom("Turbulence", 0, "Absence of Subfield #4"));
@@ -650,7 +650,7 @@ namespace ASTERIX
                     this.DI220.Add(new Atom("Turbulence", 1, "Presence of Subfield #4"));
                     break;
             }
-            switch (Convert.ToInt32(string.Concat(s[7])))
+            switch (Convert.ToInt16(string.Concat(s[7])))
             {
                 case 0:
                     break;
@@ -772,7 +772,7 @@ namespace ASTERIX
                     ++Offset;
                     s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
                     Offset++;
-                    switch (Convert.ToInt32(string.Concat(s[0])))
+                    switch (Convert.ToInt16(string.Concat(s[0])))
                     {
                         case 0:
                             this.DI110.Add(new Atom("TCA", 0, "TCP number available"));
@@ -781,7 +781,7 @@ namespace ASTERIX
                             this.DI110.Add(new Atom("TCA", 1, "TCP number not available"));
                             break;
                     }
-                    switch (Convert.ToInt32(string.Concat(s[1])))
+                    switch (Convert.ToInt16(string.Concat(s[1])))
                     {
                         case 0:
                             this.DI110.Add(new Atom("NC", 0, "TCP compliance"));
@@ -811,7 +811,7 @@ namespace ASTERIX
                     s = Convert.ToString(Convert.ToInt32((this.rawList[Offset], 16)));
                     Offset += 1;
 
-                    switch (Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3])))
+                    switch (Convert.ToInt16(string.Concat(s[0], s[1], s[2], s[3])))
                     {
                         case 0:
                             this.DI110.Add(new Atom("Point Type", 0, "Unknown"));
@@ -850,7 +850,7 @@ namespace ASTERIX
                             this.DI110.Add(new Atom("Point Type", 11, "Transition altitude (VT)"));
                             break;
                     }
-                    switch (Convert.ToInt32(string.Concat(s[4], s[5])))
+                    switch (Convert.ToInt16(string.Concat(s[4], s[5])))
                     {
                         case 0:
                             this.DI110.Add(new Atom("TD", 0, "N/A"));
@@ -865,7 +865,7 @@ namespace ASTERIX
                             this.DI110.Add(new Atom("TD", 3, "No turn"));
                             break;
                     }
-                    switch (Convert.ToInt32(string.Concat(s[6])))
+                    switch (Convert.ToInt16(string.Concat(s[6])))
                     {
                         case 0:
                             this.DI110.Add(new Atom("Turn Radius Availabilty", 0, "TTR not available"));
@@ -874,7 +874,7 @@ namespace ASTERIX
                             this.DI110.Add(new Atom("Turn Radius Availabilty", 1, "TTR available"));
                             break;
                     }
-                    switch (Convert.ToInt32(string.Concat(s[7])))
+                    switch (Convert.ToInt16(string.Concat(s[7])))
                     {
                         case 0:
                             this.DI110.Add(new Atom("TOA", 0, "TOV available"));
