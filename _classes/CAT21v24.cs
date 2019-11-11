@@ -114,35 +114,35 @@ namespace ASTERIX
                         atoms.Add(a);
                         break;
                 }
-                switch (s[5])
+                switch (Convert.ToInt16(string.Concat(s[5])))
                 {
-                    case '0':
+                    case 0:
                         a = new Atom("Range Check", 0, "Default");
                         atoms.Add(a);
                         break;
-                    case '1':
+                    case 1:
                         a = new Atom("Range Check", 1, "Range Check passed, CPR Validation pending");
                         atoms.Add(a);
                         break;
                 }
-                switch (s[6])
+                switch (Convert.ToInt16(string.Concat(s[6])))
                 {
-                    case '0':
+                    case 0:
                         a = new Atom("Report Type", 0, "Report from target transponder");
                         atoms.Add(a);
                         break;
-                    case '1':
+                    case 1:
                         a = new Atom("Report Type", 1, "Report from field monitor(fixed transponder)");
                         atoms.Add(a);
                         break;
                 }
-                switch (s[7])
+                switch (Convert.ToInt16(string.Concat(s[7])))
                 {
-                    case '0':
+                    case 0:
                         a = new Atom("Report Type", 0, "Report from target transponder");
                         atoms.Add(a);
                         break;
-                    case '1':
+                    case 1:
                         a = new Atom("Report Type", 1, "Report from field monitor(fixed transponder)");
                         atoms.Add(a);
                         break;
@@ -174,7 +174,7 @@ namespace ASTERIX
                 if (listFSPEC[10])
                 {
                     string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
-                    int code = Convert.ToInt16(s[0]);
+                    int code = Convert.ToInt16(string.Concat(s[0]));
                     s = s.Remove(0, 1);
                     float Airspeed;
                     switch (code)
@@ -383,7 +383,7 @@ namespace ASTERIX
                         string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                         ++Offset;
                         List<Atom> atoms = new List<Atom>();
-                        int code = Convert.ToInt16(s[0]);
+                        int code = Convert.ToInt16(string.Concat(s[0]));
                         switch (code)
                         {
                             case 0:
@@ -393,7 +393,7 @@ namespace ASTERIX
                                 atoms.Add(new Atom("Intent Change Flag", 1, "Intent change flag raised"));
                                 break;
                         }
-                        code = Convert.ToInt16(s[1]);
+                        code = Convert.ToInt16(string.Concat(s[1]));
                         switch (code)
                         {
                             case 0:
@@ -403,7 +403,7 @@ namespace ASTERIX
                                 atoms.Add(new Atom("LNAV Mode", 1, "LNAV Mode not engaged"));
                                 break;
                         }
-                        code = Convert.ToInt16(s[2]);
+                        code = Convert.ToInt16(string.Concat(s[2]));
                         switch (code)
                         {
                             case 0:
@@ -462,7 +462,7 @@ namespace ASTERIX
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
                         string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
-                        int code = Convert.ToInt16(s[0]);
+                        int code = Convert.ToInt16(string.Concat(s[0]));
                         switch (code)
                         {
                             case 0:
@@ -485,7 +485,7 @@ namespace ASTERIX
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
                         string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
-                        int code = Convert.ToInt16(s[0]);
+                        int code = Convert.ToInt16(string.Concat(s[0]));
                         switch (code)
                         {
                             case 0:
@@ -508,7 +508,7 @@ namespace ASTERIX
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
                         string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
-                        int code = Convert.ToInt16(s[0]);
+                        int code = Convert.ToInt16(string.Concat(s[0]));
                         switch (code)
                         {
                             case 0:
@@ -551,7 +551,7 @@ namespace ASTERIX
                             List<Atom> atoms = new List<Atom>();
                             string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                             ++Offset;
-                            int code = Convert.ToInt32(s[0]);
+                            int code = Convert.ToInt32(string.Concat(s[0]));
                             switch (code)
                             {
                                 case 0:
@@ -561,7 +561,7 @@ namespace ASTERIX
                                     atoms.Add(new Atom("Wind Speed", 1, "Presence of Subfield #1"));
                                     break;
                             }
-                            code = Convert.ToInt32(s[1]);
+                            code = Convert.ToInt32(string.Concat(s[1]));
                             switch (code)
                             {
                                 case 0:
@@ -571,7 +571,7 @@ namespace ASTERIX
                                     atoms.Add(new Atom("Wind Direction", 1, "Presence of Subfield #2"));
                                     break;
                             }
-                            code = Convert.ToInt32(s[2]);
+                            code = Convert.ToInt32(string.Concat(s[2]));
                             switch (code)
                             {
                                 case 0:
@@ -581,7 +581,7 @@ namespace ASTERIX
                                     atoms.Add(new Atom("Temperature", 1, "Presence of Subfield #3"));
                                     break;
                             }
-                            code = Convert.ToInt32(s[3]);
+                            code = Convert.ToInt32(string.Concat(s[3]));
                             switch (code)
                             {
                                 case 0:
@@ -591,7 +591,7 @@ namespace ASTERIX
                                     atoms.Add(new Atom("Turbulence", 1, "Presence of Subfield #4"));
                                     break;
                             }
-                            code = Convert.ToInt32(s[7]);
+                            code = Convert.ToInt32(string.Concat(s[7]));
                             switch (code)
                             {
                                 case 0:
@@ -619,7 +619,7 @@ namespace ASTERIX
                             List<Atom> atoms = new List<Atom>();
                             string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                             Offset += 2;
-                            int code = Convert.ToInt16(s[0]);
+                            int code = Convert.ToInt16(string.Concat(s[0]));
                             switch (code)
                             {
                                 case 0:
@@ -654,7 +654,7 @@ namespace ASTERIX
                             List<Atom> atoms = new List<Atom>();
                             string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                             Offset += 2;
-                            int code = Convert.ToInt16(s[0]);
+                            int code = Convert.ToInt16(string.Concat(s[0]));
                             switch (code)
                             {
                                 case 0:
@@ -664,7 +664,7 @@ namespace ASTERIX
                                     atoms.Add(new Atom("Manage Vertical Mode", 1, "Active"));
                                     break;
                             }
-                            code = Convert.ToInt16(s[1]);
+                            code = Convert.ToInt16(string.Concat(s[1]));
                             switch (code)
                             {
                                 case 0:
@@ -674,7 +674,7 @@ namespace ASTERIX
                                     atoms.Add(new Atom("Altitude Hold Mode", 1, "Active"));
                                     break;
                             }
-                            code = Convert.ToInt16(s[2]);
+                            code = Convert.ToInt16(string.Concat(s[2]));
                             switch (code)
                             {
                                 case 0:
@@ -704,7 +704,7 @@ namespace ASTERIX
                                 List<Atom> atoms = new List<Atom>();
                                 string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(16, '0');
                                 Offset += 1;
-                                int code = Convert.ToInt16(s[0]);
+                                int code = Convert.ToInt16(string.Concat(s[0]));
                                 switch (code)
                                 {
                                     case 0:
@@ -730,7 +730,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Target Trajectory Change Report Capability", 3, "reserved"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[3]);
+                                code = Convert.ToInt16(string.Concat(s[3]));
                                 switch (code)
                                 {
                                     case 0:
@@ -740,7 +740,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Target State Report Capability", 1, "capable of supporting target State Reports"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[4]);
+                                code = Convert.ToInt16(string.Concat(s[4]));
                                 switch (code)
                                 {
                                     case 0:
@@ -750,7 +750,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Air-Referenced Velocity Report Capability", 1, "capable of generate ARV-reports"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[5]);
+                                code = Convert.ToInt16(string.Concat(s[5]));
                                 switch (code)
                                 {
                                     case 0:
@@ -760,7 +760,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Cockpit Display of Traffic Information airborne", 1, "CDTI operational"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[6]);
+                                code = Convert.ToInt16(string.Concat(s[6]));
                                 switch (code)
                                 {
                                     case 0:
@@ -770,7 +770,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("TCAS System Status", 1, "TCAS not operational"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[7]);
+                                code = Convert.ToInt16(string.Concat(s[7]));
                                 switch (code)
                                 {
                                     case 0:
@@ -788,7 +788,7 @@ namespace ASTERIX
                                 List<Atom> atoms = new List<Atom>();
                                 string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(16, '0');
                                 Offset += 1;
-                                int code = Convert.ToInt16(s[2]);
+                                int code = Convert.ToInt16(string.Concat(s[2]));
                                 switch (code)
                                 {
                                     case 0:
@@ -798,7 +798,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Position Offset Applied", 1, "Position transmitted is the ADS-B position reference point"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[3]);
+                                code = Convert.ToInt16(string.Concat(s[3]));
                                 switch (code)
                                 {
                                     case 0:
@@ -808,7 +808,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Cockpit Display of Traffic Information Surface", 1, "CDTI operational"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[4]);
+                                code = Convert.ToInt16(string.Concat(s[4]));
                                 switch (code)
                                 {
                                     case 0:
@@ -818,7 +818,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Class B2 transmit power less than 70 Watts", 1, "< 70 Watts"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[5]);
+                                code = Convert.ToInt16(string.Concat(s[5]));
                                 switch (code)
                                 {
                                     case 0:
@@ -828,7 +828,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Receiving ATC Services", 1, "Aircraft receiving ATC services"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[6]);
+                                code = Convert.ToInt16(string.Concat(s[6]));
                                 switch (code)
                                 {
                                     case 0:
@@ -838,7 +838,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Setting of “IDENT”-switch", 1, "IDENT switch active"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[7]);
+                                code = Convert.ToInt16(string.Concat(s[7]));
                                 switch (code)
                                 {
                                     case 0:
@@ -896,7 +896,7 @@ namespace ASTERIX
                                 List<Atom> atoms = new List<Atom>();
                                 string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                 Offset += 1;
-                                int code = Convert.ToInt16(s[0]);
+                                int code = Convert.ToInt16(string.Concat(s[0]));
                                 switch(code)
                                 {
                                     case 0:
@@ -906,7 +906,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Subfield #1: Aircraft Operational Status age", 0, "Presence of Subfield #1"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[1]);
+                                code = Convert.ToInt16(string.Concat(s[1]));
                                 switch (code)
                                 {
                                     case 0:
@@ -916,7 +916,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Subfield #2: Target Report Descriptor age", 0, "Presence of Subfield #2"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[2]);
+                                code = Convert.ToInt16(string.Concat(s[2]));
                                 switch (code)
                                 {
                                     case 0:
@@ -926,7 +926,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Subfield #3: Mode 3/A Code age", 0, "Presence of Subfield #3"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[3]);
+                                code = Convert.ToInt16(string.Concat(s[3]));
                                 switch (code)
                                 {
                                     case 0:
@@ -936,7 +936,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Subfield #4: Quality Indicators age", 0, "Presence of Subfield #4"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[4]);
+                                code = Convert.ToInt16(string.Concat(s[4]));
                                 switch (code)
                                 {
                                     case 0:
@@ -946,7 +946,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Subfield #5: Trajectory Intent age", 0, "Presence of Subfield #5"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[5]);
+                                code = Convert.ToInt16(string.Concat(s[5]));
                                 switch (code)
                                 {
                                     case 0:
@@ -956,7 +956,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Subfield #6: Message Amplitude age", 0, "Presence of Subfield #6"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[6]);
+                                code = Convert.ToInt16(string.Concat(s[6]));
                                 switch (code)
                                 {
                                     case 0:
@@ -966,7 +966,7 @@ namespace ASTERIX
                                         atoms.Add(new Atom("Subfield #7: Geometric Height age", 0, "Presence of Subfield #7"));
                                         break;
                                 }
-                                code = Convert.ToInt16(s[7]);
+                                code = Convert.ToInt16(string.Concat(s[7]));
                                 switch (code)
                                 {
                                     case 0:
@@ -975,7 +975,7 @@ namespace ASTERIX
                                     case 1:
                                         s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                         Offset += 1;
-                                        code = Convert.ToInt16(s[0]);
+                                        code = Convert.ToInt16(string.Concat(s[0]));
                                         switch (code)
                                         {
                                             case 0:
@@ -985,7 +985,7 @@ namespace ASTERIX
                                                 atoms.Add(new Atom("Subfield #8: Flight Level age", 0, "Presence of Subfield #8"));
                                                 break;
                                         }
-                                        code = Convert.ToInt16(s[1]);
+                                        code = Convert.ToInt16(string.Concat(s[1]));
                                         switch (code)
                                         {
                                             case 0:
@@ -995,7 +995,7 @@ namespace ASTERIX
                                                 atoms.Add(new Atom("Subfield #9: Intermediate State Selected Altitude age", 0, "Presence of Subfield #9"));
                                                 break;
                                         }
-                                        code = Convert.ToInt16(s[2]);
+                                        code = Convert.ToInt16(string.Concat(s[2]));
                                         switch (code)
                                         {
                                             case 0:
@@ -1005,7 +1005,7 @@ namespace ASTERIX
                                                 atoms.Add(new Atom("Subfield #10: Final State Selected Altitude age", 0, "Presence of Subfield #10"));
                                                 break;
                                         }
-                                        code = Convert.ToInt16(s[3]);
+                                        code = Convert.ToInt16(string.Concat(s[3]));
                                         switch (code)
                                         {
                                             case 0:
@@ -1015,7 +1015,7 @@ namespace ASTERIX
                                                 atoms.Add(new Atom("Subfield #11: Air Speed age", 0, "Presence of Subfield #11"));
                                                 break;
                                         }
-                                        code = Convert.ToInt16(s[4]);
+                                        code = Convert.ToInt16(string.Concat(s[4]));
                                         switch (code)
                                         {
                                             case 0:
@@ -1025,7 +1025,7 @@ namespace ASTERIX
                                                 atoms.Add(new Atom("Subfield #12: True Air Speed age", 0, "Presence of Subfield #12"));
                                                 break;
                                         }
-                                        code = Convert.ToInt16(s[5]);
+                                        code = Convert.ToInt16(string.Concat(s[5]));
                                         switch (code)
                                         {
                                             case 0:
@@ -1035,7 +1035,7 @@ namespace ASTERIX
                                                 atoms.Add(new Atom("Subfield #13: Magnetic Heading age", 0, "Presence of Subfield #13"));
                                                 break;
                                         }
-                                        code = Convert.ToInt16(s[6]);
+                                        code = Convert.ToInt16(string.Concat(s[6]));
                                         switch (code)
                                         {
                                             case 0:
@@ -1045,7 +1045,7 @@ namespace ASTERIX
                                                 atoms.Add(new Atom("Subfield #14: Barometric Vertical Rate age", 0, "Presence of Subfield #14"));
                                                 break;
                                         }
-                                        code = Convert.ToInt16(s[7]);
+                                        code = Convert.ToInt16(string.Concat(s[7]));
                                         switch (code)
                                         {
                                             case 0:
@@ -1054,7 +1054,7 @@ namespace ASTERIX
                                             case 1:
                                                 s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                                 Offset += 1;
-                                                code = Convert.ToInt16(s[0]);
+                                                code = Convert.ToInt16(string.Concat(s[0]));
                                                 switch (code)
                                                 {
                                                     case 0:
@@ -1064,7 +1064,7 @@ namespace ASTERIX
                                                         atoms.Add(new Atom("Subfield #15: Geometric Vertical Rate age", 0, "Presence of Subfield #15"));
                                                         break;
                                                 }
-                                                code = Convert.ToInt16(s[1]);
+                                                code = Convert.ToInt16(string.Concat(s[1]));
                                                 switch (code)
                                                 {
                                                     case 0:
@@ -1074,7 +1074,7 @@ namespace ASTERIX
                                                         atoms.Add(new Atom("Subfield #16: Ground Vector age", 0, "Presence of Subfield #16"));
                                                         break;
                                                 }
-                                                code = Convert.ToInt16(s[2]);
+                                                code = Convert.ToInt16(string.Concat(s[2]));
                                                 switch (code)
                                                 {
                                                     case 0:
@@ -1084,7 +1084,7 @@ namespace ASTERIX
                                                         atoms.Add(new Atom("Subfield #17: Track Angle Rate age", 0, "Presence of Subfield #17"));
                                                         break;
                                                 }
-                                                code = Convert.ToInt16(s[3]);
+                                                code = Convert.ToInt16(string.Concat(s[3]));
                                                 switch (code)
                                                 {
                                                     case 0:
@@ -1094,7 +1094,7 @@ namespace ASTERIX
                                                         atoms.Add(new Atom("Subfield #18: Target Identification age", 0, "Presence of Subfield #18"));
                                                         break;
                                                 }
-                                                code = Convert.ToInt16(s[4]);
+                                                code = Convert.ToInt16(string.Concat(s[4]));
                                                 switch (code)
                                                 {
                                                     case 0:
@@ -1104,7 +1104,7 @@ namespace ASTERIX
                                                         atoms.Add(new Atom("Subfield #19: Target Status age", 0, "Presence of Subfield #19"));
                                                         break;
                                                 }
-                                                code = Convert.ToInt16(s[5]);
+                                                code = Convert.ToInt16(string.Concat(s[5]));
                                                 switch (code)
                                                 {
                                                     case 0:
@@ -1114,7 +1114,7 @@ namespace ASTERIX
                                                         atoms.Add(new Atom("Subfield #20: Met Information age", 0, "Presence of Subfield #20"));
                                                         break;
                                                 }
-                                                code = Convert.ToInt16(s[6]);
+                                                code = Convert.ToInt16(string.Concat(s[6]));
                                                 switch (code)
                                                 {
                                                     case 0:
@@ -1124,7 +1124,7 @@ namespace ASTERIX
                                                         atoms.Add(new Atom("Subfield #21: Roll Angle age", 0, "Presence of Subfield #21"));
                                                         break;
                                                 }
-                                                code = Convert.ToInt16(s[7]);
+                                                code = Convert.ToInt16(string.Concat(s[7]));
                                                 switch (code)
                                                 {
                                                     case 0:
@@ -1133,7 +1133,7 @@ namespace ASTERIX
                                                     case 1:
                                                         s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                                         Offset += 1;
-                                                        code = Convert.ToInt16(s[0]);
+                                                        code = Convert.ToInt16(string.Concat(s[0]));
                                                         switch (code)
                                                         {
                                                             case 0:
@@ -1143,7 +1143,7 @@ namespace ASTERIX
                                                                 atoms.Add(new Atom("Subfield #22: ACAS Resolution Advisory age", 0, "Presence of Subfield #22"));
                                                                 break;
                                                         }
-                                                        code = Convert.ToInt16(s[1]);
+                                                        code = Convert.ToInt16(string.Concat(s[1]));
                                                         switch (code)
                                                         {
                                                             case 0:
@@ -1153,7 +1153,7 @@ namespace ASTERIX
                                                                 atoms.Add(new Atom("Subfield #23: Surface Capabilities and Characteristics age", 0, "Presence of Subfield #23"));
                                                                 break;
                                                         }
-                                                        code = Convert.ToInt16(s[7]);
+                                                        code = Convert.ToInt16(string.Concat(s[7]));
                                                         switch (code)
                                                         {
                                                             case 0:
@@ -1342,7 +1342,7 @@ namespace ASTERIX
             List<Atom> atoms = new List<Atom>();
             string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
             Offset++;
-            int code = Convert.ToInt16(s[0]);
+            int code = Convert.ToInt16(string.Concat(s[0]));
             switch (code)
             {
                 case 0:
@@ -1352,7 +1352,7 @@ namespace ASTERIX
                     atoms.Add(new Atom("NAV", 1, "Trajectory Intent Data is not available for this aircraft"));
                     break;
             }
-            code = Convert.ToInt16(s[1]);
+            code = Convert.ToInt16(string.Concat(s[1]));
             switch (code)
             {
                 case 0:
@@ -1362,7 +1362,7 @@ namespace ASTERIX
                     atoms.Add(new Atom("NVB", 1, "Trajectory Intent Data is not valid"));
                     break;
             }
-            code = Convert.ToInt16(s[7]);
+            code = Convert.ToInt16(string.Concat(s[7]));
             switch(code)
             {
                 case 0:
@@ -1373,7 +1373,7 @@ namespace ASTERIX
                     ++Offset;
                     s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                     Offset++;
-                    switch (Convert.ToInt32(s[0]))
+                    switch (Convert.ToInt16(string.Concat(s[0])))
                     {
                         case 0:
                             atoms.Add(new Atom("TCA", 0, "TCP number available"));
@@ -1382,7 +1382,7 @@ namespace ASTERIX
                             atoms.Add(new Atom("TCA", 1, "TCP number not available"));
                             break;
                     }
-                    switch (Convert.ToInt32(s[1]))
+                    switch (Convert.ToInt16(string.Concat(s[1])))
                     {
                         case 0:
                             atoms.Add(new Atom("NC", 0, "TCP compliance"));
@@ -1467,7 +1467,7 @@ namespace ASTERIX
                             break;
                     }
                     
-                    code = Convert.ToInt32(s[6]);
+                    code = Convert.ToInt16(string.Concat(s[6]));
                     switch(code)
                     {
                         case 0:
@@ -1477,7 +1477,7 @@ namespace ASTERIX
                             atoms.Add(new Atom("Turn Radius Availabilty", 1, "TTR available"));
                             break;
                     }
-                    code = Convert.ToInt32(s[7]);
+                    code = Convert.ToInt16(string.Concat(s[7]));
                     switch (code)
                     {
                         case 0:
