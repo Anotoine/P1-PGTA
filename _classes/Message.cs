@@ -34,7 +34,7 @@ namespace ASTERIX
         {
             this.rawList = raw;
             this.CAT = Int32.Parse(this.rawList[0], System.Globalization.NumberStyles.HexNumber);
-            this.Length = Int32.Parse(this.rawList[1], System.Globalization.NumberStyles.HexNumber) + Int32.Parse(this.rawList[2], System.Globalization.NumberStyles.HexNumber);
+            this.Length = Int32.Parse(string.Concat(this.rawList[1], this.rawList[2]),System.Globalization.NumberStyles.HexNumber);
 
 
             this.listFSPEC = new List<bool>();

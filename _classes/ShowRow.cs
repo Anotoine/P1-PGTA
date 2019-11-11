@@ -22,6 +22,8 @@ namespace ASTERIX
         public string Type { get; set; }
         public string TrackN { get; set; }
         public string RegID { get; set; }
+        public string PositionX { get; set; }
+        public string PositionY { get; set; }
 
         public ShowRow(Message m)
         {
@@ -37,6 +39,8 @@ namespace ASTERIX
             this.SIC = Convert.ToString(m.getSIC());
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
+            this.PositionX = Convert.ToString(m.getPosition().X);
+            this.PositionY = Convert.ToString(m.getPosition().Y);
         }
 
         public void AddDBData(List<AircraftDB> listPlanes)

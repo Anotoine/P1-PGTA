@@ -24,6 +24,7 @@ namespace ASTERIX
         public SolidColorBrush MapMainColor { get ; set ; }
         public SolidColorBrush MapSecondaryColor { get ; set ; }
         public SolidColorBrush MapHighlightColor { get ; set ; }
+        public SolidColorBrush MapTextColor { get; set; }
 
         //Table Colors
         public SolidColorBrush TableMainColor { get; set; }
@@ -39,12 +40,13 @@ namespace ASTERIX
         {
             AircraftColor = Brushes.Red;
             VehiclesColor = Brushes.White;
-            OtherColor = Brushes.LightSkyBlue;
+            OtherColor = Brushes.MediumSpringGreen;
 
-            MapBackgroundColor = Brushes.DarkSlateGray;
-            MapMainColor = Brushes.ForestGreen;
+            MapBackgroundColor = Brushes.SlateGray;
+            MapMainColor = Brushes.Tan;
             MapSecondaryColor = Brushes.LightYellow;
             MapHighlightColor = Brushes.Yellow;
+            MapTextColor = Brushes.Black;
 
             TableMainColor = Brushes.LightSteelBlue;
             TableSecondaryColor = Brushes.LightGray;

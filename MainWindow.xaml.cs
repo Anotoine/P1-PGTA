@@ -310,8 +310,8 @@ namespace ASTERIX
             //Temporal list for reading
             List<string> list = new List<string>();
 
-            //try
-            //{
+            try
+            {
                 //Actually reading the file
                 byte[] fileBytes = File.ReadAllBytes((string)e.Argument);
 
@@ -333,15 +333,15 @@ namespace ASTERIX
 
                     (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / list.Count) + 0.001));
                 }
-            //}
-            //catch(IOException ex)
-            //{
-            //    MessageBox.Show("Could not open the file: " + (string) e.Argument +"\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("It was not possible to read the file: " + (string) e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Could not open the file: " + (string)e.Argument + "\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch
+            {
+                MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Worker_DoWork_Maps(object sender, DoWorkEventArgs e)
@@ -528,12 +528,12 @@ namespace ASTERIX
 
         private void BZoomout_Click(object sender, RoutedEventArgs e)
         {
-            SlZoom.Value += SlZoom.Value;
+            SlZoom.Value++;
         }
 
         private void BZoomIn_Click(object sender, RoutedEventArgs e)
         {
-            SlZoom.Value -= SlZoom.Value;
+            SlZoom.Value--;
         }
 
         private void worker_RunWorkerCompleated_LoadFile(object sender, RunWorkerCompletedEventArgs e)
@@ -558,7 +558,7 @@ namespace ASTERIX
                 {
                     Content = map.getName(),
                     FontSize = 12,
-                    Foreground = UserOptions.WindowTextColor,
+                    Foreground = UserOptions.MapTextColor,
                     Margin = new Thickness(10, 10, 10, 10)
                 };
                 checkBox.Click += new RoutedEventHandler(CheckBoxClickMaps);

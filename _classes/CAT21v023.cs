@@ -434,6 +434,7 @@ namespace ASTERIX
 
         private void decodeRateTurn()
         {
+            this.DI165 = new List<Atom>();
             List<Atom> atoms = new List<Atom>();
             Atom a;
             string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8, '0');
