@@ -295,6 +295,7 @@ namespace ASTERIX
             s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
             code = Int32.Parse(string.Concat(s[4], s[5], s[6], s[7]), System.Globalization.NumberStyles.HexNumber);
             a = new Atom("Position Accuracy", code, Convert.ToString(code));
+            atoms.Add(a);
             Offset += 1;
             this.DI090 = atoms;
         }
