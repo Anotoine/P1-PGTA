@@ -138,17 +138,11 @@ namespace ASTERIX
                 }
                 switch (Convert.ToInt16(string.Concat(s[7])))
                 {
-                    case 0:
-                        a = new Atom("Report Type", 0, "Report from target transponder");
-                        atoms.Add(a);
-                        break;
-                    case 1:
-                        a = new Atom("Report Type", 1, "Report from field monitor(fixed transponder)");
-                        atoms.Add(a);
+                    default:
                         break;
                 }
                 this.DI040 = atoms;
-                Offset += 1;
+                
 
             }
             if (listFSPEC[3])
