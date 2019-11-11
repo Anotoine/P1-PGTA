@@ -74,6 +74,7 @@ namespace ASTERIX
                 List<Atom> atoms = new List<Atom>();
                 Atom a;
                 string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8,'0');
+                Offset += 1;
                 int code = Convert.ToInt16(string.Concat(s[0], s[1], s[2]));
                 switch (code)
                 {
@@ -139,16 +140,165 @@ namespace ASTERIX
                 switch (Convert.ToInt16(string.Concat(s[7])))
                 {
                     case 0:
-                        a = new Atom("Report Type", 0, "Report from target transponder");
-                        atoms.Add(a);
+                        this.DI040 = atoms;
                         break;
                     case 1:
-                        a = new Atom("Report Type", 1, "Report from field monitor(fixed transponder)");
-                        atoms.Add(a);
+                        s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                        Offset += 1;
+                        switch (Convert.ToInt16(string.Concat(s[0])))
+                        {
+                            case 0:
+                                a = new Atom("Differential Correction", 0, "No differential correction (ADS-B)");
+                                atoms.Add(a);
+                                break;
+                            case 1:
+                                a = new Atom("Differential Correction", 1, "Differential correction (ADS-B)");
+                                atoms.Add(a);
+                                break;
+                        }
+                        switch (Convert.ToInt16(string.Concat(s[1])))
+                        {
+                            case 0:
+                                a = new Atom("Ground Bit Setting", 0, "Ground Bit not set");
+                                atoms.Add(a);
+                                break;
+                            case 1:
+                                a = new Atom("Ground Bit Setting", 1, "Ground Bit set");
+                                atoms.Add(a);
+                                break;
+                        }
+                        switch (Convert.ToInt16(string.Concat(s[2])))
+                        {
+                            case 0:
+                                a = new Atom("Simulated Target", 0, "Actual target report");
+                                atoms.Add(a);
+                                break;
+                            case 1:
+                                a = new Atom("Simulated Target", 1, "Simulated target report");
+                                atoms.Add(a);
+                                break;
+                        }
+                        switch (Convert.ToInt16(string.Concat(s[3])))
+                        {
+                            case 0:
+                                a = new Atom("Test Target", 0, "Default");
+                                atoms.Add(a);
+                                break;
+                            case 1:
+                                a = new Atom("Test Target", 1, "Test Target");
+                                atoms.Add(a);
+                                break;
+                        }
+                        switch (Convert.ToInt16(string.Concat(s[4])))
+                        {
+                            case 0:
+                                a = new Atom("Selected Altitude Available", 0, "Equipment capable to provide Selected Altitude");
+                                atoms.Add(a);
+                                break;
+                            case 1:
+                                a = new Atom("Selected Altitude Available", 1, "Equipment not capable to provide Selected Altitude");
+                                atoms.Add(a);
+                                break;
+                        }
+                        switch (Convert.ToInt16(string.Concat(s[5],s[6])))
+                        {
+                            case 0:
+                                a = new Atom("Confidence Level", 0, "Report valid");
+                                atoms.Add(a);
+                                break;
+                            case 1:
+                                a = new Atom("Confidence Level", 1, "Report suspect");
+                                atoms.Add(a);
+                                break;
+                            case 2:
+                                a = new Atom("Confidence Level", 2, "No information");
+                                atoms.Add(a);
+                                break;
+                            case 3:
+                                a = new Atom("Confidence Level", 3, "Reserved for future use");
+                                atoms.Add(a);
+                                break;
+                        }
+                        switch (Convert.ToInt16(string.Concat(s[7])))
+                        {
+                            case 0:
+                                this.DI040 = atoms;
+                                break;
+                            case 1:
+                                s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8, '0');
+                                Offset += 1;
+                                switch (Convert.ToInt16(string.Concat(s[1])))
+                                {
+                                    case 0:
+                                        a = new Atom("List Lookup Check", 0, "default");
+                                        atoms.Add(a);
+                                        break;
+                                    case 1:
+                                        a = new Atom("List Lookup Check", 1, "List Lookup failed");
+                                        atoms.Add(a);
+                                        break;
+                                }
+                                switch (Convert.ToInt16(string.Concat(s[2])))
+                                {
+                                    case 0:
+                                        a = new Atom("Independent Position Check", 0, "default");
+                                        atoms.Add(a);
+                                        break;
+                                    case 1:
+                                        a = new Atom("Independent Position Check", 1, "Independent Position Check failed");
+                                        atoms.Add(a);
+                                        break;
+                                }
+                                switch (Convert.ToInt16(string.Concat(s[3])))
+                                {
+                                    case 0:
+                                        a = new Atom("No-go Bit Status", 0, "NOGO-bit not set");
+                                        atoms.Add(a);
+                                        break;
+                                    case 1:
+                                        a = new Atom("No-go Bit Status", 1, "NOGO-bit set");
+                                        atoms.Add(a);
+                                        break;
+                                }
+                                switch (Convert.ToInt16(string.Concat(s[4])))
+                                {
+                                    case 0:
+                                        a = new Atom("Compact Position Reporting", 0, "CPR Validation correct");
+                                        atoms.Add(a);
+                                        break;
+                                    case 1:
+                                        a = new Atom("Compact Position Reporting", 1, "CPR Validation failed");
+                                        atoms.Add(a);
+                                        break;
+                                }
+                                switch (Convert.ToInt16(string.Concat(s[5])))
+                                {
+                                    case 0:
+                                        a = new Atom("Local Decoding Position Jump", 0, "LDPJ not detected");
+                                        atoms.Add(a);
+                                        break;
+                                    case 1:
+                                        a = new Atom("Local Decoding Position Jump", 1, "LDPJ detected");
+                                        atoms.Add(a);
+                                        break;
+                                }
+                                switch (Convert.ToInt16(string.Concat(s[6])))
+                                {
+                                    case 0:
+                                        a = new Atom("Range Check", 0, "default");
+                                        atoms.Add(a);
+                                        break;
+                                    case 1:
+                                        a = new Atom("Range Check", 1, "Range Check failed");
+                                        atoms.Add(a);
+                                        break;
+                                }
+                                break;
+                        }
                         break;
                 }
                 this.DI040 = atoms;
-                Offset += 1;
+               
 
             }
             if (listFSPEC[3])
