@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ASTERIX
+namespace Ideafix
 {
     public class Point
     {

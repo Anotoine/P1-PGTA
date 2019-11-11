@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace ASTERIX
+namespace Ideafix
 {
     class CAT21v24
     {

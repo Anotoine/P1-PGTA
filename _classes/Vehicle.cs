@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ASTERIX
+namespace Ideafix
 {
     class Vehicle
     {

@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace ASTERIX
+namespace Ideafix
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

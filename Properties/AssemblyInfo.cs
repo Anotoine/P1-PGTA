@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ASTERIX")]
-[assembly: AssemblyDescription("ASTERIX decoder and plotter")]
+[assembly: AssemblyTitle("Ideafix")]
+[assembly: AssemblyDescription("Ideafix decoder and plotter")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("UPC")]
-[assembly: AssemblyProduct("ASTERIX")]
+[assembly: AssemblyProduct("Ideafix")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

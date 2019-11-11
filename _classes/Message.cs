@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ASTERIX
+namespace Ideafix
 {
     public class Message
     {
@@ -233,17 +233,25 @@ namespace ASTERIX
                         return CAT10.DI040;
                     else if (CAT10.DI041 != null)
                         return CAT10.DI041;
-                    else
+                    else if (CAT10.DI042 != null)
                         return CAT10.DI042;
+                    else
+                        return new Point();
                 case 19:
                     return new Point();
                 case 20:
                     return CAT20.DI042;
                 case 21:
                     if (CAT21v023 != null)
-                        return CAT21v023.DI130;
+                        if (CAT21v023.DI130 != null)
+                            return CAT21v023.DI130;
+                        else
+                            return new Point();
                     else
-                        return CAT21v24.DI130;
+                        if (CAT21v24.DI130 != null)
+                            return CAT21v24.DI130;
+                        else
+                            return new Point();
                 default:
                     return new Point();
             }

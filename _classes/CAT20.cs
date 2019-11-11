@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ASTERIX
+namespace Ideafix
 {
     public class CAT20
     {
@@ -479,16 +479,24 @@ namespace ASTERIX
             }
             Offset += 6;
 
-            List<char> code = new List<char>();
+            string code = "";
             for (int i = 0; i < 8; i++)
             {
-                if (stringCode.Substring(6 * i, 6).StartsWith("0"))
-                    code.Add((char)Convert.ToInt32(string.Concat("01", stringCode.Substring(6 * i, 6)), 2));
-                else
-                    code.Add((char)Convert.ToInt32(string.Concat("00", stringCode.Substring(6 * i, 6)), 2));
+                if (!stringCode.Substring(6 * i, 6).Equals("000000"))
+                {
+                    if (stringCode.Substring(6 * i, 6).StartsWith("0"))
+                    {
+                        byte[] BB = new byte[] { Convert.ToByte(string.Concat("01", stringCode.Substring(6 * i, 6)), 2) };
+                        code += Encoding.UTF8.GetString(BB);
+                    }
+                    else
+                    {
+                        byte[] BB = new byte[] { Convert.ToByte(string.Concat("00", stringCode.Substring(6 * i, 6)), 2) };
+                        code += Encoding.UTF8.GetString(BB);
+                    }
+                }
             }
-            this.DI245.Add(new Atom("Callsign", 0, Regex.Replace(string.Join("", code.ToArray()), @"\s", "")));
-
+            this.DI245.Add(new Atom("Callsign", 0, code));
         }
 
         private void DecodeMheight()

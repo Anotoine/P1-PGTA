@@ -1,14 +1,14 @@
-﻿<Window x:Class="ASTERIX.MainWindow"
+﻿<Window x:Class="Ideafix.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:local="clr-namespace:ASTERIX"
+        xmlns:local="clr-namespace:Ideafix"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="ASTERIX Decoder" Icon="Icon.ico" Height="750" Width="1000">
+        Title="Ideafix Decoder" Icon="Icon.ico" Height="750" Width="1000">
     <Window.Resources>
         <local:UniversalValueConverter x:Key="UniversalValueConverter"/>
     </Window.Resources>
