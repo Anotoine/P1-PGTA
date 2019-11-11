@@ -47,8 +47,8 @@ namespace ASTERIX
         bool relaunch = false;
 
         //Timer
-        DispatcherTimer timer;
-        DateTime ActualTime;
+        DispatcherTimer timer = new DispatcherTimer();
+        DateTime ActualTime = new DateTime().AddHours(20);
         DateTime StopTime;
 
         public MainWindow()
@@ -214,25 +214,18 @@ namespace ASTERIX
 
         private void BPlay_Click(object seder, RoutedEventArgs e)
         {
-            //if (!timer.IsEnabled)
-            //{
+            if (!timer.IsEnabled)
+            {
                 timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromSeconds(1);
                 timer.Tick += Next_Tick;
                 timer.Start();
                 ActualTime = new DateTime().AddHours(SlTime.LowerValue);
                 StopTime = new DateTime().AddHours(SlTime.HigherValue);
-            //}
+            }
         }
 
-        private void BRestart_Click(object seder, RoutedEventArgs e)
-        {
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += Next_Tick;
-        }
-
-        private void Next_Tick(object sender, EventArgs e)
+        private void Next_Tick(object sender, EventArgs e) //TODO
         {
             LienzoVehicles.Children.Clear();
             if (VehiclesList != null)
@@ -255,9 +248,9 @@ namespace ASTERIX
                                 if (DateTime.Compare(listT[i], ActualTime) < 0)
                                     pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
 
-                                ActualTime.AddSeconds(SlSpeed.Value); //Add the speed in time
 
-                                if (DateTime.Compare(ActualTime, new DateTime().AddHours(SlTime.HigherValue)) > 0) //Check if final reach
+
+                                if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
                                     exit = true;
                             }
                             i++;
@@ -275,8 +268,8 @@ namespace ASTERIX
 
                         pl.Points = pp;
                         LienzoVehicles.Children.Add(pl);
-
                     }
+                    ActualTime.AddSeconds(SlSpeed.Value); //Add the speed in time
                 }
                 else if (MergingTypeRADAR.SelectedIndex == 1) //Points
                 {

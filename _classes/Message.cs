@@ -77,11 +77,11 @@ namespace ASTERIX
                     break;
                 case 21:
                     //try {
-                        CAT21v24 = new CAT21v24(rawList, listFSPEC, Offset).decode();
+                    //    CAT21v24 = new CAT21v24(rawList, listFSPEC, Offset).decode();
                     //} catch {
-                    //    CAT21v023 = new CAT21v023(rawList, listFSPEC, Offset).decode();
+                        CAT21v023 = new CAT21v023(rawList, listFSPEC, Offset).decode();
                     //}
-            break;
+                break;
             }
         }
 
