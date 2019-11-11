@@ -73,7 +73,7 @@ namespace ASTERIX
             {
                 List<Atom> atoms = new List<Atom>();
                 Atom a;
-                string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16)).PadLeft(8,'0');
+                string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8,'0');
                 int code = Convert.ToInt16(string.Concat(s[0], s[1], s[2]));
                 switch (code)
                 {
@@ -94,7 +94,7 @@ namespace ASTERIX
                         atoms.Add(a);
                         break;
                 }
-                code = Convert.ToInt16(string.Concat(s[3], s[4]), 2);
+                code = Convert.ToInt16(string.Concat(s[3], s[4]));
                 switch (code)
                 {
                     case 0:
@@ -114,38 +114,35 @@ namespace ASTERIX
                         atoms.Add(a);
                         break;
                 }
-                code = Convert.ToInt16(s[5]);
-                switch (code)
+                switch (s[5])
                 {
-                    case 0:
+                    case '0':
                         a = new Atom("Range Check", 0, "Default");
                         atoms.Add(a);
                         break;
-                    case 1:
+                    case '1':
                         a = new Atom("Range Check", 1, "Range Check passed, CPR Validation pending");
                         atoms.Add(a);
                         break;
                 }
-                code = Convert.ToInt16(s[6]);
-                switch (code)
+                switch (s[6])
                 {
-                    case 0:
+                    case '0':
                         a = new Atom("Report Type", 0, "Report from target transponder");
                         atoms.Add(a);
                         break;
-                    case 1:
+                    case '1':
                         a = new Atom("Report Type", 1, "Report from field monitor(fixed transponder)");
                         atoms.Add(a);
                         break;
                 }
-                code = Convert.ToInt16(s[7]);
-                switch (code)
+                switch (s[7])
                 {
-                    case 0:
+                    case '0':
                         a = new Atom("Report Type", 0, "Report from target transponder");
                         atoms.Add(a);
                         break;
-                    case 1:
+                    case '1':
                         a = new Atom("Report Type", 1, "Report from field monitor(fixed transponder)");
                         atoms.Add(a);
                         break;
@@ -169,24 +166,14 @@ namespace ASTERIX
             if (listFSPEC[6])
                 decodeLatLong();
             if (listFSPEC[7])
-            {
-                long lat = Int64.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3], this.rawList[Offset + 4]), System.Globalization.NumberStyles.HexNumber);
-                float latreal = Convert.ToSingle(lat * 180 / 2 ^ 30);
-
-                long lon = Int64.Parse(string.Concat(this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7], this.rawList[Offset + 8], this.rawList[Offset + 9]), System.Globalization.NumberStyles.HexNumber);
-                float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 30);
-
-                Offset += 10;
-                this.DI131 = new Point().LatLong2XY(latreal, lonreal);
-            }
+                decodeLatLong_HighRes();
             if (listFSPEC[8])
             {
                 if (listFSPEC[9])
-                    decodeTOD();
-
+                    decodeTODVel();
                 if (listFSPEC[10])
                 {
-                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                     int code = Convert.ToInt16(s[0]);
                     s = s.Remove(0, 1);
                     float Airspeed;
@@ -206,8 +193,8 @@ namespace ASTERIX
                 }
                 if (listFSPEC[11])
                 {
-                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
-                    int code = Convert.ToInt16(s[0]);
+                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16,'0');
+                    int code = Convert.ToInt16(string.Concat(s[0]));
                     s = s.Remove(0, 1);
                     float Airspeed;
                     switch (code)
@@ -231,7 +218,7 @@ namespace ASTERIX
                 {
                     List<Atom> atoms = new List<Atom>();
                     Atom a;
-                    string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16));
+                    string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(8*4, '0');
                     int code = Convert.ToInt16(string.Concat(s[0], s[1]));
                     switch (code)
                     {
@@ -270,7 +257,7 @@ namespace ASTERIX
                     {
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
-                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16));
+                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(8*4, '0');
                         int code = Convert.ToInt16(string.Concat(s[0], s[1]));
                         switch (code)
                         {
@@ -292,7 +279,7 @@ namespace ASTERIX
                                 break;
                         }
                         s = s.Remove(0, 2);
-                        a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * Math.Pow(2,-30))));
+                        a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToInt32(s,2) * Math.Pow(2,-30)));
                         atoms.Add(a);
                         this.DI076 = atoms;
                         Offset += 4;
@@ -300,14 +287,14 @@ namespace ASTERIX
                 }
                 if (listFSPEC[18])
                 {
-                    this.DI140 = Convert.ToSingle(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1])) * 6.25);
+                    this.DI140 = Convert.ToSingle(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 6.25);
                     Offset += 2;
                 }
                 if (listFSPEC[19])
                 {
                     List<Atom> atoms = new List<Atom>();
                     Atom a;
-                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8,'0');
                     ++Offset;
                     atoms.Add(new Atom("NUCr or NACv", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1], s[2])))));
                     atoms.Add(new Atom("NUCp or NIC", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4], s[5], s[6])))));
@@ -351,11 +338,11 @@ namespace ASTERIX
                 if (listFSPEC[20])
                 {
                     List<Atom> atoms = new List<Atom>();
-                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8,'0');
                     ++Offset;
-                    atoms.Add(new Atom("Version Not Supported", 0, Convert.ToString(Convert.ToInt32(s[1]))));
-                    atoms.Add(new Atom("Version Number", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[2], s[3], s[4])))));
-                    atoms.Add(new Atom("Link Technology Type", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[5], s[6], s[7])))));
+                    atoms.Add(new Atom("Version Not Supported", Convert.ToInt32(s[1]), Convert.ToString(Convert.ToInt32(s[1]))));
+                    atoms.Add(new Atom("Version Number", Convert.ToInt32(string.Concat(s[2], s[3], s[4])), Convert.ToString(Convert.ToInt32(string.Concat(s[2], s[3], s[4])))));
+                    atoms.Add(new Atom("Link Technology Type", Convert.ToInt32(string.Concat(s[5], s[6], s[7])), Convert.ToString(Convert.ToInt32(string.Concat(s[5], s[6], s[7])))));
                     this.DI210 = atoms;
                 }
                 if (listFSPEC[21])
@@ -393,7 +380,7 @@ namespace ASTERIX
                     }
                     if (listFSPEC[26])
                     {
-                        string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                        string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                         ++Offset;
                         List<Atom> atoms = new List<Atom>();
                         int code = Convert.ToInt16(s[0]);
@@ -474,7 +461,7 @@ namespace ASTERIX
                     {
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
-                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                         int code = Convert.ToInt16(s[0]);
                         switch (code)
                         {
@@ -497,7 +484,7 @@ namespace ASTERIX
                     {
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
-                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                         int code = Convert.ToInt16(s[0]);
                         switch (code)
                         {
@@ -520,7 +507,7 @@ namespace ASTERIX
                     {
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
-                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                         int code = Convert.ToInt16(s[0]);
                         switch (code)
                         {
@@ -562,7 +549,7 @@ namespace ASTERIX
                         if (listFSPEC[34])
                         {
                             List<Atom> atoms = new List<Atom>();
-                            string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                            string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                             ++Offset;
                             int code = Convert.ToInt32(s[0]);
                             switch (code)
@@ -630,7 +617,7 @@ namespace ASTERIX
                         if (listFSPEC[35])
                         {
                             List<Atom> atoms = new List<Atom>();
-                            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                             Offset += 2;
                             int code = Convert.ToInt16(s[0]);
                             switch (code)
@@ -665,7 +652,7 @@ namespace ASTERIX
                         if (listFSPEC[36])
                         {
                             List<Atom> atoms = new List<Atom>();
-                            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                             Offset += 2;
                             int code = Convert.ToInt16(s[0]);
                             switch (code)
@@ -715,7 +702,7 @@ namespace ASTERIX
                             if(listFSPEC[40])
                             {
                                 List<Atom> atoms = new List<Atom>();
-                                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(16, '0');
                                 Offset += 1;
                                 int code = Convert.ToInt16(s[0]);
                                 switch (code)
@@ -799,7 +786,7 @@ namespace ASTERIX
                             if(listFSPEC[41])
                             {
                                 List<Atom> atoms = new List<Atom>();
-                                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(16, '0');
                                 Offset += 1;
                                 int code = Convert.ToInt16(s[2]);
                                 switch (code)
@@ -878,21 +865,21 @@ namespace ASTERIX
                             if (listFSPEC[44])
                             {
                                 List<Atom> atoms = new List<Atom>();
-                                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                 Offset += 1;
                                 atoms.Add(new Atom("TYP", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0],s[1],s[2],s[3],s[4])))));
                                 atoms.Add(new Atom("STYP", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[5], s[6], s[7])))));
-                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset],this.rawList[Offset + 1]), 16));
+                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset],this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                                 Offset += 1;
                                 s = s.Remove(14, 2);
                                 atoms.Add(new Atom("ARA", 0, Convert.ToString(Convert.ToInt32(s))));
-                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
+                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                                 s = s.Remove(0, 5);
                                 atoms.Add(new Atom("RAC", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0],s[1],s[2],s[3])))));
                                 atoms.Add(new Atom("RAT", 0, Convert.ToString(Convert.ToInt32(s[4]))));
                                 atoms.Add(new Atom("MTE", 0, Convert.ToString(Convert.ToInt32(s[5]))));
                                 atoms.Add(new Atom("TTI", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[6], s[7])))));
-                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16));
+                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(8*4, '0');
                                 Offset += 4;
                                 s = s.Remove(0, 5);
                                 atoms.Add(new Atom("TID", 0, Convert.ToString(Convert.ToInt32(s))));
@@ -907,7 +894,7 @@ namespace ASTERIX
                             if (listFSPEC[46])
                             {
                                 List<Atom> atoms = new List<Atom>();
-                                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                                string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                 Offset += 1;
                                 int code = Convert.ToInt16(s[0]);
                                 switch(code)
@@ -986,7 +973,7 @@ namespace ASTERIX
                                         this.DI295 = atoms;
                                         break;
                                     case 1:
-                                        s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                                        s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                         Offset += 1;
                                         code = Convert.ToInt16(s[0]);
                                         switch (code)
@@ -1065,7 +1052,7 @@ namespace ASTERIX
                                                 this.DI295 = atoms;
                                                 break;
                                             case 1:
-                                                s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                                                s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                                 Offset += 1;
                                                 code = Convert.ToInt16(s[0]);
                                                 switch (code)
@@ -1144,7 +1131,7 @@ namespace ASTERIX
                                                         this.DI295 = atoms; 
                                                         break;
                                                     case 1:
-                                                        s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                                                        s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                                         Offset += 1;
                                                         code = Convert.ToInt16(s[0]);
                                                         switch (code)
@@ -1277,15 +1264,28 @@ namespace ASTERIX
 
         private void decodeLatLong()
         {
+            int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
+            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 23));
+
+            int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5]), System.Globalization.NumberStyles.HexNumber);
+            float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 23));
+
+            Offset += 6;
+
+            this.DI130 = new Point().LatLong2XY(latreal, lonreal);
+        }
+
+        private void decodeLatLong_HighRes()
+        {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
-            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 25));
+            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 30));
 
             int lon = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
-            float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 25));
+            float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 30));
 
             Offset += 8;
 
-            this.DI130 = new Point().LatLong2XY(latreal, lonreal);
+            this.DI131 = new Point().LatLong2XY(latreal, lonreal);
         }
 
         private void decodeTOD()
@@ -1294,6 +1294,14 @@ namespace ASTERIX
             Offset += 3;
 
             this.DI073 = new DateTime().AddSeconds((float)LSB / 128);
+        }
+
+        private void decodeTODVel()
+        {
+            int LSB = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
+            Offset += 3;
+
+            this.DI072 = new DateTime().AddSeconds((float)LSB / 128);
         }
 
         private void decodeICAOAddress()
@@ -1332,7 +1340,7 @@ namespace ASTERIX
         private void decode110()
         {
             List<Atom> atoms = new List<Atom>();
-            string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+            string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
             Offset++;
             int code = Convert.ToInt16(s[0]);
             switch (code)
@@ -1363,7 +1371,7 @@ namespace ASTERIX
                 case 1:
                     atoms.Add(new Atom("REP",0,Convert.ToString(Convert.ToInt32(Convert.ToInt32(this.rawList[Offset], 16)))));
                     ++Offset;
-                    s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
+                    s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                     Offset++;
                     switch (Convert.ToInt32(s[0]))
                     {
@@ -1391,7 +1399,7 @@ namespace ASTERIX
                     int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
                     float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 23));
 
-                    int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 4]), System.Globalization.NumberStyles.HexNumber);
+                    int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5]), System.Globalization.NumberStyles.HexNumber);
                     float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 23));
 
                     atoms.Add(new Atom("Latitude", 0, Convert.ToString(latreal)));
@@ -1399,7 +1407,7 @@ namespace ASTERIX
 
                     Offset += 6;
 
-                    s = Convert.ToString(Convert.ToInt32((this.rawList[Offset], 16)));
+                    s = Convert.ToString(Convert.ToInt32((this.rawList[Offset], 16)), 2).PadLeft(8, '0');
                     Offset += 1;
 
                     code = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3]));
