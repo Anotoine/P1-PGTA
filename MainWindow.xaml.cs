@@ -310,8 +310,8 @@ namespace Ideafix
             //Temporal list for reading
             List<string> list = new List<string>();
 
-            //try
-            //{
+            try
+            {
                 //Actually reading the file
                 byte[] fileBytes = File.ReadAllBytes((string)e.Argument);
 
@@ -333,15 +333,15 @@ namespace Ideafix
 
                     (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / list.Count) + 0.001));
                 }
-            //}
-            //catch (IOException ex)
-            //{
-            //    MessageBox.Show("Could not open the file: " + (string)e.Argument + "\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Could not open the file: " + (string) e.Argument + "\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch
+            {
+                MessageBox.Show("It was not possible to read the file: " + (string) e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Worker_DoWork_Maps(object sender, DoWorkEventArgs e)
@@ -729,8 +729,9 @@ namespace Ideafix
                     {
                         if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
                         {
-                            foreach (Vehicle v in VehiclesList)
+                            for (int j = 0; j < VehiclesList.Count; j++)
                             {
+                                Vehicle v = VehiclesList[j];
                                 Polyline pl = new Polyline();
                                 PointCollection pp = new PointCollection();
 
@@ -740,7 +741,7 @@ namespace Ideafix
                                     if (list[i] != null)
                                     {
                                         pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y + B) / beta));
-                                        pl.Tag = v.TrackN + "/" + i;
+                                        pl.Tag = j + "/" + i;
                                     }
                                 }
 
@@ -759,8 +760,9 @@ namespace Ideafix
                             }
                         } else if (MergingTypeRADAR.SelectedIndex == 1) //Points
                         {
-                            foreach (Vehicle v in VehiclesList)
+                            for (int j = 0; j < VehiclesList.Count; j++)
                             {
+                                Vehicle v = VehiclesList[j];
                                 List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
                                 for (int i = 0; i < list.Count; i++)
                                 {
@@ -778,7 +780,7 @@ namespace Ideafix
                                         p0.StrokeThickness = 1;
                                         p0.Width = 2;
                                         p0.Height = p0.Width;
-                                        p0.Tag = v.TrackN + "/" + i;
+                                        p0.Tag = j + "/" + i;
                                         p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
                                         LienzoVehicles.Children.Add(p0);
 
@@ -796,21 +798,12 @@ namespace Ideafix
         private void PlaneClick(object sender, RoutedEventArgs e)
         {
             string[] TagValue = (e.OriginalSource as FrameworkElement).Tag.ToString().Split('/');
-            int trackN = Convert.ToInt32(TagValue[0]);
-            int j = Convert.ToInt32(TagValue[1]);
+            int j = Convert.ToInt32(TagValue[0]);
+            int i = Convert.ToInt32(TagValue[1]);
 
-            bool exit = false; int i = 0;
-            while (!(exit || i >= VehiclesList.Count))
-            {
-                if (VehiclesList[i].TrackN == trackN)
-                    exit = true;
-                else
-                    i++;
-            }
-
-            string str = "ICAO Addres: " + VehiclesList[i].ICAOaddress + "\n" + "Callsign: " + VehiclesList[i].Callsign + "\n"
-                + "X: " + VehiclesList[i].Positions[j].X + "m\n" + "Y: " + VehiclesList[i].Positions[j].Y + "m";
-            MessageBox.Show(str, "TrackN: " + VehiclesList[i].TrackN);
+            string str = "ICAO Addres: " + VehiclesList[j].ICAOaddress + "\n" + "Callsign: " + VehiclesList[j].Callsign + "\n"
+                + "X: " + VehiclesList[j].Positions[i].X + "m\n" + "Y: " + VehiclesList[j].Positions[i].Y + "m";
+            MessageBox.Show(str, "TrackN: " + VehiclesList[j].TrackN);
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
