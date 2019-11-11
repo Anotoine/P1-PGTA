@@ -35,7 +35,7 @@ namespace ASTERIX
         internal List<Atom> DI230 { get; set; }
         internal List<Atom> DI245 { get; set; }
         internal List<Atom> DI250 { get; set; }
-        internal List<Atom> DI260 { get; set; }
+        internal long DI260 { get; set; }
         internal string DI300 { get; set; }
         internal string DI310 { get; set; }
         internal List<string> DI400 { get; set; }
@@ -100,18 +100,23 @@ namespace ASTERIX
                     {
                         if (this.listFSPEC[25]) //22 I020/230
                         {
+                            DecodeComms();
                         }
                         if (this.listFSPEC[26]) //23 I020/260
                         {
+                            DecodeACAS();
                         }
                         if (this.listFSPEC[27]) //24 I020/030
                         {
+                            DecodeWarning();
                         }
                         if (this.listFSPEC[28]) //25 I020/055
                         {
+                            DecodeMode1();
                         }
                         if (this.listFSPEC[29]) //26 I020/050
                         {
+                            DecodeMode2();
                         }
                         if (this.listFSPEC[30]) //27 RE
                         {
@@ -379,9 +384,60 @@ namespace ASTERIX
             Offset += 2;
         }
 
-        private void DecodeModeC()
+        private void DecodeModeC()   //100
         {
+            this.DI100 = new List<Atom>();
+            string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset+1]), 16), 2).PadLeft(8, '0');
+            Offset += 2;
+            switch(Convert.ToInt16(s[0]))
+            {
+                case 0:
+                    this.DI100.Add(new Atom("V", 0, "Code validated"));
+                    break;
+                case 1:
+                    this.DI100.Add(new Atom("V",1, "Code not validated"));
+                    break;
+            }
+            switch (Convert.ToInt16(s[1]))
+            {
+                case 0:
+                    this.DI100.Add(new Atom("G", 0, "Default"));
+                    break;
+                case 1:
+                    this.DI100.Add(new Atom("G", 1, "Garbled code"));
+                    break;
+            }
+            s = s.Remove(0, 4);
 
+            string binarizzzimo = "";
+
+            binarizzzimo += s[0];
+
+            // Compute remaining bits 
+            for (int i = 1; i < s.Length; i++)
+            {
+
+                // If current bit is 0, 
+                // concatenate previous bit 
+                if (s[i] == '0')
+                    binarizzzimo += binarizzzimo[i - 1];
+
+                // Else, concatenate invert of 
+                // previous bit 
+                else
+                    binarizzzimo += flip(binarizzzimo[i - 1]);
+            }
+            this.DI100.Add(new Atom("Mode-C reply in Gray notation",0,Convert.ToString(Convert.ToInt32(binarizzzimo))));
+            s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(8, '0');
+            Offset += 2;
+            s = s.Remove(0, 4);
+            this.DI100.Add(new Atom("Type of resolution",0,s));
+
+        }
+
+        static char flip(char c)
+        {
+            return (c == '0') ? '1' : '0';
         }
 
         private void DecodeICAOAddress()
@@ -650,6 +706,216 @@ namespace ASTERIX
                 }
                 this.DI250.Add(new Atom("MB DATA", s.Length, s));
             }
+        }
+
+        private void DecodeComms() //230
+        {
+            this.DI230 = new List<Atom>();
+            string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(8, '0');
+            Offset += 2;
+            switch(Convert.ToInt16(string.Concat(s[0],s[1],s[2])))
+            {
+                case 0:
+                    this.DI230.Add(new Atom("Communications capability of the transponder", 0, "No communications capability"));
+                    break;
+                case 1:
+                    this.DI230.Add(new Atom("Communications capability of the transponder", 1, "Comm. A and Comm. B capability"));
+                    break;
+                case 2:
+                    this.DI230.Add(new Atom("Communications capability of the transponder", 2, "Comm. A, Comm. B and Uplink ELM"));
+                    break;
+                case 3:
+                    this.DI230.Add(new Atom("Communications capability of the transponder", 3, "Comm. A, Comm. B, Uplink ELM and Downlink ELM"));
+                    break;
+                case 4:
+                    this.DI230.Add(new Atom("Communications capability of the transponder", 4, "Level 5 Transponder capability"));
+                    break;
+            }
+            switch (Convert.ToInt16(string.Concat(s[3], s[4], s[5])))
+            {
+                case 0:
+                    this.DI230.Add(new Atom("Flight Status", 0, "No alert, no SPI, aircraft airborne"));
+                    break;
+                case 1:
+                    this.DI230.Add(new Atom("Flight Status", 1, "No alert, no SPI, aircraft on ground"));
+                    break;
+                case 2:
+                    this.DI230.Add(new Atom("Flight Status", 2, "Alert, no SPI, aircraft airborne"));
+                    break;
+                case 3:
+                    this.DI230.Add(new Atom("Flight Status", 3, "Alert, no SPI, aircraft on ground"));
+                    break;
+                case 4:
+                    this.DI230.Add(new Atom("Flight Status", 4, "Alert, SPI, aircraft airborne or on ground"));
+                    break;
+                case 5:
+                    this.DI230.Add(new Atom("Flight Status", 5, "No alert, SPI, aircraft airborne or on ground"));
+                    break;
+                case 6:
+                    this.DI230.Add(new Atom("Flight Status", 6, "Not assigned"));
+                    break;
+                case 7:
+                    this.DI230.Add(new Atom("Flight Status", 7, "Information not yet extracted"));
+                    break;
+            }
+            s = s.Remove(0,8);
+            switch (Convert.ToInt16(s[0]))
+            {
+                case 0:
+                    this.DI230.Add(new Atom("Mode-S Specific Service Capability", 0, "No"));
+                    break;
+                case 1:
+                    this.DI230.Add(new Atom("Mode-S Specific Service Capability", 1, "Yes"));
+                    break;
+            }
+            switch (Convert.ToInt16(s[1]))
+            {
+                case 0:
+                    this.DI230.Add(new Atom("Altitude reporting capability", 0, "100 ft resolution"));
+                    break;
+                case 1:
+                    this.DI230.Add(new Atom("Altitude reporting capability", 1, "25 ft resolution"));
+                    break;
+            }
+            switch (Convert.ToInt16(s[2]))
+            {
+                case 0:
+                    this.DI230.Add(new Atom("Aircraft identification capability", 0, "No"));
+                    break;
+                case 1:
+                    this.DI230.Add(new Atom("Aircraft identification capability", 1, "Yes"));
+                    break;
+            }
+            this.DI230.Add(new Atom("B1A", 0, Convert.ToString(s[3])));
+            this.DI230.Add(new Atom("B1A", 0, string.Concat(s[4],s[5],s[6],s[7])));
+        }
+
+        private void DecodeACAS()  //260
+        {
+            this.DI260 = Convert.ToInt64(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6]), 16);
+            Offset += 7;
+        }
+
+        private void DecodeWarning() //030
+        {
+            
+            bool exit = true;
+            this.DI030 = new List<Atom>();
+            while (exit)
+            {
+                string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], 16)));
+                Offset += 1;
+                int continuar = s[7];
+                s = s.Remove(7, 1);
+                switch(Convert.ToInt16(s))
+                {
+                    case 0:
+                        this.DI030.Add(new Atom("W/E Value", 0, "Not defined; never used."));
+                        break;
+                    case 1:
+                        this.DI030.Add(new Atom("W/E Value", 1, "Multipath Reply (Reflection)"));
+                        break;
+                    case 3:
+                        this.DI030.Add(new Atom("W/E Value", 3, "Split plot"));
+                        break;
+                    case 10:
+                        this.DI030.Add(new Atom("W/E Value", 10, "Phantom SSR plot"));
+                        break;
+                    case 11:
+                        this.DI030.Add(new Atom("W/E Value",11, "Non-Matching Mode-3/A Code"));
+                        break;
+                    case 12:
+                        this.DI030.Add(new Atom("W/E Value", 12, "Mode C code / Mode S altitude code abnormal value compared to the track"));
+                        break;
+                    case 15:
+                        this.DI030.Add(new Atom("W/E Value", 15, "Transponder anomaly detected"));
+                        break;
+                    case 16:
+                        this.DI030.Add(new Atom("W/E Value", 16, "Duplicated or Illegal Mode S Aircraft Address"));
+                        break;
+                    case 17:
+                        this.DI030.Add(new Atom("W/E Value", 17, "Mode S error correction applied"));
+                        break;
+                    case 18:
+                        this.DI030.Add(new Atom("W/E Value", 18, "Undecodable Mode C code / Mode S altitude code"));
+                        break;
+                }
+                if (continuar == 0)
+                    exit = false;
+            }
+        }
+
+        private void DecodeMode1()  //055
+        {
+            string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16));
+            Offset += 1;
+            this.DI030 = new List<Atom>();
+            switch(Convert.ToInt16(s[0]))
+            {
+                case 0:
+                    this.DI030.Add(new Atom("V",0, "Code validated"));
+                    break;
+                case 1:
+                    this.DI030.Add(new Atom("V", 1, "Code not validated"));
+                    break;
+            }
+            switch (Convert.ToInt16(s[0]))
+            {
+                case 0:
+                    this.DI030.Add(new Atom("G", 0, "Default"));
+                    break;
+                case 1:
+                    this.DI030.Add(new Atom("G", 1, "Garbled code"));
+                    break;
+            }
+            switch (Convert.ToInt16(s[0]))
+            {
+                case 0:
+                    this.DI030.Add(new Atom("L", 0, "Mode-1 code derived from the reply of the transponder"));
+                    break;
+                case 1:
+                    this.DI030.Add(new Atom("L", 1, "Smoothed Mode-1 code as provided by a local tracker"));
+                    break;
+            }
+            s = s.Remove(0,3);
+            this.DI030.Add(new Atom("Mode-1 Code in octal representation", 0, s));
+
+        }
+
+        private void DecodeMode2()  //050
+        {
+            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset+1]), 16));
+            Offset += 2;
+            this.DI030 = new List<Atom>();
+            switch (Convert.ToInt16(s[0]))
+            {
+                case 0:
+                    this.DI030.Add(new Atom("V", 0, "Code validated"));
+                    break;
+                case 1:
+                    this.DI030.Add(new Atom("V", 1, "Code not validated"));
+                    break;
+            }
+            switch (Convert.ToInt16(s[0]))
+            {
+                case 0:
+                    this.DI030.Add(new Atom("G", 0, "Default"));
+                    break;
+                case 1:
+                    this.DI030.Add(new Atom("G", 1, "Garbled code"));
+                    break;
+            }
+            switch (Convert.ToInt16(s[0]))
+            {
+                case 0:
+                    this.DI030.Add(new Atom("L", 0, "Mode-2 code derived from the reply of the transponder"));
+                    break;
+                case 1:
+                    this.DI030.Add(new Atom("L", 1, "Smoothed Mode-2 code as provided by a local tracker n"));
+                    break;
+            }
+            s = s.Remove(0, 4);
+            this.DI030.Add(new Atom("Mode-2 reply in octal representation", 0, s));
         }
     }
 }
