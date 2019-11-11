@@ -1278,10 +1278,10 @@ namespace ASTERIX
         private void decodeLatLong()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
-            float latreal = Convert.ToSingle(lat * 180 / 2 ^ 25);
+            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 25));
 
             int lon = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
-            float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 25);
+            float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 25));
 
             Offset += 8;
 
@@ -1389,10 +1389,10 @@ namespace ASTERIX
                     Offset += 2;
                     atoms.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)*10))));
                     int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
-                    float latreal = Convert.ToSingle(lat * 180 / 2 ^ 23);
+                    float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 23));
 
                     int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 4]), System.Globalization.NumberStyles.HexNumber);
-                    float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 23);
+                    float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 23));
 
                     atoms.Add(new Atom("Latitude", 0, Convert.ToString(latreal)));
                     atoms.Add(new Atom("Longitude", 0, Convert.ToString(lonreal)));
