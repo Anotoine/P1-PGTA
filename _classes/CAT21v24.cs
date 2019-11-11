@@ -193,7 +193,7 @@ namespace ASTERIX
                     switch (code)
                     {
                         case 0:
-                            Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * 2 * 10 ^ (-14));
+                            Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * Math.Pow(2,-14));
                             this.DI150 = Airspeed;
                             break;
                         case 1:
@@ -253,7 +253,7 @@ namespace ASTERIX
                             break;
                     }
                     s = s.Remove(0, 2);
-                    a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)) * (2 ^ (-30))));
+                    a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)) * Math.Pow(2,-30)));
                     atoms.Add(a);
                     this.DI074 = atoms;
                     Offset += 4;
@@ -292,7 +292,7 @@ namespace ASTERIX
                                 break;
                         }
                         s = s.Remove(0, 2);
-                        a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * (2 ^ (-30)))));
+                        a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * Math.Pow(2,-30))));
                         atoms.Add(a);
                         this.DI076 = atoms;
                         Offset += 4;
@@ -388,7 +388,7 @@ namespace ASTERIX
                     if (listFSPEC[25])
                     {
                         string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
-                        this.DI152 = Convert.ToSingle(Convert.ToInt32(s) * ((360) / (2 ^ 16)));
+                        this.DI152 = Convert.ToSingle(Convert.ToInt32(s) * ((360) / Math.Pow(2,16)));
                         Offset += 2;
                     }
                     if (listFSPEC[26])
@@ -534,12 +534,12 @@ namespace ASTERIX
                                 break;
                         }
                         s = s.Remove(0, 1);
-                        a = new Atom("Ground Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)) * (2 ^ (-14))));
+                        a = new Atom("Ground Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)) * Math.Pow(2,-14)));
                         atoms.Add(a);
                         Offset += 2;
                         s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                         Offset += 2;
-                        a = new Atom("Geometric Vertical Rate", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)) * (360 / (2 ^ 16))));
+                        a = new Atom("Geometric Vertical Rate", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)) * (360 / Math.Pow(2,16))));
                         atoms.Add(a);
                         this.DI160 = atoms;
                     }
@@ -551,7 +551,7 @@ namespace ASTERIX
                     }
                     if (listFSPEC[31])
                     {
-                        int s = Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 1]), 16);
+                        int s = Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16);
                         Offset += 3;
                         this.DI077 = Convert.ToSingle(s * (1 / 128));
                     }
