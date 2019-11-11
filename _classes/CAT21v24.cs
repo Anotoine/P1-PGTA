@@ -299,7 +299,6 @@ namespace ASTERIX
                 }
                 this.DI040 = atoms;
 
-
             }
             if (listFSPEC[3])
                 decodeTrackNumber();
