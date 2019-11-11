@@ -17,6 +17,7 @@ namespace Ideafix
         List<Tuple<Point, string>> Simbols = new List<Tuple<Point, string>>();
         List<Tuple<Point, string>> Texts = new List<Tuple<Point, string>>();
         List<List<Point>> Polylines = new List<List<Point>>();
+        List<List<Point>> Polygons = new List<List<Point>>();
 
         Color SimbolsColor = new Color();
         Color TextsColor = new Color();
@@ -33,7 +34,8 @@ namespace Ideafix
             {
                 string[] auxstr, auxstr2;
                 float a, b, c, d, x, y;
-                int lengthN, lengthW;
+                int lengthN, lengthW, num;
+                List<Point> pp;
                 if (!(string.IsNullOrEmpty(lines[j]) || string.IsNullOrWhiteSpace(lines[j])))
                 {
                     switch (lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[0])
@@ -195,8 +197,8 @@ namespace Ideafix
                             break;
 
                         case "Polilinea":
-                            int num = Convert.ToInt32(lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1], 10);
-                            List<Point> pp = new List<Point>();
+                            num = Convert.ToInt32(lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1], 10);
+                            pp = new List<Point>();
 
                             for (int i = j + 1; i <= j + num; i++)
                             {
@@ -240,6 +242,52 @@ namespace Ideafix
                             j += num;
                             break;
 
+                        case "Poligono":
+                            num = Convert.ToInt32(lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1], 10);
+                            pp = new List<Point>();
+
+                            for (int i = j + 1; i <= j + num; i++)
+                            {
+                                auxstr = lines[i].Trim(new char[] { ' ', '\t' }).Split('N');
+                                lengthN = auxstr[0].Length;
+
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 2), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(2, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(4, 2), null); // segundos
+                                d = 0;
+                                if (lengthN > 6)
+                                    d = Convert.ToSingle(auxstr[0].Substring(6, 3), null); // milisegundos -- if applicable
+
+                                //Obtaining the final value
+                                x = a + (b / 60) + ((c + d / 1000) / 3600);
+
+                                //Checking if should be positive or negative
+                                if (auxstr[0].EndsWith("S", StringComparison.Ordinal))
+                                    x = -1 * x;
+
+                                auxstr = auxstr[1].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                                lengthW = auxstr[0].Length;
+                                a = Convert.ToSingle(auxstr[0].Substring(0, 3), null); // grados
+                                b = Convert.ToSingle(auxstr[0].Substring(3, 2), null); // minutos
+                                c = Convert.ToSingle(auxstr[0].Substring(5, 2), null); // segundos
+                                d = 0;
+                                if (lengthW > 8)
+                                    d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
+
+                                //Obtaining the final value
+                                y = a + (b / 60) + ((c + d / 1000) / 3600);
+
+                                //Checking if should be positive or negative
+                                if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
+                                    y = -1 * y;
+
+                                pp.Add(new Point().LatLong2XY(x, y));
+                            }
+                            Polygons.Add(pp);
+
+                            j += num;
+                            break;
+
                         default:
                             j++;
                             break;
@@ -262,6 +310,11 @@ namespace Ideafix
         public List<List<Point>> getPolylines()
         {
             return this.Polylines;
+        }
+
+        public List<List<Point>> getPolygons()
+        {
+            return this.Polygons;
         }
 
         public List<Tuple<Point, string>> getSimbols()

@@ -49,20 +49,17 @@ namespace Ideafix
             {
                 bool exit = false;
                 int i = 0;
-                if (this.ICAOAddress != "NONE")
+                while (!(exit || i >= listPlanes.Count))
                 {
-                    while (!(exit || i >= listPlanes.Count))
+                    if (string.Compare(this.ICAOAddress, listPlanes[i].ICAOAddress) == 0)
                     {
-                        if (string.Compare(this.ICAOAddress, listPlanes[i].ICAOAddress) == 0)
-                        {
-                            this.RegID = listPlanes[i].RegID.ToUpper();
-                            this.Country = listPlanes[i].Country.ToUpper();
-                            this.Type = "Aircraft";
-                            this.ImageUrl = listPlanes[i].ImageUrl;
-                            exit = true;
-                        }
-                    i++;
+                        this.RegID = listPlanes[i].RegID.ToUpper();
+                        this.Country = listPlanes[i].Country.ToUpper();
+                        this.Type = "Aircraft";
+                        this.ImageUrl = listPlanes[i].ImageUrl;
+                        exit = true;
                     }
+                i++;
                 }
             }
         }

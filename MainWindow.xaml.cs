@@ -638,9 +638,12 @@ namespace Ideafix
             }
         }
 
+
+
         private void CheckBoxClickMaps(object sender, RoutedEventArgs e)
         {
             LienzoMaps.Children.Clear();
+
             if (!(checkBoxes == null))
             {
                 for (int i = 0; i < checkBoxes.Count; i++)
@@ -673,6 +676,53 @@ namespace Ideafix
                                 points.Add(new System.Windows.Point((pp.X + A) / alpha, (pp.Y + B) / beta));
                             poly.Points = points;
                             LienzoMaps.Children.Add(poly);
+                        }
+                        foreach (List<Point> pl in Maps[i].getPolygons()) //Aqui Dibuixem poligons
+                        {
+                            Polygon pol = new Polygon
+                            {
+                                StrokeThickness = 1,
+                                Stroke = UserOptions.MapMainColor
+                            };
+                            PointCollection points = new PointCollection();
+                            foreach (Point pp in pl)
+                                points.Add(new System.Windows.Point((pp.X + A) / alpha, (pp.Y + B) / beta));
+                            pol.Points = points;
+                            LienzoMaps.Children.Add(pol);
+
+                            Random rnd = new Random();  //Aqui poso els punts random per probar la funció
+                            PointCollection pCol = new PointCollection();
+                            for (int j = 0; j < 500; j++)
+                            {
+                                pCol.Add(new System.Windows.Point(rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth)), rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth))));
+                            }
+
+
+                            foreach (System.Windows.Point p in pCol)
+                            {
+                                Ellipse el = new Ellipse
+                                {
+                                    StrokeThickness = 1,
+                                    Width = 5,
+                                    Height = 5
+                                };
+                                Canvas.SetLeft(el, p.X - el.Width / 2);
+                                Canvas.SetTop(el, p.Y - el.Height / 2);
+                                if (IsPointInPolygon4(points, p))
+                                {
+                                    el.Stroke = Brushes.Green;
+                                    el.Fill = Brushes.Green;
+                                }
+                                else
+                                {
+                                    el.Stroke = Brushes.Red;
+                                    el.Fill = Brushes.Red;
+                                }
+
+                                LienzoMaps.Children.Add(el);
+                            }
+
+
                         }
                         foreach (Tuple<Point, string> txt in Maps[i].getTexts())
                         {
@@ -834,6 +884,24 @@ namespace Ideafix
             //LPosY.Text = ((e.GetPosition(LienzoMaps).Y + BARP) / betaARP).ToString("0.###m");
             LPosX.Text = (e.GetPosition(LienzoMaps).X *alpha - A).ToString("0.###m");
             LPosY.Text = (e.GetPosition(LienzoMaps).Y*beta -B).ToString("0.###m");
+        }
+
+        private static bool IsPointInPolygon4(PointCollection polygon, System.Windows.Point testPoint)
+        {
+            bool result = false;
+            int j = polygon.Count - 1;
+            for (int i = 0; i < polygon.Count; i++)
+            {
+                if (polygon[i].Y < testPoint.Y && polygon[j].Y >= testPoint.Y || polygon[j].Y < testPoint.Y && polygon[i].Y >= testPoint.Y)
+                {
+                    if (polygon[i].X + (testPoint.Y - polygon[i].Y) / (polygon[j].Y - polygon[i].Y) * (polygon[j].X - polygon[i].X) < testPoint.X)
+                    {
+                        result = !result;
+                    }
+                }
+                j = i;
+            }
+            return result;
         }
     }
 }
