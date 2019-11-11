@@ -73,7 +73,7 @@ namespace ASTERIX
             {
                 List<Atom> atoms = new List<Atom>();
                 Atom a;
-                string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8,'0');
+                string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                 Offset += 1;
                 int code = Convert.ToInt16(string.Concat(s[0], s[1], s[2]));
                 switch (code)
@@ -200,7 +200,7 @@ namespace ASTERIX
                                 atoms.Add(a);
                                 break;
                         }
-                        switch (Convert.ToInt16(string.Concat(s[5],s[6])))
+                        switch (Convert.ToInt16(string.Concat(s[5], s[6])))
                         {
                             case 0:
                                 a = new Atom("Confidence Level", 0, "Report valid");
@@ -298,8 +298,6 @@ namespace ASTERIX
                         break;
                 }
                 this.DI040 = atoms;
-               
-
             }
             if (listFSPEC[3])
                 decodeTrackNumber();
