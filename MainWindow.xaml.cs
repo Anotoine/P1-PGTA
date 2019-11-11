@@ -49,7 +49,7 @@ namespace Ideafix
         //Timer
         DispatcherTimer timer = new DispatcherTimer();
         DateTime ActualTime = new DateTime().AddHours(20);
-        DateTime StopTime;
+        int Estela = 10;
 
         public MainWindow()
         {
@@ -221,7 +221,6 @@ namespace Ideafix
                 timer.Tick += Next_Tick;
                 timer.Start();
                 ActualTime = new DateTime().AddHours(SlTime.LowerValue);
-                StopTime = new DateTime().AddHours(SlTime.HigherValue);
             }
         }
 
@@ -637,8 +636,6 @@ namespace Ideafix
                 }
             }
         }
-
-
 
         private void CheckBoxClickMaps(object sender, RoutedEventArgs e)
         {
