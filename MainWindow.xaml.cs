@@ -708,18 +708,19 @@ namespace Ideafix
 
                         foreach (List<Point> pl in Maps[i].getPolygons()) //Aqui Dibuixem poligons
                         {
-                            SolidColorBrush brush = new SolidColorBrush(Color.FromArgb(125, 0, 255, 0));
                             Polygon pol = new Polygon
                             {
                                 StrokeThickness = 1,
-                                Stroke = brush,
-                                Fill = brush
+                                Stroke = Maps[i].GetColor(1),
+                                Fill = Maps[i].GetColor(1)
                             };
                             PointCollection points = new PointCollection();
                             foreach (Point pp in pl)
                                 points.Add(new System.Windows.Point((pp.X + A) / alpha, (pp.Y + B) / beta));
                             pol.Points = points;
                             LienzoMaps.Children.Add(pol);
+
+                        }
 
                             //for (int k = 0; k < 500; k++)
                             //{
@@ -730,7 +731,6 @@ namespace Ideafix
                             //        listeli[k].Fill = Brushes.Green;
                             //    }
                             //}
-                        }
 
                         //for (int k = 0; k < 500; k++) 
                         //{

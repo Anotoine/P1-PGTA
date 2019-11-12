@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Ideafix
 {
@@ -22,9 +22,11 @@ namespace Ideafix
         //Index for Polygon
         List<int> index = new List<int>();
 
-        Color SimbolsColor = new Color();
-        Color TextsColor = new Color();
-        Color LinesColor = new Color();
+        SolidColorBrush SimbolsColor = new SolidColorBrush();
+        SolidColorBrush TextsColor = new SolidColorBrush();
+        SolidColorBrush LinesColor = new SolidColorBrush();
+
+        List<SolidColorBrush> ListColorsPoligons = new List<SolidColorBrush>();
 
         public Map(string file)
         {
@@ -50,21 +52,28 @@ namespace Ideafix
 
                         case "ColorTexto":
                             auxstr = lines[j].Substring(10).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                            TextsColor = Color.FromArgb(Convert.ToInt32(auxstr[0], 10), Convert.ToInt32(auxstr[1], 10), Convert.ToInt32(auxstr[2], 10));
+                            TextsColor = new SolidColorBrush(Color.FromRgb(Convert.ToByte(auxstr[0], 10), Convert.ToByte(auxstr[1], 10), Convert.ToByte(auxstr[2], 10)));
                             
                             j++;
                             break;
 
                         case "ColorSimbolos":
                             auxstr = lines[j].Substring(13).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                            SimbolsColor = Color.FromArgb(Convert.ToInt32(auxstr[0], 10), Convert.ToInt32(auxstr[1], 10), Convert.ToInt32(auxstr[2], 10));
+                            SimbolsColor = new SolidColorBrush(Color.FromRgb(Convert.ToByte(auxstr[0], 10), Convert.ToByte(auxstr[1], 10), Convert.ToByte(auxstr[2], 10)));
 
                             j++;
                             break;
 
                         case "ColorLinea":
                             auxstr = lines[j].Substring(10).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                            LinesColor = Color.FromArgb(Convert.ToInt32(auxstr[0], 10), Convert.ToInt32(auxstr[1], 10), Convert.ToInt32(auxstr[2], 10));
+                            LinesColor = new SolidColorBrush(Color.FromRgb(Convert.ToByte(auxstr[0], 10), Convert.ToByte(auxstr[1], 10), Convert.ToByte(auxstr[2], 10)));
+
+                            j++;
+                            break;
+
+                        case "ColorPoligono":
+                            auxstr = lines[j].Substring(10).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                            ListColorsPoligons[Convert.ToInt32(auxstr[0], 10)] = new SolidColorBrush(Color.FromArgb(125, Convert.ToByte(auxstr[1], 10), Convert.ToByte(auxstr[2], 10), Convert.ToByte(auxstr[3], 10)));
 
                             j++;
                             break;
@@ -337,6 +346,14 @@ namespace Ideafix
         public List<Tuple<Point, string>> getTexts()
         {
             return this.Texts;
+        }
+
+        public SolidColorBrush GetColor(int i)
+        {
+            if (i < ListColorsPoligons.Count)
+                return ListColorsPoligons[i];
+            else
+                return new SolidColorBrush(Color.FromRgb(255,0,0));
         }
     }
 }
