@@ -708,10 +708,12 @@ namespace Ideafix
 
                         foreach (List<Point> pl in Maps[i].getPolygons()) //Aqui Dibuixem poligons
                         {
+                            SolidColorBrush brush = new SolidColorBrush(Color.FromArgb(125, 0, 255, 0));
                             Polygon pol = new Polygon
                             {
                                 StrokeThickness = 1,
-                                Stroke = UserOptions.MapMainColor
+                                Stroke = brush,
+                                Fill = brush
                             };
                             PointCollection points = new PointCollection();
                             foreach (Point pp in pl)
