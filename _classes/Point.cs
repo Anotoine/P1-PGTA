@@ -15,6 +15,8 @@ namespace Ideafix
         internal double lonD { get; set; }
         internal double altD { get; set; }
 
+        internal double[] DMSlat { get; set; }
+        internal double[] DMSlon { get; set; }
         //WGS-84 - Radians
         internal double latR { get; set; }
         internal double lonR { get; set; }
@@ -71,10 +73,33 @@ namespace Ideafix
         }
         public Point XY2LatLong(double x, double y)
         {
+
             this.X = x;
             this.Y = y;
-            //Lambert conformal conic reprojection
-            //this.latR;
+            x = x / (6.360 * 1E6);
+            y = y / (6.502 * 1E6);
+            double num = Math.Log(Math.Cos(lat1) / Math.Cos(lat2)) / Math.Log(Math.Exp(1));
+            double denum = Math.Log((Math.Tan(Math.PI / 4 + lat2 / 2)) / (Math.Tan(Math.PI / 4 + lat1 / 2))) / Math.Log(Math.Exp(1));
+            double n = num / denum;
+            double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2), n)) / n;
+            double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latARP / 2), -n);
+            double rho = Math.Sign(n) * Math.Sqrt(Math.Pow(x,2)+Math.Pow((rho0-y),2));
+            //double theta = Math.Pow(Math.Tan(x/(rho0-y)), -1);
+            double theta = Math.Pow(Math.Atan(x / (rho0 - y)), 1);
+            //this.latR = 2 * Math.Pow(Math.Tan(Math.Pow(F/rho,1/n)), -1) -Math.PI/2;
+            this.latR = 2 * Math.Pow(Math.Atan(Math.Pow(F / rho, 1 / n)), 1) - Math.PI / 2;
+            this.lonR = lonARP + theta / n;
+            this.latD = this.latR * (180 / Math.PI);
+            this.lonD = this.lonR * (180 / Math.PI);
+                //DMS vector creation
+            this.DMSlat = new double[3];
+            this.DMSlon = new double[3];
+            DMSlat[0] = Math.Floor(latD);
+            DMSlat[1] = Math.Floor((latD - DMSlat[0]) * 60);
+            DMSlat[2] = ((latD - DMSlat[0]) * 60 - DMSlat[1]) * 60;
+            DMSlon[0] = Math.Floor(lonD);
+            DMSlon[1] = Math.Floor((lonD - DMSlon[0]) * 60);
+            DMSlon[2] = ((lonD - DMSlon[0]) * 60 - DMSlon[1]) * 60;
 
             return this;
         }

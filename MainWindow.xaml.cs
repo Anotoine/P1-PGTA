@@ -21,6 +21,7 @@ namespace Ideafix
     {
         //Point ARP, zero0;
         Point zero0;
+        Point mouseP = new Point();
         //double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, xA, yA, xe, yn;
         double A, B, alpha, beta;
 
@@ -64,15 +65,15 @@ namespace Ideafix
             WTable.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Hidden;
 
-            LPosX.Visibility = Visibility.Hidden;
-            LPosY.Visibility = Visibility.Hidden;
+            LPosLL.Visibility = Visibility.Hidden;
+            LPosXY.Visibility = Visibility.Hidden;
 
             WLoad.IsEnabled = true;
             WRadar.IsEnabled = false;
             WTable.IsEnabled = false;
             WSettings.IsEnabled = false;
-            LPosX.IsEnabled = false;
-            LPosY.IsEnabled = false;
+            LPosLL.IsEnabled = false;
+            LPosXY.IsEnabled = false;
         }
 
         private void BRadar_Click(object sender, RoutedEventArgs e)
@@ -90,15 +91,15 @@ namespace Ideafix
             WTable.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Hidden;
 
-            LPosX.Visibility = Visibility.Visible;
-            LPosY.Visibility = Visibility.Visible;
+            LPosLL.Visibility = Visibility.Visible;
+            LPosXY.Visibility = Visibility.Visible;
 
             WLoad.IsEnabled = false;
             WRadar.IsEnabled = true;
             WTable.IsEnabled = false;
             WSettings.IsEnabled = false;
-            LPosX.IsEnabled = true;
-            LPosY.IsEnabled = true;
+            LPosLL.IsEnabled = true;
+            LPosXY.IsEnabled = true;
         }
 
         private void BTable_Click(object sender, RoutedEventArgs e)
@@ -108,15 +109,15 @@ namespace Ideafix
             WTable.Visibility = Visibility.Visible;
             WSettings.Visibility = Visibility.Hidden;
 
-            LPosX.Visibility = Visibility.Hidden;
-            LPosY.Visibility = Visibility.Hidden;
+            LPosLL.Visibility = Visibility.Hidden;
+            LPosXY.Visibility = Visibility.Hidden;
 
             WLoad.IsEnabled = false;
             WRadar.IsEnabled = false;
             WTable.IsEnabled = true;
             WSettings.IsEnabled = false;
-            LPosX.IsEnabled = false;
-            LPosY.IsEnabled = false;
+            LPosLL.IsEnabled = false;
+            LPosXY.IsEnabled = false;
         }
 
         private void BSettings_Click(object sender, RoutedEventArgs e)
@@ -126,15 +127,15 @@ namespace Ideafix
             WTable.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Visible;
 
-            LPosX.Visibility = Visibility.Hidden;
-            LPosY.Visibility = Visibility.Hidden;
+            LPosLL.Visibility = Visibility.Hidden;
+            LPosXY.Visibility = Visibility.Hidden;
 
             WLoad.IsEnabled = false;
             WRadar.IsEnabled = false;
             WTable.IsEnabled = false;
             WSettings.IsEnabled = true;
-            LPosX.IsEnabled = false;
-            LPosY.IsEnabled = false;
+            LPosLL.IsEnabled = false;
+            LPosXY.IsEnabled = false;
         }
 
         private void BLoadFile_Click(object sender, RoutedEventArgs e)
@@ -479,7 +480,7 @@ namespace Ideafix
                 MessageBox.Show("It was not possible to add the database data to the table", "Error.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            try { 
+            //try { 
                 if (!(listMessages == null))
                 {
                     Vistos = new List<string>();
@@ -490,20 +491,46 @@ namespace Ideafix
                         if (Vistos.Contains(m.getAddressICAO()))
                         {
                             if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(UserOptions.Interval))
+                            {
                                 VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
+                            }
                         }
                         else
                         {
                             Vistos.Add(m.getAddressICAO());
                             VehiclesList.Add(new Vehicle(m));
                         }
+
                         (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / listMessages.Count) + 0.001));
                     }
+
+                    for (int i = 0; i < VehiclesList.Count; i++)
+                    {
+                        foreach (Point p in VehiclesList[i].GetPositions())
+                        {
+                            bool exit = false;
+                            for (int j = 0; j < Maps.Count; j++)
+                            {
+                                int k = 0;
+                                while (!exit && k < Maps[j].getPolygons().Count)
+                                {
+                                    if (IsPointInPolygon4(Maps[j].getPolygons()[k], p))
+                                    {
+                                        VehiclesList[i].Place.Add(Maps[j].getIndex(k));
+                                        exit = true;
+                                    }
+                                    k++;
+                                }
+                            }
+                            if (!exit)
+                                VehiclesList[i].Place.Add(0);
+                        }
+                    }
                 }
-            } catch
-            {
-                MessageBox.Show("It was not possible to add the information from the Database.", "Error comparing.", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //} catch
+            //{
+            //    MessageBox.Show("It was not possible to add the information from the Database.", "Error comparing.", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
 
 
         }
@@ -659,25 +686,25 @@ namespace Ideafix
                             LienzoMaps.Children.Add(poly);
                         }
 
-                        //*****INICI porva
-                        Random rnd = new Random();  //Aqui poso els punts random per probar la funció
-                        PointCollection pCol = new PointCollection();
-                        List<Ellipse> listeli = new List<Ellipse>();
-                        for (int j = 0; j < 500; j++)
-                        {
-                            pCol.Add(new System.Windows.Point(rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth)), rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth))));
-                            Ellipse el = new Ellipse
-                            {
-                                StrokeThickness = 1,
-                                Width = 5,
-                                Height = 5
-                            };
-                            Canvas.SetLeft(el, pCol[j].X - el.Width / 2);
-                            Canvas.SetTop(el, pCol[j].Y - el.Height / 2);
-                            el.Stroke = Brushes.Red;
-                            el.Fill = Brushes.Red;
-                            listeli.Add(el);
-                        }
+                        ////*****INICI porva
+                        //Random rnd = new Random();  //Aqui poso els punts random per probar la funció
+                        //PointCollection pCol = new PointCollection();
+                        //List<Ellipse> listeli = new List<Ellipse>();
+                        //for (int j = 0; j < 500; j++)
+                        //{
+                        //    pCol.Add(new System.Windows.Point(rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth)), rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth))));
+                        //    Ellipse el = new Ellipse
+                        //    {
+                        //        StrokeThickness = 1,
+                        //        Width = 5,
+                        //        Height = 5
+                        //    };
+                        //    Canvas.SetLeft(el, pCol[j].X - el.Width / 2);
+                        //    Canvas.SetTop(el, pCol[j].Y - el.Height / 2);
+                        //    el.Stroke = Brushes.Red;
+                        //    el.Fill = Brushes.Red;
+                        //    listeli.Add(el);
+                        //}
 
                         foreach (List<Point> pl in Maps[i].getPolygons()) //Aqui Dibuixem poligons
                         {
@@ -692,22 +719,22 @@ namespace Ideafix
                             pol.Points = points;
                             LienzoMaps.Children.Add(pol);
 
-                            for (int k = 0; k < 500; k++) 
-                            {
-                                System.Windows.Point p = pCol[k];
-                                if (IsPointInPolygon4(points, p) && listeli[k].Stroke != Brushes.Green)
-                                {
-                                    listeli[k].Stroke = Brushes.Green;
-                                    listeli[k].Fill = Brushes.Green;
-                                }
-                            }
+                            //for (int k = 0; k < 500; k++)
+                            //{
+                            //    System.Windows.Point p = pCol[k];
+                            //    if (IsPointInPolygon4(points, p) && listeli[k].Stroke != Brushes.Green)
+                            //    {
+                            //        listeli[k].Stroke = Brushes.Green;
+                            //        listeli[k].Fill = Brushes.Green;
+                            //    }
+                            //}
                         }
 
-                        for (int k = 0; k < 500; k++) 
-                        {
-                            LienzoMaps.Children.Add(listeli[k]);
-                        }
-                        //*****FINAL PROVA**
+                        //for (int k = 0; k < 500; k++) 
+                        //{
+                        //    LienzoMaps.Children.Add(listeli[k]);
+                        //}
+                        ////*****FINAL PROVA**
 
                         foreach (Tuple<Point, string> txt in Maps[i].getTexts())
                         {
@@ -838,11 +865,17 @@ namespace Ideafix
 
         private void LienzoMaps_MouseMove(object sender, MouseEventArgs e)
         {
-            LPosX.Text = (e.GetPosition(LienzoMaps).X *alpha - A).ToString("0.###m");
-            LPosY.Text = (e.GetPosition(LienzoMaps).Y*beta -B).ToString("0.###m");
+            mouseP.XY2LatLong(e.GetPosition(LienzoMaps).X * alpha - A, e.GetPosition(LienzoMaps).Y * beta - B);
+            //LPosX.Text = (e.GetPosition(LienzoMaps).X *alpha - A).ToString("0.###m");
+            //LPosY.Text = (e.GetPosition(LienzoMaps).Y*beta -B).ToString("0.###m");
+            
+            LPosLL.Text = "(Lat,Lon) = ("+(mouseP.DMSlat[0]).ToString("0º")+ (mouseP.DMSlat[1]).ToString("0") + "'" + (mouseP.DMSlat[2]).ToString("0.###") + "'' ," + 
+                (mouseP.DMSlon[0]).ToString("0º") + (mouseP.DMSlon[1]).ToString("0") + "'" + (mouseP.DMSlon[2]).ToString("0.###") + "'')";
+            LPosXY.Text = "- (x,y) = ("+ (e.GetPosition(LienzoMaps).X * alpha - A).ToString("0.###m")+ ","+ (e.GetPosition(LienzoMaps).Y * beta - B).ToString("0.###m")+")";
+            
         }
 
-        private static bool IsPointInPolygon4(PointCollection polygon, System.Windows.Point testPoint)
+        private static bool IsPointInPolygon4(List<Point> polygon, Point testPoint)
         {
             bool result = false;
             int j = polygon.Count - 1;

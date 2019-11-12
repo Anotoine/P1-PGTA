@@ -19,6 +19,9 @@ namespace Ideafix
         List<List<Point>> Polylines = new List<List<Point>>();
         List<List<Point>> Polygons = new List<List<Point>>();
 
+        //Index for Polygon
+        List<int> index = new List<int>();
+
         Color SimbolsColor = new Color();
         Color TextsColor = new Color();
         Color LinesColor = new Color();
@@ -245,6 +248,7 @@ namespace Ideafix
                         case "Poligono":
                             num = Convert.ToInt32(lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[1], 10);
                             pp = new List<Point>();
+                            index.Add(Convert.ToInt32(lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[2], 10));
 
                             for (int i = j + 1; i <= j + num; i++)
                             {
@@ -315,6 +319,14 @@ namespace Ideafix
         public List<List<Point>> getPolygons()
         {
             return this.Polygons;
+        }
+
+        public int getIndex(int i)
+        {
+            if (index[i] != null)
+                return index[i];
+            else
+                return -1;
         }
 
         public List<Tuple<Point, string>> getSimbols()

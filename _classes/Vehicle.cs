@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace Ideafix
 {
@@ -7,6 +8,8 @@ namespace Ideafix
     {
         internal List<Point> Positions{ get; set; }
         internal List<DateTime> DateTimes { get; set; }
+        internal List<int> Place { get; set; }
+
         internal string Type { get; set; }
         internal int TrackN { get; set; }
         internal string Callsign { get; set; }
@@ -16,6 +19,7 @@ namespace Ideafix
         {
             Positions = new List<Point>();
             DateTimes = new List<DateTime>();
+            Place = new List<int>();
 
             this.ICAOaddress = m.getAddressICAO();
             this.TrackN = m.getTrackN();
@@ -99,5 +103,11 @@ namespace Ideafix
         {
             return this.DateTimes[0];
         }
+
+        public List<Point> GetPositions()
+        {
+            return this.Positions;
+        }
+
     }
 }

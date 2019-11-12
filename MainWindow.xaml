@@ -16,7 +16,7 @@
         <SolidColorBrush Color="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}"/>
     </Window.Background>
 
-    <Grid x:Name="Base">
+    <Grid x:Name="Base" Margin="0">
         <!--<Grid.Background>
             <ImageBrush ImageSource="ASTERIX.png" Stretch="Uniform"/>
         </Grid.Background>-->
@@ -61,7 +61,7 @@
             </Path>
         </Button>
         <StatusBar Panel.ZIndex="1" Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="0" Margin="0" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}">
-            <DockPanel HorizontalAlignment="Center" LastChildFill="True">
+            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" LastChildFill="True" Margin="0">
                 <Grid>
                     <ProgressBar Height="15" Width="150" Name="PBLoadFile"  ValueChanged="PBLoadFile_ValueChanged" BorderBrush="Black"></ProgressBar>
                     <TextBox x:Name="LPBLoadFile" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}"  Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True"></TextBox>
@@ -77,8 +77,8 @@
 
                 <!-- Temporal items   -->
                 <DockPanel>
-                    <TextBox x:Name="LPosX" Margin="0" Visibility="Visible" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
-                    <TextBox x:Name="LPosY" Margin="0" Visibility="Visible" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center"/>
+                    <TextBox x:Name="LPosLL" Margin="0" Visibility="Visible" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Height="25"/>
+                    <TextBox x:Name="LPosXY" Margin="0" Visibility="Visible" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Height="25"/>
                 </DockPanel>
             </DockPanel>
         </StatusBar>
@@ -115,15 +115,15 @@
                 <Button x:Name="BLoadRefresh" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="3" Grid.Row="7" Width="100" Click="BLoadRefresh_Click">Refresh</Button>
             </Grid>
         </GroupBox>
-        <GroupBox x:Name="WRadar" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
-            <Grid SizeChanged="Grid_SizeChanged">
+        <GroupBox x:Name="WRadar" Grid.ColumnSpan="4" Grid.Row="1" Visibility="Hidden" BorderThickness="0" Margin="0">
+            <Grid SizeChanged="Grid_SizeChanged" Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="100*"/>
                     <ColumnDefinition Width="250"/>
                 </Grid.ColumnDefinitions>
-                <Canvas x:Name="LienzoMaps" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" Panel.ZIndex="0"/>
-                <Canvas x:Name="LienzoVehicles" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" MouseMove="LienzoMaps_MouseMove" Panel.ZIndex="0"/>
+                <Canvas x:Name="LienzoMaps" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" Panel.ZIndex="0" Margin="0"/>
+                <Canvas x:Name="LienzoVehicles" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" MouseMove="LienzoMaps_MouseMove" Panel.ZIndex="0" Margin="0"/>
 
                 <Expander x:Name="TimeExpand" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" ExpandDirection="Right" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Left">
                     <Expander.Header>
