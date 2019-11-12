@@ -772,7 +772,7 @@ namespace Ideafix
             LienzoVehicles.Children.Clear();
 
             if (CheckVehicles != null)
-            {
+            {   
                 if (CheckVehicles.IsChecked == true)
                 {
                     if (VehiclesList != null)
