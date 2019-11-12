@@ -674,6 +674,27 @@ namespace Ideafix
                             poly.Points = points;
                             LienzoMaps.Children.Add(poly);
                         }
+
+                        //*****INICI porva
+                        Random rnd = new Random();  //Aqui poso els punts random per probar la funció
+                        PointCollection pCol = new PointCollection();
+                        List<Ellipse> listeli = new List<Ellipse>();
+                        for (int j = 0; j < 500; j++)
+                        {
+                            pCol.Add(new System.Windows.Point(rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth)), rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth))));
+                            Ellipse el = new Ellipse
+                            {
+                                StrokeThickness = 1,
+                                Width = 5,
+                                Height = 5
+                            };
+                            Canvas.SetLeft(el, pCol[j].X - el.Width / 2);
+                            Canvas.SetTop(el, pCol[j].Y - el.Height / 2);
+                            el.Stroke = Brushes.Red;
+                            el.Fill = Brushes.Red;
+                            listeli.Add(el);
+                        }
+
                         foreach (List<Point> pl in Maps[i].getPolygons()) //Aqui Dibuixem poligons
                         {
                             Polygon pol = new Polygon
@@ -687,40 +708,23 @@ namespace Ideafix
                             pol.Points = points;
                             LienzoMaps.Children.Add(pol);
 
-                            Random rnd = new Random();  //Aqui poso els punts random per probar la funció
-                            PointCollection pCol = new PointCollection();
-                            for (int j = 0; j < 500; j++)
+                            for (int k = 0; k < 500; k++) 
                             {
-                                pCol.Add(new System.Windows.Point(rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth)), rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth))));
-                            }
-
-
-                            foreach (System.Windows.Point p in pCol)
-                            {
-                                Ellipse el = new Ellipse
+                                System.Windows.Point p = pCol[k];
+                                if (IsPointInPolygon4(points, p) && listeli[k].Stroke != Brushes.Green)
                                 {
-                                    StrokeThickness = 1,
-                                    Width = 5,
-                                    Height = 5
-                                };
-                                Canvas.SetLeft(el, p.X - el.Width / 2);
-                                Canvas.SetTop(el, p.Y - el.Height / 2);
-                                if (IsPointInPolygon4(points, p))
-                                {
-                                    el.Stroke = Brushes.Green;
-                                    el.Fill = Brushes.Green;
+                                    listeli[k].Stroke = Brushes.Green;
+                                    listeli[k].Fill = Brushes.Green;
                                 }
-                                else
-                                {
-                                    el.Stroke = Brushes.Red;
-                                    el.Fill = Brushes.Red;
-                                }
-
-                                LienzoMaps.Children.Add(el);
                             }
-
-
                         }
+
+                        for (int k = 0; k < 500; k++) 
+                        {
+                            LienzoMaps.Children.Add(listeli[k]);
+                        }
+                        //*****FINAL PROVA**
+
                         foreach (Tuple<Point, string> txt in Maps[i].getTexts())
                         {
                             TextBlock textBlock = new TextBlock
