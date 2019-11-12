@@ -48,7 +48,7 @@ namespace Ideafix
 
         //Timer
         DispatcherTimer timer = new DispatcherTimer();
-        DateTime ActualTime = new DateTime().AddHours(20);
+        DateTime ActualTime;
         int Estela = 10;
 
         public MainWindow()
@@ -275,25 +275,27 @@ namespace Ideafix
 
         private void BPlay_Click(object seder, RoutedEventArgs e)
         {
-            if (!timer.IsEnabled)
-            {
+            //if (!timer.IsEnabled)
+            //{
                 timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromSeconds(1);
                 timer.Tick += Next_Tick;
                 timer.Start();
                 ActualTime = new DateTime().AddHours(SlTime.LowerValue);
-            }
+            //}
         }
 
         private void Next_Tick(object sender, EventArgs e) //TODO
         {
             LienzoVehicles.Children.Clear();
+
             if (VehiclesList != null)
             {
                 if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
                 {
-                    foreach (Vehicle v in VehiclesList)
+                    for (int j = 0; j < VehiclesList.Count; j++)
                     {
+                        Vehicle v = VehiclesList[j];
                         Polyline pl = new Polyline();
                         PointCollection pp = new PointCollection();
                         bool exit = false;
@@ -324,44 +326,58 @@ namespace Ideafix
                             pl.Stroke = UserOptions.AircraftColor;
 
                         pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
-                        pl.Tag = v.TrackN + "/" + Convert.ToString(v.DateTimes.Count - 1);
+                        pl.Tag = j + "/" + Convert.ToString(v.DateTimes.Count - 1);
 
                         pl.Points = pp;
                         LienzoVehicles.Children.Add(pl);
                     }
-                    ActualTime.AddSeconds(SlSpeed.Value); //Add the speed in time
                 }
                 else if (MergingTypeRADAR.SelectedIndex == 1) //Points
                 {
-                    foreach (Vehicle v in VehiclesList)
+                    for (int j = 0; j < VehiclesList.Count; j++)
                     {
-                        List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                        for (int i = 0; i < list.Count; i++)
+                        Vehicle v = VehiclesList[j];
+                        bool exit = false;
+                        int i = 0;
+
+                        List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                        List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                        while (!exit && i < listP.Count)
                         {
-                            if (list[i] != null)
+                            if (listP[i] != null)
                             {
-                                Ellipse p0 = new Ellipse();
+                                if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                {
+                                    Ellipse p0 = new Ellipse();
 
-                                if (v.Callsign == "NONE")
-                                    p0.Stroke = Brushes.LightSkyBlue;
-                                else if (v.Callsign.StartsWith("F"))
-                                    p0.Stroke = Brushes.White;
-                                else
-                                    p0.Stroke = Brushes.Red;
+                                    if (v.Callsign == "NONE")
+                                        p0.Stroke = Brushes.LightSkyBlue;
+                                    else if (v.Callsign.StartsWith("F"))
+                                        p0.Stroke = Brushes.White;
+                                    else
+                                        p0.Stroke = Brushes.Red;
 
-                                p0.StrokeThickness = 1;
-                                p0.Width = 2;
-                                p0.Height = p0.Width;
-                                p0.Tag = v.TrackN + "/" + i;
-                                p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
-                                LienzoVehicles.Children.Add(p0);
+                                    p0.StrokeThickness = 1;
+                                    p0.Width = 2;
+                                    p0.Height = p0.Width;
+                                    p0.Tag = j + "/" + i;
+                                    p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                    LienzoVehicles.Children.Add(p0);
 
-                                Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
-                                Canvas.SetTop(p0, (list[i].Y + B) / beta - p0.Height / 2);
+                                    Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
+                                    Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+                                }
+
+
+
+                                if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
+                                    exit = true;
                             }
+                            i++;
                         }
                     }
                 }
+                ActualTime = ActualTime.AddSeconds(SlSpeed.Value);
             }
         }
 
@@ -578,7 +594,6 @@ namespace Ideafix
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (checkBoxes != null) {
-                //double[] zoom = new double[] { 41.315955, 2.028508, -4148, 2156, 41.393904, 1.842814, -19575, 11001, 42.115028, 0.005309, -170413, 94758, 43.542697, -3.904945, -507994, 249350 };
                 double[] zoom = new double[] { 41.315955, 2.028508, 41.393904, 1.842814, 42.115028, 0.005309, 43.542697, -3.904945};
 
                 int a = Convert.ToInt32(e.NewValue * 2);
@@ -586,34 +601,11 @@ namespace Ideafix
                 double lon = zoom[a - 1];
                 zero0 = new Point().LatLong2XY(lat, lon);
 
-                //xe = (zero0.X - ARP.X) * 6.360;
-                //yn = (zero0.Y - ARP.Y) * 6.502;
-
-                //A = -zero0.X;
-                //B = -zero0.Y;
-                //alpha = A / (LienzoMaps.ActualWidth / 2);
-                //beta = B / (LienzoMaps.ActualHeight / 2);
-                //xA = (ARP.X + A) / alpha;
-                //yA = (ARP.Y + B) / beta;
-                //AARP = -xA;
-                //BARP = -yA;
-                //alphaARP = AARP / xe;
-                //betaARP = BARP / yn;
-
-                //xe = zero0.X;
-                //yn = zero0.Y;
-
                 A = -zero0.X;
                 B = -zero0.Y;
                 alpha = A / (LienzoMaps.ActualWidth / 2);
                 beta = B / (LienzoMaps.ActualHeight / 2);
 
-                //xA = A/ alpha;
-                //yA = B / beta;
-                //AARP = -xA;
-                //BARP = -yA;
-                //alphaARP = AARP / xe;
-                //betaARP = BARP / yn;
                 CheckBoxClickVehicles(sender, e);
                 CheckBoxClickMaps(sender, e);
             }
@@ -799,22 +791,9 @@ namespace Ideafix
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {   //entre abans del load, no comprendo
-            //ARP = new Point().LatLong2XY(41.296944, 2.078333);
-
+        {  
             alpha = A / (LienzoMaps.ActualWidth / 2);
             beta = B / (LienzoMaps.ActualHeight / 2);
-
-            //new
-            //xA = (ARP.X + A) / alpha;
-            //yA = (ARP.Y + B) / beta;
-
-            //xA = (A) / alpha;
-            //yA = (B) / beta;
-            //AARP = -xA;
-            //BARP = -yA;
-            //alphaARP = AARP / xe;
-            //betaARP = BARP / yn;
 
             CheckBoxClickVehicles(sender, e);
             CheckBoxClickMaps(sender, e);
@@ -822,8 +801,6 @@ namespace Ideafix
 
         private void LienzoMaps_MouseMove(object sender, MouseEventArgs e)
         {
-            //LPosX.Text = ((e.GetPosition(LienzoMaps).X + AARP) / alphaARP).ToString("0.###m");
-            //LPosY.Text = ((e.GetPosition(LienzoMaps).Y + BARP) / betaARP).ToString("0.###m");
             LPosX.Text = (e.GetPosition(LienzoMaps).X *alpha - A).ToString("0.###m");
             LPosY.Text = (e.GetPosition(LienzoMaps).Y*beta -B).ToString("0.###m");
         }
