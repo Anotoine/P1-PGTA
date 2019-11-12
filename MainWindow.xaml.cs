@@ -276,110 +276,251 @@ namespace Ideafix
 
         private void BPlay_Click(object seder, RoutedEventArgs e)
         {
-            //if (!timer.IsEnabled)
-            //{
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromSeconds(1);
-                timer.Tick += Next_Tick;
-                timer.Start();
-                ActualTime = new DateTime().AddHours(SlTime.LowerValue);
-            //}
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Next_Tick;
+            timer.Start();
+            ActualTime = new DateTime().AddHours(SlTime.LowerValue);
         }
 
-        private void Next_Tick(object sender, EventArgs e) //TODO
+        private void Next_Tick(object sender, EventArgs e)
         {
             LienzoVehicles.Children.Clear();
 
-            if (VehiclesList != null)
+            if (CheckVehicles != null)
             {
-                if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
+                if (CheckVehicles.IsChecked == true)
                 {
-                    for (int j = 0; j < VehiclesList.Count; j++)
+                    if (VehiclesList != null)
                     {
-                        Vehicle v = VehiclesList[j];
-                        Polyline pl = new Polyline();
-                        PointCollection pp = new PointCollection();
-                        bool exit = false;
-                        int i = 0;
-
-                        List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                        List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                        while (!exit && i < listP.Count)
+                        if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
                         {
-                            if (listP[i] != null)
+                            for (int j = 0; j < VehiclesList.Count; j++)
                             {
-                                if (DateTime.Compare(listT[i], ActualTime) < 0)
-                                    pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
-
-
-
-                                if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
-                                    exit = true;
-                            }
-                            i++;
-                        }
-
-                        if (v.Callsign == "NONE")
-                            pl.Stroke = UserOptions.OtherColor;
-                        else if (v.Callsign.StartsWith("F"))
-                            pl.Stroke = UserOptions.VehiclesColor;
-                        else
-                            pl.Stroke = UserOptions.AircraftColor;
-
-                        pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
-                        pl.Tag = j + "/" + Convert.ToString(v.DateTimes.Count - 1);
-
-                        pl.Points = pp;
-                        LienzoVehicles.Children.Add(pl);
-                    }
-                }
-                else if (MergingTypeRADAR.SelectedIndex == 1) //Points
-                {
-                    for (int j = 0; j < VehiclesList.Count; j++)
-                    {
-                        Vehicle v = VehiclesList[j];
-                        bool exit = false;
-                        int i = 0;
-
-                        List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                        List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                        while (!exit && i < listP.Count)
-                        {
-                            if (listP[i] != null)
-                            {
-                                if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                Vehicle v = VehiclesList[j];
+                                bool exit = false;
+                                int i = 0;
+                                if (v.Callsign.StartsWith("F"))
                                 {
-                                    Ellipse p0 = new Ellipse();
+                                    Polyline pl = new Polyline();
+                                    PointCollection pp = new PointCollection();
 
-                                    if (v.Callsign == "NONE")
-                                        p0.Stroke = Brushes.LightSkyBlue;
-                                    else if (v.Callsign.StartsWith("F"))
-                                        p0.Stroke = Brushes.White;
-                                    else
-                                        p0.Stroke = Brushes.Red;
+                                    List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    while (!exit && i < listP.Count)
+                                    {
+                                        if (listP[i] != null)
+                                        {
+                                            if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                                pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
 
-                                    p0.StrokeThickness = 1;
-                                    p0.Width = 2;
-                                    p0.Height = p0.Width;
-                                    p0.Tag = j + "/" + i;
-                                    p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
-                                    LienzoVehicles.Children.Add(p0);
 
-                                    Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
-                                    Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+
+                                            if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
+                                                exit = true;
+                                        }
+                                        i++;
+                                    }
+
+                                    pl.Stroke = UserOptions.VehiclesColor;
+                                    pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+
+                                    pl.Points = pp;
+                                    LienzoVehicles.Children.Add(pl);
                                 }
-
-
-
-                                if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
-                                    exit = true;
                             }
-                            i++;
+                        }
+                        else if (MergingTypeRADAR.SelectedIndex == 1) //Points
+                        {
+                            for (int j = 0; j < VehiclesList.Count; j++)
+                            {
+                                Vehicle v = VehiclesList[j];
+                                bool exit = false;
+                                int i = 0;
+
+                                if (v.Callsign.StartsWith("F"))
+                                {
+                                    List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    while (!exit && i < listP.Count)
+                                    {
+                                        Ellipse p0 = new Ellipse();
+                                        p0.Stroke = UserOptions.VehiclesColor;
+
+                                        p0.StrokeThickness = 1;
+                                        p0.Width = 2;
+                                        p0.Height = p0.Width;
+                                        p0.Tag = j + "/" + i;
+                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                        LienzoVehicles.Children.Add(p0);
+
+                                        Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
+                                        Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+                                        
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-                ActualTime = ActualTime.AddSeconds(SlSpeed.Value);
             }
+
+            if (CheckTraffic != null)
+            {
+                if (CheckTraffic.IsChecked == true)
+                {
+                    if (VehiclesList != null)
+                    {
+                        if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
+                        {
+                            for (int j = 0; j < VehiclesList.Count; j++)
+                            {
+                                Vehicle v = VehiclesList[j];
+                                bool exit = false;
+                                int i = 0;
+                                if (v.Callsign != "NONE" && !v.Callsign.StartsWith("F"))
+                                {
+                                    Polyline pl = new Polyline();
+                                    PointCollection pp = new PointCollection();
+
+                                    List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    while (!exit && i < listP.Count)
+                                    {
+                                        if (listP[i] != null)
+                                        {
+                                            if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                                pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
+
+
+
+                                            if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
+                                                exit = true;
+                                        }
+                                        i++;
+                                    }
+                                    pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                    pl.Stroke = UserOptions.AircraftColor;
+
+                                    pl.Points = pp;
+                                    LienzoVehicles.Children.Add(pl);
+                                }
+                            }
+                        }
+                        else if (MergingTypeRADAR.SelectedIndex == 1) //Points
+                        {
+                            for (int j = 0; j < VehiclesList.Count; j++)
+                            {
+                                Vehicle v = VehiclesList[j];
+                                bool exit = false;
+                                int i = 0;
+
+                                if (v.Callsign != "NONE" && !v.Callsign.StartsWith("F"))
+                                {
+                                    List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    while (!exit && i < listP.Count)
+                                    {
+                                        Ellipse p0 = new Ellipse();
+                                        p0.Stroke = UserOptions.VehiclesColor;
+
+                                        p0.StrokeThickness = 1;
+                                        p0.Width = 2;
+                                        p0.Height = p0.Width;
+                                        p0.Tag = j + "/" + i;
+                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                        LienzoVehicles.Children.Add(p0);
+
+                                        Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
+                                        Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (CheckUnknown != null)
+            {
+                if (CheckUnknown.IsChecked == true)
+                {
+                    if (VehiclesList != null)
+                    {
+                        if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
+                        {
+                            for (int j = 0; j < VehiclesList.Count; j++)
+                            {
+                                Vehicle v = VehiclesList[j];
+                                bool exit = false;
+                                int i = 0;
+                                if (v.Callsign == "NONE")
+                                {
+                                    Polyline pl = new Polyline();
+                                    PointCollection pp = new PointCollection();
+
+                                    List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    while (!exit && i < listP.Count)
+                                    {
+                                        if (listP[i] != null)
+                                        {
+                                            if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                                pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
+
+
+
+                                            if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
+                                                exit = true;
+                                        }
+                                        i++;
+                                    }
+
+                                    pl.Stroke = UserOptions.OtherColor;
+                                    pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+
+                                    pl.Points = pp;
+                                    LienzoVehicles.Children.Add(pl);
+                                }
+                            }
+                        }
+                        else if (MergingTypeRADAR.SelectedIndex == 1) //Points
+                        {
+                            for (int j = 0; j < VehiclesList.Count; j++)
+                            {
+                                Vehicle v = VehiclesList[j];
+                                bool exit = false;
+                                int i = 0;
+
+                                if (v.Callsign == "NONE")
+                                {
+                                    List<Point> listP = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    while (!exit && i < listP.Count)
+                                    {
+                                        Ellipse p0 = new Ellipse();
+                                        p0.Stroke = UserOptions.VehiclesColor;
+
+                                        p0.StrokeThickness = 1;
+                                        p0.Width = 2;
+                                        p0.Height = p0.Width;
+                                        p0.Tag = j + "/" + i;
+                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                        LienzoVehicles.Children.Add(p0);
+
+                                        Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
+                                        Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ActualTime = ActualTime.AddSeconds(SlSpeed.Value);
         }
 
         private void Worker_DoWork_LoadFile(object sender, DoWorkEventArgs e)
@@ -581,7 +722,9 @@ namespace Ideafix
 
         private void worker_RunWorkerCompleated_DB(object sender, RunWorkerCompletedEventArgs e)
         {
+            CheckTraffic.Visibility = Visibility.Visible;
             CheckVehicles.Visibility = Visibility.Visible;
+            CheckUnknown.Visibility = Visibility.Visible;
         }
 
         private void PBLoadFile_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -610,8 +753,7 @@ namespace Ideafix
 
         private void SliderTime_ValueChanged(object sender, RoutedEventArgs e)
         {
-            if (CheckVehicles != null)
-                CheckBoxClickVehicles(sender, e);
+            CheckBoxClickAll(sender, e);
         }
 
         private void Interval_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -634,7 +776,7 @@ namespace Ideafix
                 alpha = A / (LienzoMaps.ActualWidth / 2);
                 beta = B / (LienzoMaps.ActualHeight / 2);
 
-                CheckBoxClickVehicles(sender, e);
+                CheckBoxClickAll(sender, e);
                 CheckBoxClickMaps(sender, e);
             }
         }
@@ -770,13 +912,149 @@ namespace Ideafix
             }
         }
 
-        private void CheckBoxClickVehicles(object sender, RoutedEventArgs e)
+        private void CheckBoxClickAll(object sender, RoutedEventArgs e)
         {
-            LienzoVehicles.Children.Clear();
+            if (!timer.IsEnabled)
+            { 
+                LienzoVehicles.Children.Clear();
 
-            if (CheckVehicles != null)
-            {   
-                if (CheckVehicles.IsChecked == true)
+                if (CheckVehicles != null)
+                {
+                    if (CheckVehicles.IsChecked == true)
+                    {
+                        if (VehiclesList != null)
+                        {
+                            if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
+                            {
+                                for (int j = 0; j < VehiclesList.Count; j++)
+                                {
+                                    Vehicle v = VehiclesList[j];
+                                    if (v.Callsign.StartsWith("F"))
+                                    {
+                                        Polyline pl = new Polyline();
+                                        PointCollection pp = new PointCollection();
+
+                                        List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                        for (int i = 0; i < list.Count; i++)
+                                        {
+                                            if (list[i] != null)
+                                            {
+                                                pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y + B) / beta));
+                                                pl.Tag = j + "/" + i;
+                                            }
+                                        }
+
+                                        pl.Stroke = UserOptions.VehiclesColor;
+                                        pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+
+                                        pl.Points = pp;
+                                        LienzoVehicles.Children.Add(pl);
+                                    }
+
+                                }
+                            }
+                            else if (MergingTypeRADAR.SelectedIndex == 1) //Points
+                            {
+                                for (int j = 0; j < VehiclesList.Count; j++)
+                                {
+                                    Vehicle v = VehiclesList[j];
+                                    if (v.Callsign.StartsWith("F"))
+                                    {
+                                        List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                        for (int i = 0; i < list.Count; i++)
+                                        {
+                                            if (list[i] != null)
+                                            {
+                                                Ellipse p0 = new Ellipse();
+                                                p0.Stroke = UserOptions.VehiclesColor;
+
+                                                p0.StrokeThickness = 1;
+                                                p0.Width = 2;
+                                                p0.Height = p0.Width;
+                                                p0.Tag = j + "/" + i;
+                                                p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                                LienzoVehicles.Children.Add(p0);
+
+                                                Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
+                                                Canvas.SetTop(p0, (list[i].Y + B) / beta - p0.Height / 2);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (CheckTraffic != null)
+                {
+                    if (CheckTraffic.IsChecked == true)
+                    {
+                        if (VehiclesList != null)
+                        {
+                            if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
+                            {
+                                for (int j = 0; j < VehiclesList.Count; j++)
+                                {
+                                    Vehicle v = VehiclesList[j];
+                                    if (v.Callsign != "NONE" && !v.Callsign.StartsWith("F"))
+                                    {
+                                        Polyline pl = new Polyline();
+                                        PointCollection pp = new PointCollection();
+
+                                        List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                        for (int i = 0; i < list.Count; i++)
+                                        {
+                                            if (list[i] != null)
+                                            {
+                                                pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y + B) / beta));
+                                                pl.Tag = j + "/" + i;
+                                            }
+                                        }
+                                        pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                        pl.Stroke = UserOptions.AircraftColor;
+
+                                        pl.Points = pp;
+                                        LienzoVehicles.Children.Add(pl);
+                                    }
+                                }
+                            }
+                            else if (MergingTypeRADAR.SelectedIndex == 1) //Points
+                            {
+                                for (int j = 0; j < VehiclesList.Count; j++)
+                                {
+                                    Vehicle v = VehiclesList[j];
+                                    if (v.Callsign != "NONE" && !v.Callsign.StartsWith("F"))
+                                    {
+                                        List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                        for (int i = 0; i < list.Count; i++)
+                                        {
+                                            if (list[i] != null)
+                                            {
+                                                Ellipse p0 = new Ellipse();
+
+                                                p0.StrokeThickness = 1;
+                                                p0.Width = 2;
+                                                p0.Height = p0.Width;
+                                                p0.Tag = j + "/" + i;
+                                                p0.Stroke = UserOptions.AircraftColor;
+                                                p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                                LienzoVehicles.Children.Add(p0);
+
+                                                Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
+                                                Canvas.SetTop(p0, (list[i].Y + B) / beta - p0.Height / 2);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (CheckUnknown != null)
+            {
+                if (CheckUnknown.IsChecked == true)
                 {
                     if (VehiclesList != null)
                     {
@@ -785,66 +1063,61 @@ namespace Ideafix
                             for (int j = 0; j < VehiclesList.Count; j++)
                             {
                                 Vehicle v = VehiclesList[j];
-                                Polyline pl = new Polyline();
-                                PointCollection pp = new PointCollection();
-
-                                List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                                for (int i = 0; i < list.Count; i++)
-                                {
-                                    if (list[i] != null)
-                                    {
-                                        pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y + B) / beta));
-                                        pl.Tag = j + "/" + i;
-                                    }
-                                }
-
                                 if (v.Callsign == "NONE")
+                                {
+                                    Polyline pl = new Polyline();
+                                    PointCollection pp = new PointCollection();
+
+                                    List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    for (int i = 0; i < list.Count; i++)
+                                    {
+                                        if (list[i] != null)
+                                        {
+                                            pp.Add(new System.Windows.Point((list[i].X + A) / alpha, (list[i].Y + B) / beta));
+                                            pl.Tag = j + "/" + i;
+                                        }
+                                    }
+
                                     pl.Stroke = UserOptions.OtherColor;
-                                else if (v.Callsign.StartsWith("F"))
-                                    pl.Stroke = UserOptions.VehiclesColor;
-                                else
-                                    pl.Stroke = UserOptions.AircraftColor;
+                                    pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
 
-                                pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
-
-                                pl.Points = pp;
-                                LienzoVehicles.Children.Add(pl);
-                                
+                                    pl.Points = pp;
+                                    LienzoVehicles.Children.Add(pl);
+                                }
                             }
-                        } else if (MergingTypeRADAR.SelectedIndex == 1) //Points
+                        }
+                        else if (MergingTypeRADAR.SelectedIndex == 1) //Points
                         {
                             for (int j = 0; j < VehiclesList.Count; j++)
                             {
                                 Vehicle v = VehiclesList[j];
-                                List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
-                                for (int i = 0; i < list.Count; i++)
+                                if (v.Callsign == "NONE")
                                 {
-                                    if (list[i] != null)
+                                    List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
+                                    for (int i = 0; i < list.Count; i++)
                                     {
-                                        Ellipse p0 = new Ellipse();
+                                        if (list[i] != null)
+                                        {
+                                            Ellipse p0 = new Ellipse();
+                                            p0.Stroke = UserOptions.OtherColor;
 
-                                        if (v.Callsign == "NONE")
-                                            p0.Stroke = Brushes.LightSkyBlue;
-                                        else if (v.Callsign.StartsWith("F"))
-                                            p0.Stroke = Brushes.White;
-                                        else
-                                            p0.Stroke = Brushes.Red;
+                                            p0.StrokeThickness = 1;
+                                            p0.Width = 2;
+                                            p0.Height = p0.Width;
+                                            p0.Tag = j + "/" + i;
+                                            p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                            LienzoVehicles.Children.Add(p0);
 
-                                        p0.StrokeThickness = 1;
-                                        p0.Width = 2;
-                                        p0.Height = p0.Width;
-                                        p0.Tag = j + "/" + i;
-                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
-                                        LienzoVehicles.Children.Add(p0);
-
-                                        Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
-                                        Canvas.SetTop(p0, (list[i].Y + B) / beta - p0.Height / 2);
+                                            Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
+                                            Canvas.SetTop(p0, (list[i].Y + B) / beta - p0.Height / 2);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+            }
             }
         }
 
@@ -864,7 +1137,7 @@ namespace Ideafix
             alpha = A / (LienzoMaps.ActualWidth / 2);
             beta = B / (LienzoMaps.ActualHeight / 2);
 
-            CheckBoxClickVehicles(sender, e);
+            CheckBoxClickAll(sender, e);
             CheckBoxClickMaps(sender, e);
         }
 
