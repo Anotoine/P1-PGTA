@@ -207,6 +207,67 @@ namespace Ideafix
                 TLoadDB.Text = openFileDialog.FileName;
         }
 
+        private void BLoadRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (!TLoadFile.Text.Equals(paths["File"]) || TLoadFile.Equals(""))
+            {
+                paths["File"] = TLoadFile.Text;
+
+                //Starting variables to be filled
+                listMessages = new List<Message>();
+                listRow = new List<ShowRow>();
+
+                PBLoadFile.Value = 0;
+                //Loading a worker to do the Decoding stuff
+                using (BackgroundWorker workerFile = new BackgroundWorker { WorkerReportsProgress = true })
+                {
+                    workerFile.DoWork += Worker_DoWork_LoadFile;
+                    workerFile.ProgressChanged += worker_ProgressChanged_LoadFile;
+                    workerFile.RunWorkerCompleted += worker_RunWorkerCompleated_LoadFile;
+                    workerFile.RunWorkerAsync(TLoadFile.Text);
+                }
+            }
+
+            if (!TLoadMaps.Text.Equals(paths["Maps"]) || TLoadMaps.Equals(""))
+            {
+                paths["Maps"] = TLoadMaps.Text;
+
+                //Starting variables to be filled
+                Maps = new List<Map>();
+                checkBoxes = new List<CheckBox>();
+
+                PBLoadMaps.Value = 0;
+                //Loading a worker to do the Decoding stuff
+                using (BackgroundWorker workerMaps = new BackgroundWorker { WorkerReportsProgress = true })
+                {
+                    workerMaps.DoWork += Worker_DoWork_Maps;
+                    workerMaps.ProgressChanged += worker_ProgressChanged_Maps;
+                    workerMaps.RunWorkerCompleted += worker_RunWorkerCompleated_Maps;
+                    workerMaps.RunWorkerAsync(TLoadMaps.Text);
+                }
+            }
+
+            //Check condition, not working properly
+            if (!TLoadDB.Text.Equals(paths["DB"]) || TLoadDB.Equals("") || relaunch)
+            {
+                paths["DB"] = TLoadDB.Text;
+
+                //Starting variables to be filled
+                VehiclesList = new List<Vehicle>();
+
+                PBLoadDB.Value = 0;
+                relaunch = false;
+                //Loading a worker to do the Decoding stuff
+                using (BackgroundWorker workerDB = new BackgroundWorker { WorkerReportsProgress = true })
+                {
+                    workerDB.DoWork += Worker_DoWork_DB;
+                    workerDB.ProgressChanged += worker_ProgressChanged_DB;
+                    workerDB.RunWorkerCompleted += worker_RunWorkerCompleated_DB;
+                    workerDB.RunWorkerAsync(TLoadDB.Text);
+                }
+            }
+        }
+
         private void BPause_Click(object seder, RoutedEventArgs e)
         {
             timer.Stop();
@@ -446,6 +507,39 @@ namespace Ideafix
             PBLoadDB.Value = e.ProgressPercentage;
         }
 
+        private void worker_RunWorkerCompleated_LoadFile(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //Binding the data to the table
+            Table.ItemsSource = listRow;
+
+            //Relaunching DB to load the data into the Vehicle form
+            relaunch = true;
+            BLoadRefresh_Click(sender, new RoutedEventArgs());
+        }
+
+        private void worker_RunWorkerCompleated_Maps(object sender, RunWorkerCompletedEventArgs e)
+        {
+            foreach (Map map in Maps)
+            {
+                //Creating the Checkbox to be checked
+                CheckBox checkBox = new CheckBox
+                {
+                    Content = map.getName(),
+                    FontSize = 12,
+                    Foreground = UserOptions.MapTextColor,
+                    Margin = new Thickness(10, 10, 10, 10)
+                };
+                checkBox.Click += new RoutedEventHandler(CheckBoxClickMaps);
+                checkBoxes.Add(checkBox);
+                StackMaps.Children.Add(checkBox);
+            }
+        }
+
+        private void worker_RunWorkerCompleated_DB(object sender, RunWorkerCompletedEventArgs e)
+        {
+            CheckVehicles.Visibility = Visibility.Visible;
+        }
+
         private void PBLoadFile_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (PBLoadFile.Value >= 100)
@@ -535,108 +629,6 @@ namespace Ideafix
             SlZoom.Value--;
         }
 
-        private void worker_RunWorkerCompleated_LoadFile(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //Showing a MessageBox on the final solution
-            //MessageBox.Show(listMessages.Count + " are loaded to the program.", "Loaded!", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            //Binding the data to the table
-            Table.ItemsSource = listRow;
-
-            //Relaunching DB to load the data into the Vehicle form
-            relaunch = true;
-            BLoadRefresh_Click(sender, new RoutedEventArgs());
-        }
-
-        private void worker_RunWorkerCompleated_Maps(object sender, RunWorkerCompletedEventArgs e)
-        {
-            foreach (Map map in Maps)
-            {
-                //Creating the Checkbox to be checked
-                CheckBox checkBox = new CheckBox
-                {
-                    Content = map.getName(),
-                    FontSize = 12,
-                    Foreground = UserOptions.MapTextColor,
-                    Margin = new Thickness(10, 10, 10, 10)
-                };
-                checkBox.Click += new RoutedEventHandler(CheckBoxClickMaps);
-                checkBoxes.Add(checkBox);
-                StackMaps.Children.Add(checkBox);
-            }
-
-            //Showing a MessageBox on the final solution
-            //MessageBox.Show(mapsNames.Count + " are loaded to the program.", "Loaded!", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-
-        private void worker_RunWorkerCompleated_DB(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //Showing a MessageBox on the final solution
-            //MessageBox.Show(VehiclesList.Count + " are loaded to the program.", "Loaded!", MessageBoxButton.OK, MessageBoxImage.Information);
-            CheckVehicles.Visibility = Visibility.Visible;
-        }
-
-        private void BLoadRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            if (!TLoadFile.Text.Equals(paths["File"]) || TLoadFile.Equals(""))
-            {
-                paths["File"] = TLoadFile.Text;
-
-                //Starting variables to be filled
-                listMessages = new List<Message>();
-                listRow = new List<ShowRow>();
-
-                PBLoadFile.Value = 0;
-                //Loading a worker to do the Decoding stuff
-                using (BackgroundWorker workerFile = new BackgroundWorker { WorkerReportsProgress = true })
-                {
-                    workerFile.DoWork += Worker_DoWork_LoadFile;
-                    workerFile.ProgressChanged += worker_ProgressChanged_LoadFile;
-                    workerFile.RunWorkerCompleted += worker_RunWorkerCompleated_LoadFile;
-                    workerFile.RunWorkerAsync(TLoadFile.Text);
-                }
-            }
-
-            if (!TLoadMaps.Text.Equals(paths["Maps"]) || TLoadMaps.Equals(""))
-            {
-                paths["Maps"] = TLoadMaps.Text;
-
-                //Starting variables to be filled
-                Maps = new List<Map>();
-                checkBoxes = new List<CheckBox>();
-
-                PBLoadMaps.Value = 0;
-                //Loading a worker to do the Decoding stuff
-                using (BackgroundWorker workerMaps = new BackgroundWorker { WorkerReportsProgress = true })
-                {
-                    workerMaps.DoWork += Worker_DoWork_Maps;
-                    workerMaps.ProgressChanged += worker_ProgressChanged_Maps;
-                    workerMaps.RunWorkerCompleted += worker_RunWorkerCompleated_Maps;
-                    workerMaps.RunWorkerAsync(TLoadMaps.Text);
-                }
-            }
-
-            //Check condition, not working properly
-            if (!TLoadDB.Text.Equals(paths["DB"]) || TLoadDB.Equals("") || relaunch)
-            {
-                paths["DB"] = TLoadDB.Text;
-
-                //Starting variables to be filled
-                VehiclesList = new List<Vehicle>();
-
-                PBLoadDB.Value = 0;
-                relaunch = false;
-                //Loading a worker to do the Decoding stuff
-                using (BackgroundWorker workerDB = new BackgroundWorker { WorkerReportsProgress = true })
-                {
-                    workerDB.DoWork += Worker_DoWork_DB;
-                    workerDB.ProgressChanged += worker_ProgressChanged_DB;
-                    workerDB.RunWorkerCompleted += worker_RunWorkerCompleated_DB;
-                    workerDB.RunWorkerAsync(TLoadDB.Text);
-                }
-            }
-        }
-
         private void CheckBoxClickMaps(object sender, RoutedEventArgs e)
         {
             LienzoMaps.Children.Clear();
@@ -687,39 +679,6 @@ namespace Ideafix
                             pol.Points = points;
                             LienzoMaps.Children.Add(pol);
 
-                            Random rnd = new Random();  //Aqui poso els punts random per probar la funció
-                            PointCollection pCol = new PointCollection();
-                            for (int j = 0; j < 500; j++)
-                            {
-                                pCol.Add(new System.Windows.Point(rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth)), rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth))));
-                            }
-
-
-                            foreach (System.Windows.Point p in pCol)
-                            {
-                                Ellipse el = new Ellipse
-                                {
-                                    StrokeThickness = 1,
-                                    Width = 5,
-                                    Height = 5
-                                };
-                                Canvas.SetLeft(el, p.X - el.Width / 2);
-                                Canvas.SetTop(el, p.Y - el.Height / 2);
-                                if (IsPointInPolygon4(points, p))
-                                {
-                                    el.Stroke = Brushes.Green;
-                                    el.Fill = Brushes.Green;
-                                }
-                                else
-                                {
-                                    el.Stroke = Brushes.Red;
-                                    el.Fill = Brushes.Red;
-                                }
-
-                                LienzoMaps.Children.Add(el);
-                            }
-
-
                         }
                         foreach (Tuple<Point, string> txt in Maps[i].getTexts())
                         {
@@ -748,20 +707,6 @@ namespace Ideafix
                     }
                 }
             }
-
-            //if (CheckARP.IsChecked == true)
-            //{
-            //    Ellipse ARPpoint = new Ellipse();
-            //    ARPpoint.Stroke = Brushes.Yellow;
-            //    ARPpoint.Fill = Brushes.Yellow;
-            //    ARPpoint.Width = 5;
-            //    ARPpoint.Height = 5;
-            //    //Canvas.SetLeft(ARPpoint, ((ARP.X + A) / alpha) - ARPpoint.Width / 2);
-            //    //Canvas.SetTop(ARPpoint, ((ARP.Y + B) / beta) - ARPpoint.Height / 2);
-            //    Canvas.SetLeft(ARPpoint, ((A) / alpha) - ARPpoint.Width / 2);
-            //    Canvas.SetTop(ARPpoint, ((B) / beta) - ARPpoint.Height / 2);
-            //    LienzoMaps.Children.Add(ARPpoint);
-            //}
         }
 
         private void CheckBoxClickVehicles(object sender, RoutedEventArgs e)
