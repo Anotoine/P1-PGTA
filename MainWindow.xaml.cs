@@ -480,7 +480,7 @@ namespace Ideafix
                 MessageBox.Show("It was not possible to add the database data to the table", "Error.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            //try { 
+            try { 
                 if (!(listMessages == null))
                 {
                     Vistos = new List<string>();
@@ -527,10 +527,11 @@ namespace Ideafix
                         }
                     }
                 }
-            //} catch
-            //{
-            //    MessageBox.Show("It was not possible to add the information from the Database.", "Error comparing.", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
+            }
+            catch
+            {
+                MessageBox.Show("It was not possible to add the information from the Database.", "Error comparing.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
 
         }
@@ -706,13 +707,15 @@ namespace Ideafix
                         //    listeli.Add(el);
                         //}
 
-                        foreach (List<Point> pl in Maps[i].getPolygons()) //Aqui Dibuixem poligons
+                        for (int j = 0; j < Maps[i].getPolygons().Count; j++) //Aqui Dibuixem poligons
                         {
+                            List<Point> pl = Maps[i].getPolygon(j);
+                            int index = Maps[i].getIndex(j);
                             Polygon pol = new Polygon
                             {
                                 StrokeThickness = 1,
-                                Stroke = Maps[i].GetColor(1),
-                                Fill = Maps[i].GetColor(1)
+                                Stroke = new SolidColorBrush(Maps[i].GetColor(index)),
+                                Fill = new SolidColorBrush(Maps[i].GetColor(index))
                             };
                             PointCollection points = new PointCollection();
                             foreach (Point pp in pl)

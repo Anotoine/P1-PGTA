@@ -26,7 +26,7 @@ namespace Ideafix
         SolidColorBrush TextsColor = new SolidColorBrush();
         SolidColorBrush LinesColor = new SolidColorBrush();
 
-        List<SolidColorBrush> ListColorsPoligons = new List<SolidColorBrush>();
+        Dictionary<int, Color> ListColorsPoligons = new Dictionary<int, Color>();
 
         public Map(string file)
         {
@@ -53,7 +53,7 @@ namespace Ideafix
                         case "ColorTexto":
                             auxstr = lines[j].Substring(10).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                             TextsColor = new SolidColorBrush(Color.FromRgb(Convert.ToByte(auxstr[0], 10), Convert.ToByte(auxstr[1], 10), Convert.ToByte(auxstr[2], 10)));
-                            
+
                             j++;
                             break;
 
@@ -72,8 +72,13 @@ namespace Ideafix
                             break;
 
                         case "ColorPoligono":
-                            auxstr = lines[j].Substring(10).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                            ListColorsPoligons[Convert.ToInt32(auxstr[0], 10)] = new SolidColorBrush(Color.FromArgb(125, Convert.ToByte(auxstr[1], 10), Convert.ToByte(auxstr[2], 10), Convert.ToByte(auxstr[3], 10)));
+                            auxstr = lines[j].Substring(13).Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                            int pos = Convert.ToInt16(auxstr[0]);
+                            int R = Convert.ToInt16(auxstr[1]);
+                            int G = Convert.ToInt16(auxstr[2]);
+                            int B = Convert.ToInt16(auxstr[3]);
+                            ListColorsPoligons.Add(pos, Color.FromArgb(100, (byte)R, (byte)G, (byte)B));
+
 
                             j++;
                             break;
@@ -330,6 +335,11 @@ namespace Ideafix
             return this.Polygons;
         }
 
+        public List<Point> getPolygon(int i)
+        {
+            return this.Polygons[i];
+        }
+
         public int getIndex(int i)
         {
             if (index[i] != null)
@@ -348,12 +358,14 @@ namespace Ideafix
             return this.Texts;
         }
 
-        public SolidColorBrush GetColor(int i)
+        public Color GetColor(int index)
         {
-            if (i < ListColorsPoligons.Count)
-                return ListColorsPoligons[i];
+            Color colorBrush;
+            ListColorsPoligons.TryGetValue(index, out colorBrush);
+            if (colorBrush != null)
+                return colorBrush;
             else
-                return new SolidColorBrush(Color.FromRgb(255,0,0));
+                return Color.FromArgb(100,255,0,0);
         }
     }
 }
