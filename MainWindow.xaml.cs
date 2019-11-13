@@ -31,6 +31,7 @@ namespace Ideafix
         //Decoding stuff
         List<Message> listMessages;
         List<ShowRow> listRow;
+        List<ShowPerf> listPerf;
 
         //DB stuff
         List<AircraftDB> listPlaneDB;
@@ -63,6 +64,7 @@ namespace Ideafix
             WLoad.Visibility = Visibility.Visible;
             WRadar.Visibility = Visibility.Hidden;
             WTable.Visibility = Visibility.Hidden;
+            WPerformance.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Hidden;
 
             LPosLL.Visibility = Visibility.Hidden;
@@ -71,6 +73,7 @@ namespace Ideafix
             WLoad.IsEnabled = true;
             WRadar.IsEnabled = false;
             WTable.IsEnabled = false;
+            WPerformance.IsEnabled = false;
             WSettings.IsEnabled = false;
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
@@ -89,6 +92,7 @@ namespace Ideafix
             WLoad.Visibility = Visibility.Hidden;
             WRadar.Visibility = Visibility.Visible;
             WTable.Visibility = Visibility.Hidden;
+            WPerformance.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Hidden;
 
             LPosLL.Visibility = Visibility.Visible;
@@ -97,6 +101,7 @@ namespace Ideafix
             WLoad.IsEnabled = false;
             WRadar.IsEnabled = true;
             WTable.IsEnabled = false;
+            WPerformance.IsEnabled = false;
             WSettings.IsEnabled = false;
             LPosLL.IsEnabled = true;
             LPosXY.IsEnabled = true;
@@ -107,6 +112,8 @@ namespace Ideafix
             WLoad.Visibility = Visibility.Hidden;
             WRadar.Visibility = Visibility.Hidden;
             WTable.Visibility = Visibility.Visible;
+            WPerformance.Visibility = Visibility.Hidden;
+
             WSettings.Visibility = Visibility.Hidden;
 
             LPosLL.Visibility = Visibility.Hidden;
@@ -115,6 +122,28 @@ namespace Ideafix
             WLoad.IsEnabled = false;
             WRadar.IsEnabled = false;
             WTable.IsEnabled = true;
+            WPerformance.IsEnabled = false;
+            WSettings.IsEnabled = false;
+            LPosLL.IsEnabled = false;
+            LPosXY.IsEnabled = false;
+        }
+
+        private void BPerfo_Click(object sender, RoutedEventArgs e)
+        {
+            WLoad.Visibility = Visibility.Hidden;
+            WRadar.Visibility = Visibility.Hidden;
+            WTable.Visibility = Visibility.Hidden;
+            WPerformance.Visibility = Visibility.Visible;
+            WSettings.Visibility = Visibility.Hidden;
+
+
+            LPosLL.Visibility = Visibility.Hidden;
+            LPosXY.Visibility = Visibility.Hidden;
+
+            WLoad.IsEnabled = false;
+            WRadar.IsEnabled = false;
+            WTable.IsEnabled = false;
+            WPerformance.IsEnabled = true;
             WSettings.IsEnabled = false;
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
@@ -125,6 +154,7 @@ namespace Ideafix
             WLoad.Visibility = Visibility.Hidden;
             WRadar.Visibility = Visibility.Hidden;
             WTable.Visibility = Visibility.Hidden;
+            WPerformance.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Visible;
 
             LPosLL.Visibility = Visibility.Hidden;
@@ -561,6 +591,7 @@ namespace Ideafix
                 MessageBox.Show("It was not possible to read the file: " + (string) e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        
 
         private void Worker_DoWork_Maps(object sender, DoWorkEventArgs e)
         {
@@ -621,7 +652,8 @@ namespace Ideafix
                 MessageBox.Show("It was not possible to add the database data to the table", "Error.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            try { 
+            try
+            {
                 if (!(listMessages == null))
                 {
                     Vistos = new List<string>();
@@ -667,7 +699,12 @@ namespace Ideafix
                                 VehiclesList[i].Place.Add(0);
                         }
                     }
+                    //PERFORMANCE ESTEL
+                    if (VehiclesList != null)
+                        if (VehiclesList.Count > 0)
+                            Performance(VehiclesList);
                 }
+
             }
             catch
             {
@@ -675,7 +712,7 @@ namespace Ideafix
             }
 
 
-        }
+}
 
         void worker_ProgressChanged_LoadFile(object sender, ProgressChangedEventArgs e)
         {
@@ -725,6 +762,8 @@ namespace Ideafix
             CheckTraffic.Visibility = Visibility.Visible;
             CheckVehicles.Visibility = Visibility.Visible;
             CheckUnknown.Visibility = Visibility.Visible;
+
+            TPerfo.ItemsSource = listPerf;
         }
 
         private void PBLoadFile_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -770,7 +809,7 @@ namespace Ideafix
                 double lat = zoom[a - 2];
                 double lon = zoom[a - 1];
                 zero0 = new Point().LatLong2XY(lat, lon);
-
+                
                 A = -zero0.X;
                 B = -zero0.Y;
                 alpha = A / (LienzoMaps.ActualWidth / 2);
@@ -1132,6 +1171,8 @@ namespace Ideafix
             MessageBox.Show(str, "TrackN: " + VehiclesList[j].TrackN);
         }
 
+
+
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {  
             alpha = A / (LienzoMaps.ActualWidth / 2);
@@ -1169,6 +1210,45 @@ namespace Ideafix
                 j = i;
             }
             return result;
+        }
+
+        //PERFORMANCE ESTEL
+        private void Performance(List<Vehicle> vl) 
+        {
+            listPerf = new List<ShowPerf>();
+            double numMA = 0;
+            double numS = 0;
+            double numA = 0;
+            double PupdateMA = 0;
+            double PupdateS = 0;
+            double PupdateA = 0;
+
+            foreach (Vehicle v in vl) 
+            {
+                v.Performance();
+                if (v.PupdateMA > 0) 
+                {
+                    numMA = numMA + 1;
+                    PupdateMA = PupdateMA + v.PupdateMA;
+                }
+                if (v.PupdateS > 0)
+                {
+                    numS = numS + 1;
+                    PupdateS = PupdateS + v.PupdateS;
+                }
+                if (v.PupdateA > 0)
+                {
+                    numA = numA + 1;
+                    PupdateA = PupdateA + v.PupdateA;
+                }
+            }
+            PupdateMA = PupdateMA / numMA;
+            PupdateS = PupdateS / numS;
+            PupdateA = PupdateA / numA;
+
+            listPerf.Add(new ShowPerf("MA", PupdateMA));
+            listPerf.Add(new ShowPerf("S", PupdateS));
+            listPerf.Add(new ShowPerf("A", PupdateA));
         }
     }
 }

@@ -10,10 +10,25 @@ namespace Ideafix
         internal List<DateTime> DateTimes { get; set; }
         internal List<int> Place { get; set; }
 
+        //ESTEL PERFO
+        internal List<DateTime> timeMA { get; set; }
+        internal List<DateTime> timeS  {get; set; }
+        internal List<DateTime> timeA  { get; set; }
+
+        internal double tMA { get; set; }
+        internal double tS { get; set; }
+        internal double tA { get; set; }
+
+        internal double PupdateMA { get; set; }
+        internal double PupdateS { get; set; }
+        internal double PupdateA { get; set; }
+
         internal string Type { get; set; }
         internal int TrackN { get; set; }
         internal string Callsign { get; set; }
         internal string ICAOaddress { get; set; }
+
+
 
         public Vehicle(Message m)
         {
@@ -109,5 +124,60 @@ namespace Ideafix
             return this.Positions;
         }
 
+
+        public void Performance() 
+        {
+            //List<DateTime> timeMA = new List<DateTime>();
+            //List<DateTime> timeS = new List<DateTime>();
+            //List<DateTime> timeA = new List<DateTime>();
+            timeMA = new List<DateTime>();
+            timeS = new List<DateTime>();
+            timeA = new List<DateTime>();
+ 
+            //cas fora dins fora dins no contemplat
+           //cas dins1 dins2 dins1 no contemplat
+
+            for (int i = 0; i < this.Place.Count; i++) 
+            {
+                if (this.Place[i] == 1) //Maneuvering Area 0.95
+                {
+                    timeMA.Add(this.DateTimes[i]);
+                }
+                if (this.Place[i] == 2) //Stand 0.5
+                {
+                    timeS.Add(this.DateTimes[i]);
+                }
+                if (this.Place[i] == 3) //Arpon 0.7
+                {
+                    timeA.Add(this.DateTimes[i]);
+                }
+            }
+
+            if (timeMA.Count > 0)
+            {
+                DateTime start = timeMA[0];
+                DateTime end = timeMA[timeMA.Count -1];
+                tMA= (end - start).TotalSeconds;
+                PupdateMA = (timeMA.Count / (tMA+1)) * 100;
+            }
+
+            if (timeS.Count > 0)
+            {
+                DateTime start = timeS[0];
+                DateTime end = timeS[timeS.Count - 1];
+                tS = (end - start).TotalSeconds;
+                PupdateS = (timeS.Count / (tS+1)) * 100;
+            }
+
+            if (timeA.Count > 0)
+            {
+                DateTime start = timeA[0];
+                DateTime end = timeA[timeA.Count - 1];
+                tA = (end - start).TotalSeconds;
+                PupdateA = (timeA.Count / (tA+1)) * 100;
+            }
+        }
     }
+
+
 }
