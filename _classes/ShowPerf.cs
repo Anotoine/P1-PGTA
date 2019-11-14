@@ -17,7 +17,7 @@ namespace Ideafix
         {
             this.Zone = Z;
             this.ProbOfUpdate = PoUMA;
-            this.ProbOfUpdateString = Convert.ToString(this.ProbOfUpdate) + "%";
+            this.ProbOfUpdateString = Convert.ToString(this.ProbOfUpdate);
         }
 
     }

@@ -190,8 +190,7 @@ namespace Ideafix
 
             //borrem ultim element que nomes l'hem utilitzat per recorre la llista
             //!!!!no se borra 
-            this.Place.Remove(this.Place.Count - 1);
-
+            this.Place.Remove(-1);
 
 
             //timeMA = new List<DateTime>();

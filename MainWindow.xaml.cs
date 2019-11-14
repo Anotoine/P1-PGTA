@@ -1250,9 +1250,9 @@ namespace Ideafix
             PupdateS = PupdateS / numS;
             PupdateA = PupdateA / numA;
 
-            listPerf.Add(new ShowPerf("MA", PupdateMA));
-            listPerf.Add(new ShowPerf("S", PupdateS));
-            listPerf.Add(new ShowPerf("A", PupdateA));
+            listPerf.Add(new ShowPerf("Maneuvering Area", PupdateMA));
+            listPerf.Add(new ShowPerf("Stand", PupdateS));
+            listPerf.Add(new ShowPerf("Apron", PupdateA));
         }
     }
 }
