@@ -11,17 +11,22 @@ namespace Ideafix
         internal List<int> Place { get; set; }
 
         //ESTEL PERFO
-        internal List<DateTime> timeMA { get; set; }
-        internal List<DateTime> timeS  {get; set; }
-        internal List<DateTime> timeA  { get; set; }
+        //internal List<DateTime> timeMA { get; set; }
+        //internal List<DateTime> timeS  {get; set; }
+        //internal List<DateTime> timeA  { get; set; }
 
-        internal double tMA { get; set; }
-        internal double tS { get; set; }
-        internal double tA { get; set; }
+        //internal List<List<DateTime>> ListDTList { get; set; }
+        //internal List<List<int>> ListPList { get; set; }
+
+        //internal double tMA { get; set; }
+        //internal double tS { get; set; }
+        //internal double tA { get; set; }
 
         internal double PupdateMA { get; set; }
         internal double PupdateS { get; set; }
         internal double PupdateA { get; set; }
+
+        //ESTEL PERFO END
 
         internal string Type { get; set; }
         internal int TrackN { get; set; }
@@ -125,59 +130,116 @@ namespace Ideafix
         }
 
 
-        public void Performance() 
+        public void Performance()
         {
+
             //List<DateTime> timeMA = new List<DateTime>();
             //List<DateTime> timeS = new List<DateTime>();
             //List<DateTime> timeA = new List<DateTime>();
-            timeMA = new List<DateTime>();
-            timeS = new List<DateTime>();
-            timeA = new List<DateTime>();
- 
+            DateTime start;
+            DateTime end;
+            //ListDTList = new List<List<DateTime>>();
+            //ListPList = new List<List<int>>();
+            List<DateTime> DT = new List<DateTime>();
+            List<int> P = new List<int>();
+            double[] PlaceProb = new double[] { 0, 0, 0 };
+            int[] entrades = new int[] { 0, 0, 0 };
+            
+
+            this.Place.Add(-1); 
+            for (int i = 0; i < this.Place.Count -1; i++)
+            {
+                if (this.Place[i] != 0) //nomes eem de calcular per zones 1, 2 i 3
+                {
+                    if (this.Place[i] == this.Place[i + 1]) //no hi ha salt de zona
+                    {
+                        DT.Add(this.DateTimes[i]);
+                        P.Add(this.Place[i]);
+                    }
+                    else  //salt de zona. Calculem probabilitats i vegades que s'ha entrat a la zona 
+                    {
+                        DT.Add(this.DateTimes[i]);
+                        P.Add(this.Place[i]);
+                        start = DT[0];
+                        end = DT[DT.Count - 1];
+                        double Prob = (DT.Count / ((end - start).TotalSeconds + 1)) * 100;
+                        PlaceProb[this.Place[i] - 1] = PlaceProb[this.Place[i] - 1] + Prob;
+                        entrades[this.Place[i] - 1] = entrades[this.Place[i] - 1] + 1;
+
+                        //ListDTList.Add(DT);
+                        //ListPList.Add(P);
+
+                        DT.Clear();
+                        P.Clear();
+                    }
+                }     
+            }
+
+            if (PlaceProb[0] != 0)
+            {
+                PupdateMA = PlaceProb[0] / entrades[0];
+            }
+            if (PlaceProb[1] != 0)
+            {
+                PupdateS = PlaceProb[1] / entrades[1];
+            }
+            if (PlaceProb[2] != 0)
+            {
+                PupdateA = PlaceProb[2] / entrades[2];
+            }
+
+            //borrem ultim element que nomes l'hem utilitzat per recorre la llista
+            //!!!!no se borra 
+            this.Place.Remove(this.Place.Count - 1);
+
+
+
+            //timeMA = new List<DateTime>();
+            //timeS = new List<DateTime>();
+            //timeA = new List<DateTime>();
+
             //cas fora dins fora dins no contemplat
-           //cas dins1 dins2 dins1 no contemplat
+            //cas dins1 dins2 dins1 no contemplat
 
-            for (int i = 0; i < this.Place.Count; i++) 
-            {
-                if (this.Place[i] == 1) //Maneuvering Area 0.95
-                {
-                    timeMA.Add(this.DateTimes[i]);
-                }
-                if (this.Place[i] == 2) //Stand 0.5
-                {
-                    timeS.Add(this.DateTimes[i]);
-                }
-                if (this.Place[i] == 3) //Arpon 0.7
-                {
-                    timeA.Add(this.DateTimes[i]);
-                }
-            }
+            //for (int i = 0; i < this.Place.Count; i++) 
+            //{
+            //    if (this.Place[i] == 1) //Maneuvering Area 0.95
+            //    {
+            //        timeMA.Add(this.DateTimes[i]);
+            //    }
+            //    if (this.Place[i] == 2) //Stand 0.5
+            //    {
+            //        timeS.Add(this.DateTimes[i]);
+            //    }
+            //    if (this.Place[i] == 3) //Arpon 0.7
+            //    {
+            //        timeA.Add(this.DateTimes[i]);
+            //    }
+            //}
 
-            if (timeMA.Count > 0)
-            {
-                DateTime start = timeMA[0];
-                DateTime end = timeMA[timeMA.Count -1];
-                tMA= (end - start).TotalSeconds;
-                PupdateMA = (timeMA.Count / (tMA+1)) * 100;
-            }
+            //if (timeMA.Count > 0)
+            //{
+            //DateTime start = timeMA[0];
+            //DateTime end = timeMA[timeMA.Count - 1];
+            //tMA = (end - start).TotalSeconds;
+            //PupdateMA = (timeMA.Count / (tMA + 1)) * 100;
+            //}
 
-            if (timeS.Count > 0)
-            {
-                DateTime start = timeS[0];
-                DateTime end = timeS[timeS.Count - 1];
-                tS = (end - start).TotalSeconds;
-                PupdateS = (timeS.Count / (tS+1)) * 100;
-            }
+            //if (timeS.Count > 0)
+            //{
+            //    DateTime start = timeS[0];
+            //    DateTime end = timeS[timeS.Count - 1];
+            //    tS = (end - start).TotalSeconds;
+            //    PupdateS = (timeS.Count / (tS+1)) * 100;
+            //}
 
-            if (timeA.Count > 0)
-            {
-                DateTime start = timeA[0];
-                DateTime end = timeA[timeA.Count - 1];
-                tA = (end - start).TotalSeconds;
-                PupdateA = (timeA.Count / (tA+1)) * 100;
-            }
+            //if (timeA.Count > 0)
+            //{
+            //    DateTime start = timeA[0];
+            //    DateTime end = timeA[timeA.Count - 1];
+            //    tA = (end - start).TotalSeconds;
+            //    PupdateA = (timeA.Count / (tA+1)) * 100;
+            //}
         }
     }
-
-
 }

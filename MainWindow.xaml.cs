@@ -1225,23 +1225,27 @@ namespace Ideafix
 
             foreach (Vehicle v in vl) 
             {
-                v.Performance();
-                if (v.PupdateMA > 0) 
-                {
-                    numMA = numMA + 1;
-                    PupdateMA = PupdateMA + v.PupdateMA;
-                }
-                if (v.PupdateS > 0)
-                {
-                    numS = numS + 1;
-                    PupdateS = PupdateS + v.PupdateS;
-                }
-                if (v.PupdateA > 0)
-                {
-                    numA = numA + 1;
-                    PupdateA = PupdateA + v.PupdateA;
-                }
+                //if (v.Callsign != "NONE") 
+                //{
+                    v.Performance();
+                    if (v.PupdateMA > 0)
+                    {
+                        numMA = numMA + 1;
+                        PupdateMA = PupdateMA + v.PupdateMA;
+                    }
+                    if (v.PupdateS > 0)
+                    {
+                        numS = numS + 1;
+                        PupdateS = PupdateS + v.PupdateS;
+                    }
+                    if (v.PupdateA > 0)
+                    {
+                        numA = numA + 1;
+                        PupdateA = PupdateA + v.PupdateA;
+                    }
+                //}
             }
+
             PupdateMA = PupdateMA / numMA;
             PupdateS = PupdateS / numS;
             PupdateA = PupdateA / numA;
