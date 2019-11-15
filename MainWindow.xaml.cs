@@ -1252,16 +1252,33 @@ namespace Ideafix
         private void Performance(List<Vehicle> vl) 
         {
             pUD = new double[] { 0, 0, 0 };
-            double[] num = new double[] { 0, 0, 0 };
             listPerf = new List<ShowPerf>();
-            //double numMA = 0;
-            //double numS = 0;
-            //double numA = 0;
-            //double PupdateMA = 0;
-            //double PupdateS = 0;
-            //double PupdateA = 0;
 
-            foreach (Vehicle v in vl) 
+            ////////222222222
+            //double[] samplesT = new double[] { 0, 0, 0 };
+            //double[] TotalSecT = new double[] { 0, 0, 0 };
+            //foreach (Vehicle v in vl)
+            //{
+            //    v.Performance();
+            //    for (int i = 0; i < v.samples.Length; i++)
+            //    {
+            //        samplesT[i] = samplesT[i] + v.samples[i];
+            //        TotalSecT[i] = TotalSecT[i] + v.TotalSec[i];
+            //    }
+            //}
+
+            //for (int i = 0; i < samplesT.Length; i++)
+            //{
+            //    pUD[i] = (samplesT[i] / TotalSecT[i]) * 100;
+            //    pUD[i] = Convert.ToDouble(pUD[i].ToString("0.###"));
+            //}
+            ///////2222222
+
+            ////11111111
+            double[] minP = new double[] { 100, 100, 100 };
+            double[] num = new double[] { 0, 0, 0 };
+
+            foreach (Vehicle v in vl)
             {
                 v.Performance();
                 for (int i = 0; i < v.pUD.Length; i++)
@@ -1270,24 +1287,12 @@ namespace Ideafix
                     {
                         num[i] = num[i] + 1;
                         pUD[i] = pUD[i] + v.pUD[i];
+                        if (v.pUD[i] < minP[i])
+                        {
+                            minP[i] = v.pUD[i];
+                        }
                     }
                 }
-                    //if (v.PupdateMA > 0)
-                    //{
-                    //    numMA = numMA + 1;
-                    //    PupdateMA = PupdateMA + v.PupdateMA;
-                    //}
-                    //if (v.PupdateS > 0)
-                    //{
-                    //    numS = numS + 1;
-                    //    PupdateS = PupdateS + v.PupdateS;
-                    //}
-                    //if (v.PupdateA > 0)
-                    //{
-                    //    numA = numA + 1;
-                    //    PupdateA = PupdateA + v.PupdateA;
-                    //}
-                //}
             }
 
             for (int i = 0; i < pUD.Length; i++)
@@ -1295,13 +1300,7 @@ namespace Ideafix
                 pUD[i] = pUD[i] / num[i];
                 pUD[i] = Convert.ToDouble(pUD[i].ToString("0.###"));
             }
-            //PupdateMA = PupdateMA / numMA;
-            //PupdateS = PupdateS / numS;
-            //PupdateA = PupdateA / numA;
-
-            //listPerf.Add(new ShowPerf("Maneuvering Area", PupdateMA));
-            //listPerf.Add(new ShowPerf("Stand", PupdateS));
-            //listPerf.Add(new ShowPerf("Apron", PupdateA));
+            //1111111
 
             listPerf.Add(new ShowPerf("Maneuvering Area", pUD[0]));
             listPerf.Add(new ShowPerf("Stand", pUD[1]));
