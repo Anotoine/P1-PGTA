@@ -11,13 +11,10 @@ namespace Ideafix
         public string Zone { get; set; }
         public double ProbOfUpdate { get; set; }
 
-        public string ProbOfUpdateString { get; set; }
-
         public ShowPerf(string Z, double PoUMA)
         {
             this.Zone = Z;
             this.ProbOfUpdate = PoUMA;
-            this.ProbOfUpdateString = Convert.ToString(this.ProbOfUpdate);
         }
 
     }

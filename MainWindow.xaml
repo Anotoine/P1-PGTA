@@ -105,25 +105,35 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="500"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
                     <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="BLoadFile" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="1" Click="BLoadFile_Click">ASTERIX File...</Button>
-                <TextBox x:Name="TLoadFile" Grid.Row="1" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\Ficheros Asterix de prueba-20190921\SMR_MLAT_cat10_ADSB_Cat21_v023\160510-lebl-220001.ast</TextBox>
-                <Button x:Name="BLoadMaps" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="3" Click="BLoadMaps_Click">Maps Folder...</Button>
-                <TextBox x:Name="TLoadMaps" Grid.Row="3" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\maps</TextBox>
-                <Button x:Name="BLoadDB" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="5" Click="BLoadDB_Click">ACFT DB...</Button>
-                <TextBox x:Name="TLoadDB" Grid.Row="5" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\acrft_db.csv</TextBox>
-                <Button x:Name="BLoadRefresh" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="3" Grid.Row="7" Width="100" Click="BLoadRefresh_Click">Refresh</Button>
+                <Button x:Name="BLoadFile" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="2" Click="BLoadFile_Click">ASTERIX File...</Button>
+                <TextBox x:Name="TLoadFile" Grid.Row="2" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\Ficheros Asterix de prueba-20190921\SMR_MLAT_cat10_ADSB_Cat21_v023\160510-lebl-220001.ast</TextBox>
+                <GroupBox Header="CAT21 version" Grid.Row="1" Grid.Column="5" Grid.RowSpan="3">
+                    <StackPanel >
+                        <RadioButton GroupName="CAT21Selector" Content="CAT21 v0.23" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Center"></RadioButton>
+                        <RadioButton GroupName="CAT21Selector" Content="CAT21 v2.4" HorizontalAlignment="Left" VerticalAlignment="Center"></RadioButton>
+                    </StackPanel>
+                </GroupBox>
+                <Button x:Name="BLoadMaps" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="5" Click="BLoadMaps_Click">Maps Folder...</Button>
+                <TextBox x:Name="TLoadMaps" Grid.Row="5" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\maps</TextBox>
+                <Button x:Name="BLoadDB" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="7" Click="BLoadDB_Click">ACFT DB...</Button>
+                <TextBox x:Name="TLoadDB" Grid.Row="7" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\acrft_db.csv</TextBox>
+                <Button x:Name="BLoadRefresh" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="3" Grid.Row="9" Width="100" Click="BLoadRefresh_Click">Refresh</Button>
             </Grid>
         </GroupBox>
         <GroupBox x:Name="WRadar" Grid.ColumnSpan="5" Grid.Row="1" Visibility="Hidden" BorderThickness="0" Margin="0">
@@ -287,7 +297,43 @@
                 <DataGrid x:Name="TPerfo" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" SelectionMode="Single" SelectionUnit="FullRow" Background="Transparent" AlternatingRowBackground="{Binding Path=TableSecondaryColor, Converter={StaticResource UniversalValueConverter}}" GridLinesVisibility="Vertical" RowBackground="{Binding Path=TableMainColor, Converter={StaticResource UniversalValueConverter}}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Zone" Binding="{Binding Zone}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                        <DataGridTextColumn Header="Prob. Of Update (%)" Binding="{Binding ProbOfUpdateString}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                        
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="Prob. Of Update (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Mean" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Theoretical" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding ProbOfUpdate}" HorizontalAlignment="Center" Grid.Column="0" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="{Binding ProbOfUpdate}" HorizontalAlignment="Center" Grid.Column="1" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="{Binding ProbOfUpdate}" HorizontalAlignment="Center" Grid.Column="2" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+ 
                         <DataGridTextColumn Header="Position Accuracy (%)" Binding="{Binding PositionAccuracy}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                         <DataGridTextColumn Header="Prob. Of MLAT detection (%)" Binding="{Binding ProbOfMLATdet}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                         <DataGridTextColumn Header="Prob. Of Identification (%)" Binding="{Binding ProbOfID}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
