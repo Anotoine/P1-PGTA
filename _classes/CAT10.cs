@@ -154,11 +154,11 @@ namespace Ideafix
         {
             var ls = new List<string> { "TYP", "DCR", "CHN", "GBS", "CRT", "FX", "SIM", "TST", "RAB", "LOP", "TOT", "FX", "SPI", "FX" };
 
-            var ls0 = new List<string> { "SSR multilateration", "Mode S multilateration","ADS-B", "PSR", "No differential correction(ADS-B)","Chain 1","Transponder Ground bit not set","No Corrupted reply in multilateration",
+            var ls0 = new List<string> { "SSR multilateration", "Mode S multilateration","ADS-B", "PSR", "No differential correction (ADS-B)","Chain 1","Transponder Ground bit not set","No Corrupted reply in multilateration",
                                                "End of Data Item","Actual target report","Default","Report from target transponder","Undetermined","Loop start","Undetermined","Aircraft","End of Data Item","Absence of SPI","End of Data Item" };
 
             var ls1 = new List<string> { "Magnetic Loop System","HF multilateration", "Not defined","Other types","Differential correction (ADS-B)", "Chain 2","Transponder Ground bit set","Corrupted replies in multilateration",
-                                             "Extension into first extent","Simulated target report","Test Target","Report from field monitor(fixed transponder)","Loop finish","","Ground vehicle","Helicopter","Extension into next extent",
+                                             "Extension into first extent","Simulated target report","Test Target","Report from field monitor (fixed transponder)","Loop finish","","Ground vehicle","Helicopter","Extension into next extent",
                                              "Special Position Identification","Extension into next extent"};
 
             List<Atom> atoms = new List<Atom>();
@@ -289,10 +289,10 @@ namespace Ideafix
         private void DecodeLatLong()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
-            float latreal = Convert.ToSingle(lat * 180 / 2 ^ 31);
+            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2,31));
 
             int lon = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
-            float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 31);
+            float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 31));
 
             Offset += 8;
 
@@ -309,7 +309,7 @@ namespace Ideafix
 
             Offset += 4;
 
-            this.DI040 = new Point().Polar2XY(RHOreal, Thetareal,incX, incY);
+            this.DI040 = new Point().Polar2XY(RHOreal, Thetareal, incX, incY);
         }
         
         private void DecodeXY()
