@@ -327,10 +327,10 @@ namespace Ideafix
         {
             this.DI200 = new List<Atom>();
             int speed = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
-            this.DI200.Add(new Atom("Speed", (float)speed * (2 ^ (-14)), Convert.ToString((float)speed * (2 ^ (-14)))));
+            this.DI200.Add(new Atom("Speed", (float)Convert.ToDouble(speed * Math.Pow(2, -14)), Convert.ToString(speed * Math.Pow(2, -14))));
             Offset += 2;
             int TA = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
-            this.DI200.Add(new Atom("Track Angle", (float)TA * (2 ^ 16), Convert.ToString((float)TA * (2 ^ 16))));
+            this.DI200.Add(new Atom("Track Angle", (float)Convert.ToDouble(TA * Math.Pow(2, 16)), Convert.ToString(speed * Math.Pow(2, -14))));
             Offset += 2;
         }
         
