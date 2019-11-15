@@ -53,7 +53,11 @@ namespace Ideafix
         DateTime ActualTime;
         int Estela = 10;
 
-        public MainWindow()
+        //Performance
+        internal double[] pUD { get; set; }
+        internal string[] Place = new string[] { "MANEUVERING AREA", "STAND", "APRON" }; 
+
+        public MainWindow() 
         {
             DataContext = UserOptions;
             InitializeComponent();
@@ -710,8 +714,6 @@ namespace Ideafix
             {
                 MessageBox.Show("It was not possible to add the information from the Database.", "Error comparing.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-
 }
 
         void worker_ProgressChanged_LoadFile(object sender, ProgressChangedEventArgs e)
@@ -1182,6 +1184,40 @@ namespace Ideafix
             CheckBoxClickMaps(sender, e);
         }
 
+        private void LienzoVehicles_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (CheckBox CB in checkBoxes)
+            {
+                if (CB.Content.ToString() == "MOPS")
+                {
+                    if (CB.IsChecked == true)
+                    {
+                        bool exit = false;
+                        for (int j = 0; j < Maps.Count; j++)
+                        {
+                            int k = 0;
+                            while (!exit && k < Maps[j].getPolygons().Count)
+                            {
+                                Point p = new Point();
+                                p.X = e.GetPosition(LienzoMaps).X * alpha - A;
+                                p.Y = e.GetPosition(LienzoMaps).Y * beta - B;
+                                if (IsPointInPolygon4(Maps[j].getPolygons()[k], p))
+                                {
+                                    int n = Maps[j].getIndex(k) - 1;
+                                    MessageBox.Show(Place[n] + "\n" + "Probability of Update:" + "\n" + pUD[n].ToString()+"%");
+                                    //VehiclesList[i].Place.Add(Maps[j].getIndex(k));
+                                    exit = true;
+                                }
+                                k++;
+                            }
+                        }
+
+                        //IsPointInPolygon4(List < Point > polygon, Point testPoint)
+                    }
+                }
+            }
+        }
+
         private void LienzoMaps_MouseMove(object sender, MouseEventArgs e)
         {
             mouseP.XY2LatLong(e.GetPosition(LienzoMaps).X * alpha - A, e.GetPosition(LienzoMaps).Y * beta - B);
@@ -1215,44 +1251,61 @@ namespace Ideafix
         //PERFORMANCE ESTEL
         private void Performance(List<Vehicle> vl) 
         {
+            pUD = new double[] { 0, 0, 0 };
+            double[] num = new double[] { 0, 0, 0 };
             listPerf = new List<ShowPerf>();
-            double numMA = 0;
-            double numS = 0;
-            double numA = 0;
-            double PupdateMA = 0;
-            double PupdateS = 0;
-            double PupdateA = 0;
+            //double numMA = 0;
+            //double numS = 0;
+            //double numA = 0;
+            //double PupdateMA = 0;
+            //double PupdateS = 0;
+            //double PupdateA = 0;
 
             foreach (Vehicle v in vl) 
             {
-                //if (v.Callsign != "NONE") 
-                //{
-                    v.Performance();
-                    if (v.PupdateMA > 0)
+                v.Performance();
+                for (int i = 0; i < v.pUD.Length; i++)
+                {
+                    if (v.pUD[i] > 0)
                     {
-                        numMA = numMA + 1;
-                        PupdateMA = PupdateMA + v.PupdateMA;
+                        num[i] = num[i] + 1;
+                        pUD[i] = pUD[i] + v.pUD[i];
                     }
-                    if (v.PupdateS > 0)
-                    {
-                        numS = numS + 1;
-                        PupdateS = PupdateS + v.PupdateS;
-                    }
-                    if (v.PupdateA > 0)
-                    {
-                        numA = numA + 1;
-                        PupdateA = PupdateA + v.PupdateA;
-                    }
+                }
+                    //if (v.PupdateMA > 0)
+                    //{
+                    //    numMA = numMA + 1;
+                    //    PupdateMA = PupdateMA + v.PupdateMA;
+                    //}
+                    //if (v.PupdateS > 0)
+                    //{
+                    //    numS = numS + 1;
+                    //    PupdateS = PupdateS + v.PupdateS;
+                    //}
+                    //if (v.PupdateA > 0)
+                    //{
+                    //    numA = numA + 1;
+                    //    PupdateA = PupdateA + v.PupdateA;
+                    //}
                 //}
             }
 
-            PupdateMA = PupdateMA / numMA;
-            PupdateS = PupdateS / numS;
-            PupdateA = PupdateA / numA;
+            for (int i = 0; i < pUD.Length; i++)
+            {
+                pUD[i] = pUD[i] / num[i];
+                pUD[i] = Convert.ToDouble(pUD[i].ToString("0.###"));
+            }
+            //PupdateMA = PupdateMA / numMA;
+            //PupdateS = PupdateS / numS;
+            //PupdateA = PupdateA / numA;
 
-            listPerf.Add(new ShowPerf("Maneuvering Area", PupdateMA));
-            listPerf.Add(new ShowPerf("Stand", PupdateS));
-            listPerf.Add(new ShowPerf("Apron", PupdateA));
+            //listPerf.Add(new ShowPerf("Maneuvering Area", PupdateMA));
+            //listPerf.Add(new ShowPerf("Stand", PupdateS));
+            //listPerf.Add(new ShowPerf("Apron", PupdateA));
+
+            listPerf.Add(new ShowPerf("Maneuvering Area", pUD[0]));
+            listPerf.Add(new ShowPerf("Stand", pUD[1]));
+            listPerf.Add(new ShowPerf("Apron", pUD[2]));
         }
     }
 }

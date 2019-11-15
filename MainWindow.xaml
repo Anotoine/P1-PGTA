@@ -134,7 +134,7 @@
                     <ColumnDefinition Width="250"/>
                 </Grid.ColumnDefinitions>
                 <Canvas x:Name="LienzoMaps" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" Panel.ZIndex="0" Margin="0"/>
-                <Canvas x:Name="LienzoVehicles" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" MouseMove="LienzoMaps_MouseMove" Panel.ZIndex="0" Margin="0"/>
+                <Canvas x:Name="LienzoVehicles" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" MouseMove="LienzoMaps_MouseMove" Panel.ZIndex="0" Margin="0" MouseLeftButtonDown="LienzoVehicles_MouseLeftButtonDown" />
 
                 <Expander x:Name="TimeExpand" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" ExpandDirection="Right" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Left">
                     <Expander.Header>

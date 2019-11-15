@@ -22,9 +22,14 @@ namespace Ideafix
         //internal double tS { get; set; }
         //internal double tA { get; set; }
 
-        internal double PupdateMA { get; set; }
-        internal double PupdateS { get; set; }
-        internal double PupdateA { get; set; }
+        internal double[] pUD { get; set; } //vector qe conte les probabilitats de Up Date per les 3 zones 
+        //0 --> MA
+        //1 --> Stand
+        //2 --> Apron
+
+        //internal double PupdateMA { get; set; }
+        //internal double PupdateS { get; set; }
+        //internal double PupdateA { get; set; }
 
         //ESTEL PERFO END
 
@@ -132,16 +137,12 @@ namespace Ideafix
 
         public void Performance()
         {
-
-            //List<DateTime> timeMA = new List<DateTime>();
-            //List<DateTime> timeS = new List<DateTime>();
-            //List<DateTime> timeA = new List<DateTime>();
             DateTime start;
             DateTime end;
-            //ListDTList = new List<List<DateTime>>();
-            //ListPList = new List<List<int>>();
             List<DateTime> DT = new List<DateTime>();
             List<int> P = new List<int>();
+
+            pUD = new double[] { 0, 0, 0 };
             double[] PlaceProb = new double[] { 0, 0, 0 };
             int[] entrades = new int[] { 0, 0, 0 };
             
@@ -175,70 +176,30 @@ namespace Ideafix
                 }     
             }
 
-            if (PlaceProb[0] != 0)
+            for (int i = 0; i < pUD.Length; i++)
             {
-                PupdateMA = PlaceProb[0] / entrades[0];
+                if (PlaceProb[i] != 0)
+                {
+                    pUD[i] = PlaceProb[i] / entrades[i];
+                }
             }
-            if (PlaceProb[1] != 0)
-            {
-                PupdateS = PlaceProb[1] / entrades[1];
-            }
-            if (PlaceProb[2] != 0)
-            {
-                PupdateA = PlaceProb[2] / entrades[2];
-            }
+
+            //if (PlaceProb[0] != 0)
+            //{
+            //    PupdateMA = PlaceProb[0] / entrades[0];
+            //}
+            //if (PlaceProb[1] != 0)
+            //{
+            //    PupdateS = PlaceProb[1] / entrades[1];
+            //}
+            //if (PlaceProb[2] != 0)
+            //{
+            //    PupdateA = PlaceProb[2] / entrades[2];
+            //}
 
             //borrem ultim element que nomes l'hem utilitzat per recorre la llista
-            //!!!!no se borra 
             this.Place.Remove(-1);
 
-
-            //timeMA = new List<DateTime>();
-            //timeS = new List<DateTime>();
-            //timeA = new List<DateTime>();
-
-            //cas fora dins fora dins no contemplat
-            //cas dins1 dins2 dins1 no contemplat
-
-            //for (int i = 0; i < this.Place.Count; i++) 
-            //{
-            //    if (this.Place[i] == 1) //Maneuvering Area 0.95
-            //    {
-            //        timeMA.Add(this.DateTimes[i]);
-            //    }
-            //    if (this.Place[i] == 2) //Stand 0.5
-            //    {
-            //        timeS.Add(this.DateTimes[i]);
-            //    }
-            //    if (this.Place[i] == 3) //Arpon 0.7
-            //    {
-            //        timeA.Add(this.DateTimes[i]);
-            //    }
-            //}
-
-            //if (timeMA.Count > 0)
-            //{
-            //DateTime start = timeMA[0];
-            //DateTime end = timeMA[timeMA.Count - 1];
-            //tMA = (end - start).TotalSeconds;
-            //PupdateMA = (timeMA.Count / (tMA + 1)) * 100;
-            //}
-
-            //if (timeS.Count > 0)
-            //{
-            //    DateTime start = timeS[0];
-            //    DateTime end = timeS[timeS.Count - 1];
-            //    tS = (end - start).TotalSeconds;
-            //    PupdateS = (timeS.Count / (tS+1)) * 100;
-            //}
-
-            //if (timeA.Count > 0)
-            //{
-            //    DateTime start = timeA[0];
-            //    DateTime end = timeA[timeA.Count - 1];
-            //    tA = (end - start).TotalSeconds;
-            //    PupdateA = (timeA.Count / (tA+1)) * 100;
-            //}
         }
     }
 }
