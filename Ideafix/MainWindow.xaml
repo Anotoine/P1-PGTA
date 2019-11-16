@@ -1,0 +1,473 @@
+﻿<Window x:Class="Ideafix.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Ideafix"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Ideafix Decoder" Icon="Icon.ico" Height="750" Width="1000">
+    <Window.Resources>
+        <local:UniversalValueConverter x:Key="UniversalValueConverter"/>
+    </Window.Resources>
+    <Window.Background>
+        <SolidColorBrush Color="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}"/>
+    </Window.Background>
+
+    <Grid x:Name="Base" Margin="0">
+        <!--<Grid.Background>
+            <ImageBrush ImageSource="ASTERIX.png" Stretch="Uniform"/>
+        </Grid.Background>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Panel.ZIndex="1" x:Name="BLoad" Grid.Column="0" Grid.Row="0" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" Click="BLoad_Click" BorderThickness="0">
+            <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform">
+                <Path.Data>
+                    <PathGeometry Figures="M589.173 356.232l-104.756 198.26c-5.125 9.858-19.653 20.285-30.872 20.285l-420.096 0.077   c-8.875 0-17.384-3.518-23.655-9.794C3.523 558.783 0 550.283 0 541.405l0.068-326.209c0-18.448 14.955-33.417 33.405-33.435   l30.715-0.029v28.496H43.639c-4.022 0-7.885 1.596-10.731 4.442c-2.843 2.846-4.442 6.706-4.442 10.731l0.03 305.796   c0 8.388 6.797 15.173 15.176 15.173h21.045l99.28-200.836c5.609-11.219 16.208-20.286 27.411-20.286h243.14l0.083-80.823   c15.876 1.472 28.406 14.641 28.406 30.893v49.931H574.55C587.719 325.384 598.808 338.406 589.173 356.232z M83.558 445.272   c-0.907-99.969 0-399.884 0-399.884c0-15.132 12.306-27.429 27.423-27.429h219.614c3.518 0 6.874 1.472 9.251 4.061l71 77.141   c2.128 2.323 3.321 5.364 3.321 8.515v199.839h-23.034V124.932c0-3.159-2.565-5.725-5.728-5.725h-54.343   c-6.36 0-11.532-5.163-11.532-11.511V46.721c0-3.16-2.565-5.725-5.728-5.725H110.995c-2.423 0-4.395 1.971-4.395 4.392v374.739   l-17.626 35.66C88.975 455.781 83.649 455.391 83.558 445.272z M342.588 96.182H376.8l-34.212-37.188V96.182z M355.065 142.667   H142.813c-7.82 0-14.168 6.354-14.168 14.174c0 7.814 6.354 14.171 14.168 14.171h212.258c7.82 0 14.187-6.362 14.187-14.171   C369.245 149.027 362.88 142.667 355.065 142.667z M369.245 239.376c0-7.814-6.359-14.162-14.18-14.162H142.813   c-7.82 0-14.168 6.36-14.168 14.162c0 7.814 6.354 14.162 14.168 14.162h212.258C362.88 253.539 369.245 247.19 369.245 239.376z    M128.636 322.47c0 7.813 6.357 14.162 14.171 14.162h5.089c8.958-24.967 31.164-28.324 31.164-28.324h-36.253   C135.005 308.308 128.636 314.656 128.636 322.47z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Button>
+        <Button Panel.ZIndex="1" x:Name="BRadar" Grid.Column="1" Grid.Row="0" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" Click="BRadar_Click" BorderThickness="0">
+            <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform">
+                <Path.Data>
+                    <PathGeometry Figures="M512 256C512 114.842 397.158 0 256 0C184.875 0 125.756 24.636 75.29 75.315c-3.319 3.328-3.319 8.73 0.009 12.049    l47.957 47.957c0 0 0.008 0.009 0.008 0.017h0.009l126.694 126.694c3.337 3.337 8.73 3.337 12.066 0s3.337-8.73 0-12.066    l-23.612-23.612c4.966-2.893 10.795-4.489 17.579-4.489c18.825 0 34.133 15.309 34.133 34.133    c0 18.825-15.309 34.133-34.133 34.133c-18.825 0-34.133-15.309-34.133-34.133c0-4.71-3.823-8.533-8.533-8.533    c-4.71 0-8.533 3.823-8.533 8.533c0 28.237 22.963 51.2 51.2 51.2s51.2-22.963 51.2-51.2s-22.963-51.2-51.2-51.2    c-11.477 0-21.666 3.174-29.969 9.165l-36.113-36.113c18.466-15.659 41.6-24.252 66.082-24.252c56.465 0 102.4 45.935 102.4 102.4    c0 44.954-28.877 83.994-71.057 97.468C282.112 341.333 270.037 332.8 256 332.8c-14.046 0-26.112 8.533-31.343 20.676    C182.477 340.002 153.6 300.954 153.6 256c0-15.522 3.499-30.575 10.402-44.723c2.065-4.241 0.307-9.344-3.925-11.418    c-4.25-2.074-9.353-0.299-11.418 3.934c-8.047 16.503-12.126 34.065-12.126 52.207c0 53.419 34.978 99.644 85.692 114.517    c1.826 17.118 16.179 30.549 33.775 30.549c17.596 0 31.949-13.432 33.766-30.549c50.714-14.874 85.7-61.107 85.7-114.517    c0-65.877-53.589-119.467-119.467-119.467c-29.039 0-56.439 10.385-78.148 29.252l-36.181-36.19    c31.437-28.493 71.637-44.262 114.33-44.262c34.816 0 67.934 10.419 96.375 29.961c-1.587 3.934-2.509 8.209-2.509 12.706    c0 18.825 15.309 34.133 34.133 34.133c4.497 0 8.781-0.922 12.715-2.509c19.541 28.442 29.952 61.551 29.952 96.375    c0 94.106-76.561 170.667-170.667 170.667S85.333 350.106 85.333 256c0-33.408 9.728-65.826 28.143-93.756    c2.594-3.934 1.51-9.225-2.432-11.827c-3.934-2.603-9.224-1.502-11.819 2.432C78.967 183.578 68.267 219.238 68.267 256    c0 103.518 84.215 187.733 187.733 187.733S443.733 359.518 443.733 256c0-38.545-11.597-75.179-33.357-106.598    c4.77-5.879 7.757-13.261 7.757-21.402c0-18.825-15.309-34.133-34.133-34.133c-8.141 0-15.531 2.987-21.402 7.765    C331.179 79.863 294.528 68.267 256 68.267c-47.258 0-91.725 17.553-126.396 49.263L93.483 81.408    C139.23 38.127 192.486 17.067 256 17.067c131.755 0 238.933 107.187 238.933 238.933c0 51.703-17.118 102.153-48.026 143.334    c-5.683-4.215-12.638-6.801-20.241-6.801c-18.825 0-34.133 15.309-34.133 34.133c0 7.603 2.586 14.558 6.801 20.241    c-41.182 30.916-91.605 48.026-143.334 48.026C124.245 494.933 17.067 387.746 17.067 256c0-45.175 12.698-89.165 36.736-127.223    c2.517-3.985 1.323-9.259-2.662-11.776c-3.977-2.509-9.259-1.323-11.776 2.662C13.611 160.452 0 207.599 0 256    c0 141.158 114.842 256 256 256c56.883 0 112.307-19.26 157.047-54.067c4.181 1.826 8.781 2.867 13.619 2.867    c18.825 0 34.133-15.309 34.133-34.133c0-4.838-1.041-9.421-2.867-13.602C492.74 368.333 512 312.849 512 256z M256 384    c-9.412 0-17.067-7.654-17.067-17.067s7.654-17.067 17.067-17.067c9.412 0 17.067 7.654 17.067 17.067S265.412 384 256 384z     M384 110.933c9.412 0 17.067 7.654 17.067 17.067c0 4.676-1.903 8.909-4.949 11.998c-0.802 0.29-1.604 0.58-2.313 1.118    c-0.631 0.478-1.05 1.101-1.502 1.698c-2.466 1.391-5.282 2.253-8.303 2.253c-9.412 0-17.067-7.654-17.067-17.067    C366.933 118.588 374.588 110.933 384 110.933z M426.667 443.733c-2.509 0-4.864-0.572-7.006-1.544    c-0.06-0.077-0.077-0.171-0.137-0.247c-1.126-1.365-2.62-2.142-4.19-2.62c-3.49-3.123-5.734-7.612-5.734-12.655    c0-9.412 7.654-17.067 17.067-17.067s17.067 7.654 17.067 17.067S436.079 443.733 426.667 443.733z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Button>
+        <Button  Panel.ZIndex="1" x:Name="BTable" Grid.Column="2" Grid.Row="0" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" Click="BTable_Click" BorderThickness="0">
+            <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform">
+                <Path.Data>
+                    <PathGeometry Figures="M461.667 49.963c-8.949-8.947-19.698-13.418-32.265-13.418H45.682c-12.562 0-23.317 4.471-32.264 13.418   C4.473 58.912 0 69.663 0 82.228V392.86c0 12.566 4.473 23.309 13.418 32.261c8.947 8.949 19.701 13.415 32.264 13.415h383.72   c12.566 0 23.315-4.466 32.265-13.415c8.945-8.952 13.415-19.701 13.415-32.261V82.228   C475.082 69.663 470.612 58.909 461.667 49.963z M146.183 392.85c0 2.673-0.859 4.856-2.574 6.571   c-1.712 1.711-3.899 2.562-6.567 2.562h-91.36c-2.662 0-4.853-0.852-6.567-2.562c-1.713-1.715-2.568-3.898-2.568-6.571V338.03   c0-2.669 0.855-4.853 2.568-6.56c1.714-1.719 3.905-2.574 6.567-2.574h91.363c2.667 0 4.858 0.855 6.567 2.574   c1.711 1.707 2.57 3.891 2.57 6.56V392.85z M146.183 283.221c0 2.663-0.859 4.854-2.574 6.564   c-1.712 1.714-3.899 2.569-6.567 2.569h-91.36c-2.662 0-4.853-0.855-6.567-2.569c-1.713-1.711-2.568-3.901-2.568-6.564v-54.819   c0-2.664 0.855-4.854 2.568-6.567c1.714-1.709 3.905-2.565 6.567-2.565h91.363c2.667 0 4.854 0.855 6.567 2.565   c1.711 1.713 2.57 3.903 2.57 6.567V283.221z M146.183 173.587c0 2.666-0.859 4.853-2.574 6.567   c-1.712 1.709-3.899 2.568-6.567 2.568h-91.36c-2.662 0-4.853-0.859-6.567-2.568c-1.713-1.715-2.568-3.901-2.568-6.567V118.77   c0-2.666 0.855-4.856 2.568-6.567c1.714-1.713 3.905-2.568 6.567-2.568h91.363c2.667 0 4.854 0.855 6.567 2.568   c1.711 1.711 2.57 3.901 2.57 6.567V173.587z M292.362 392.85c0 2.673-0.855 4.856-2.563 6.571c-1.711 1.711-3.9 2.562-6.57 2.562   H191.86c-2.663 0-4.853-0.852-6.567-2.562c-1.713-1.715-2.568-3.898-2.568-6.571V338.03c0-2.669 0.855-4.853 2.568-6.56   c1.714-1.719 3.904-2.574 6.567-2.574h91.365c2.669 0 4.859 0.855 6.57 2.574c1.704 1.707 2.56 3.891 2.56 6.56v54.819H292.362z    M292.362 283.221c0 2.663-0.855 4.854-2.563 6.564c-1.711 1.714-3.9 2.569-6.57 2.569H191.86c-2.663 0-4.853-0.855-6.567-2.569   c-1.713-1.711-2.568-3.901-2.568-6.564v-54.819c0-2.664 0.855-4.854 2.568-6.567c1.714-1.709 3.904-2.565 6.567-2.565h91.365   c2.669 0 4.859 0.855 6.57 2.565c1.704 1.713 2.56 3.903 2.56 6.567v54.819H292.362z M292.362 173.587   c0 2.666-0.855 4.853-2.563 6.567c-1.711 1.709-3.9 2.568-6.57 2.568H191.86c-2.663 0-4.853-0.859-6.567-2.568   c-1.713-1.715-2.568-3.901-2.568-6.567V118.77c0-2.666 0.855-4.856 2.568-6.567c1.714-1.713 3.904-2.568 6.567-2.568h91.365   c2.669 0 4.859 0.855 6.57 2.568c1.704 1.711 2.56 3.901 2.56 6.567v54.817H292.362z M438.536 392.85   c0 2.673-0.855 4.856-2.562 6.571c-1.718 1.711-3.908 2.562-6.571 2.562h-91.354c-2.673 0-4.862-0.852-6.57-2.562   c-1.711-1.715-2.56-3.898-2.56-6.571V338.03c0-2.669 0.849-4.853 2.56-6.56c1.708-1.719 3.897-2.574 6.57-2.574h91.354   c2.663 0 4.854 0.855 6.571 2.574c1.707 1.707 2.562 3.891 2.562 6.56V392.85z M438.536 283.221c0 2.663-0.855 4.854-2.562 6.564   c-1.718 1.714-3.908 2.569-6.571 2.569h-91.354c-2.673 0-4.862-0.855-6.57-2.569c-1.711-1.711-2.56-3.901-2.56-6.564v-54.819   c0-2.664 0.849-4.854 2.56-6.567c1.708-1.709 3.897-2.565 6.57-2.565h91.354c2.663 0 4.854 0.855 6.571 2.565   c1.707 1.713 2.562 3.903 2.562 6.567V283.221z M438.536 173.587c0 2.666-0.855 4.853-2.562 6.567   c-1.718 1.709-3.908 2.568-6.571 2.568h-91.354c-2.673 0-4.862-0.859-6.57-2.568c-1.711-1.715-2.56-3.901-2.56-6.567V118.77   c0-2.666 0.849-4.856 2.56-6.567c1.708-1.713 3.897-2.568 6.57-2.568h91.354c2.663 0 4.854 0.855 6.571 2.568   c1.707 1.711 2.562 3.901 2.562 6.567V173.587z" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Button>
+        <Button  Panel.ZIndex="1" x:Name="BPerfo" Grid.Column="3" Grid.Row="0" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" BorderThickness="0" Click="BPerfo_Click">
+            <Button.LayoutTransform>
+                <RotateTransform Angle="180"></RotateTransform>
+            </Button.LayoutTransform>
+            <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform">
+                <Path.Data>
+                    <PathGeometry Figures="M4663.8,4251.4c-40-5-182.6-22.5-312.7-37.5c-335.2-37.5-837.9-170.1-1175.6-307.6C504.3,2813.2-663.8-278.3,626.9-2844.5c235.1-465.2,657.8-1058,832.9-1160.6c75-45,7005.9-45,7085.9,0c30,17.5,127.5,120.1,220.1,230.1C9533.6-2852,9943.8-1651.4,9896.3-460.8c-50,1235.6-527.8,2346.1-1378.2,3224.1c-765.4,785.4-1683.3,1263.1-2766.3,1440.7C5519.2,4241.4,4811.4,4273.9,4663.8,4251.4z M4751.3,3466c0-267.6,2.5-277.6,72.5-355.2c60-67.5,90-82.5,177.6-82.5c87.5,0,117.6,15,177.6,82.5c70,80,72.5,87.5,72.5,360.2v277.6l220.1-17.5c555.3-40,1288.1-287.6,1818.4-615.3c160.1-97.5,435.2-297.6,585.3-425.2l62.5-52.5L7732.8,2433c-185.1-185.1-205.1-215.1-205.1-300.1c0-130.1,37.5-190.1,142.6-232.6c130.1-55,217.6-15,430.2,200.1l185.1,185.1l110.1-127.5C8873.3,1600.1,9251,752.2,9351,1.9c15-110,32.5-242.6,40-292.6l12.5-95h-260.1c-305.1,0-372.7-20-440.2-130.1c-67.5-107.5-50-210.1,50-300.1c72.5-67.5,85-70,362.7-70h287.6l-15-117.6c-100-907.9-372.7-1618.3-880.4-2288.6l-182.6-245.1H5001.4H1677.4l-195.1,260.1C979.5-2601.9,714.4-1914,614.4-1003.6l-15,117.6H887c280.1,0,287.6,2.5,367.7,72.5c92.5,82.5,107.5,205.1,35,312.6c-60,95-135.1,115-427.7,115H601.8l10,80c50,402.7,75,540.3,127.6,757.9c152.6,597.8,490.2,1268.1,867.9,1705.8l110.1,127.5l172.6-175.1c205.1-210.1,302.6-260.1,422.7-220.1c105.1,35,162.6,120.1,162.6,242.6c0,85-20,115-205.1,300.1L2065,2638.1l62.5,52.5c457.7,387.7,978,677.8,1545.7,860.4c307.7,100,737.9,185.1,947.9,187.6l130.1,2.5V3466z M5541.7,1335c-87.5-77.5-1435.7-2888.9-1468.2-3059c-67.5-362.7,177.6-775.4,542.8-912.9c310.1-115,685.3-27.5,910.4,215.1c200.1,217.6,192.6,172.6,302.7,1818.3c127.6,1955.9,125.1,1833.4,27.5,1920.9C5754.3,1407.6,5631.8,1415.1,5541.7,1335z M5299.1-1051.1c-32.5-525.2-67.5-905.4-87.5-953c-90.1-227.6-455.2-240.1-600.3-20c-87.5,135.1-65,205.1,342.7,1053c212.6,442.7,387.7,802.9,392.7,797.9C5351.6-175.7,5329.1-573.4,5299.1-1051.1z" />
+                </Path.Data>
+            </Path>
+        </Button>
+        <Button  Panel.ZIndex="1" x:Name="BSettings" Grid.Column="4" Grid.Row="0" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" Click="BSettings_Click" BorderThickness="0">
+            <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform">
+                <Path.Data>
+                    <PathGeometry Figures="m500.058594 61.519531c-3.375-.785156-6.921875.234375-9.359375 2.695313l-41.457031 41.785156h-19.875l-21.878907-22.667969v-20.152343l40.863281-41.472657c2.417969-2.453125 3.402344-5.980469 2.601563-9.335937-.796875-3.351563-3.265625-6.054688-6.53125-7.15625-10.265625-3.460938-21.007813-5.214844-31.933594-5.214844-32.570312 0-62.160156 15.1875-81.183593 41.667969-17.804688 24.789062-23.292969 55.167969-15.429688 84.242187l-73.660156 73.660156-122.71875-123v-24.140624c0-3.511719-1.84375-6.769532-4.855469-8.574219l-70.707031-42.429688c-3.9375-2.363281-8.972656-1.742187-12.214844 1.503907l-28.28125 28.277343c-3.242188 3.246094-3.863281 8.28125-1.503906 12.21875l42.421875 70.707031c1.804687 3.011719 5.058593 4.851563 8.570312 4.855469l24.132813.007813 122.730468 123-73.378906 73.378906c-29.074218-7.859375-59.46875-2.363281-84.269531 15.453125-26.464844 19.011719-41.640625 48.59375-41.640625 81.164063 0 10.921874 1.753906 21.667968 5.214844 31.929687 1.105468 3.285156 3.835937 5.765625 7.210937 6.546875 3.378907.785156 6.921875-.234375 9.363281-2.695312l41.453126-41.78125h19.984374l22.769532 22.769531v19.984375l-41.78125 41.453125c-2.460938 2.441406-3.480469 5.984375-2.695313 9.363281.78125 3.375 3.261719 6.105469 6.546875 7.210938 10.261719 3.460937 21.007813 5.214843 31.929688 5.214843 32.570312 0 62.148437-15.179687 81.164062-41.644531 17.816406-24.800781 23.3125-55.191406 15.453125-84.265625l58.933594-58.933594 13.5 14.664063-6.195313 6.191406c-3.90625 3.90625-3.90625 10.238281 0 14.144531 3.90625 3.902344 10.234376 3.902344 14.144532 0l5.609375-5.609375 126.664062 137.585938c.09375.101562.191407.199218.289063.296875 23.4375 23.4375 61.410156 23.445312 84.859375-.003907 23.382812-23.394531 23.382812-61.460937 0-84.855468-.101563-.101563-.207031-.199219-.3125-.296875l-137.800781-126.421875 5.546874-5.546875c3.90625-3.902344 3.90625-10.234375 0-14.140625s-10.234374-3.90625-14.144531 0l-6.152343 6.15625-14.691407-13.484375 59.21875-59.21875c8.417969 2.25 17.105469 3.390625 25.90625 3.390625 55.140625 0 99.996094-44.859375 99.996094-99.996094 0-10.925781-1.753906-21.667969-5.214844-31.933594-1.105469-3.285156-3.835937-5.765625-7.210937-6.546875zm-411.773438 40.414063c-1.875-1.878906-4.417968-2.835938-7.074218-2.835938l-22.617188-.007812-35.492188-59.257813 17.238282-17.238281 59.15625 35.5v22.617188c0 2.648437 1.050781 5.1875 2.921875 7.0625l125.65625 125.941406-14.144531 14.140625zm254.363282 195.0625 138.269531 126.847656c15.445312 15.609375 15.398437 40.882812-.144531 56.433594-15.578126 15.578125-40.796876 15.625-56.4375.136718l-127.078126-138.035156zm-14.75-13.535156-44.199219 44.191406-13.5-14.664063 43.007812-43.011719zm84.589843-103.464844c-8.746093 0-17.347656-1.402344-25.558593-4.167969-3.597657-1.207031-7.574219-.277344-10.261719 2.40625-50.132813 50.132813-158.15625 158.152344-197.933594 197.933594-2.6875 2.6875-3.621094 6.664062-2.40625 10.265625 8.3125 24.683594 4.335937 51.011718-10.914063 72.242187-15.207031 21.167969-38.871093 33.3125-64.917968 33.3125-2.925782 0-5.835938-.160156-8.71875-.46875l31.761718-31.515625c1.890626-1.875 2.957032-4.429687 2.957032-7.097656v-28.289062c0-2.652344-1.054688-5.195313-2.929688-7.070313l-28.628906-28.628906c-1.875-1.875-4.417969-2.929688-7.070312-2.929688h-28.289063c-2.667969 0-5.222656 1.066407-7.101563 2.957031l-31.511718 31.761719c-.3125-2.882812-.46875-5.792969-.46875-8.71875 0-26.050781 12.140625-49.710937 33.3125-64.917969 21.226562-15.25 47.558594-19.230468 72.246094-10.914062 3.597656 1.214844 7.574218.28125 10.261718-2.40625.550782-.546875 197.792969-197.792969 197.933594-197.933594 2.6875-2.6875 3.617188-6.660156 2.40625-10.261718-8.316406-24.683594-4.347656-51.003907 10.890625-72.21875 15.21875-21.1875 38.886719-33.335938 64.9375-33.335938 3.015625 0 6.011719.167969 8.980469.496094l-31.101563 31.566406c-1.84375 1.871094-2.875 4.390625-2.875 7.015625v28.289063c0 2.59375 1.003907 5.082031 2.804688 6.945312l27.628906 28.628906c1.882813 1.953125 4.480469 3.054688 7.195313 3.054688h28.289062c2.664062 0 5.21875-1.0625 7.097656-2.957032l31.511719-31.757812c.3125 2.882812.46875 5.792969.46875 8.71875 0 44.109375-35.886719 79.996094-79.996094 79.996094zm0 0" FillRule="NonZero"/>
+                </Path.Data>
+            </Path>
+        </Button>
+        <StatusBar Panel.ZIndex="1" Grid.Row="2" Grid.ColumnSpan="4" Grid.Column="0" Margin="0" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}">
+            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" LastChildFill="True" Margin="0">
+                <Grid>
+                    <ProgressBar Height="15" Width="150" Name="PBLoadFile"  ValueChanged="PBLoadFile_ValueChanged" BorderBrush="Black"></ProgressBar>
+                    <TextBox x:Name="LPBLoadFile" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}"  Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True"></TextBox>
+                </Grid>
+                <Grid>
+                    <ProgressBar Height="15" Width="150" Name="PBLoadMaps" ValueChanged="PBLoadMaps_ValueChanged" BorderBrush="Black"></ProgressBar>
+                    <TextBox x:Name="LPBLoadMaps" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  IsReadOnly="True"></TextBox>
+                </Grid>
+                <Grid>
+                    <ProgressBar Height="15" Width="150" Name="PBLoadDB"  ValueChanged="PBLoadDB_ValueChanged" BorderBrush="Black"></ProgressBar>
+                    <TextBox x:Name="LPBLoadDB" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  IsReadOnly="True"></TextBox>
+                </Grid>
+
+                <!-- Temporal items   -->
+                <DockPanel>
+                    <TextBox x:Name="LPosLL" Margin="0" Visibility="Visible" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Height="25"/>
+                    <TextBox x:Name="LPosXY" Margin="0" Visibility="Visible" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Background="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter}}" BorderThickness="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Height="25"/>
+                </DockPanel>
+            </DockPanel>
+        </StatusBar>
+
+
+        <!-- Temporal items   -->
+
+        <GroupBox x:Name="WLoad" Grid.ColumnSpan="5" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="500"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="BLoadFile" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="2" Click="BLoadFile_Click">ASTERIX File...</Button>
+                <TextBox x:Name="TLoadFile" Grid.Row="2" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\Ficheros Asterix de prueba-20190921\SMR_MLAT_cat10_ADSB_Cat21_v023\160510-lebl-220001.ast</TextBox>
+                <GroupBox Header="CAT21 version" Grid.Row="1" Grid.Column="5" Grid.RowSpan="3">
+                    <StackPanel >
+                        <RadioButton x:Name="CAT21v023Sel"  GroupName="CAT21Selector" Content="CAT21 v0.23" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Center"></RadioButton>
+                        <RadioButton x:Name="CAT21v24Sel" GroupName="CAT21Selector" Content="CAT21 v2.4" HorizontalAlignment="Left" VerticalAlignment="Center"></RadioButton>
+                    </StackPanel>
+                </GroupBox>
+                <Button x:Name="BLoadMaps" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="5" Click="BLoadMaps_Click">Maps Folder...</Button>
+                <TextBox x:Name="TLoadMaps" Grid.Row="5" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\maps</TextBox>
+                <Button x:Name="BLoadDB" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="7" Click="BLoadDB_Click">ACFT DB...</Button>
+                <TextBox x:Name="TLoadDB" Grid.Row="7" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\acrft_db.csv</TextBox>
+                <Button x:Name="BLoadRefresh" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="3" Grid.Row="9" Width="100" Click="BLoadRefresh_Click">Refresh</Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="WRadar" Grid.ColumnSpan="5" Grid.Row="1" Visibility="Hidden" BorderThickness="0" Margin="0">
+            <Grid SizeChanged="Grid_SizeChanged" Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                <Canvas x:Name="LienzoMaps" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" Panel.ZIndex="0" Margin="0"/>
+                <Canvas x:Name="LienzoVehicles" Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0" Grid.ColumnSpan="3" MouseMove="LienzoMaps_MouseMove" Panel.ZIndex="0" Margin="0" MouseLeftButtonDown="LienzoVehicles_MouseLeftButtonDown" />
+
+                <Expander x:Name="TimeExpand" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" ExpandDirection="Right" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                    <Expander.Header>
+                        <TextBlock Text="Time Options" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="90"></RotateTransform>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Expander.Header>
+                    <StackPanel x:Name="StackOptionsTime" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200">
+                        <DockPanel Margin="5" HorizontalAlignment="Stretch">
+                            <TextBlock x:Name="LTime"  DockPanel.Dock="Top" Margin="5" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Time window:</TextBlock>
+                            <xctk:RangeSlider x:Name="SlTime" Minimum="22" Maximum="24" TickPlacement="BottomRight" LowerValue="22" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}"
+                  AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2" TickFrequency="0.0833333"  HigherValue="24"
+                  IsSnapToTickEnabled="True" LowerValueChanged="SliderTime_ValueChanged" HigherValueChanged="SliderTime_ValueChanged" RangeBackground="Green" HigherRangeBackground="Red" LowerRangeBackground="Red"/>
+                        </DockPanel>
+                        <DockPanel Margin="5" HorizontalAlignment="Stretch">
+                            <TextBlock x:Name="LSpeed"  DockPanel.Dock="Top" Margin="5" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Speed Time:</TextBlock>
+                            <TextBox Margin="5" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Text="{Binding ElementName=SlSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" />
+                            <Slider Maximum="40" Minimum="1" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" x:Name="SlSpeed" HorizontalAlignment="Stretch"/>
+                        </DockPanel>
+                        <Grid Margin="15" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="BPause" BorderThickness="0" Background="Transparent" Grid.Column="0" Margin="5" Click="BPause_Click">
+                                <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform" Width="35">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M193.441,0h-75.484c-16.897,0-30.6,13.703-30.6,30.6v458.277c0,16.898,13.703,30.602,30.6,30.602h75.484	c16.897,0,30.6-13.703,30.6-30.602V30.6C224.042,13.703,210.339,0,193.441,0z 
+                                                      M401.521,0h-75.484c-16.896,0-30.6,13.703-30.6,30.6v458.277c0,16.898,13.703,30.602,30.6,30.602h75.484 c16.896,0,30.6-13.703,30.6-30.602V30.6C432.121,13.703,418.418,0,401.521,0z"/>
+                                    </Path.Data>
+
+                                </Path>
+                            </Button>
+                            <Button x:Name="BPlay" BorderThickness="0" Background="Transparent" Grid.Column="1" Margin="5" Click="BPlay_Click">
+                                <Path Stroke="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Fill="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter}}" Stretch="Uniform" Width="45">
+                                    <Path.Data>
+                                        <PathGeometry Figures="M34.857,3.613C20.084-4.861,8.107,2.081,8.107,19.106v125.637c0,17.042,11.977,23.975,26.75,15.509L144.67,97.275 c14.778-8.477,14.778-22.211,0-30.686L34.857,3.613z"/>
+                                    </Path.Data>
+
+                                </Path>
+                            </Button>
+                        </Grid>
+                        <DataGrid x:Name="TEST" ItemsSource="{Binding Vistos}" Width="110" Margin="5">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ICAO Address" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+                <Expander x:Name="MapsExpand" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" ExpandDirection="Left" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Right">
+                    <Expander.Header>
+                        <TextBlock Text="Maps Options" Foreground="{Binding Path=MapTextColor, Converter={StaticResource UniversalValueConverter}}">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="-90"></RotateTransform>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Expander.Header>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="StackOptionMaps" CanVerticallyScroll="True">
+                            <GroupBox Header="Moving Objects">
+                                <DockPanel>
+                                    <CheckBox DockPanel.Dock="Top" x:Name="CheckTraffic" Click="CheckBoxClickAll" Margin="5" Foreground="{Binding Path=MapTextColor, Converter={StaticResource UniversalValueConverter}}" Visibility="Hidden">Traffic</CheckBox>
+                                    <CheckBox DockPanel.Dock="Top" x:Name="CheckVehicles" Click="CheckBoxClickAll" Margin="5" Foreground="{Binding Path=MapTextColor, Converter={StaticResource UniversalValueConverter}}" Visibility="Hidden">Vehicles</CheckBox>
+                                    <CheckBox DockPanel.Dock="Top" x:Name="CheckUnknown" Click="CheckBoxClickAll" Margin="5" Foreground="{Binding Path=MapTextColor, Converter={StaticResource UniversalValueConverter}}" Visibility="Hidden">Unknown</CheckBox>
+                                </DockPanel>
+                            </GroupBox>
+                            <StackPanel x:Name="StackMaps" CanVerticallyScroll="True"></StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Expander>
+                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <Button x:Name="BZoomIn" Click="BZoomIn_Click" Width="25" Height="25" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">+</Button>
+
+                    <Slider x:Name="SlZoom" Grid.ColumnSpan="4" Orientation="Horizontal" TickFrequency="1" VerticalAlignment="Bottom" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}"
+              HorizontalAlignment="Center" Margin="20" Width="150" IsSnapToTickEnabled="True" Minimum="1" Maximum="4" ValueChanged="Slider_ValueChanged"
+                        />
+                    <Button x:Name="BZoomout" Click="BZoomout_Click" Width="25" Height="25" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">-</Button>
+                </StackPanel>
+
+            </Grid>
+        </GroupBox>
+        <GroupBox x:Name="WTable" Grid.ColumnSpan="5" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
+            <DataGrid x:Name="Table" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" Background="Transparent" AlternatingRowBackground="{Binding Path=TableSecondaryColor, Converter={StaticResource UniversalValueConverter}}" GridLinesVisibility="Vertical" RowBackground="{Binding Path=TableMainColor, Converter={StaticResource UniversalValueConverter}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Track" Binding="{Binding TrackN}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="Country" Binding="{Binding Country}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="CAT" Binding="{Binding CAT}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="Length" Binding="{Binding Length}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="TOD" Binding="{Binding TOD}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="DataItems Count" Binding="{Binding FSPECount}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="ICAO Address" Binding="{Binding ICAOAddress}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="Callsign" Binding="{Binding Callsign}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="Reg. ID" Binding="{Binding RegID}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="Position X" Binding="{Binding PositionX}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    <DataGridTextColumn Header="Position Y" Binding="{Binding PositionY}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <Image DockPanel.Dock="Left" Source="{Binding ImageUrl}" Height="130" Margin="15"/>
+                            <Grid Margin="0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="CAT: " FontWeight="Bold" Grid.Column="0" Grid.Row="0" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding CAT}" Grid.Column="1" Grid.Row="0" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="Length: " FontWeight="Bold" Grid.Row="1" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding Length}" Grid.Column="1" Grid.Row="1" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="ICAO Address: " FontWeight="Bold" Grid.Row="2" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding ICAOAddress}" Grid.Column="1" Grid.Row="2" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="Callsign: " FontWeight="Bold" Grid.Row="3" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding Callsign}" Grid.Column="1" Grid.Row="3" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="Register ID: " FontWeight="Bold" Grid.Row="4" Grid.Column="0" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding RegID}" Grid.Column="1" Grid.Row="4" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+
+
+                                <TextBlock Text="Country: " FontWeight="Bold" Grid.Row="0" Grid.Column="2" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding Country}" Grid.Column="3" Grid.Row="0" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="Type: " FontWeight="Bold" Grid.Row="1" Grid.Column="2" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding Type}" Grid.Column="3" Grid.Row="1" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="Time: " FontWeight="Bold" Grid.Row="2" Grid.Column="2" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding TOD}" Grid.Column="3" Grid.Row="2" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="Position in X: " FontWeight="Bold" Grid.Row="3" Grid.Column="2" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding PositionX}" Grid.Column="3" Grid.Row="3" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="Position in Y: " FontWeight="Bold" Grid.Row="4" Grid.Column="2" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                <TextBlock Text="{Binding PositionY}" Grid.Column="3" Grid.Row="4" Margin="5" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+
+                            </Grid>
+                        </DockPanel>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            </DataGrid>
+        </GroupBox>
+        <GroupBox x:Name="WPerformance" Grid.ColumnSpan="5" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
+            <StackPanel HorizontalAlignment="Center" Margin="25">
+                <DataGrid x:Name="TPerfo" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" SelectionMode="Single" SelectionUnit="FullRow" Background="Transparent" AlternatingRowBackground="{Binding Path=TableSecondaryColor, Converter={StaticResource UniversalValueConverter}}" GridLinesVisibility="Vertical" RowBackground="{Binding Path=TableMainColor, Converter={StaticResource UniversalValueConverter}}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Zone" Binding="{Binding Zone}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="Prob. Of Update (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+                            
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding ProbOfUpdate}" HorizontalAlignment="Center" Grid.Column="0" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="{Binding PoUDTeo}" HorizontalAlignment="Center" Grid.Column="1" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+    
+                        <DataGridTextColumn Header="Position Accuracy (%)" Binding="{Binding PositionAccuracy}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="Prob. Of MLAT Detection (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.HeaderTemplate>
+
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding ProbOfMLATdet}" HorizontalAlignment="Center" Grid.Column="0" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="{Binding PoMDTeo}" HorizontalAlignment="Center" Grid.Column="1" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                 
+                        <DataGridTextColumn Header="Prob. Of Identification (%)" Binding="{Binding ProbOfID}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                        <DataGridTextColumn Header="Prob. Of Detection (%)" Binding="{Binding ProbOfDet}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                        <DataGridTextColumn Header="Prob. Of False Identification (%)" Binding="{Binding ProbOfFalseID}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </GroupBox>
+            
+        <GroupBox x:Name="WSettings" Grid.ColumnSpan="5" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <GroupBox x:Name="SettLangApp" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Header="Lang. and Appearance Settings" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">
+                    <DockPanel>
+                        <StackPanel Margin="5" DockPanel.Dock="Top">
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Language Selection:</TextBlock>
+                            <ComboBox SelectedIndex="0" IsEnabled="False">
+                                <ComboBoxItem Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">English</ComboBoxItem>
+                                <ComboBoxItem Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">French</ComboBoxItem>
+                                <ComboBoxItem Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Spanish</ComboBoxItem>
+                                <ComboBoxItem Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Catalan</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Margin="5" DockPanel.Dock="Top">
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Appearance:</TextBlock>
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">MainColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=WindowMainColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">TextColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">BackgroundColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=WindowBackgroundColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                            <StackPanel Margin="5">
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Interval (in s):</TextBlock>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                            <Slider  Maximum="60" Minimum="1" TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True" Name="SlInterval" Margin="0" LargeChange="10" Width="300" ValueChanged="Interval_ValueChanged"/>
+                            <TextBox  Margin="5" Text="{Binding ElementName=SlInterval, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" Width="25" HorizontalAlignment="Right"/>
+                        </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </GroupBox>
+                <GroupBox x:Name="SettMap" Grid.Row="1" Grid.Column="3" Header="RADAR Settings" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <StackPanel Margin="5" DockPanel.Dock="Left" Width="125">
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Vehicles:</TextBlock>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">AircraftColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=AircraftColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">VehiclesColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=VehiclesColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">OthersColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=OtherColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Type:</TextBlock>
+                                <ComboBox Width="125" x:Name="MergingTypeRADAR" IsEditable="False" SelectedIndex="0">
+                                    <ComboBoxItem Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Polylines</ComboBoxItem>
+                                    <ComboBoxItem Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Points</ComboBoxItem>
+                                </ComboBox>
+                                </StackPanel>
+                            <StackPanel Margin="5" DockPanel.Dock="Left">
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Maps:</TextBlock>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">MainColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=MapMainColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">SecondayColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=MapSecondaryColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">HighligthColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=MapHighlightColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">BackgroundColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                                <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">TextColor</TextBlock>
+                                <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=MapTextColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                            </StackPanel>
+                        </DockPanel>
+
+                    </DockPanel>
+                </GroupBox>
+                <GroupBox x:Name="SettTable" Grid.Row="3" Grid.Column="3" Header="Table Settings" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">
+                    <DockPanel>
+                        <StackPanel Margin="5">
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">RowColors:</TextBlock>
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">MainColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=TableMainColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">SecondayColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=TableSecondaryColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                            <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">TextColor</TextBlock>
+                            <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
+                        </StackPanel>
+                    </DockPanel>
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>
