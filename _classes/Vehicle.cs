@@ -24,7 +24,9 @@ namespace Ideafix
 
         internal double[] pUD { get; set; } //vector qe conte les probabilitats de Up Date per les 3 zones 
         internal double[] TotalSec { get; set; }
-        internal double[] samples { get; set; }
+        internal double[] incSamples { get; set; }
+        internal double[] winOK { get; set; }
+        internal double[] winT { get; set; }
         //0 --> MA
         //1 --> Stand
         //2 --> Apron
@@ -139,136 +141,187 @@ namespace Ideafix
 
         public void Performance()
         {
-            //Calculem probabilitat de UpDate i probabilitat de detecció
-
-
-            double[] ProbDet = new double[] { 0, 0 }; //només per MA i Stand
-            pUD = new double[] { 0, 0, 0 };
-            double[] PlaceProb = new double[] { 0, 0, 0 };
-            int[] entrades = new int[] { 0, 0, 0 };
-            double window = 0;
-
-            ///////22222222222
-            //TotalSec = new double[] { 0, 0, 0 };
-            //samples = new double[] { 0, 0, 0 };
-
-            //this.Place.Add(-1);
-            //int pos = 0;
-            //for (int i = 0; i < this.Place.Count - 1; i++)
+            /////MLAT aixo es un intent fracasat del Papa
+            //int oldPos = 0;
+            //double Len = this.Place.Count;
+            //int i = 0;
+            //int x = 0;
+            //int w = 0;
+            //winOK = new double[] { 0, 0 };
+            //winT = new double[] { 0, 0 };
+            //DateTime t0 = new DateTime();
+            //t0 = this.DateTimes[0];
+            //while (i < Len)
             //{
-            //    if (this.Place[i] != 0) //nomes eem de calcular per zones 1, 2 i 3
+            //    if (this.Place[i] == 1 || this.Place[i] == 2)
             //    {
-            //        if (this.Place[i] == this.Place[i + 1]) //no hi ha salt de zona
+            //        oldPos = this.Place[i];
+            //        if (oldPos == 1) { w = 2; } else { w = 5; }
+            //        while (this.Place[i] == oldPos)
             //        {
-            //            samples[Place[i] - 1] = samples[Place[i] - 1] + 1;
-            //        }
-            //        else  //salt de zona al i +1. Calculem probabilitats i vegades que s'ha entrat a la zona 
-            //        {
-            //            samples[Place[i] - 1] = samples[Place[i] - 1] + 1;
-            //            TotalSec[Place[i] - 1] = TotalSec[Place[i] - 1] + (this.DateTimes[i] - this.DateTimes[pos]).TotalSeconds + 1;
-            //            pos = i + 1; //inici de seguent interval
+            //            x = 0;
+            //            while (((this.DateTimes[i] - t0).TotalSeconds < w) && this.Place[i] == oldPos && (i + w - 1) < Len)
+            //            {
+            //                x++; i++;
+            //            }
+            //            winT[oldPos - 1]++;
+            //            if (x > 0)
+            //            {
+            //                winOK[oldPos - 1]++;
+            //            }
+            //            t0 = t0.AddSeconds(1);
+            //            i = 0;
+            //            while (this.DateTimes[i] < t0 && i < Len && (this.Place[i] < 1 || this.Place[i] > 2))
+            //            {
+            //                i++;
+            //            }
+            //            oldPos = this.Place[i--];
             //        }
             //    }
-            //    else
-            //    {
-            //        pos = i + 1;
-            //    }
+            //    i++;
             //}
-
-            //this.Place.Remove(-1);
-            //////22222222222
+            /////
 
 
-            ///111111111
-            DateTime start;
-            DateTime end;
-            List<DateTime> DT = new List<DateTime>();
-            List<int> P = new List<int>();
+            //MLAT det start només per zones 1 i 2
+            winOK = new double[] { 0, 0 };
+            winT = new double[] { 0, 0 };
+            double w = 1;
             this.Place.Add(-1);
+            DateTime d0 = new DateTime();
+            DateTime d1 = new DateTime();
+            DateTime d2 = new DateTime();
+            DateTime start = new DateTime();
+            DateTime end = new DateTime();
+            start = this.DateTimes[0];
+
+            this.DateTimes.Add(d0);
+            d1 = start;
+            double punt = 0;
+            for (int i = 0; i < this.Place.Count - 1; i++)
+            {
+                if (this.Place[i] == 1 || this.Place[i] == 2) //nomes eem de calcular per zones 1 i 2
+                {
+                    if (this.Place[i] == this.Place[i + 1]) { } //no hi ha salt de zona
+                    else  //salt de zona al i +1.
+                    {
+                        if (this.Place[i] == 1) { w = 2; } //finestra temporal de 2s
+                        if (this.Place[i] == 2) { w = 5; } //finestra temporal de 5s
+                        d2 = d1.AddSeconds(w);
+                        end = this.DateTimes[i];
+                        if (w <= (end - start).TotalSeconds)
+                        {
+                            int windows = Convert.ToInt32((end - start).TotalSeconds - w + 2);
+                            winT[this.Place[i] - 1] = winT[this.Place[i] - 1] + windows;
+                            for (int j = 0; j < windows; j++)
+                            {
+                                for (int k = 0; k < this.DateTimes.Count; k++)
+                                {
+                                    if (DateTimes[k] >= d1 && DateTimes[k] < d2)
+                                    {
+                                        winOK[this.Place[i] - 1]++;
+                                        k = this.DateTimes.Count;
+                                    }
+                                }
+                                d2 = d1.AddSeconds(w);
+                                d1 = d1.AddSeconds(1);
+                            }
+                        }
+                        start = this.DateTimes[i + 1];
+                        d1 = start;
+                    }
+                }
+                else
+                {
+                    start = this.DateTimes[i + 1];
+                    d1 = start;
+                }
+            }
+            this.Place.Remove(-1);
+            this.DateTimes.Remove(d0);
+            //MLAR det end
+
+            /////UPDATE 22222222222
+            TotalSec = new double[] { 0, 0, 0 };
+            incSamples = new double[] { 0, 0, 0 };
+
+            this.Place.Add(-1);
+            int pos = 0;
             for (int i = 0; i < this.Place.Count - 1; i++)
             {
                 if (this.Place[i] != 0) //nomes eem de calcular per zones 1, 2 i 3
                 {
                     if (this.Place[i] == this.Place[i + 1]) //no hi ha salt de zona
                     {
-                        DT.Add(this.DateTimes[i]);
-                        P.Add(this.Place[i]);
+                        incSamples[Place[i] - 1]++;
                     }
-                    else  //salt de zona. Calculem probabilitats i vegades que s'ha entrat a la zona 
+                    else  //salt de zona al i +1. Calculem probabilitats i vegades que s'ha entrat a la zona 
                     {
-                        DT.Add(this.DateTimes[i]);
-                        P.Add(this.Place[i]);
-                        start = DT[0];
-                        end = DT[DT.Count - 1];
-
-                        //1 Prob of Update
-                        double Prob = (DT.Count / ((end - start).TotalSeconds + 1)) * 100;
-                        PlaceProb[this.Place[i] - 1] = PlaceProb[this.Place[i] - 1] + Prob;
-                        entrades[this.Place[i] - 1] = entrades[this.Place[i] - 1] + 1;
-
-                        //ListDTList.Add(DT);
-                        //ListPList.Add(P);
-
-                        ////2 Prob of MLAT Detection
-                        //if (this.Place[i] == 3) { } //no fem res
-                        //else
-                        //{
-                        //    if (this.Place[i] == 1)
-                        //    {
-                        //        window = 2;
-                        //    }
-                        //    else if (this.Place[i] == 2)
-                        //    {
-                        //        window = 5;
-                        //    }
-                        //    DateTime d1 = DT[0];
-                        //    DateTime d2 = new DateTime();
-                        //    int det = 0;
-                        //    int ventanas = Convert.ToInt32((end - start).TotalSeconds - 1);
-
-                        //    for (int k = 0; k < ventanas; k++)
-                        //    {
-                        //        d2 = d1.AddSeconds(window);
-                        //        for (int j = 0; j < DT.Count; j++)
-                        //        {
-                        //            if (DT[j] < d2 && DT[j] >= d1)
-                        //            {
-                        //                det = det + 1;
-                        //                j = DT.Count;
-                        //            }
-                        //        }
-                        //        d1 = d1.AddSeconds(1);
-                        //    }
-                        //    ProbDet[this.Place[i] - 1] = ProbDet[this.Place[i] - 1] + (det / ventanas) * 100;
-                        //}
-
-                        DT.Clear();
-                        P.Clear();
+                        TotalSec[Place[i] - 1] = TotalSec[Place[i] - 1] + (this.DateTimes[i] - this.DateTimes[pos]).TotalSeconds;
+                        pos = i + 1; //inici de seguent interval
                     }
                 }
-            }
-
-            for (int i = 0; i < pUD.Length; i++)
-            {
-                if (PlaceProb[i] != 0)
+                else
                 {
-                    pUD[i] = PlaceProb[i] / entrades[i];
+                    pos = i + 1;
                 }
             }
+            this.Place.Remove(-1);
+            ////UPDATE 22222222222
 
-            //for (int i = 0; i < ProbDet.Length; i++)
+
+
+
+
+            /////UPDATE 111111111
+            //pUD = new double[] { 0, 0, 0 };
+            //double[] PlaceProb = new double[] { 0, 0, 0 };
+            //int[] entrades = new int[] { 0, 0, 0 };
+            //DateTime start;
+            //DateTime end;
+            //List<DateTime> DT = new List<DateTime>();
+            //List<int> P = new List<int>();
+            //this.Place.Add(-1);
+            //for (int i = 0; i < this.Place.Count - 1; i++)
             //{
-            //    if (ProbDet[i] != 0)
+            //    if (this.Place[i] != 0) //nomes eem de calcular per zones 1, 2 i 3
             //    {
-            //        ProbDet[i] = ProbDet[i] / entrades[i];
+            //        if (this.Place[i] == this.Place[i + 1]) //no hi ha salt de zona
+            //        {
+            //            DT.Add(this.DateTimes[i]);
+            //            P.Add(this.Place[i]);
+            //        }
+            //        else  //salt de zona. Calculem probabilitats i vegades que s'ha entrat a la zona 
+            //        {
+            //            DT.Add(this.DateTimes[i]);
+            //            P.Add(this.Place[i]);
+            //            start = DT[0];
+            //            end = DT[DT.Count - 1];
+
+            //            //1 Prob of Update
+            //            double Prob = (DT.Count / ((end - start).TotalSeconds + 1)) * 100;
+            //            PlaceProb[this.Place[i] - 1] = PlaceProb[this.Place[i] - 1] + Prob;
+            //            entrades[this.Place[i] - 1] = entrades[this.Place[i] - 1] + 1;
+
+
+            //            DT.Clear();
+            //            P.Clear();
+            //        }
             //    }
             //}
 
+            //for (int i = 0; i < pUD.Length; i++)
+            //{
+            //    if (PlaceProb[i] != 0)
+            //    {
+            //        pUD[i] = PlaceProb[i] / entrades[i];
+            //    }
+            //}
 
-            ////borrem ultim element que nomes l'hem utilitzat per recorre la llista
-            this.Place.Remove(-1);
+            //////borrem ultim element que nomes l'hem utilitzat per recorre la llista
+            //this.Place.Remove(-1);
 
-            //111111111
+            ////UPDATE111111111
 
         }
     }

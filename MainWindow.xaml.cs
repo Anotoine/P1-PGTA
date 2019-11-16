@@ -54,7 +54,8 @@ namespace Ideafix
         int Estela = 10;
 
         //Performance
-        internal double[] pUD { get; set; }
+        internal double[] pUD { get; set; } //UPDATE
+        internal double[] pMD { get; set; } //MLAT DETECTION
         internal string[] Place = new string[] { "MANEUVERING AREA", "STAND", "APRON" }; 
 
         public MainWindow() 
@@ -1251,60 +1252,76 @@ namespace Ideafix
         //PERFORMANCE ESTEL
         private void Performance(List<Vehicle> vl) 
         {
-            pUD = new double[] { 0, 0, 0 };
             listPerf = new List<ShowPerf>();
 
-            ////////222222222
-            //double[] samplesT = new double[] { 0, 0, 0 };
-            //double[] TotalSecT = new double[] { 0, 0, 0 };
-            //foreach (Vehicle v in vl)
-            //{
-            //    v.Performance();
-            //    for (int i = 0; i < v.samples.Length; i++)
-            //    {
-            //        samplesT[i] = samplesT[i] + v.samples[i];
-            //        TotalSecT[i] = TotalSecT[i] + v.TotalSec[i];
-            //    }
-            //}
-
-            //for (int i = 0; i < samplesT.Length; i++)
-            //{
-            //    pUD[i] = (samplesT[i] / TotalSecT[i]) * 100;
-            //    pUD[i] = Convert.ToDouble(pUD[i].ToString("0.###"));
-            //}
-            ///////2222222
-
-            ////11111111
-            double[] minP = new double[] { 100, 100, 100 };
-            double[] num = new double[] { 0, 0, 0 };
-
+            //////UPDATE 222222222 and MLAT DET
+            pUD = new double[] { 0, 0, 0 };
+            pMD = new double[] { 0, 0, 0 };
+            double[] winT = new double[] { 0, 0};
+            double[] winOK = new double[] { 0, 0};
+            double[] samplesT = new double[] { 0, 0, 0 };
+            double[] TotalSecT = new double[] { 0, 0, 0 };
             foreach (Vehicle v in vl)
             {
                 v.Performance();
-                for (int i = 0; i < v.pUD.Length; i++)
+                for (int i = 0; i < v.incSamples.Length; i++)
                 {
-                    if (v.pUD[i] > 0)
-                    {
-                        num[i] = num[i] + 1;
-                        pUD[i] = pUD[i] + v.pUD[i];
-                        if (v.pUD[i] < minP[i])
-                        {
-                            minP[i] = v.pUD[i];
-                        }
-                    }
+                    samplesT[i] = samplesT[i] + v.incSamples[i];
+                    TotalSecT[i] = TotalSecT[i] + v.TotalSec[i];
+                }
+                for (int i = 0; i < v.winOK.Length; i++)
+                {
+                    winT[i] = winT[i] + v.winT[i];
+                    winOK[i] = winOK[i] + v.winOK[i];
                 }
             }
 
-            for (int i = 0; i < pUD.Length; i++)
+            for (int i = 0; i < samplesT.Length; i++)
             {
-                pUD[i] = pUD[i] / num[i];
+                pUD[i] = (samplesT[i] / TotalSecT[i]) * 100;
                 pUD[i] = Convert.ToDouble(pUD[i].ToString("0.###"));
             }
-            //1111111
+            for (int i = 0; i < winT.Length; i++)
+            {
+                pMD[i] = (winOK[i] / winT[i]) * 100;
+                pMD[i] = Convert.ToDouble(pMD[i].ToString("0.###"));
+            }
 
-            listPerf.Add(new ShowPerf("Maneuvering Area", pUD[0]));
-            listPerf.Add(new ShowPerf("Stand", pUD[1]));
-            listPerf.Add(new ShowPerf("Apron", pUD[2]));
+
+            /////UPDATE 2222222 and MLAT DET
+
+            //////11111111
+            //double[] minP = new double[] { 100, 100, 100 };
+            //double[] num = new double[] { 0, 0, 0 };
+
+            //foreach (Vehicle v in vl)
+            //{
+            //    v.Performance();
+            //    for (int i = 0; i < v.pUD.Length; i++)
+            //    {
+            //        if (v.pUD[i] > 0)
+            //        {
+            //            num[i] = num[i] + 1;
+            //            pUD[i] = pUD[i] + v.pUD[i];
+            //            if (v.pUD[i] < minP[i])
+            //            {
+            //                minP[i] = v.pUD[i];
+            //            }
+            //        }
+            //    }
+            //}
+
+            //for (int i = 0; i < pUD.Length; i++)
+            //{
+            //    pUD[i] = pUD[i] / num[i];
+            //    pUD[i] = Convert.ToDouble(pUD[i].ToString("0.###"));
+            //}
+            ////1111111
+
+            listPerf.Add(new ShowPerf("Maneuvering Area", pUD[0], 95.000, pMD[0],99.9));
+            listPerf.Add(new ShowPerf("Stand", pUD[1], 50.000,pMD[1],99.9));
+            listPerf.Add(new ShowPerf("Apron", pUD[2], 70.000,0,0));
+
         }
     }
 }
