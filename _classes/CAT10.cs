@@ -330,7 +330,7 @@ namespace Ideafix
             this.DI200.Add(new Atom("Speed", Convert.ToSingle(speed * Math.Pow(2, -14)), Convert.ToString((float)speed * Math.Pow(2, -14))));
             Offset += 2;
             int TA = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
-            this.DI200.Add(new Atom("Track Angle", Convert.ToSingle(TA * Math.Pow(2, 16)), Convert.ToString((float)TA * Math.Pow(2, 16))));
+            this.DI200.Add(new Atom("Track Angle", Convert.ToSingle(TA * 360/Math.Pow(2, 16)), Convert.ToString((float)TA * 360/Math.Pow(2, 16))));
             Offset += 2;
         }
         
