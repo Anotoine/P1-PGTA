@@ -38,6 +38,7 @@ namespace Ideafix
 
         //Logic stuff
         Dictionary<string, string> paths = new Dictionary<string, string>() { { "File", @"" }, { "Maps", @"" }, { "DB", @"" } };
+        bool Isv023 = false;
 
         //Mapping stuff
         List<Map> Maps;
@@ -245,6 +246,8 @@ namespace Ideafix
 
         private void BLoadRefresh_Click(object sender, RoutedEventArgs e)
         {
+            if (CAT21v023Sel.IsChecked == true)
+                Isv023 = true;
             if (!TLoadFile.Text.Equals(paths["File"]) || TLoadFile.Equals(""))
             {
                 paths["File"] = TLoadFile.Text;
@@ -578,7 +581,7 @@ namespace Ideafix
                 while (i < list.Count)
                 {
                     int length = Int32.Parse(list[i + 1] + list[i + 2], System.Globalization.NumberStyles.HexNumber);
-                    Message m = new Message(list.GetRange(i, length));
+                    Message m = new Message(list.GetRange(i, length), Isv023);
 
                     listMessages.Add(m);
                     listRow.Add(new ShowRow(m));
@@ -669,9 +672,7 @@ namespace Ideafix
                         if (Vistos.Contains(m.getAddressICAO()))
                         {
                             if (m.getTOD() >= VehiclesList[Vistos.IndexOf(m.getAddressICAO())].getLastTime().AddSeconds(UserOptions.Interval))
-                            {
                                 VehiclesList[Vistos.IndexOf(m.getAddressICAO())].AddPoint(m);
-                            }
                         }
                         else
                         {
@@ -870,28 +871,7 @@ namespace Ideafix
                             poly.Points = points;
                             LienzoMaps.Children.Add(poly);
                         }
-
-                        ////*****INICI porva
-                        //Random rnd = new Random();  //Aqui poso els punts random per probar la funció
-                        //PointCollection pCol = new PointCollection();
-                        //List<Ellipse> listeli = new List<Ellipse>();
-                        //for (int j = 0; j < 500; j++)
-                        //{
-                        //    pCol.Add(new System.Windows.Point(rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth)), rnd.Next(10, Convert.ToInt32(LienzoVehicles.ActualWidth))));
-                        //    Ellipse el = new Ellipse
-                        //    {
-                        //        StrokeThickness = 1,
-                        //        Width = 5,
-                        //        Height = 5
-                        //    };
-                        //    Canvas.SetLeft(el, pCol[j].X - el.Width / 2);
-                        //    Canvas.SetTop(el, pCol[j].Y - el.Height / 2);
-                        //    el.Stroke = Brushes.Red;
-                        //    el.Fill = Brushes.Red;
-                        //    listeli.Add(el);
-                        //}
-
-                        for (int j = 0; j < Maps[i].getPolygons().Count; j++) //Aqui Dibuixem poligons
+                        for (int j = 0; j < Maps[i].getPolygons().Count; j++)
                         {
                             List<Point> pl = Maps[i].getPolygon(j);
                             int index = Maps[i].getIndex(j);
@@ -908,23 +888,6 @@ namespace Ideafix
                             LienzoMaps.Children.Add(pol);
 
                         }
-
-                            //for (int k = 0; k < 500; k++)
-                            //{
-                            //    System.Windows.Point p = pCol[k];
-                            //    if (IsPointInPolygon4(points, p) && listeli[k].Stroke != Brushes.Green)
-                            //    {
-                            //        listeli[k].Stroke = Brushes.Green;
-                            //        listeli[k].Fill = Brushes.Green;
-                            //    }
-                            //}
-
-                        //for (int k = 0; k < 500; k++) 
-                        //{
-                        //    LienzoMaps.Children.Add(listeli[k]);
-                        //}
-                        ////*****FINAL PROVA**
-
                         foreach (Tuple<Point, string> txt in Maps[i].getTexts())
                         {
                             TextBlock textBlock = new TextBlock

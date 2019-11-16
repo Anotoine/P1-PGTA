@@ -30,7 +30,7 @@ namespace Ideafix
             //this.lengthMessage = Int32.Parse(this.rawList[1], System.Globalization.NumberStyles.HexNumber) + Int32.Parse(this.rawList[2], System.Globalization.NumberStyles.HexNumber);
         }
 
-        public Message(List<string> raw)
+        public Message(List<string> raw, bool Isv023)
         {
             this.rawList = raw;
             this.CAT = Int32.Parse(this.rawList[0], System.Globalization.NumberStyles.HexNumber);
@@ -76,12 +76,11 @@ namespace Ideafix
                     CAT20 = new CAT20(rawList, listFSPEC, Offset).Decode();
                     break;
                 case 21:
-                    //try {
-                    //    CAT21v24 = new CAT21v24(rawList, listFSPEC, Offset).decode();
-                    //} catch {
+                    if (Isv023)
                         CAT21v023 = new CAT21v023(rawList, listFSPEC, Offset).decode();
-                    //}
-                break;
+                    else
+                        CAT21v24 = new CAT21v24(rawList, listFSPEC, Offset).decode();
+                    break;
             }
         }
 

@@ -109,11 +109,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="0.5*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="20"/>
@@ -125,8 +125,8 @@
                 <TextBox x:Name="TLoadFile" Grid.Row="2" Grid.Column="3">D:\UPC\2019-5A\05.PGTA\P1-test\_data\Ficheros Asterix de prueba-20190921\SMR_MLAT_cat10_ADSB_Cat21_v023\160510-lebl-220001.ast</TextBox>
                 <GroupBox Header="CAT21 version" Grid.Row="1" Grid.Column="5" Grid.RowSpan="3">
                     <StackPanel >
-                        <RadioButton GroupName="CAT21Selector" Content="CAT21 v0.23" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Center"></RadioButton>
-                        <RadioButton GroupName="CAT21Selector" Content="CAT21 v2.4" HorizontalAlignment="Left" VerticalAlignment="Center"></RadioButton>
+                        <RadioButton x:Name="CAT21v023Sel"  GroupName="CAT21Selector" Content="CAT21 v0.23" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Center"></RadioButton>
+                        <RadioButton x:Name="CAT21v24Sel" GroupName="CAT21Selector" Content="CAT21 v2.4" HorizontalAlignment="Left" VerticalAlignment="Center"></RadioButton>
                     </StackPanel>
                 </GroupBox>
                 <Button x:Name="BLoadMaps" Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}" Grid.Column="1" Grid.Row="5" Click="BLoadMaps_Click">Maps Folder...</Button>

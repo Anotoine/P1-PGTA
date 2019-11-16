@@ -289,10 +289,10 @@ namespace Ideafix
         private void DecodeLatLong()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
-            float latreal = Convert.ToSingle(lat * 180 / 2 ^ 31);
+            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 31));
 
             int lon = Int32.Parse(string.Concat(this.rawList[Offset + 4], this.rawList[Offset + 5], this.rawList[Offset + 6], this.rawList[Offset + 7]), System.Globalization.NumberStyles.HexNumber);
-            float lonreal = Convert.ToSingle(lon * 180 / 2 ^ 31);
+            float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 31));
 
             Offset += 8;
 
@@ -327,10 +327,10 @@ namespace Ideafix
         {
             this.DI200 = new List<Atom>();
             int speed = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
-            this.DI200.Add(new Atom("Speed", (float)speed * (2 ^ (-14)), Convert.ToString((float)speed * (2 ^ (-14)))));
+            this.DI200.Add(new Atom("Speed", Convert.ToSingle(speed * Math.Pow(2, -14)), Convert.ToString((float)speed * Math.Pow(2, -14))));
             Offset += 2;
             int TA = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
-            this.DI200.Add(new Atom("Track Angle", (float)TA * (2 ^ 16), Convert.ToString((float)TA * (2 ^ 16))));
+            this.DI200.Add(new Atom("Track Angle", Convert.ToSingle(TA * 360/Math.Pow(2, 16)), Convert.ToString((float)TA * 360/Math.Pow(2, 16))));
             Offset += 2;
         }
         
@@ -1025,6 +1025,7 @@ namespace Ideafix
         private void DecodeAmplitudePrimaryPlot()
         {
             this.DI131 = Convert.ToInt16(this.rawList[Offset], 2);
+            Offset++;
         }
 
         private void DecodeCalculatedAcceleration()
