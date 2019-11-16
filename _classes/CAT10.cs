@@ -1025,6 +1025,7 @@ namespace Ideafix
         private void DecodeAmplitudePrimaryPlot()
         {
             this.DI131 = Convert.ToInt16(this.rawList[Offset], 2);
+            Offset++;
         }
 
         private void DecodeCalculatedAcceleration()
