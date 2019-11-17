@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ideafix
 {
@@ -69,7 +66,7 @@ namespace Ideafix
                         this.ImageUrl = listPlanes[i].ImageUrl;
                         exit = true;
                     }
-                i++;
+                    i++;
                 }
             }
         }

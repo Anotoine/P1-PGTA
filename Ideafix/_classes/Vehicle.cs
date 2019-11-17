@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media;
 
 namespace Ideafix
 {
     class Vehicle
     {
-        internal List<Point> Positions{ get; set; }
+        internal List<Point> Positions { get; set; }
         internal List<DateTime> DateTimes { get; set; }
         internal List<int> Place { get; set; }
 
@@ -79,7 +78,7 @@ namespace Ideafix
                     points.Add(Positions[i]);
                 else if (DateTime.Compare(DateTimes[i], dt) >= 0)
                     exit = true;
-                
+
                 i++;
             }
             return points;
@@ -92,7 +91,7 @@ namespace Ideafix
             int i = 0;
             while (!exit && i < DateTimes.Count)
             {
-                if (DateTime.Compare(DateTimes[i],dtStart) > 0) //if time is after dtStart
+                if (DateTime.Compare(DateTimes[i], dtStart) > 0) //if time is after dtStart
                 {
                     if (DateTime.Compare(DateTimes[i], dtStop) < 0) // if time is before dtStop
                         points.Add(Positions[i]); //Add to the list

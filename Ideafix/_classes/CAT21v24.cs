@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 
 namespace Ideafix
 {
@@ -329,7 +326,7 @@ namespace Ideafix
                     switch (code)
                     {
                         case 0:
-                            Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * Math.Pow(2,-14));
+                            Airspeed = Convert.ToSingle(Convert.ToInt16(s, 2) * Math.Pow(2, -14));
                             this.DI150 = Airspeed;
                             break;
                         case 1:
@@ -342,7 +339,7 @@ namespace Ideafix
                 }
                 if (listFSPEC[11])
                 {
-                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16,'0');
+                    string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                     int code = Convert.ToInt16(string.Concat(s[0]));
                     s = s.Remove(0, 1);
                     float Airspeed;
@@ -389,7 +386,7 @@ namespace Ideafix
                             break;
                     }
                     s = s.Remove(0, 2);
-                    a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s,2) * Math.Pow(2,-30))));
+                    a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s, 2) * Math.Pow(2, -30))));
                     atoms.Add(a);
                     this.DI074 = atoms;
                     Offset += 4;
@@ -406,7 +403,7 @@ namespace Ideafix
                     {
                         List<Atom> atoms = new List<Atom>();
                         Atom a;
-                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(8*4, '0');
+                        string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(8 * 4, '0');
                         int code = Convert.ToInt16(string.Concat(s[0], s[1]));
                         switch (code)
                         {
@@ -428,7 +425,7 @@ namespace Ideafix
                                 break;
                         }
                         s = s.Remove(0, 2);
-                        a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToInt32(s,2) * Math.Pow(2,-30)));
+                        a = new Atom("TOMROP", 0, Convert.ToString(Convert.ToInt32(s, 2) * Math.Pow(2, -30)));
                         atoms.Add(a);
                         this.DI076 = atoms;
                         Offset += 4;
@@ -443,17 +440,17 @@ namespace Ideafix
                 {
                     List<Atom> atoms = new List<Atom>();
                     Atom a;
-                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8,'0');
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                     ++Offset;
-                    atoms.Add(new Atom("NUCr or NACv", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1], s[2]),2))));
-                    atoms.Add(new Atom("NUCp or NIC", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4], s[5], s[6]),2))));
+                    atoms.Add(new Atom("NUCr or NACv", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1], s[2]), 2))));
+                    atoms.Add(new Atom("NUCp or NIC", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4], s[5], s[6]), 2))));
                     if (s[7].Equals('1'))
                     {
                         s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                         ++Offset;
                         atoms.Add(new Atom("Navigation Integrity Category for Barometric Altitude", 0, Convert.ToString(Convert.ToInt32(s[0]))));
-                        atoms.Add(new Atom("Surveillance (version 1) or Source (version 2) Integrity Level", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[1], s[2]),2))));
-                        atoms.Add(new Atom("Navigation Accuracy Category for Position", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4], s[5]),2))));
+                        atoms.Add(new Atom("Surveillance (version 1) or Source (version 2) Integrity Level", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[1], s[2]), 2))));
+                        atoms.Add(new Atom("Navigation Accuracy Category for Position", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4], s[5]), 2))));
                         if (s[7].Equals('1'))
                         {
                             s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
@@ -467,13 +464,13 @@ namespace Ideafix
                                     atoms.Add(new Atom("SIL-Supplement", 0, "measured per sample"));
                                     break;
                             }
-                            atoms.Add(new Atom("Horizontal Position System Design Assurance", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4]),2))));
-                            atoms.Add(new Atom("Geometric Altitude Accuracy", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[5], s[6]),2))));
+                            atoms.Add(new Atom("Horizontal Position System Design Assurance", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[3], s[4]), 2))));
+                            atoms.Add(new Atom("Geometric Altitude Accuracy", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[5], s[6]), 2))));
                             if (s[7].Equals('1'))
                             {
                                 s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                 ++Offset;
-                                atoms.Add(new Atom("Position Integrity Category", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3]),2))));
+                                atoms.Add(new Atom("Position Integrity Category", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3]), 2))));
                             }
                             else
                                 this.DI090 = atoms;
@@ -487,7 +484,7 @@ namespace Ideafix
                 if (listFSPEC[20])
                 {
                     List<Atom> atoms = new List<Atom>();
-                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8,'0');
+                    string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                     ++Offset;
                     atoms.Add(new Atom("Version Not Supported", Convert.ToInt32(s[1]), Convert.ToString(Convert.ToInt32(s[1]))));
                     atoms.Add(new Atom("Version Number", Convert.ToInt32(string.Concat(s[2], s[3], s[4])), Convert.ToString(Convert.ToInt32(string.Concat(s[2], s[3], s[4])))));
@@ -524,7 +521,7 @@ namespace Ideafix
                     if (listFSPEC[25])
                     {
                         string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
-                        this.DI152 = Convert.ToSingle(Convert.ToInt32(s) * ((360) / Math.Pow(2,16)));
+                        this.DI152 = Convert.ToSingle(Convert.ToInt32(s) * ((360) / Math.Pow(2, 16)));
                         Offset += 2;
                     }
                     if (listFSPEC[26])
@@ -624,7 +621,7 @@ namespace Ideafix
                                 break;
                         }
                         s = s.Remove(0, 1);
-                        a = new Atom("Barometric Vertical Rate", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s,2)) * (6.25)));
+                        a = new Atom("Barometric Vertical Rate", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s, 2)) * (6.25)));
                         atoms.Add(a);
                         Offset += 2;
                         this.DI155 = atoms;
@@ -647,7 +644,7 @@ namespace Ideafix
                                 break;
                         }
                         s = s.Remove(0, 1);
-                        a = new Atom("Geometric Vertical Rate", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s,2)) * (6.25)));
+                        a = new Atom("Geometric Vertical Rate", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s, 2)) * (6.25)));
                         atoms.Add(a);
                         Offset += 2;
                         this.DI157 = atoms;
@@ -670,12 +667,12 @@ namespace Ideafix
                                 break;
                         }
                         s = s.Remove(0, 1);
-                        a = new Atom("Ground Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s,2)) * Math.Pow(2,-14)));
+                        a = new Atom("Ground Speed", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s, 2)) * Math.Pow(2, -14)));
                         atoms.Add(a);
                         Offset += 2;
                         s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                         Offset += 2;
-                        a = new Atom("Geometric Vertical Rate", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)) * (360 / Math.Pow(2,16))));
+                        a = new Atom("Geometric Vertical Rate", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)) * (360 / Math.Pow(2, 16))));
                         atoms.Add(a);
                         this.DI160 = atoms;
                     }
@@ -683,7 +680,7 @@ namespace Ideafix
                     {
                         string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                         Offset += 2;
-                        this.DI165 = Convert.ToSingle(Convert.ToInt32(s,2) * (1 / 32));
+                        this.DI165 = Convert.ToSingle(Convert.ToInt32(s, 2) * (1 / 32));
                     }
                     if (listFSPEC[31])
                     {
@@ -797,7 +794,7 @@ namespace Ideafix
                                     break;
                             }
                             s = s.Remove(0, 3);
-                            atoms.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s,2) * 25))));
+                            atoms.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s, 2) * 25))));
                             this.DI146 = atoms;
                         }
                         if (listFSPEC[37])
@@ -842,15 +839,15 @@ namespace Ideafix
                         }
                         if (listFSPEC[38])
                             decode110();
-                        if(listFSPEC[39])
+                        if (listFSPEC[39])
                         {
                             string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
                             ++Offset;
-                            this.DI016 = Convert.ToSingle(Convert.ToInt16(s)*0.5);
+                            this.DI016 = Convert.ToSingle(Convert.ToInt16(s) * 0.5);
                         }
-                        if(listFSPEC[40])
+                        if (listFSPEC[40])
                         {
-                            if(listFSPEC[41])
+                            if (listFSPEC[41])
                             {
                                 List<Atom> atoms = new List<Atom>();
                                 string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(16, '0');
@@ -865,7 +862,7 @@ namespace Ideafix
                                         atoms.Add(new Atom("TCAS Resolution Advisory active", 1, "TCAS RA active"));
                                         break;
                                 }
-                                code = Convert.ToInt16(string.Concat(s[1],s[2]));
+                                code = Convert.ToInt16(string.Concat(s[1], s[2]));
                                 switch (code)
                                 {
                                     case 0:
@@ -934,7 +931,7 @@ namespace Ideafix
 
                                 this.DI008 = atoms;
                             }
-                            if(listFSPEC[42])
+                            if (listFSPEC[42])
                             {
                                 List<Atom> atoms = new List<Atom>();
                                 string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(16, '0');
@@ -1002,7 +999,7 @@ namespace Ideafix
                                         this.DI271 = atoms;
                                         break;
                                 }
-                                
+
                             }
                             if (listFSPEC[43])
                             {
@@ -1010,27 +1007,27 @@ namespace Ideafix
                                 Offset += 1;
                                 this.DI132 = Convert.ToInt32(s);
                             }
-                            if (listFSPEC[44])                            
+                            if (listFSPEC[44])
                                 DecodeMSdata();
-                            
+
                             if (listFSPEC[45])
                             {
                                 List<Atom> atoms = new List<Atom>();
                                 string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                 Offset += 1;
-                                atoms.Add(new Atom("TYP", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0],s[1],s[2],s[3],s[4])))));
+                                atoms.Add(new Atom("TYP", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3], s[4])))));
                                 atoms.Add(new Atom("STYP", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[5], s[6], s[7])))));
-                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset],this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
+                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                                 Offset += 1;
                                 s = s.Remove(14, 2);
                                 atoms.Add(new Atom("ARA", 0, Convert.ToString(Convert.ToInt32(s))));
                                 s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
                                 s = s.Remove(0, 5);
-                                atoms.Add(new Atom("RAC", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0],s[1],s[2],s[3])))));
+                                atoms.Add(new Atom("RAC", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3])))));
                                 atoms.Add(new Atom("RAT", 0, Convert.ToString(Convert.ToInt32(s[4]))));
                                 atoms.Add(new Atom("MTE", 0, Convert.ToString(Convert.ToInt32(s[5]))));
                                 atoms.Add(new Atom("TTI", 0, Convert.ToString(Convert.ToInt32(string.Concat(s[6], s[7])))));
-                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(8*4, '0');
+                                s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(8 * 4, '0');
                                 Offset += 4;
                                 s = s.Remove(0, 5);
                                 atoms.Add(new Atom("TID", 0, Convert.ToString(Convert.ToInt32(s))));
@@ -1048,7 +1045,7 @@ namespace Ideafix
                                 string s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                                 Offset += 1;
                                 int code = Convert.ToInt16(string.Concat(s[0]));
-                                switch(code)
+                                switch (code)
                                 {
                                     case 0:
                                         atoms.Add(new Atom("Subfield #1: Aircraft Operational Status age", 0, "Absence of Subfield #1"));
@@ -1279,7 +1276,7 @@ namespace Ideafix
                                                 switch (code)
                                                 {
                                                     case 0:
-                                                        this.DI295 = atoms; 
+                                                        this.DI295 = atoms;
                                                         break;
                                                     case 1:
                                                         s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
@@ -1313,7 +1310,7 @@ namespace Ideafix
                                                             case 1:
                                                                 s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
                                                                 Offset += 1;
-                                                                atoms.Add(new Atom("AOS", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)*0.1))));
+                                                                atoms.Add(new Atom("AOS", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 0.1))));
                                                                 s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16));
                                                                 Offset += 1;
                                                                 atoms.Add(new Atom("TRD", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 0.1))));
@@ -1514,13 +1511,13 @@ namespace Ideafix
                     break;
             }
             code = Convert.ToInt16(string.Concat(s[7]));
-            switch(code)
+            switch (code)
             {
                 case 0:
                     this.DI110 = atoms;
                     break;
                 case 1:
-                    atoms.Add(new Atom("REP",0,Convert.ToString(Convert.ToInt32(Convert.ToInt32(this.rawList[Offset], 16)))));
+                    atoms.Add(new Atom("REP", 0, Convert.ToString(Convert.ToInt32(Convert.ToInt32(this.rawList[Offset], 16)))));
                     ++Offset;
                     s = Convert.ToString(Convert.ToInt32(this.rawList[Offset], 16), 2).PadLeft(8, '0');
                     Offset++;
@@ -1546,7 +1543,7 @@ namespace Ideafix
                     atoms.Add(new Atom("TCP number", 0, Convert.ToString(Convert.ToInt32(s))));
                     s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     Offset += 2;
-                    atoms.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s)*10))));
+                    atoms.Add(new Atom("Altitude", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 10))));
                     int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
                     float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 23));
 
@@ -1562,7 +1559,7 @@ namespace Ideafix
                     Offset += 1;
 
                     code = Convert.ToInt32(string.Concat(s[0], s[1], s[2], s[3]));
-                    switch(code)
+                    switch (code)
                     {
                         case 0:
                             atoms.Add(new Atom("Point Type", 0, "Unknown"));
@@ -1617,9 +1614,9 @@ namespace Ideafix
                             atoms.Add(new Atom("TD", 3, "No turn"));
                             break;
                     }
-                    
+
                     code = Convert.ToInt16(string.Concat(s[6]));
-                    switch(code)
+                    switch (code)
                     {
                         case 0:
                             atoms.Add(new Atom("Turn Radius Availabilty", 0, "TTR not available"));
@@ -1638,11 +1635,11 @@ namespace Ideafix
                             atoms.Add(new Atom("TOA", 1, "TOV not available"));
                             break;
                     }
-                    s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1],this.rawList[Offset + 2]), 16));
+                    s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), 16));
                     Offset += 3;
                     atoms.Add(new Atom("Time Over Point", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 1))));
-                    
-                    
+
+
                     s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
                     Offset += 2;
                     atoms.Add(new Atom("TCP Turn radius", 0, Convert.ToString(Convert.ToSingle(Convert.ToInt32(s) * 0.01))));

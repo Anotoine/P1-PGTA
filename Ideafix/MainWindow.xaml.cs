@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -259,7 +258,7 @@ namespace Ideafix
             if (string.IsNullOrEmpty(TLoadFile.Text) || !File.Exists(TLoadFile.Text))
                 openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             else
-            openFileDialog.InitialDirectory = TLoadFile.Text;
+                openFileDialog.InitialDirectory = TLoadFile.Text;
 
             if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
                 // Giving the user the path that it was selected
@@ -682,7 +681,7 @@ namespace Ideafix
                 MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        
+
         private void Worker_DoWork_Maps(object sender, DoWorkEventArgs e)
         {
             string[] listfiles;
@@ -1389,7 +1388,7 @@ namespace Ideafix
         private void MDInfo_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("It it the probability of detecting any Mode S transponder target" +
-                " within a windows period set to 2 seconds for maneuvering area and 5 seconds for stands zone.\n"+
+                " within a windows period set to 2 seconds for maneuvering area and 5 seconds for stands zone.\n" +
                 "It is not defined for apron zone.\n", "Probability Of MLAT Detection");
         }
     }

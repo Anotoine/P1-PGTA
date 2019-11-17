@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Ideafix
 {
@@ -66,11 +63,11 @@ namespace Ideafix
             if (this.listFSPEC[4]) //I010/140
                 DecodeTOD();
             if (this.listFSPEC[5]) //I010/041
-               DecodeLatLong();
+                DecodeLatLong();
             if (this.listFSPEC[6]) //I010/040
-               DecodePolarCoordinates();
+                DecodePolarCoordinates();
             if (this.listFSPEC[7]) //I010/042
-               DecodeXY();
+                DecodeXY();
             if (this.listFSPEC[8]) //FX
             {
                 if (this.listFSPEC[9])  //I010/200
@@ -305,14 +302,14 @@ namespace Ideafix
             float RHOreal = Convert.ToSingle(RHO);
 
             int Theta = Int32.Parse(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
-            float Thetareal = Convert.ToSingle(Theta * 360 / Math.Pow(2,16));
-            
+            float Thetareal = Convert.ToSingle(Theta * 360 / Math.Pow(2, 16));
+
 
             Offset += 4;
 
-            this.DI040 = new Point().FromPolar(RHOreal, Thetareal,incX, incY);
+            this.DI040 = new Point().FromPolar(RHOreal, Thetareal, incX, incY);
         }
-        
+
         private void DecodeXY()
         {
             int x = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
@@ -328,10 +325,10 @@ namespace Ideafix
             this.DI200.Add(new Atom("Speed", Convert.ToSingle(speed * Math.Pow(2, -14)), Convert.ToString((float)speed * Math.Pow(2, -14))));
             Offset += 2;
             int TA = Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16);
-            this.DI200.Add(new Atom("Track Angle", Convert.ToSingle(TA * 360/Math.Pow(2, 16)), Convert.ToString((float)TA * 360/Math.Pow(2, 16))));
+            this.DI200.Add(new Atom("Track Angle", Convert.ToSingle(TA * 360 / Math.Pow(2, 16)), Convert.ToString((float)TA * 360 / Math.Pow(2, 16))));
             Offset += 2;
         }
-        
+
         private void DecodeTrackVel()
         {
             this.DI202 = new List<Atom>();
@@ -545,7 +542,7 @@ namespace Ideafix
         {
             this.DI220 = string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]).ToUpper();
             Offset += 3;
-        } 
+        }
 
         private void DecodeCallSign()
         {

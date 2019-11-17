@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Ideafix
 {
@@ -138,7 +135,7 @@ namespace Ideafix
         private void decodeLatLong()
         {
             int lat = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1], this.rawList[Offset + 2]), System.Globalization.NumberStyles.HexNumber);
-            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2,23));
+            float latreal = Convert.ToSingle(lat * 180 / Math.Pow(2, 23));
 
             int lon = Int32.Parse(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5]), System.Globalization.NumberStyles.HexNumber);
             float lonreal = Convert.ToSingle(lon * 180 / Math.Pow(2, 23));
@@ -377,7 +374,7 @@ namespace Ideafix
 
         private void decodeFL()
         {
-            this.DI145 = (int) Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.25);
+            this.DI145 = (int)Convert.ToSingle(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16) * 0.25);
             Offset += 2;
         }
 
@@ -506,7 +503,7 @@ namespace Ideafix
             this.DI095 = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16));
             Offset += 1;
         }
-        
+
         private void decodeTODAcc()
         {
             this.DI032 = Convert.ToSingle(Convert.ToInt16(this.rawList[Offset], 16) * Math.Pow(2, -8));

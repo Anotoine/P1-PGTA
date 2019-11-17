@@ -48,7 +48,7 @@ namespace Ideafix
         {
 
         }
-        
+
         public Point FromLatLong(double lat, double lon) //centrat a ARP !!!
         {
             this.latD = lat;
@@ -63,11 +63,11 @@ namespace Ideafix
             double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2), n)) / n;
             double rho = F * Math.Pow(Math.Tan(Math.PI / 4 + this.latR / 2), -n);
             double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latARP / 2), -n);
-            this.X = 6.360*1E6 * (rho * Math.Sin(n * (this.lonR - lonARP)));
-            this.Y = 6.502*1E6 * (rho0 - rho * Math.Cos(n * (this.lonR - lonARP)));
+            this.X = 6.360 * 1E6 * (rho * Math.Sin(n * (this.lonR - lonARP)));
+            this.Y = 6.502 * 1E6 * (rho0 - rho * Math.Cos(n * (this.lonR - lonARP)));
 
-            this.rad = Math.Sqrt(Math.Pow(this.X, 2) + Math.Pow(this.Y,2));
-            this.theta = Math.Atan(this.Y/this.X);
+            this.rad = Math.Sqrt(Math.Pow(this.X, 2) + Math.Pow(this.Y, 2));
+            this.theta = Math.Atan(this.Y / this.X);
 
             DMSAdd();
             return this;
@@ -77,14 +77,14 @@ namespace Ideafix
         {
             this.X = x;
             this.Y = y;
-            x = x / (6.360 * 1E6);
-            y = y / (6.502 * 1E6);
+            x /= (6.360 * 1E6);
+            y /= (6.502 * 1E6);
             double num = Math.Log(Math.Cos(lat1) / Math.Cos(lat2)) / Math.Log(Math.Exp(1));
             double denum = Math.Log((Math.Tan(Math.PI / 4 + lat2 / 2)) / (Math.Tan(Math.PI / 4 + lat1 / 2))) / Math.Log(Math.Exp(1));
             double n = num / denum;
             double F = (Math.Cos(lat1) * Math.Pow(Math.Tan(Math.PI / 4 + lat1 / 2), n)) / n;
             double rho0 = F * Math.Pow(Math.Tan(Math.PI / 4 + latARP / 2), -n);
-            double rho = Math.Sign(n) * Math.Sqrt(Math.Pow(x,2)+Math.Pow((rho0-y),2));
+            double rho = Math.Sign(n) * Math.Sqrt(Math.Pow(x, 2) + Math.Pow((rho0 - y), 2));
             double theta = Math.Pow(Math.Atan(x / (rho0 - y)), 1);
             this.latR = 2 * Math.Pow(Math.Atan(Math.Pow(F / rho, 1 / n)), 1) - Math.PI / 2;
             this.lonR = lonARP + theta / n;
@@ -105,8 +105,8 @@ namespace Ideafix
             this.X = this.rad * Math.Sin(the * Math.PI / 180) + incX;
             this.Y = this.rad * Math.Cos(the * Math.PI / 180) + incY;
 
-            this.X = this.X / (6.360 * 1E6);
-            this.Y = this.Y / (6.502 * 1E6);
+            this.X /= (6.360 * 1E6);
+            this.Y /= (6.502 * 1E6);
             double num = Math.Log(Math.Cos(lat1) / Math.Cos(lat2)) / Math.Log(Math.Exp(1));
             double denum = Math.Log((Math.Tan(Math.PI / 4 + lat2 / 2)) / (Math.Tan(Math.PI / 4 + lat1 / 2))) / Math.Log(Math.Exp(1));
             double n = num / denum;

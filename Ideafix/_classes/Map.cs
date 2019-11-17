@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace Ideafix
@@ -12,7 +9,7 @@ namespace Ideafix
     class Map
     {
         string Name;
-        
+
         List<Tuple<Point, Point>> Lines = new List<Tuple<Point, Point>>();
         List<Tuple<Point, string>> Simbols = new List<Tuple<Point, string>>();
         List<Tuple<Point, string>> Texts = new List<Tuple<Point, string>>();
@@ -151,7 +148,7 @@ namespace Ideafix
                             d = 0;
                             if (lengthW > 8)
                                 d = Convert.ToSingle(auxstr[0].Substring(7, 3), null); // milisegundos  -- if applicable
-                            
+
                             //Obtaining the final value
                             y = a + (b / 60) + ((c + d / 1000) / 3600);
 
@@ -169,7 +166,7 @@ namespace Ideafix
                             auxstr2 = new string[] { match[0].Value, match[1].Value };
                             List<Point> tPoint = new List<Point>();
 
-                            for (int i = 0; i < 2; i ++)
+                            for (int i = 0; i < 2; i++)
                             {
                                 auxstr = auxstr2[i].Trim(new char[] { ' ', '\t' }).Split('N');
                                 lengthN = auxstr[0].Length;
@@ -319,7 +316,7 @@ namespace Ideafix
         {
             return this.Name;
         }
-        
+
         public List<Tuple<Point, Point>> getPoints()
         {
             return this.Lines;
@@ -365,7 +362,7 @@ namespace Ideafix
             if (colorBrush != null)
                 return colorBrush;
             else
-                return Color.FromArgb(100,255,0,0);
+                return Color.FromArgb(100, 255, 0, 0);
         }
     }
 }

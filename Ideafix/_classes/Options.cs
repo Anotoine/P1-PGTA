@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 namespace Ideafix
 {
@@ -15,15 +10,15 @@ namespace Ideafix
         public double Interval { get => interval; set => interval = value; }
 
         //Points Colors
-        public SolidColorBrush AircraftColor { get ; set ; }
-        public SolidColorBrush VehiclesColor { get ; set ; }
-        public SolidColorBrush OtherColor { get ; set ; }
+        public SolidColorBrush AircraftColor { get; set; }
+        public SolidColorBrush VehiclesColor { get; set; }
+        public SolidColorBrush OtherColor { get; set; }
 
         //MapsColors
-        public SolidColorBrush MapBackgroundColor { get ; set ; }
-        public SolidColorBrush MapMainColor { get ; set ; }
-        public SolidColorBrush MapSecondaryColor { get ; set ; }
-        public SolidColorBrush MapHighlightColor { get ; set ; }
+        public SolidColorBrush MapBackgroundColor { get; set; }
+        public SolidColorBrush MapMainColor { get; set; }
+        public SolidColorBrush MapSecondaryColor { get; set; }
+        public SolidColorBrush MapHighlightColor { get; set; }
         public SolidColorBrush MapTextColor { get; set; }
 
         //Table Colors

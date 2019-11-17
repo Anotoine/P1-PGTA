@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Ideafix
 {
@@ -34,7 +33,7 @@ namespace Ideafix
         {
             this.rawList = raw;
             this.CAT = Int32.Parse(this.rawList[0], System.Globalization.NumberStyles.HexNumber);
-            this.Length = Int32.Parse(string.Concat(this.rawList[1], this.rawList[2]),System.Globalization.NumberStyles.HexNumber);
+            this.Length = Int32.Parse(string.Concat(this.rawList[1], this.rawList[2]), System.Globalization.NumberStyles.HexNumber);
 
 
             this.listFSPEC = new List<bool>();
@@ -64,7 +63,7 @@ namespace Ideafix
                 }
             }
 
-            switch(this.CAT)
+            switch (this.CAT)
             {
                 case 10:
                     CAT10 = new CAT10(rawList, listFSPEC, Offset).Decode();
@@ -244,9 +243,9 @@ namespace Ideafix
                             return new Point();
                     else
                         if (CAT21v24.DI130 != null)
-                            return CAT21v24.DI130;
-                        else
-                            return new Point();
+                        return CAT21v24.DI130;
+                    else
+                        return new Point();
                 default:
                     return new Point();
             }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Ideafix
 {
@@ -75,7 +72,7 @@ namespace Ideafix
                 if (this.listFSPEC[12]) //11 I020/100
                     DecodeModeC(); //TODO
                 if (this.listFSPEC[13]) //12 I020/220
-                   DecodeICAOAddress();
+                    DecodeICAOAddress();
                 if (this.listFSPEC[14]) //13 I020/245
                     DecodeCallSign();
                 if (this.listFSPEC[15]) //14 I020/110
@@ -387,15 +384,15 @@ namespace Ideafix
         private void DecodeModeC()   //100
         {
             this.DI100 = new List<Atom>();
-            string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset+1]), 16), 2).PadLeft(8, '0');
+            string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(8, '0');
             Offset += 2;
-            switch(Convert.ToInt16(s[0]))
+            switch (Convert.ToInt16(s[0]))
             {
                 case 0:
                     this.DI100.Add(new Atom("V", 0, "Code validated"));
                     break;
                 case 1:
-                    this.DI100.Add(new Atom("V",1, "Code not validated"));
+                    this.DI100.Add(new Atom("V", 1, "Code not validated"));
                     break;
             }
             switch (Convert.ToInt16(s[1]))
@@ -427,11 +424,11 @@ namespace Ideafix
                 else
                     binarizzzimo += flip(binarizzzimo[i - 1]);
             }
-            this.DI100.Add(new Atom("Mode-C reply in Gray notation",0,Convert.ToString(Convert.ToInt32(binarizzzimo))));
+            this.DI100.Add(new Atom("Mode-C reply in Gray notation", 0, Convert.ToString(Convert.ToInt32(binarizzzimo))));
             s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(8, '0');
             Offset += 2;
             s = s.Remove(0, 4);
-            this.DI100.Add(new Atom("Type of resolution",0,s));
+            this.DI100.Add(new Atom("Type of resolution", 0, s));
 
         }
 
@@ -721,7 +718,7 @@ namespace Ideafix
             this.DI230 = new List<Atom>();
             string s = Convert.ToString(Convert.ToInt16(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(8, '0');
             Offset += 2;
-            switch(Convert.ToInt16(string.Concat(s[0],s[1],s[2])))
+            switch (Convert.ToInt16(string.Concat(s[0], s[1], s[2])))
             {
                 case 0:
                     this.DI230.Add(new Atom("Communications capability of the transponder", 0, "No communications capability"));
@@ -766,7 +763,7 @@ namespace Ideafix
                     this.DI230.Add(new Atom("Flight Status", 7, "Information not yet extracted"));
                     break;
             }
-            s = s.Remove(0,8);
+            s = s.Remove(0, 8);
             switch (Convert.ToInt16(s[0]))
             {
                 case 0:
@@ -795,7 +792,7 @@ namespace Ideafix
                     break;
             }
             this.DI230.Add(new Atom("B1A", 0, Convert.ToString(s[3])));
-            this.DI230.Add(new Atom("B1A", 0, string.Concat(s[4],s[5],s[6],s[7])));
+            this.DI230.Add(new Atom("B1A", 0, string.Concat(s[4], s[5], s[6], s[7])));
         }
 
         private void DecodeACAS()  //260
@@ -806,7 +803,7 @@ namespace Ideafix
 
         private void DecodeWarning() //030
         {
-            
+
             bool exit = true;
             this.DI030 = new List<Atom>();
             while (exit)
@@ -815,7 +812,7 @@ namespace Ideafix
                 Offset += 1;
                 int continuar = s[7];
                 s = s.Remove(7, 1);
-                switch(Convert.ToInt16(s))
+                switch (Convert.ToInt16(s))
                 {
                     case 0:
                         this.DI030.Add(new Atom("W/E Value", 0, "Not defined; never used."));
@@ -830,7 +827,7 @@ namespace Ideafix
                         this.DI030.Add(new Atom("W/E Value", 10, "Phantom SSR plot"));
                         break;
                     case 11:
-                        this.DI030.Add(new Atom("W/E Value",11, "Non-Matching Mode-3/A Code"));
+                        this.DI030.Add(new Atom("W/E Value", 11, "Non-Matching Mode-3/A Code"));
                         break;
                     case 12:
                         this.DI030.Add(new Atom("W/E Value", 12, "Mode C code / Mode S altitude code abnormal value compared to the track"));
@@ -858,10 +855,10 @@ namespace Ideafix
             string s = Convert.ToString(Convert.ToInt16(this.rawList[Offset], 16));
             Offset += 1;
             this.DI030 = new List<Atom>();
-            switch(Convert.ToInt16(s[0]))
+            switch (Convert.ToInt16(s[0]))
             {
                 case 0:
-                    this.DI030.Add(new Atom("V",0, "Code validated"));
+                    this.DI030.Add(new Atom("V", 0, "Code validated"));
                     break;
                 case 1:
                     this.DI030.Add(new Atom("V", 1, "Code not validated"));
@@ -885,14 +882,14 @@ namespace Ideafix
                     this.DI030.Add(new Atom("L", 1, "Smoothed Mode-1 code as provided by a local tracker"));
                     break;
             }
-            s = s.Remove(0,3);
+            s = s.Remove(0, 3);
             this.DI030.Add(new Atom("Mode-1 Code in octal representation", 0, s));
 
         }
 
         private void DecodeMode2()  //050
         {
-            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset+1]), 16));
+            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16));
             Offset += 2;
             this.DI030 = new List<Atom>();
             switch (Convert.ToInt16(s[0]))
