@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -74,9 +76,12 @@ namespace Ideafix
             WSettings.Visibility = Visibility.Hidden;
             WUPC.Visibility = Visibility.Hidden;
 
-            TLoadFile.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Test Files\SMR_MLAT_cat10_ADSB_Cat21_v023\160510-lebl-220001.ast";
-            TLoadMaps.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Maps";
-            TLoadDB.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Database Files\acrft_db.csv";
+            if (string.IsNullOrEmpty(TLoadFile.Text))
+                TLoadFile.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Test Files\SMR_MLAT_cat10_ADSB_Cat21_v023\160510-lebl-220001.ast";
+            if (string.IsNullOrEmpty(TLoadMaps.Text))
+                TLoadMaps.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Maps";
+            if (string.IsNullOrEmpty(TLoadDB.Text))
+                TLoadDB.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Database Files\acrft_db.csv";
 
             LPosLL.Visibility = Visibility.Hidden;
             LPosXY.Visibility = Visibility.Hidden;
@@ -1324,6 +1329,13 @@ namespace Ideafix
             listPerf.Add(new ShowPerf("Stand", pUD[1], 50.000,pMD[1],99.9));
             listPerf.Add(new ShowPerf("Apron", pUD[2], 70.000,0,0));
 
+        }
+        private void HandleLinkClick(object sender, RoutedEventArgs e)
+        {
+            Hyperlink hl = (Hyperlink)sender;
+            string navigateUri = hl.NavigateUri.ToString();
+            Process.Start(new ProcessStartInfo(navigateUri));
+            e.Handled = true;
         }
     }
 }

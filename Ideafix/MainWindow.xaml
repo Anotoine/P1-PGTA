@@ -512,7 +512,7 @@
                     <FlowDocument>
                         <Paragraph>
                             The objective of this 3-months project was to build an application to fully decode some
-                            <Hyperlink NavigateUri="https://www.eurocontrol.int/asterix">ASTERIX</Hyperlink> files (*.ast) from, mainly, the Barcelona-El Prat. Josep Tarradellas Airport.
+                            <Hyperlink RequestNavigate="HandleLinkClick" NavigateUri="https://www.eurocontrol.int/asterix">ASTERIX</Hyperlink> files (*.ast) from, mainly, the Barcelona-El Prat. Josep Tarradellas Airport.
                         </Paragraph>
                         <Paragraph>
                             We are the group number 4 on the PGTA subject, composed by: Antoni Eritja, Estel Ferrer, Estefania Guillena, Maria José Parra and  Alex Riera
@@ -530,8 +530,8 @@
                             
                         </Paragraph>
                         <Paragraph>
-                            (c) UPC - Universitat Politecnia de Catalunya - BarcelonaTech
-                            <Hyperlink NavigateUri="www.upc.edu/eetac">EETAC</Hyperlink>
+                            (c)
+                            <Hyperlink RequestNavigate="HandleLinkClick" NavigateUri="https://eetac.upc.edu/ca">EETAC</Hyperlink> ,<Hyperlink RequestNavigate="HandleLinkClick" NavigateUri="https://www.upc.edu/ca">UPC</Hyperlink> - Universitat Politecnia de Catalunya - BarcelonaTech
                         </Paragraph>
                     </FlowDocument>
                 </RichTextBox>
