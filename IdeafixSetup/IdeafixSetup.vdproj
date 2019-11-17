@@ -165,6 +165,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7E0B8129DCE04C9DB812C141A9BFCFB8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8F74780F6B084A61BA0DA18AA2A8555D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -274,12 +280,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_120A37724331FE8A53B08CF487F30B9F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_DA46D194723A49C796D8955F1F93493D"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -343,6 +343,12 @@
         "OwnerKey" = "8:_DCF513EF3C8817E4C6D35826486ED296"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_120A37724331FE8A53B08CF487F30B9F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -400,6 +406,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
     }
@@ -924,6 +938,26 @@
             "TargetName" = "8:BCN_Edificios.map"
             "Tag" = "8:"
             "Folder" = "8:_2454257796B84882952A392418C83120"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E0B8129DCE04C9DB812C141A9BFCFB8"
+            {
+            "SourcePath" = "8:..\\Ideafix\\_data\\Readme_Manual.pdf"
+            "TargetName" = "8:Readme_Manual.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_3F7985CDB3004BCB874B13586A50771A"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
