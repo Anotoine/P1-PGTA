@@ -145,7 +145,7 @@ namespace Ideafix
 
             Offset += 6;
 
-            this.DI130 = new Point().LatLong2XY(latreal, lonreal);
+            this.DI130 = new Point().FromLatLong(latreal, lonreal);
         }
 
         private void decodeTRD()

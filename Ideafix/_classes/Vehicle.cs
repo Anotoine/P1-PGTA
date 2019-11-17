@@ -53,7 +53,7 @@ namespace Ideafix
             this.ICAOaddress = m.getAddressICAO();
             this.TrackN = m.getTrackN();
             this.Callsign = m.getCallsign();
-            this.Positions.Add(m.getPosition());
+            this.Positions.Add(m.getPositionXY());
             this.DateTimes.Add(m.getTOD());
 
             if (m.getType() == null)
@@ -64,7 +64,7 @@ namespace Ideafix
 
         public void AddPoint(Message m)
         {
-            this.Positions.Add(m.getPosition());
+            this.Positions.Add(m.getPositionXY());
             this.DateTimes.Add(m.getTOD());
         }
 

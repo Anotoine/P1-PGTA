@@ -119,7 +119,7 @@ namespace Ideafix
                             if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
                                 y = -1 * y;
 
-                            Simbols.Add(new Tuple<Point, string>(new Point().LatLong2XY(x, y), lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[2]));
+                            Simbols.Add(new Tuple<Point, string>(new Point().FromLatLong(x, y), lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[2]));
 
                             j++;
                             break;
@@ -159,7 +159,7 @@ namespace Ideafix
                             if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
                                 y = -1 * y;
 
-                            Texts.Add(new Tuple<Point, string>(new Point().LatLong2XY(x, y), lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[2]));
+                            Texts.Add(new Tuple<Point, string>(new Point().FromLatLong(x, y), lines[j].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries)[2]));
 
                             j++;
                             break;
@@ -206,7 +206,7 @@ namespace Ideafix
                                 if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
                                     y = -1 * y;
 
-                                tPoint.Add(new Point().LatLong2XY(x, y));
+                                tPoint.Add(new Point().FromLatLong(x, y));
                             }
                             Lines.Add(new Tuple<Point, Point>(tPoint[0], tPoint[1]));
 
@@ -252,7 +252,7 @@ namespace Ideafix
                                 if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
                                     y = -1 * y;
 
-                                pp.Add(new Point().LatLong2XY(x, y));
+                                pp.Add(new Point().FromLatLong(x, y));
                             }
                             Polylines.Add(pp);
 
@@ -299,7 +299,7 @@ namespace Ideafix
                                 if (auxstr[0].EndsWith("O", StringComparison.Ordinal) || auxstr[0].EndsWith("W", StringComparison.Ordinal))
                                     y = -1 * y;
 
-                                pp.Add(new Point().LatLong2XY(x, y));
+                                pp.Add(new Point().FromLatLong(x, y));
                             }
                             Polygons.Add(pp);
 

@@ -22,7 +22,7 @@ namespace Ideafix
     public partial class MainWindow : Window
     {
         //Point ARP, zero0;
-        Point zero0 = new Point().LatLong2XY(41.315955, 2.028508);
+        Point zero0 = new Point().FromLatLong(41.315955, 2.028508);
         Point mouseP = new Point();
 
         double A, B, alpha, beta;
@@ -167,11 +167,13 @@ namespace Ideafix
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
 
-            Point zero0MOPS = new Point().LatLong2XY(41.314000, 2.048296);
+            Point zero0MOPS = new Point().FromLatLong(41.314000, 2.048296);
             double A_MOPS = -zero0MOPS.X;
             double B_MOPS = -zero0MOPS.Y;
             double alpha_MOPS = A_MOPS / (LienzoMOPS.ActualWidth / 2);
             double beta_MOPS = B_MOPS / (LienzoMOPS.ActualHeight / 2);
+
+            LienzoMOPS.Children.Clear();
 
             if (Maps != null)
             {
@@ -897,7 +899,7 @@ namespace Ideafix
                 int a = Convert.ToInt32(e.NewValue * 2);
                 double lat = zoom[a - 2];
                 double lon = zoom[a - 1];
-                zero0 = new Point().LatLong2XY(lat, lon);
+                zero0 = new Point().FromLatLong(lat, lon);
 
                 A = -zero0.X;
                 B = -zero0.Y;
@@ -1268,7 +1270,7 @@ namespace Ideafix
 
         private void LienzoMaps_MouseMove(object sender, MouseEventArgs e)
         {
-            mouseP.XY2LatLong(e.GetPosition(LienzoMaps).X * alpha - A, e.GetPosition(LienzoMaps).Y * beta - B);
+            mouseP.FromCartesian(e.GetPosition(LienzoMaps).X * alpha - A, e.GetPosition(LienzoMaps).Y * beta - B);
             //LPosX.Text = (e.GetPosition(LienzoMaps).X *alpha - A).ToString("0.###m");
             //LPosY.Text = (e.GetPosition(LienzoMaps).Y*beta -B).ToString("0.###m");
 

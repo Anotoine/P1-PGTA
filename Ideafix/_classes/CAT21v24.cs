@@ -1421,7 +1421,7 @@ namespace Ideafix
 
             Offset += 6;
 
-            this.DI130 = new Point().LatLong2XY(latreal, lonreal);
+            this.DI130 = new Point().FromLatLong(latreal, lonreal);
         }
 
         private void decodeLatLong_HighRes()
@@ -1434,7 +1434,7 @@ namespace Ideafix
 
             Offset += 8;
 
-            this.DI131 = new Point().LatLong2XY(latreal, lonreal);
+            this.DI131 = new Point().FromLatLong(latreal, lonreal);
         }
 
         private void decodeTOD()

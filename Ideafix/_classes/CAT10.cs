@@ -50,7 +50,7 @@ namespace Ideafix
             this.rawList = rawList;
             this.Offset = Offset;
 
-            Point SMR = new Point().LatLong2XY(41.29562, 2.095114); //SMR point
+            Point SMR = new Point().FromLatLong(41.29562, 2.095114); //SMR point
             incX = SMR.X;
             incY = SMR.Y;
         }
@@ -296,7 +296,7 @@ namespace Ideafix
 
             Offset += 8;
 
-            this.DI041 = new Point().LatLong2XY(latreal, lonreal);
+            this.DI041 = new Point().FromLatLong(latreal, lonreal);
         }
 
         private void DecodePolarCoordinates()
@@ -309,7 +309,7 @@ namespace Ideafix
 
             Offset += 4;
 
-            this.DI040 = new Point().Polar2XY(RHOreal, Thetareal,incX, incY);
+            this.DI040 = new Point().FromPolar(RHOreal, Thetareal,incX, incY);
         }
         
         private void DecodeXY()
@@ -320,7 +320,7 @@ namespace Ideafix
             s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(16, '0');
             int y = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
             Offset += 4;
-            this.DI042 = new Point().XY2LatLong(x, y);
+            this.DI042 = new Point().FromCartesian(x, y);
         }
 
         private void DecodeTrackVelPolar()

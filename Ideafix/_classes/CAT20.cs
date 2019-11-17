@@ -194,7 +194,7 @@ namespace Ideafix
 
             Offset += 8;
 
-            this.DI041 = new Point().LatLong2XY(latreal, lonreal);
+            this.DI041 = new Point().FromLatLong(latreal, lonreal);
         }
 
         private void DecodeXY()

@@ -22,8 +22,14 @@ namespace Ideafix
         public string Type { get; set; }
         public string TrackN { get; set; }
         public string RegID { get; set; }
+
+        //Positions
         public string PositionX { get; set; }
         public string PositionY { get; set; }
+        public string PositionLat { get; set; }
+        public string PositionLon { get; set; }
+        public string PositionRho { get; set; }
+        public string PositionTheta { get; set; }
 
         public ShowRow(Message m)
         {
@@ -39,8 +45,12 @@ namespace Ideafix
             this.SIC = Convert.ToString(m.getSIC());
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
-            this.PositionX = Convert.ToString(m.getPosition().X);
-            this.PositionY = Convert.ToString(m.getPosition().Y);
+            this.PositionX = Convert.ToString(m.getPositionXY().X);
+            this.PositionY = Convert.ToString(m.getPositionXY().Y);
+            this.PositionLat = Convert.ToString(m.getPositionLLA().latD);
+            this.PositionLon = Convert.ToString(m.getPositionLLA().lonD);
+            this.PositionRho = Convert.ToString(m.getPositionRhoTheta().rad);
+            this.PositionTheta = Convert.ToString(m.getPositionRhoTheta().theta);
         }
 
         public void AddDBData(List<AircraftDB> listPlanes)

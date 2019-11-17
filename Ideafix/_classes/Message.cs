@@ -223,17 +223,13 @@ namespace Ideafix
             }
         }
 
-        public Point getPosition()
+        public Point getPositionLLA()
         {
             switch (CAT)
             {
                 case 10:
-                    if (CAT10.DI040 != null)
-                        return CAT10.DI040;
-                    else if (CAT10.DI041 != null)
+                    if (CAT10.DI041 != null)
                         return CAT10.DI041;
-                    else if (CAT10.DI042 != null)
-                        return CAT10.DI042;
                     else
                         return new Point();
                 case 19:
@@ -251,6 +247,64 @@ namespace Ideafix
                             return CAT21v24.DI130;
                         else
                             return new Point();
+                default:
+                    return new Point();
+            }
+        }
+
+        public Point getPositionXY()
+        {
+            switch (CAT)
+            {
+                case 10:
+                    if (CAT10.DI042 != null)
+                        return CAT10.DI042;
+                    else
+                        return new Point();
+                case 19:
+                    return new Point();
+                case 20:
+                    return CAT20.DI042;
+                case 21:
+                    if (CAT21v023 != null)
+                        if (CAT21v023.DI130 != null)
+                            return CAT21v023.DI130;
+                        else
+                            return new Point();
+                    else
+                        if (CAT21v24.DI130 != null)
+                        return CAT21v24.DI130;
+                    else
+                        return new Point();
+                default:
+                    return new Point();
+            }
+        }
+
+        public Point getPositionRhoTheta()
+        {
+            switch (CAT)
+            {
+                case 10:
+                    if (CAT10.DI040 != null)
+                        return CAT10.DI040;
+                    else
+                        return new Point();
+                case 19:
+                    return new Point();
+                case 20:
+                    return CAT20.DI042;
+                case 21:
+                    if (CAT21v023 != null)
+                        if (CAT21v023.DI130 != null)
+                            return CAT21v023.DI130;
+                        else
+                            return new Point();
+                    else
+                        if (CAT21v24.DI130 != null)
+                        return CAT21v24.DI130;
+                    else
+                        return new Point();
                 default:
                     return new Point();
             }
