@@ -520,7 +520,7 @@
                             <Hyperlink RequestNavigate="HandleLinkClick" NavigateUri="https://www.eurocontrol.int/asterix">ASTERIX</Hyperlink> files (*.ast) from, mainly, the Barcelona-El Prat. Josep Tarradellas Airport.
                         </Paragraph>
                         <Paragraph>
-                            We are the group number 4 on the PGTA subject, composed by: Antoni Eritja, Estel Ferrer, Estefania Guillena, Maria José Parra and  Alex Riera
+                            We are the group number 4 on the PGTA subject, composed by: Antoni Eritja, Estel Ferrer, Estefania Guillena, Maria José Parra and  Alex Riera.
                         </Paragraph>
                         <Paragraph>
                             The application have been focused to be capable (and tested) to decode CAT 10 (SMR and MLAT), CAT20 (MLAT with CAT19 status messages) and CAT21 (verisons 0.23 and 2.4) to plot the data obtained.
