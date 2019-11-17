@@ -318,83 +318,84 @@
             </DataGrid>
         </GroupBox>
         <GroupBox x:Name="WPerformance" Grid.ColumnSpan="6" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
-            <StackPanel HorizontalAlignment="Center" Margin="25">
-                <DataGrid x:Name="TPerfo" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" SelectionMode="Single" SelectionUnit="FullRow" Background="Transparent" AlternatingRowBackground="{Binding Path=TableSecondaryColor, Converter={StaticResource UniversalValueConverter}}" GridLinesVisibility="Vertical" RowBackground="{Binding Path=TableMainColor, Converter={StaticResource UniversalValueConverter}}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Zone" Binding="{Binding Zone}"/>
-                        <DataGridTemplateColumn>
-                            <DataGridTemplateColumn.HeaderTemplate>
-                                <DataTemplate>
+            <StackPanel HorizontalAlignment="Center" Margin="25" VerticalAlignment="Top" Orientation="Vertical">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <DataGrid x:Name="TPerfo" BorderThickness="0" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" VerticalAlignment="Center" HorizontalContentAlignment="Center" SelectionMode="Single" SelectionUnit="FullRow" Background="Transparent" AlternatingRowBackground="{Binding Path=TableSecondaryColor, Converter={StaticResource UniversalValueConverter}}" GridLinesVisibility="Horizontal" RowBackground="{Binding Path=TableMainColor, Converter={StaticResource UniversalValueConverter}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Zone" Binding="{Binding Zone}"/>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="100"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="Prob. Of Update (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"/>
+                                            <Button Name="MoreInfo" Content="?" Click="UDInfo_Click" Width="15" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="Prob. Of Update (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"/>
-                                        <Button Name="MoreInfo" Content="?" Click="UDInfo_Click" Width="15" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="100"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding ProbOfUpdate}" HorizontalAlignment="Center" Grid.Column="0"/>
+                                            <TextBlock Text="{Binding PoUDTeo}" HorizontalAlignment="Center" Grid.Column="1"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid >
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="100"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="Prob. Of MLAT Detection (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" />
+                                            <Button Name="MoreInfo" Content="?" Click="MDInfo_Click" Width="15" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
 
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding ProbOfUpdate}" HorizontalAlignment="Center" Grid.Column="0"/>
-                                        <TextBlock Text="{Binding PoUDTeo}" HorizontalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-
-                        <DataGridTemplateColumn>
-                            <DataGridTemplateColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="Prob. Of MLAT Detection (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" />
-                                        <Button Name="MoreInfo" Content="?" Click="MDInfo_Click" Width="15" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.HeaderTemplate>
-
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition Width="100"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding ProbOfMLATdet}" HorizontalAlignment="Center" Grid.Column="0"/>
-                                        <TextBlock Text="{Binding PoMDTeo}" HorizontalAlignment="Center" Grid.Column="1"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Image Margin="10" Source="MOPS.bmp" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="100"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding ProbOfMLATdet}" HorizontalAlignment="Center" Grid.Column="0"/>
+                                            <TextBlock Text="{Binding PoMDTeo}" HorizontalAlignment="Center" Grid.Column="1"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+                <Border BorderBrush="AliceBlue" BorderThickness="5" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Canvas x:Name="LienzoMOPS" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" Width="700"/>
+                </Border>
             </StackPanel>
         </GroupBox>
             

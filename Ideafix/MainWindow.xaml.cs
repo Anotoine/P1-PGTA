@@ -22,9 +22,9 @@ namespace Ideafix
     public partial class MainWindow : Window
     {
         //Point ARP, zero0;
-        Point zero0;
+        Point zero0 = new Point().LatLong2XY(41.315955, 2.028508);
         Point mouseP = new Point();
-        //double A, B, AARP, BARP, alpha, beta, alphaARP, betaARP, xA, yA, xe, yn;
+
         double A, B, alpha, beta;
 
         //User options stuff
@@ -98,8 +98,6 @@ namespace Ideafix
 
         private void BRadar_Click(object sender, RoutedEventArgs e)
         {
-            zero0 = new Point().LatLong2XY(41.315955, 2.028508);
-
             //xyz de Lambert --> xyz LienzoMaps (amb origen de coordenades a d'alt a l'esquerra)
             A = -zero0.X;
             B = -zero0.Y;
@@ -168,6 +166,34 @@ namespace Ideafix
             WUPC.IsEnabled = false;
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
+
+            double A_MOPS = -zero0.X;
+            double B_MOPS = -zero0.Y;
+            double alpha_MOPS = A_MOPS / (LienzoMaps.ActualWidth / 2);
+            double beta_MOPS = B_MOPS / (LienzoMaps.ActualHeight / 2);
+
+            if (Maps != null)
+            {
+                for (int i = 0; i < Maps.Count; i++)
+                {
+                    for (int j = 0; j < Maps[i].getPolygons().Count; j++)
+                    {
+                        List<Point> pl = Maps[i].getPolygon(j);
+                        int index = Maps[i].getIndex(j);
+                        Polygon pol = new Polygon
+                        {
+                            StrokeThickness = 1,
+                            Stroke = new SolidColorBrush(Maps[i].GetColor(index)),
+                            Fill = new SolidColorBrush(Maps[i].GetColor(index))
+                        };
+                        PointCollection points = new PointCollection();
+                        foreach (Point pp in pl)
+                            points.Add(new System.Windows.Point((pp.X + A_MOPS) / alpha_MOPS, (pp.Y + B_MOPS) / beta_MOPS));
+                        pol.Points = points;
+                        LienzoMOPS.Children.Add(pol);
+                    }
+                }
+            }
         }
 
         private void BSettings_Click(object sender, RoutedEventArgs e)
