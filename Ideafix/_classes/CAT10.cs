@@ -306,6 +306,7 @@ namespace Ideafix
 
             int Theta = Int32.Parse(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
             float Thetareal = Convert.ToSingle(Theta * 360 / Math.Pow(2,16));
+            
 
             Offset += 4;
 
@@ -314,11 +315,14 @@ namespace Ideafix
         
         private void DecodeXY()
         {
-            string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
-            int x = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
 
-            s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(16, '0');
-            int y = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
+            //string s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), 16), 2).PadLeft(16, '0');
+            //int x = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
+
+            //s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), 16), 2).PadLeft(16, '0');
+            //int y = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
+            int x = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
+            int y = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
             Offset += 4;
             this.DI042 = new Point().FromCartesian(x, y);
         }
