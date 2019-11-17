@@ -202,7 +202,7 @@ namespace Ideafix
             s = Convert.ToString(Convert.ToInt32(string.Concat(this.rawList[Offset + 3], this.rawList[Offset + 4], this.rawList[Offset + 5]), 16), 2).PadLeft(24, '0');
             int y = Convert.ToInt32(s.PadLeft(32, s[0]), 2);
             Offset += 6;
-            this.DI042 = new Point().XY2LatLong((float)x / 2, (float)y / 2);
+            this.DI042 = new Point().FromCartesian((float)x / 2, (float)y / 2);
         }
 
         private void DecodeTrackNumber()
