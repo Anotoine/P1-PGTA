@@ -215,11 +215,6 @@
                             </Button>
                         </Grid>
                         <TextBlock Margin="5" Text="{Binding ActualTime, UpdateSourceTrigger=PropertyChanged}" FontSize="25" HorizontalAlignment="Center"/>
-                        <DataGrid x:Name="TEST" ItemsSource="{Binding Vistos}" Width="110" Margin="5">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="ICAO Address" Width="100"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
                     </StackPanel>
                 </Expander>
                 <Expander x:Name="MapsExpand" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" ExpandDirection="Left" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Right">
@@ -462,7 +457,7 @@
                                 <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">OthersColor</TextBlock>
                                 <xctk:ColorPicker DisplayColorAndName="True" SelectedColor="{Binding Path=OtherColor, Converter={StaticResource UniversalValueConverter} ,Mode=TwoWay}"/>
                                 <TextBlock Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Type:</TextBlock>
-                                <ComboBox Width="125" x:Name="MergingTypeRADAR" IsEditable="False" SelectedIndex="0">
+                                <ComboBox Width="125" x:Name="MergingTypeRADAR" IsEditable="False" SelectedIndex="1">
                                     <ComboBoxItem Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Polylines</ComboBoxItem>
                                     <ComboBoxItem Foreground="{Binding Path=WindowTextColor, Converter={StaticResource UniversalValueConverter}}">Points</ComboBoxItem>
                                 </ComboBox>

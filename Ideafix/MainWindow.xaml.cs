@@ -352,23 +352,25 @@ namespace Ideafix
                 }
             }
 
-            //Check condition, not working properly
-            if (!TLoadDB.Text.Equals(paths["DB"]) || TLoadDB.Equals("") || relaunch)
+            if (relaunch)
             {
-                paths["DB"] = TLoadDB.Text;
-
-                //Starting variables to be filled
-                VehiclesList = new List<Vehicle>();
-
-                PBLoadDB.Value = 0;
-                relaunch = false;
-                //Loading a worker to do the Decoding stuff
-                using (BackgroundWorker workerDB = new BackgroundWorker { WorkerReportsProgress = true })
+                if (!TLoadDB.Text.Equals(paths["DB"]) || TLoadDB.Equals(""))
                 {
-                    workerDB.DoWork += Worker_DoWork_DB;
-                    workerDB.ProgressChanged += worker_ProgressChanged_DB;
-                    workerDB.RunWorkerCompleted += worker_RunWorkerCompleated_DB;
-                    workerDB.RunWorkerAsync(TLoadDB.Text);
+                    paths["DB"] = TLoadDB.Text;
+
+                    //Starting variables to be filled
+                    VehiclesList = new List<Vehicle>();
+
+                    PBLoadDB.Value = 0;
+                    relaunch = false;
+                    //Loading a worker to do the Decoding stuff
+                    using (BackgroundWorker workerDB = new BackgroundWorker { WorkerReportsProgress = true })
+                    {
+                        workerDB.DoWork += Worker_DoWork_DB;
+                        workerDB.ProgressChanged += worker_ProgressChanged_DB;
+                        workerDB.RunWorkerCompleted += worker_RunWorkerCompleated_DB;
+                        workerDB.RunWorkerAsync(TLoadDB.Text);
+                    }
                 }
             }
         }
@@ -390,7 +392,7 @@ namespace Ideafix
                 else
                 {
                     timer = new DispatcherTimer();
-                    timer.Interval = TimeSpan.FromSeconds(Math.Pow(SlSpeed.Value, -1));
+                    timer.Interval = TimeSpan.FromSeconds(1);
                     timer.Tick += Next_Tick;
                     timer.Start();
                     ActualTime = new DateTime().AddHours(SlTime.LowerValue);
@@ -399,7 +401,7 @@ namespace Ideafix
             else
             {
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromSeconds(Math.Pow(SlSpeed.Value, -1));
+                timer.Interval = TimeSpan.FromSeconds(1);
                 timer.Tick += Next_Tick;
                 timer.Start();
                 ActualTime = new DateTime().AddHours(SlTime.LowerValue);
@@ -1255,14 +1257,11 @@ namespace Ideafix
                                     int n = Maps[j].getIndex(k) - 1;
                                     MessageBox.Show(Place[n] + "\n" + "Probability of Update:" + "\n" + pUD[n].ToString() + "%" +
                                         "\n Probability of MLAT detection: \n" + pMD[n] + "%");
-                                    //VehiclesList[i].Place.Add(Maps[j].getIndex(k));
                                     exit = true;
                                 }
                                 k++;
                             }
                         }
-
-                        //IsPointInPolygon4(List < Point > polygon, Point testPoint)
                     }
                 }
             }

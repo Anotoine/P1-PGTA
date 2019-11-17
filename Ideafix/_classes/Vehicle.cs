@@ -9,39 +9,16 @@ namespace Ideafix
         internal List<DateTime> DateTimes { get; set; }
         internal List<int> Place { get; set; }
 
-        //ESTEL PERFO
-        //internal List<DateTime> timeMA { get; set; }
-        //internal List<DateTime> timeS  {get; set; }
-        //internal List<DateTime> timeA  { get; set; }
-
-        //internal List<List<DateTime>> ListDTList { get; set; }
-        //internal List<List<int>> ListPList { get; set; }
-
-        //internal double tMA { get; set; }
-        //internal double tS { get; set; }
-        //internal double tA { get; set; }
-
         internal double[] pUD { get; set; } //vector qe conte les probabilitats de Up Date per les 3 zones 
         internal double[] TotalSec { get; set; }
         internal double[] incSamples { get; set; }
         internal double[] winOK { get; set; }
         internal double[] winT { get; set; }
-        //0 --> MA
-        //1 --> Stand
-        //2 --> Apron
-
-        //internal double PupdateMA { get; set; }
-        //internal double PupdateS { get; set; }
-        //internal double PupdateA { get; set; }
-
-        //ESTEL PERFO END
 
         internal string Type { get; set; }
         internal int TrackN { get; set; }
         internal string Callsign { get; set; }
         internal string ICAOaddress { get; set; }
-
-
 
         public Vehicle(Message m)
         {
@@ -52,8 +29,23 @@ namespace Ideafix
             this.ICAOaddress = m.getAddressICAO();
             this.TrackN = m.getTrackN();
             this.Callsign = m.getCallsign();
-            this.Positions.Add(m.getPositionXY());
-            this.DateTimes.Add(m.getTOD());
+
+
+            if (m.getPositionRhoTheta().DMSlat != null)
+            {
+                this.DateTimes.Add(m.getTOD());
+                this.Positions.Add(m.getPositionRhoTheta());
+            }
+            else if (m.getPositionLLA().DMSlat != null)
+            {
+                this.DateTimes.Add(m.getTOD());
+                this.Positions.Add(m.getPositionLLA());
+            }
+            else if (m.getPositionXY().DMSlat != null)
+            {
+                this.DateTimes.Add(m.getTOD());
+                this.Positions.Add(m.getPositionXY());
+            }
 
             if (m.getType() == null)
                 this.Type = "Aircraft";
@@ -63,8 +55,21 @@ namespace Ideafix
 
         public void AddPoint(Message m)
         {
-            this.Positions.Add(m.getPositionXY());
-            this.DateTimes.Add(m.getTOD());
+            if (m.getPositionRhoTheta().DMSlat != null)
+            {
+                this.DateTimes.Add(m.getTOD());
+                this.Positions.Add(m.getPositionRhoTheta());
+            }
+            else if (m.getPositionLLA().DMSlat != null)
+            {
+                this.DateTimes.Add(m.getTOD());
+                this.Positions.Add(m.getPositionLLA());
+            }
+            else if (m.getPositionXY().DMSlat != null)
+            {
+                this.DateTimes.Add(m.getTOD());
+                this.Positions.Add(m.getPositionXY());
+            }
         }
 
         public List<Point> GetPointsByDate(DateTime dt)
@@ -137,51 +142,8 @@ namespace Ideafix
             return this.Positions;
         }
 
-
         public void Performance()
         {
-            /////MLAT aixo es un intent fracasat del Papa
-            //int oldPos = 0;
-            //double Len = this.Place.Count;
-            //int i = 0;
-            //int x = 0;
-            //int w = 0;
-            //winOK = new double[] { 0, 0 };
-            //winT = new double[] { 0, 0 };
-            //DateTime t0 = new DateTime();
-            //t0 = this.DateTimes[0];
-            //while (i < Len)
-            //{
-            //    if (this.Place[i] == 1 || this.Place[i] == 2)
-            //    {
-            //        oldPos = this.Place[i];
-            //        if (oldPos == 1) { w = 2; } else { w = 5; }
-            //        while (this.Place[i] == oldPos)
-            //        {
-            //            x = 0;
-            //            while (((this.DateTimes[i] - t0).TotalSeconds < w) && this.Place[i] == oldPos && (i + w - 1) < Len)
-            //            {
-            //                x++; i++;
-            //            }
-            //            winT[oldPos - 1]++;
-            //            if (x > 0)
-            //            {
-            //                winOK[oldPos - 1]++;
-            //            }
-            //            t0 = t0.AddSeconds(1);
-            //            i = 0;
-            //            while (this.DateTimes[i] < t0 && i < Len && (this.Place[i] < 1 || this.Place[i] > 2))
-            //            {
-            //                i++;
-            //            }
-            //            oldPos = this.Place[i--];
-            //        }
-            //    }
-            //    i++;
-            //}
-            /////
-
-
             //MLAT det start només per zones 1 i 2
             winOK = new double[] { 0, 0 };
             winT = new double[] { 0, 0 };
@@ -267,61 +229,6 @@ namespace Ideafix
             }
             this.Place.Remove(-1);
             ////UPDATE 22222222222
-
-
-
-
-
-            /////UPDATE 111111111
-            //pUD = new double[] { 0, 0, 0 };
-            //double[] PlaceProb = new double[] { 0, 0, 0 };
-            //int[] entrades = new int[] { 0, 0, 0 };
-            //DateTime start;
-            //DateTime end;
-            //List<DateTime> DT = new List<DateTime>();
-            //List<int> P = new List<int>();
-            //this.Place.Add(-1);
-            //for (int i = 0; i < this.Place.Count - 1; i++)
-            //{
-            //    if (this.Place[i] != 0) //nomes eem de calcular per zones 1, 2 i 3
-            //    {
-            //        if (this.Place[i] == this.Place[i + 1]) //no hi ha salt de zona
-            //        {
-            //            DT.Add(this.DateTimes[i]);
-            //            P.Add(this.Place[i]);
-            //        }
-            //        else  //salt de zona. Calculem probabilitats i vegades que s'ha entrat a la zona 
-            //        {
-            //            DT.Add(this.DateTimes[i]);
-            //            P.Add(this.Place[i]);
-            //            start = DT[0];
-            //            end = DT[DT.Count - 1];
-
-            //            //1 Prob of Update
-            //            double Prob = (DT.Count / ((end - start).TotalSeconds + 1)) * 100;
-            //            PlaceProb[this.Place[i] - 1] = PlaceProb[this.Place[i] - 1] + Prob;
-            //            entrades[this.Place[i] - 1] = entrades[this.Place[i] - 1] + 1;
-
-
-            //            DT.Clear();
-            //            P.Clear();
-            //        }
-            //    }
-            //}
-
-            //for (int i = 0; i < pUD.Length; i++)
-            //{
-            //    if (PlaceProb[i] != 0)
-            //    {
-            //        pUD[i] = PlaceProb[i] / entrades[i];
-            //    }
-            //}
-
-            //////borrem ultim element que nomes l'hem utilitzat per recorre la llista
-            //this.Place.Remove(-1);
-
-            ////UPDATE111111111
-
         }
     }
 }

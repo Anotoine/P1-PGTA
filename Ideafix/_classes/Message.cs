@@ -270,18 +270,9 @@ namespace Ideafix
                 case 19:
                     return new Point();
                 case 20:
-                    return CAT20.DI042;
+                    return CAT20.DI041;
                 case 21:
-                    if (CAT21v023 != null)
-                        if (CAT21v023.DI130 != null)
-                            return CAT21v023.DI130;
-                        else
-                            return new Point();
-                    else
-                        if (CAT21v24.DI130 != null)
-                        return CAT21v24.DI130;
-                    else
-                        return new Point();
+                    return new Point();
                 default:
                     return new Point();
             }
@@ -299,18 +290,9 @@ namespace Ideafix
                 case 19:
                     return new Point();
                 case 20:
-                    return CAT20.DI042;
+                    return new Point();
                 case 21:
-                    if (CAT21v023 != null)
-                        if (CAT21v023.DI130 != null)
-                            return CAT21v023.DI130;
-                        else
-                            return new Point();
-                    else
-                        if (CAT21v24.DI130 != null)
-                        return CAT21v24.DI130;
-                    else
-                        return new Point();
+                    return new Point();
                 default:
                     return new Point();
             }
@@ -344,7 +326,16 @@ namespace Ideafix
                 case 20:
                     return Convert.ToInt32(CAT20.DI010[0].getVal());
                 case 21:
-                    return -1;
+                    if (CAT21v023 != null)
+                        if (CAT21v023.DI010 != null)
+                            return Convert.ToInt32(CAT21v023.DI010[0].getVal());
+                        else
+                            return -1;
+                    else
+                        if (CAT21v24.DI010 != null)
+                            return Convert.ToInt32(CAT21v24.DI010[0].getVal());
+                    else
+                        return -1;
                 default:
                     return -1;
             }
@@ -361,10 +352,16 @@ namespace Ideafix
                 case 20:
                     return Convert.ToInt32(CAT20.DI010[1].getVal());
                 case 21:
-                    if (CAT21v023 == null)
+                    if (CAT21v023 != null)
+                        if (CAT21v023.DI010 != null)
+                            return Convert.ToInt32(CAT21v023.DI010[1].getVal());
+                        else
+                            return -1;
+                    else
+                        if (CAT21v24.DI010 != null)
                         return Convert.ToInt32(CAT21v24.DI010[1].getVal());
                     else
-                        return Convert.ToInt32(CAT21v023.DI010[1].getVal());
+                        return -1;
                 default:
                     return -1;
             }
