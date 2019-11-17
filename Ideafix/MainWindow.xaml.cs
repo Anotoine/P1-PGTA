@@ -59,9 +59,9 @@ namespace Ideafix
         //Performance
         internal double[] pUD { get; set; } //UPDATE
         internal double[] pMD { get; set; } //MLAT DETECTION
-        internal string[] Place = new string[] { "MANEUVERING AREA", "STAND", "APRON" }; 
+        internal string[] Place = new string[] { "MANEUVERING AREA", "STAND", "APRON" };
 
-        public MainWindow() 
+        public MainWindow()
         {
             DataContext = UserOptions;
             InitializeComponent();
@@ -451,7 +451,7 @@ namespace Ideafix
 
                                         Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
                                         Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
-                                        
+
                                     }
                                 }
                             }
@@ -646,11 +646,11 @@ namespace Ideafix
             }
             catch (IOException ex)
             {
-                MessageBox.Show("Could not open the file: " + (string) e.Argument + "\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Could not open the file: " + (string)e.Argument + "\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch
             {
-                MessageBox.Show("It was not possible to read the file: " + (string) e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         
@@ -773,7 +773,7 @@ namespace Ideafix
             {
                 MessageBox.Show("It was not possible to add the information from the Database.", "Error comparing.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-}
+        }
 
         void worker_ProgressChanged_LoadFile(object sender, ProgressChangedEventArgs e)
         {
@@ -863,14 +863,15 @@ namespace Ideafix
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (checkBoxes != null) {
-                double[] zoom = new double[] { 41.315955, 2.028508, 41.393904, 1.842814, 42.115028, 0.005309, 43.542697, -3.904945};
+            if (checkBoxes != null)
+            {
+                double[] zoom = new double[] { 41.315955, 2.028508, 41.393904, 1.842814, 42.115028, 0.005309, 43.542697, -3.904945 };
 
                 int a = Convert.ToInt32(e.NewValue * 2);
                 double lat = zoom[a - 2];
                 double lon = zoom[a - 1];
                 zero0 = new Point().LatLong2XY(lat, lon);
-                
+
                 A = -zero0.X;
                 B = -zero0.Y;
                 alpha = A / (LienzoMaps.ActualWidth / 2);
@@ -953,7 +954,7 @@ namespace Ideafix
                                 Foreground = UserOptions.MapSecondaryColor
                             };
                             Canvas.SetLeft(textBlock, (txt.Item1.X + 10 + A) / alpha);
-                            Canvas.SetTop(textBlock, (txt.Item1.Y + 10 + B) / beta); 
+                            Canvas.SetTop(textBlock, (txt.Item1.Y + 10 + B) / beta);
                             LienzoMaps.Children.Add(textBlock);
                         }
                         foreach (Tuple<Point, string> sim in Maps[i].getSimbols())
@@ -977,7 +978,7 @@ namespace Ideafix
         private void CheckBoxClickAll(object sender, RoutedEventArgs e)
         {
             if (!timer.IsEnabled)
-            { 
+            {
                 LienzoVehicles.Children.Clear();
 
                 if (CheckVehicles != null)
@@ -1195,7 +1196,7 @@ namespace Ideafix
         }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {  
+        {
             alpha = A / (LienzoMaps.ActualWidth / 2);
             beta = B / (LienzoMaps.ActualHeight / 2);
 
@@ -1223,7 +1224,8 @@ namespace Ideafix
                                 if (IsPointInPolygon4(Maps[j].getPolygons()[k], p))
                                 {
                                     int n = Maps[j].getIndex(k) - 1;
-                                    MessageBox.Show(Place[n] + "\n" + "Probability of Update:" + "\n" + pUD[n].ToString()+"%");
+                                    MessageBox.Show(Place[n] + "\n" + "Probability of Update:" + "\n" + pUD[n].ToString() + "%" +
+                                        "\n Probability of MLAT detection: \n" + pMD[n] + "%");
                                     //VehiclesList[i].Place.Add(Maps[j].getIndex(k));
                                     exit = true;
                                 }
@@ -1242,12 +1244,13 @@ namespace Ideafix
             mouseP.XY2LatLong(e.GetPosition(LienzoMaps).X * alpha - A, e.GetPosition(LienzoMaps).Y * beta - B);
             //LPosX.Text = (e.GetPosition(LienzoMaps).X *alpha - A).ToString("0.###m");
             //LPosY.Text = (e.GetPosition(LienzoMaps).Y*beta -B).ToString("0.###m");
-            
-            LPosLL.Text = "(Lat,Lon) = ("+(mouseP.DMSlat[0]).ToString("0º")+ (mouseP.DMSlat[1]).ToString("0") + "'" + (mouseP.DMSlat[2]).ToString("0.###") + "'' ," + 
+
+            LPosLL.Text = "(Lat,Lon) = (" + (mouseP.DMSlat[0]).ToString("0º") + (mouseP.DMSlat[1]).ToString("0") + "'" + (mouseP.DMSlat[2]).ToString("0.###") + "'' ," +
                 (mouseP.DMSlon[0]).ToString("0º") + (mouseP.DMSlon[1]).ToString("0") + "'" + (mouseP.DMSlon[2]).ToString("0.###") + "'')";
-            LPosXY.Text = "- (x,y) = ("+ (e.GetPosition(LienzoMaps).X * alpha - A).ToString("0.###m")+ ","+ (e.GetPosition(LienzoMaps).Y * beta - B).ToString("0.###m")+")";
-            
+            LPosXY.Text = "- (x,y) = (" + (e.GetPosition(LienzoMaps).X * alpha - A).ToString("0.###m") + "," + (e.GetPosition(LienzoMaps).Y * beta - B).ToString("0.###m") + ")";
+
         }
+
 
         private static bool IsPointInPolygon4(List<Point> polygon, Point testPoint)
         {
@@ -1268,15 +1271,15 @@ namespace Ideafix
         }
 
         //PERFORMANCE ESTEL
-        private void Performance(List<Vehicle> vl) 
+        private void Performance(List<Vehicle> vl)
         {
             listPerf = new List<ShowPerf>();
 
             //////UPDATE 222222222 and MLAT DET
             pUD = new double[] { 0, 0, 0 };
             pMD = new double[] { 0, 0, 0 };
-            double[] winT = new double[] { 0, 0};
-            double[] winOK = new double[] { 0, 0};
+            double[] winT = new double[] { 0, 0 };
+            double[] winOK = new double[] { 0, 0 };
             double[] samplesT = new double[] { 0, 0, 0 };
             double[] TotalSecT = new double[] { 0, 0, 0 };
             foreach (Vehicle v in vl)
@@ -1336,9 +1339,9 @@ namespace Ideafix
             //}
             ////1111111
 
-            listPerf.Add(new ShowPerf("Maneuvering Area", pUD[0], 95.000, pMD[0],99.9));
-            listPerf.Add(new ShowPerf("Stand", pUD[1], 50.000,pMD[1],99.9));
-            listPerf.Add(new ShowPerf("Apron", pUD[2], 70.000,0,0));
+            listPerf.Add(new ShowPerf("Maneuvering Area", pUD[0], 95.000, pMD[0], 99.9));
+            listPerf.Add(new ShowPerf("Stand", pUD[1], 50.000, pMD[1], 99.9));
+            listPerf.Add(new ShowPerf("Apron", pUD[2], 70.000, 0, 0));
 
         }
 
@@ -1348,6 +1351,18 @@ namespace Ideafix
             string navigateUri = hl.NavigateUri.ToString();
             Process.Start(new ProcessStartInfo(navigateUri));
             e.Handled = true;
+        }
+
+        private void UDInfo_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("It is the probability of achieving a 1 second average update rate for any Mode S transmitting target", "Probability Of Update");
+        }
+
+        private void MDInfo_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("It it the probability of detecting any Mode S transponder target" +
+                " within a windows period set to 2 seconds for maneuvering area and 5 seconds for stands zone.\n"+
+                "It is not defined for apron zone.\n", "Probability Of MLAT Detection");
         }
     }
 }

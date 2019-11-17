@@ -325,6 +325,7 @@
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.HeaderTemplate>
                                 <DataTemplate>
+
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
@@ -337,13 +338,15 @@
                                         <TextBlock Text="Prob. Of Update (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                                         <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                                         <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <Button Name="MoreInfo" Content="?" Click="UDInfo_Click" Width="15" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.HeaderTemplate>
-                            
+
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid >
+
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="100"/>
@@ -354,8 +357,6 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-    
-                        <DataGridTextColumn Header="Position Accuracy (%)" Binding="{Binding PositionAccuracy}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
 
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.HeaderTemplate>
@@ -372,6 +373,7 @@
                                         <TextBlock Text="Prob. Of MLAT Detection (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                                         <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                                         <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <Button Name="MoreInfo" Content="?" Click="MDInfo_Click" Width="15" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.HeaderTemplate>
@@ -389,13 +391,11 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-
-                 
-                        <DataGridTextColumn Header="Prob. Of Identification (%)" Binding="{Binding ProbOfID}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                        <DataGridTextColumn Header="Prob. Of Detection (%)" Binding="{Binding ProbOfDet}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                        <DataGridTextColumn Header="Prob. Of False Identification (%)" Binding="{Binding ProbOfFalseID}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                <Image Width="300" Source="MOPS.bmp" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
             </StackPanel>
         </GroupBox>
             
