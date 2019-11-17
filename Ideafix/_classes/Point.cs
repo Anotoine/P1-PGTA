@@ -16,6 +16,8 @@ namespace Ideafix
 
         internal double[] DMSlat { get; set; }
         internal double[] DMSlon { get; set; }
+        internal string DMSlatString { get; set; }
+        internal string DMSlonString { get; set; }
         //WGS-84 - Radians
         internal double latR { get; set; }
         internal double lonR { get; set; }
@@ -134,6 +136,9 @@ namespace Ideafix
             this.DMSlon[0] = Math.Floor(lonD);
             this.DMSlon[1] = Math.Floor((lonD - DMSlon[0]) * 60);
             this.DMSlon[2] = ((lonD - DMSlon[0]) * 60 - DMSlon[1]) * 60;
+
+            this.DMSlatString = this.DMSlat[0] + "º" + this.DMSlat[1] + "'" + this.DMSlat[2].ToString("00.####") + '"';
+            this.DMSlonString = this.DMSlon[0] + "º" + this.DMSlon[1] + "'" + this.DMSlon[2].ToString("00.####") + '"';
         }
     }
 }

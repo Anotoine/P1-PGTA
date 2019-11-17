@@ -298,12 +298,11 @@ namespace Ideafix
 
         private void DecodePolarCoordinates()
         {
-            int RHO = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
+            int RHO = Int16.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
             float RHOreal = Convert.ToSingle(RHO);
 
-            int Theta = Int32.Parse(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
+            int Theta = Int16.Parse(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
             float Thetareal = Convert.ToSingle(Theta * 360 / Math.Pow(2, 16));
-
 
             Offset += 4;
 
@@ -312,8 +311,8 @@ namespace Ideafix
 
         private void DecodeXY()
         {
-            int x = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
-            int y = Int32.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
+            int x = Int16.Parse(string.Concat(this.rawList[Offset], this.rawList[Offset + 1]), System.Globalization.NumberStyles.HexNumber);
+            int y = Int16.Parse(string.Concat(this.rawList[Offset + 2], this.rawList[Offset + 3]), System.Globalization.NumberStyles.HexNumber);
             Offset += 4;
             this.DI042 = new Point().FromCartesian(x, y);
         }

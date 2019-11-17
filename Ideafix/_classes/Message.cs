@@ -6,6 +6,7 @@ namespace Ideafix
 {
     public class Message
     {
+        int ID;
         private List<string> rawList;
         public int CAT;
         public int Length;
@@ -29,8 +30,9 @@ namespace Ideafix
             //this.lengthMessage = Int32.Parse(this.rawList[1], System.Globalization.NumberStyles.HexNumber) + Int32.Parse(this.rawList[2], System.Globalization.NumberStyles.HexNumber);
         }
 
-        public Message(List<string> raw, bool Isv023)
+        public Message(int ID, List<string> raw, bool Isv023)
         {
+            this.ID = ID;
             this.rawList = raw;
             this.CAT = Int32.Parse(this.rawList[0], System.Globalization.NumberStyles.HexNumber);
             this.Length = Int32.Parse(string.Concat(this.rawList[1], this.rawList[2]), System.Globalization.NumberStyles.HexNumber);
@@ -81,6 +83,11 @@ namespace Ideafix
                         CAT21v24 = new CAT21v24(rawList, listFSPEC, Offset).decode();
                     break;
             }
+        }
+
+        public int getID()
+        {
+            return this.ID;
         }
 
         public DateTime getTOD()

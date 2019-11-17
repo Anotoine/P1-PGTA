@@ -5,6 +5,7 @@ namespace Ideafix
 {
     public class ShowRow
     {
+        public int ID { get; set; }
         public string ImageUrl { get; set; }
         public string TOD { get; set; }
         public string ICAOAddress { get; set; }
@@ -30,6 +31,7 @@ namespace Ideafix
 
         public ShowRow(Message m)
         {
+            this.ID = m.getID();
             this.TOD = m.getTOD().ToString("HH:mm:ss.fff");
             this.ICAOAddress = m.getAddressICAO();
             this.Length = Convert.ToString(m.getLength());
@@ -42,10 +44,10 @@ namespace Ideafix
             this.SIC = Convert.ToString(m.getSIC());
             this.CAT = m.getCAT();
             this.Callsign = m.getCallsign();
-            this.PositionX = Convert.ToString(m.getPositionXY().X);
-            this.PositionY = Convert.ToString(m.getPositionXY().Y);
-            this.PositionLat = Convert.ToString(m.getPositionLLA().latD);
-            this.PositionLon = Convert.ToString(m.getPositionLLA().lonD);
+            this.PositionX = Convert.ToString(m.getPositionXY().X.ToString(".###"));
+            this.PositionY = Convert.ToString(m.getPositionXY().Y.ToString(".###"));
+            this.PositionLat = Convert.ToString(m.getPositionLLA().DMSlatString);
+            this.PositionLon = Convert.ToString(m.getPositionLLA().DMSlonString);
             this.PositionRho = Convert.ToString(m.getPositionRhoTheta().rad);
             this.PositionTheta = Convert.ToString(m.getPositionRhoTheta().theta);
         }

@@ -418,7 +418,6 @@ namespace Ideafix
                     {
                         if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
                         {
-
                             for (int j = 0; j < VehiclesList.Count; j++)
                             {
                                 Vehicle v = VehiclesList[j];
@@ -660,13 +659,15 @@ namespace Ideafix
 
                 //And parsing it
                 int i = 0;
+                int count = 1;
                 while (i < list.Count)
                 {
                     int length = Int32.Parse(list[i + 1] + list[i + 2], System.Globalization.NumberStyles.HexNumber);
-                    Message m = new Message(list.GetRange(i, length), Isv023);
+                    Message m = new Message(count, list.GetRange(i, length), Isv023);
 
                     listMessages.Add(m);
                     listRow.Add(new ShowRow(m));
+                    count++;
                     i += length;
 
                     (sender as BackgroundWorker).ReportProgress((int)(((i + 1) * 100 / list.Count) + 0.001));
@@ -1270,8 +1271,6 @@ namespace Ideafix
         private void LienzoMaps_MouseMove(object sender, MouseEventArgs e)
         {
             mouseP.FromCartesian(e.GetPosition(LienzoMaps).X * alpha - A, e.GetPosition(LienzoMaps).Y * beta - B);
-            //LPosX.Text = (e.GetPosition(LienzoMaps).X *alpha - A).ToString("0.###m");
-            //LPosY.Text = (e.GetPosition(LienzoMaps).Y*beta -B).ToString("0.###m");
 
             LPosLL.Text = "(Lat,Lon) = (" + (mouseP.DMSlat[0]).ToString("0º") + (mouseP.DMSlat[1]).ToString("0") + "'" + (mouseP.DMSlat[2]).ToString("0.###") + "'' ," +
                 (mouseP.DMSlon[0]).ToString("0º") + (mouseP.DMSlon[1]).ToString("0") + "'" + (mouseP.DMSlon[2]).ToString("0.###") + "'')";

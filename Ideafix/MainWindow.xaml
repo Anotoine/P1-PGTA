@@ -257,6 +257,7 @@
         <GroupBox x:Name="WTable" Grid.ColumnSpan="6" Grid.Row="1" Visibility="Hidden" BorderThickness="0">
             <DataGrid x:Name="Table" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow" Background="Transparent" AlternatingRowBackground="{Binding Path=TableSecondaryColor, Converter={StaticResource UniversalValueConverter}}" GridLinesVisibility="Vertical" RowBackground="{Binding Path=TableMainColor, Converter={StaticResource UniversalValueConverter}}">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="#" Binding="{Binding ID}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                     <DataGridTextColumn Header="Track" Binding="{Binding TrackN}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                     <DataGridTextColumn Header="Country" Binding="{Binding Country}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
                     <DataGridTextColumn Header="CAT" Binding="{Binding CAT}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
