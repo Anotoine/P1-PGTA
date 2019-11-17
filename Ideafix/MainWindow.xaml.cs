@@ -72,6 +72,11 @@ namespace Ideafix
             WTable.Visibility = Visibility.Hidden;
             WPerformance.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Hidden;
+            WUPC.Visibility = Visibility.Hidden;
+
+            TLoadFile.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Test Files\SMR_MLAT_cat10_ADSB_Cat21_v023\160510-lebl-220001.ast";
+            TLoadMaps.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Maps";
+            TLoadDB.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Ideafix\Database Files\acrft_db.csv";
 
             LPosLL.Visibility = Visibility.Hidden;
             LPosXY.Visibility = Visibility.Hidden;
@@ -81,6 +86,7 @@ namespace Ideafix
             WTable.IsEnabled = false;
             WPerformance.IsEnabled = false;
             WSettings.IsEnabled = false;
+            WUPC.IsEnabled = false;
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
         }
@@ -100,6 +106,7 @@ namespace Ideafix
             WTable.Visibility = Visibility.Hidden;
             WPerformance.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Hidden;
+            WUPC.Visibility = Visibility.Hidden;
 
             LPosLL.Visibility = Visibility.Visible;
             LPosXY.Visibility = Visibility.Visible;
@@ -109,6 +116,7 @@ namespace Ideafix
             WTable.IsEnabled = false;
             WPerformance.IsEnabled = false;
             WSettings.IsEnabled = false;
+            WUPC.IsEnabled = false;
             LPosLL.IsEnabled = true;
             LPosXY.IsEnabled = true;
         }
@@ -119,8 +127,8 @@ namespace Ideafix
             WRadar.Visibility = Visibility.Hidden;
             WTable.Visibility = Visibility.Visible;
             WPerformance.Visibility = Visibility.Hidden;
-
             WSettings.Visibility = Visibility.Hidden;
+            WUPC.Visibility = Visibility.Hidden;
 
             LPosLL.Visibility = Visibility.Hidden;
             LPosXY.Visibility = Visibility.Hidden;
@@ -130,6 +138,7 @@ namespace Ideafix
             WTable.IsEnabled = true;
             WPerformance.IsEnabled = false;
             WSettings.IsEnabled = false;
+            WUPC.IsEnabled = false;
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
         }
@@ -141,6 +150,7 @@ namespace Ideafix
             WTable.Visibility = Visibility.Hidden;
             WPerformance.Visibility = Visibility.Visible;
             WSettings.Visibility = Visibility.Hidden;
+            WUPC.Visibility = Visibility.Hidden;
 
 
             LPosLL.Visibility = Visibility.Hidden;
@@ -151,6 +161,7 @@ namespace Ideafix
             WTable.IsEnabled = false;
             WPerformance.IsEnabled = true;
             WSettings.IsEnabled = false;
+            WUPC.IsEnabled = false;
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
         }
@@ -162,6 +173,7 @@ namespace Ideafix
             WTable.Visibility = Visibility.Hidden;
             WPerformance.Visibility = Visibility.Hidden;
             WSettings.Visibility = Visibility.Visible;
+            WUPC.Visibility = Visibility.Hidden;
 
             LPosLL.Visibility = Visibility.Hidden;
             LPosXY.Visibility = Visibility.Hidden;
@@ -170,6 +182,29 @@ namespace Ideafix
             WRadar.IsEnabled = false;
             WTable.IsEnabled = false;
             WSettings.IsEnabled = true;
+            WUPC.IsEnabled = false;
+            LPosLL.IsEnabled = false;
+            LPosXY.IsEnabled = false;
+        }
+
+        private void BUPC_Click(object sender, RoutedEventArgs e)
+        {
+            WLoad.Visibility = Visibility.Hidden;
+            WRadar.Visibility = Visibility.Hidden;
+            WTable.Visibility = Visibility.Hidden;
+            WPerformance.Visibility = Visibility.Hidden;
+            WSettings.Visibility = Visibility.Hidden;
+            WUPC.Visibility = Visibility.Visible;
+
+            LPosLL.Visibility = Visibility.Hidden;
+            LPosXY.Visibility = Visibility.Hidden;
+
+            WLoad.IsEnabled = false;
+            WRadar.IsEnabled = false;
+            WTable.IsEnabled = false;
+            WPerformance.IsEnabled = false;
+            WSettings.IsEnabled = false;
+            WUPC.IsEnabled = true;
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
         }
@@ -603,30 +638,34 @@ namespace Ideafix
 
         private void Worker_DoWork_Maps(object sender, DoWorkEventArgs e)
         {
-            var listfiles = Directory.GetFiles((string)e.Argument);
-
-            if (listfiles.Length > 0)
-            { 
-                for (int k = 0; k < listfiles.Length; k++)
+            string[] listfiles;
+            if (Directory.Exists((string)e.Argument))
+            {
+                listfiles = Directory.GetFiles((string)e.Argument);
+                if (listfiles.Length > 0)
                 {
-                    string file = listfiles[k];
-                    try
+                    for (int k = 0; k < listfiles.Length; k++)
                     {
-                        Maps.Add(new Map(file));
-                    }
-                    catch
-                    {
-                        MessageBox.Show("The file at: " + file + " could not be read. The file will be skipped.", "Error while reading.", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    finally
-                    {
-                        (sender as BackgroundWorker).ReportProgress((int)(((k + 1) * 100 / listfiles.Length) + 0.001));
+                        string file = listfiles[k];
+                        try
+                        {
+                            Maps.Add(new Map(file));
+                        }
+                        catch
+                        {
+                            MessageBox.Show("The file at: " + file + " could not be read. The file will be skipped.", "Error while reading.", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        finally
+                        {
+                            (sender as BackgroundWorker).ReportProgress((int)(((k + 1) * 100 / listfiles.Length) + 0.001));
+                        }
                     }
                 }
-            } else
-            {
-                MessageBox.Show("No files found at: " + (string)e.Argument + ".\nThe directory will be skipped.", "Error not reading any file.", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    MessageBox.Show("No files found at: " + (string)e.Argument + ".\nThe directory will be skipped.", "Error not reading any file.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            else
+                MessageBox.Show("Directory not found (" + (string)e.Argument + ").", "Error directory does not exist.", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void Worker_DoWork_DB(object sender, DoWorkEventArgs e)
