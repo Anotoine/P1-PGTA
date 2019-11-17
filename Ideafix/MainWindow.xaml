@@ -214,7 +214,7 @@
                                 </Path>
                             </Button>
                         </Grid>
-                        <TextBlock Margin="5" Text="{Binding ActualTime, UpdateSourceTrigger=PropertyChanged}" FontSize="25" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="LActualTime" Margin="5" FontSize="25" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Expander>
                 <Expander x:Name="MapsExpand" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" ExpandDirection="Left" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Right">

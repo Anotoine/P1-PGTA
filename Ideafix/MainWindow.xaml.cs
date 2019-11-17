@@ -380,7 +380,7 @@ namespace Ideafix
             if (timer.IsEnabled)
                 timer.Stop();
 
-            UserOptions.ActualTime = ActualTime.TimeOfDay.ToString();
+            LActualTime.Text = ActualTime.TimeOfDay.ToString();
         }
 
         private void BPlay_Click(object seder, RoutedEventArgs e)
@@ -392,7 +392,7 @@ namespace Ideafix
                 else
                 {
                     timer = new DispatcherTimer();
-                    timer.Interval = TimeSpan.FromSeconds(1);
+                    timer.Interval = TimeSpan.FromSeconds(Math.Pow(SlSpeed.Value,-1));
                     timer.Tick += Next_Tick;
                     timer.Start();
                     ActualTime = new DateTime().AddHours(SlTime.LowerValue);
@@ -401,7 +401,7 @@ namespace Ideafix
             else
             {
                 timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Interval = TimeSpan.FromSeconds(Math.Pow(SlSpeed.Value, -1));
                 timer.Tick += Next_Tick;
                 timer.Start();
                 ActualTime = new DateTime().AddHours(SlTime.LowerValue);
@@ -467,20 +467,30 @@ namespace Ideafix
                                     List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
                                     while (!exit && i < listP.Count)
                                     {
-                                        Ellipse p0 = new Ellipse();
-                                        p0.Stroke = UserOptions.VehiclesColor;
+                                        if (listP[i] != null)
+                                        {
+                                            if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                            {
+                                                Ellipse p0 = new Ellipse();
+                                                p0.Stroke = UserOptions.VehiclesColor;
 
-                                        p0.StrokeThickness = 1;
-                                        p0.Width = 2;
-                                        p0.Height = p0.Width;
+                                                p0.StrokeThickness = 1;
+                                                p0.Width = 2;
+                                                p0.Height = p0.Width;
 
-                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
-                                        p0.Tag = j + "/" + i;
-                                        LienzoVehicles.Children.Add(p0);
+                                                p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                                p0.Tag = j + "/" + i;
+                                                LienzoVehicles.Children.Add(p0);
 
-                                        Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
-                                        Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+                                                Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
+                                                Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+                                            }
 
+
+                                            if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
+                                                exit = true;
+                                        }
+                                        i++;
                                     }
                                 }
                             }
@@ -497,7 +507,6 @@ namespace Ideafix
                     {
                         if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
                         {
-
                             for (int j = 0; j < VehiclesList.Count; j++)
                             {
                                 Vehicle v = VehiclesList[j];
@@ -544,19 +553,30 @@ namespace Ideafix
                                     List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
                                     while (!exit && i < listP.Count)
                                     {
-                                        Ellipse p0 = new Ellipse();
-                                        p0.Stroke = UserOptions.VehiclesColor;
-                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                        if (listP[i] != null)
+                                        {
+                                            if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                            {
+                                                Ellipse p0 = new Ellipse();
+                                                p0.Stroke = UserOptions.AircraftColor;
 
-                                        p0.StrokeThickness = 1;
-                                        p0.Width = 2;
-                                        p0.Height = p0.Width;
-                                        p0.Tag = j + "/" + i;
-                                        LienzoVehicles.Children.Add(p0);
+                                                p0.StrokeThickness = 1;
+                                                p0.Width = 2;
+                                                p0.Height = p0.Width;
 
-                                        Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
-                                        Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+                                                p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                                p0.Tag = j + "/" + i;
+                                                LienzoVehicles.Children.Add(p0);
 
+                                                Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
+                                                Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+                                            }
+
+
+                                            if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
+                                                exit = true;
+                                        }
+                                        i++;
                                     }
                                 }
                             }
@@ -619,19 +639,30 @@ namespace Ideafix
                                     List<DateTime> listT = v.GetTimesByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
                                     while (!exit && i < listP.Count)
                                     {
-                                        Ellipse p0 = new Ellipse();
-                                        p0.Stroke = UserOptions.VehiclesColor;
+                                        if (listP[i] != null)
+                                        {
+                                            if (DateTime.Compare(listT[i], ActualTime) < 0)
+                                            {
+                                                Ellipse p0 = new Ellipse();
+                                                p0.Stroke = UserOptions.OtherColor;
 
-                                        p0.StrokeThickness = 1;
-                                        p0.Width = 2;
-                                        p0.Height = p0.Width;
-                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
-                                        p0.Tag = j + "/" + i;
-                                        LienzoVehicles.Children.Add(p0);
+                                                p0.StrokeThickness = 1;
+                                                p0.Width = 2;
+                                                p0.Height = p0.Width;
 
-                                        Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
-                                        Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+                                                p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                                p0.Tag = j + "/" + i;
+                                                LienzoVehicles.Children.Add(p0);
 
+                                                Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
+                                                Canvas.SetTop(p0, (listP[i].Y + B) / beta - p0.Height / 2);
+                                            }
+
+
+                                            if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
+                                                exit = true;
+                                        }
+                                        i++;
                                     }
                                 }
                             }
@@ -641,7 +672,10 @@ namespace Ideafix
             }
 
             ActualTime = ActualTime.AddSeconds(1);
-            UserOptions.ActualTime = ActualTime.TimeOfDay.ToString();
+            LActualTime.Text = ActualTime.TimeOfDay.ToString();
+
+            if (DateTime.Compare(ActualTime, new DateTime().AddHours(SlTime.HigherValue)) > 0)
+                timer.Stop();
         }
 
         private void Worker_DoWork_LoadFile(object sender, DoWorkEventArgs e)

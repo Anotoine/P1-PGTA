@@ -31,8 +31,6 @@ namespace Ideafix
         public SolidColorBrush WindowTextColor { get; set; }
         public SolidColorBrush WindowBackgroundColor { get; set; }
 
-        //Time for Timer
-        public string ActualTime { get; set; }
 
         public Options()
         {
@@ -53,8 +51,6 @@ namespace Ideafix
             WindowMainColor = Brushes.PaleVioletRed;
             WindowTextColor = Brushes.Black;
             WindowBackgroundColor = Brushes.DarkGray;
-
-            ActualTime = "22:00:00";
         }
     }
 }
