@@ -394,7 +394,7 @@
                     </DataGrid>
                 </StackPanel>
                 <Border BorderBrush="AliceBlue" BorderThickness="5" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <Canvas x:Name="LienzoMOPS" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" Width="700"/>
+                    <Canvas x:Name="LienzoMOPS" Background="{Binding Path=MapBackgroundColor, Converter={StaticResource UniversalValueConverter}}" Width="500" Height="400"/>
                 </Border>
             </StackPanel>
         </GroupBox>
