@@ -674,10 +674,10 @@ namespace Ideafix
             {
                 MessageBox.Show("Could not open the file: " + (string)e.Argument + "\nCheck permissions and try again.", "Error while opening.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch
-            {
-                MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //catch
+            //{
+            //    MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
         
         private void Worker_DoWork_Maps(object sender, DoWorkEventArgs e)
