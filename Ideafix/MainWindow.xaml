@@ -321,7 +321,7 @@
             <StackPanel HorizontalAlignment="Center" Margin="25">
                 <DataGrid x:Name="TPerfo" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HorizontalContentAlignment="Stretch" SelectionMode="Single" SelectionUnit="FullRow" Background="Transparent" AlternatingRowBackground="{Binding Path=TableSecondaryColor, Converter={StaticResource UniversalValueConverter}}" GridLinesVisibility="Vertical" RowBackground="{Binding Path=TableMainColor, Converter={StaticResource UniversalValueConverter}}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Zone" Binding="{Binding Zone}" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                        <DataGridTextColumn Header="Zone" Binding="{Binding Zone}"/>
                         <DataGridTemplateColumn>
                             <DataGridTemplateColumn.HeaderTemplate>
                                 <DataTemplate>
@@ -335,9 +335,9 @@
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <TextBlock Text="Prob. Of Update (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                                        <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Prob. Of Update (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"/>
                                         <Button Name="MoreInfo" Content="?" Click="UDInfo_Click" Width="15" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                     </Grid>
                                 </DataTemplate>
@@ -351,8 +351,8 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding ProbOfUpdate}" HorizontalAlignment="Center" Grid.Column="0" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                                        <TextBlock Text="{Binding PoUDTeo}" HorizontalAlignment="Center" Grid.Column="1" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="{Binding ProbOfUpdate}" HorizontalAlignment="Center" Grid.Column="0"/>
+                                        <TextBlock Text="{Binding PoUDTeo}" HorizontalAlignment="Center" Grid.Column="1"/>
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -370,9 +370,9 @@
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
-                                        <TextBlock Text="Prob. Of MLAT Detection (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                                        <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="Prob. Of MLAT Detection (%)" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Calculated" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="Min" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" />
                                         <Button Name="MoreInfo" Content="?" Click="MDInfo_Click" Width="15" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                     </Grid>
                                 </DataTemplate>
@@ -385,16 +385,15 @@
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="100"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding ProbOfMLATdet}" HorizontalAlignment="Center" Grid.Column="0" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
-                                        <TextBlock Text="{Binding PoMDTeo}" HorizontalAlignment="Center" Grid.Column="1" Foreground="{Binding Path=TableTextColor, Converter={StaticResource UniversalValueConverter}}"/>
+                                        <TextBlock Text="{Binding ProbOfMLATdet}" HorizontalAlignment="Center" Grid.Column="0"/>
+                                        <TextBlock Text="{Binding PoMDTeo}" HorizontalAlignment="Center" Grid.Column="1"/>
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Image Width="300" Source="MOPS.bmp" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+                <Image Margin="10" Source="MOPS.bmp" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             </StackPanel>
         </GroupBox>
