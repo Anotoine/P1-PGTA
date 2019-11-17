@@ -1280,7 +1280,6 @@ namespace Ideafix
 
         }
 
-
         private static bool IsPointInPolygon4(List<Point> polygon, Point testPoint)
         {
             bool result = false;
