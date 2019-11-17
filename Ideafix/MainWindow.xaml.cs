@@ -350,7 +350,7 @@ namespace Ideafix
             if (timer.IsEnabled)
                 timer.Stop();
 
-            UserOptions.ActualTime = ActualTime.ToString();
+            UserOptions.ActualTime = ActualTime.TimeOfDay.ToString();
         }
 
         private void BPlay_Click(object seder, RoutedEventArgs e)

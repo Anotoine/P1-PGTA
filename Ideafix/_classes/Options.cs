@@ -59,6 +59,7 @@ namespace Ideafix
             WindowTextColor = Brushes.Black;
             WindowBackgroundColor = Brushes.DarkGray;
 
+            ActualTime = "00";
         }
     }
 }

@@ -214,7 +214,7 @@
                                 </Path>
                             </Button>
                         </Grid>
-                        <TextBlock Margin="5" Text="{Binding ActualTime}"/>
+                        <TextBlock Margin="5" Text="{Binding ActualTime, UpdateSourceTrigger=PropertyChanged}" FontSize="25" HorizontalAlignment="Center"/>
                         <DataGrid x:Name="TEST" ItemsSource="{Binding Vistos}" Width="110" Margin="5">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ICAO Address" Width="100"/>
