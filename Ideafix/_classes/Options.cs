@@ -36,6 +36,9 @@ namespace Ideafix
         public SolidColorBrush WindowTextColor { get; set; }
         public SolidColorBrush WindowBackgroundColor { get; set; }
 
+        //Time for Timer
+        public string ActualTime { get; set; }
+
         public Options()
         {
             AircraftColor = Brushes.Red;
@@ -55,6 +58,7 @@ namespace Ideafix
             WindowMainColor = Brushes.PaleVioletRed;
             WindowTextColor = Brushes.Black;
             WindowBackgroundColor = Brushes.DarkGray;
+
         }
     }
 }

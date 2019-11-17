@@ -157,7 +157,6 @@ namespace Ideafix
             WSettings.Visibility = Visibility.Hidden;
             WUPC.Visibility = Visibility.Hidden;
 
-
             LPosLL.Visibility = Visibility.Hidden;
             LPosXY.Visibility = Visibility.Hidden;
 
@@ -228,10 +227,10 @@ namespace Ideafix
             openFileDialog.Filters.Add(new CommonFileDialogFilter("All files", "*.*"));
 
 
-            //if (string.IsNullOrEmpty(TLoadFile.Text) || !File.Exists(TLoadFile.Text))
-            //    openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            //else
-            //openFileDialog.InitialDirectory = TLoadFile.Text;
+            if (string.IsNullOrEmpty(TLoadFile.Text) || !File.Exists(TLoadFile.Text))
+                openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            else
+            openFileDialog.InitialDirectory = TLoadFile.Text;
 
             if (openFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
                 // Giving the user the path that it was selected
@@ -249,7 +248,6 @@ namespace Ideafix
                 Multiselect = false,
                 Title = "Load the maps folder..."
             };
-            //openFileDialog.Filters.Add(new CommonFileDialogFilter("Map file", "*.map"));
 
             if (string.IsNullOrEmpty(TLoadMaps.Text) || !Directory.Exists(TLoadMaps.Text))
                 openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -349,16 +347,35 @@ namespace Ideafix
 
         private void BPause_Click(object seder, RoutedEventArgs e)
         {
-            timer.Stop();
+            if (timer.IsEnabled)
+                timer.Stop();
+
+            UserOptions.ActualTime = ActualTime.ToString();
         }
 
         private void BPlay_Click(object seder, RoutedEventArgs e)
         {
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += Next_Tick;
-            timer.Start();
-            ActualTime = new DateTime().AddHours(SlTime.LowerValue);
+            if (timer != null)
+            {
+                if (timer.IsEnabled)
+                    timer.Stop();
+                else
+                {
+                    timer = new DispatcherTimer();
+                    timer.Interval = TimeSpan.FromSeconds(Math.Pow(SlSpeed.Value, -1));
+                    timer.Tick += Next_Tick;
+                    timer.Start();
+                    ActualTime = new DateTime().AddHours(SlTime.LowerValue);
+                }
+            }
+            else
+            {
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(Math.Pow(SlSpeed.Value, -1));
+                timer.Tick += Next_Tick;
+                timer.Start();
+                ActualTime = new DateTime().AddHours(SlTime.LowerValue);
+            }
         }
 
         private void Next_Tick(object sender, EventArgs e)
@@ -373,6 +390,7 @@ namespace Ideafix
                     {
                         if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
                         {
+
                             for (int j = 0; j < VehiclesList.Count; j++)
                             {
                                 Vehicle v = VehiclesList[j];
@@ -393,13 +411,11 @@ namespace Ideafix
                                                 pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
 
 
-
                                             if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
                                                 exit = true;
                                         }
                                         i++;
                                     }
-
                                     pl.Stroke = UserOptions.VehiclesColor;
                                     pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
 
@@ -428,8 +444,9 @@ namespace Ideafix
                                         p0.StrokeThickness = 1;
                                         p0.Width = 2;
                                         p0.Height = p0.Width;
-                                        p0.Tag = j + "/" + i;
+
                                         p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                        p0.Tag = j + "/" + i;
                                         LienzoVehicles.Children.Add(p0);
 
                                         Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
@@ -451,6 +468,7 @@ namespace Ideafix
                     {
                         if (MergingTypeRADAR.SelectedIndex == 0) //Polylines
                         {
+
                             for (int j = 0; j < VehiclesList.Count; j++)
                             {
                                 Vehicle v = VehiclesList[j];
@@ -471,7 +489,6 @@ namespace Ideafix
                                                 pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
 
 
-
                                             if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
                                                 exit = true;
                                         }
@@ -479,7 +496,6 @@ namespace Ideafix
                                     }
                                     pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
                                     pl.Stroke = UserOptions.AircraftColor;
-
                                     pl.Points = pp;
                                     LienzoVehicles.Children.Add(pl);
                                 }
@@ -501,12 +517,12 @@ namespace Ideafix
                                     {
                                         Ellipse p0 = new Ellipse();
                                         p0.Stroke = UserOptions.VehiclesColor;
+                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
 
                                         p0.StrokeThickness = 1;
                                         p0.Width = 2;
                                         p0.Height = p0.Width;
                                         p0.Tag = j + "/" + i;
-                                        p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
                                         LienzoVehicles.Children.Add(p0);
 
                                         Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
@@ -548,16 +564,13 @@ namespace Ideafix
                                                 pp.Add(new System.Windows.Point((listP[i].X + A) / alpha, (listP[i].Y + B) / beta));
 
 
-
                                             if (DateTime.Compare(listT[i], ActualTime) > 0) //Check if final reach
                                                 exit = true;
                                         }
                                         i++;
                                     }
-
                                     pl.Stroke = UserOptions.OtherColor;
                                     pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
-
                                     pl.Points = pp;
                                     LienzoVehicles.Children.Add(pl);
                                 }
@@ -583,8 +596,8 @@ namespace Ideafix
                                         p0.StrokeThickness = 1;
                                         p0.Width = 2;
                                         p0.Height = p0.Width;
-                                        p0.Tag = j + "/" + i;
                                         p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                        p0.Tag = j + "/" + i;
                                         LienzoVehicles.Children.Add(p0);
 
                                         Canvas.SetLeft(p0, (listP[i].X + A) / alpha - p0.Width / 2);
@@ -598,7 +611,8 @@ namespace Ideafix
                 }
             }
 
-            ActualTime = ActualTime.AddSeconds(SlSpeed.Value);
+            ActualTime = ActualTime.AddSeconds(1);
+            UserOptions.ActualTime = ActualTime.TimeOfDay.ToString();
         }
 
         private void Worker_DoWork_LoadFile(object sender, DoWorkEventArgs e)
@@ -639,8 +653,7 @@ namespace Ideafix
                 MessageBox.Show("It was not possible to read the file: " + (string)e.Argument + "\nTry with a diferent file.", "Error while reading and decoding.", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-
+        
         private void Worker_DoWork_Maps(object sender, DoWorkEventArgs e)
         {
             string[] listfiles;
@@ -945,7 +958,7 @@ namespace Ideafix
                             LienzoMaps.Children.Add(textBlock);
                         }
                         foreach (Tuple<Point, string> sim in Maps[i].getSimbols())
-                        { //Maybe a polygon to help diferenciate?
+                        {
                             Ellipse SIM = new Ellipse
                             {
                                 Stroke = UserOptions.MapHighlightColor,
@@ -1021,8 +1034,8 @@ namespace Ideafix
                                                 p0.StrokeThickness = 1;
                                                 p0.Width = 2;
                                                 p0.Height = p0.Width;
-                                                p0.Tag = j + "/" + i;
                                                 p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                                p0.Tag = j + "/" + i;
                                                 LienzoVehicles.Children.Add(p0);
 
                                                 Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
@@ -1086,9 +1099,9 @@ namespace Ideafix
                                                 p0.StrokeThickness = 1;
                                                 p0.Width = 2;
                                                 p0.Height = p0.Width;
-                                                p0.Tag = j + "/" + i;
                                                 p0.Stroke = UserOptions.AircraftColor;
                                                 p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                                p0.Tag = j + "/" + i;
                                                 LienzoVehicles.Children.Add(p0);
 
                                                 Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
@@ -1116,6 +1129,7 @@ namespace Ideafix
                                     if (v.Callsign == "NONE")
                                     {
                                         Polyline pl = new Polyline();
+
                                         PointCollection pp = new PointCollection();
 
                                         List<Point> list = v.GetPointsByRangeDate(new DateTime().AddHours(SlTime.LowerValue), new DateTime().AddHours(SlTime.HigherValue));
@@ -1127,7 +1141,6 @@ namespace Ideafix
                                                 pl.Tag = j + "/" + i;
                                             }
                                         }
-
                                         pl.Stroke = UserOptions.OtherColor;
                                         pl.MouseUp += new MouseButtonEventHandler(PlaneClick);
 
@@ -1154,8 +1167,8 @@ namespace Ideafix
                                                 p0.StrokeThickness = 1;
                                                 p0.Width = 2;
                                                 p0.Height = p0.Width;
-                                                p0.Tag = j + "/" + i;
                                                 p0.MouseUp += new MouseButtonEventHandler(PlaneClick);
+                                                p0.Tag = j + "/" + i;
                                                 LienzoVehicles.Children.Add(p0);
 
                                                 Canvas.SetLeft(p0, (list[i].X + A) / alpha - p0.Width / 2);
@@ -1181,8 +1194,6 @@ namespace Ideafix
                 + "X: " + VehiclesList[j].Positions[i].X + "m\n" + "Y: " + VehiclesList[j].Positions[i].Y + "m";
             MessageBox.Show(str, "TrackN: " + VehiclesList[j].TrackN);
         }
-
-
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -1333,6 +1344,7 @@ namespace Ideafix
             listPerf.Add(new ShowPerf("Apron", pUD[2], 70.000, 0, 0));
 
         }
+
         private void HandleLinkClick(object sender, RoutedEventArgs e)
         {
             Hyperlink hl = (Hyperlink)sender;
