@@ -167,10 +167,11 @@ namespace Ideafix
             LPosLL.IsEnabled = false;
             LPosXY.IsEnabled = false;
 
-            double A_MOPS = -zero0.X;
-            double B_MOPS = -zero0.Y;
-            double alpha_MOPS = A_MOPS / (LienzoMaps.ActualWidth / 2);
-            double beta_MOPS = B_MOPS / (LienzoMaps.ActualHeight / 2);
+            Point zero0MOPS = new Point().LatLong2XY(41.314000, 2.048296);
+            double A_MOPS = -zero0MOPS.X;
+            double B_MOPS = -zero0MOPS.Y;
+            double alpha_MOPS = A_MOPS / (LienzoMOPS.ActualWidth / 2);
+            double beta_MOPS = B_MOPS / (LienzoMOPS.ActualHeight / 2);
 
             if (Maps != null)
             {
